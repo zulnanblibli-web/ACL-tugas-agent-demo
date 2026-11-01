@@ -28,6 +28,7 @@ textarea{min-height:80px;resize:vertical}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 @media(max-width:560px){.row2{grid-template-columns:1fr}}
 .hidden{display:none!important}
+.mdprev{max-height:520px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:14.5px}.mdprev h1{font-size:20px;margin:0 0 8px}.mdprev h2{font-size:16.5px;margin:18px 0 6px}.mdprev h3{font-size:15px;margin:12px 0 4px}.mdprev table{border-collapse:collapse;display:block;overflow-x:auto;margin:6px 0}.mdprev th,.mdprev td{border:1px solid var(--line);padding:4px 8px;font-size:13px;text-align:left;vertical-align:top}.mdprev pre{background:var(--surface-2);padding:8px 10px;border-radius:8px;overflow:auto;font-size:12.5px;max-height:260px}.mdprev code{background:var(--surface-2);padding:0 4px;border-radius:4px}.mdprev blockquote{margin:6px 0;padding:4px 12px;border-left:4px solid var(--accent);color:var(--muted)}
 .refbox{margin-top:12px;display:grid;gap:8px}.refbox input[type=file]{padding:8px}.thumbs{display:flex;gap:8px;flex-wrap:wrap}.thumbs img{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
 .banner{border-radius:10px;padding:10px 14px;font-size:14.5px;margin:10px 0 0;border:1px solid var(--line);background:var(--surface-2)}
 .banner.warn{background:var(--warn-soft);border-color:var(--warn)}
@@ -70,7 +71,6 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
 <body>
 <div class="wrap">
 <h1>Zuno Studio</h1>
-<p class="sub">Ketik satu kalimat perintah. Tim Zuno bekerja di belakang layar; kamu hanya melihat garis besar prosesnya, lalu menerima carousel dan video yang bisa diunduh.</p>
 
 <div class="panel">
   <label for="cmd" class="muted">Perintah atau bahan konten</label>
@@ -79,7 +79,7 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
   <div class="row2">
     <div><label for="count" class="muted">Paket</label>
       <select id="count"><option value="cv">1 carousel + 1 video</option><option value="1">1 carousel saja</option><option value="v">1 video saja</option></select></div>
-    <div><label class="muted">Mode video</label><input type="text" value="Tanpa Wajah (Mode Tampil jalan di komputermu)" disabled></div>
+    <div><label for="mode" class="muted">Mode video</label><select id="mode"><option value="tanpa">Tanpa Wajah (motion penuh)</option><option value="tampil">Mode Tampil (wajah maks. 3 detik, lalu motion)</option></select></div>
     <div><label for="tpl" class="muted">Template carousel</label>
       <select id="tpl"><option value="">Otomatis (dipilih Pencerita Visual)</option><option value="A">A Papan Tulis</option><option value="B">B Neon Gelap</option><option value="C">C Majalah</option><option value="D">D Kartu Layar</option></select></div>
     <div><label for="pre" class="muted">Gaya video</label>
@@ -90,7 +90,6 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
     <input type="file" id="reffile" accept="image/*,video/mp4,video/quicktime,video/webm,.mp4,.m4v,.mov,.webm" multiple>
     <input type="text" id="refnote" placeholder="Kesan dalam satu kalimat, mis. neon, cepat, penuh gerak" aria-label="Kesan referensi">
     <div id="reflist" class="muted"></div>
-    <div class="muted">Referensi dipakai sebagai arah (warna, ritme, jenis gerak), bukan untuk meniru karya orang lain. Tanpa referensi, tim memakai preset yang dipilih.</div>
   </div>
   <div class="btns">
     <button class="btn primary" id="run" disabled>Jalankan</button>
@@ -133,7 +132,10 @@ function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
 var SLOGAN='Hai, kenalin Gue Zulnan. Gue sales yang belajar AI sambil bikin, bukan cuma ngomongin.';
 var SLOGAN_BEATS=['Hai, kenalin','Gue Zulnan.','Gue sales','yang belajar AI','sambil bikin,','bukan cuma ngomongin.'];
 var NOTICE_DELAY=typeof window.__ZUNO_NOTICE_DELAY==='number'?window.__ZUNO_NOTICE_DELAY:2200;
-var MAX_REV=2, MAX_BEAT=1.5;
+var MAX_REV=2, MAX_BEAT=2, MAX_FACE=3;
+var BAB=['hook','problem','twist','solusi','cta'];
+var FX_LIST=['noise','lineup','locked-on','orbit','lean-in','backdrop-word','spotlight','the-bill','moody','swipe','todo','comment-box','tap','pause-point','uninstall','reel-frame','shortcut-rain','reject-stamp','countdown-flip','rabbit-hole','cover-star','scribble','glass-widgets','red-collage','split-headline','pastel-word','check-pills','timeline','headline-box','profile-wall','tier-list','broll-split','phone-fan','dot-reveal','headline-wall','checklist','liquid-glass-graph','carousel-spin','match-cut','apple-toggles','led-sign','slow-push','over-the-shoulder-zoom','messages','place-in-grid'];
+function arr(x){return Array.isArray(x)?x.map(String):[]}
 
 /* ---------------- Bagian 1: CORE ---------------- */
 var BASE=[
@@ -147,12 +149,15 @@ var BASE=[
 ].join('\n');
 var ROLES={
  lead:['Orkestraror Agen','Menggolongkan perintah Zulnan dan merencanakan Kartu Konten (ID, platform, format, tahap funnel, tujuan). Tiga kartu tidak kembar.','membuat konten, memposting, menyentuh iklan, memberi status Disetujui.'],
+ '1.1':['Peneliti Tren','Menyusun bahan riset untuk topik: masalah nyata audiens pemula 25-35 tahun, sudut yang jarang dibahas, pola hook yang cocok. TIDAK ada akses pencarian: semua temuan adalah hipotesis yang perlu dicek; jangan mengarang angka, tren, atau sumber.','menulis naskah, mengarang tren/angka/sumber.'],
  '1.2':['Ahli Strategi Media Sosial','Memilih ide, tahap funnel, platform, angle, dan 2-3 kandidat hook per kartu; kaitan produk/portofolio untuk MOFU/BOFU tanpa klaim hasil.','menulis naskah penuh, mengubah niche, menetapkan harga.'],
- '1.3':['Kreator Konten','Menulis teks slide carousel (slide 1 hook sebagai cover, satu poin per slide, kalimat pendek, slide terakhir CTA) atau naskah video motion grafis (hook, isi, penutup CTA; teks layar maks 5 kata per adegan, tiap adegan maks 1,5 detik), caption, hashtag, dan Daftar Fakta & Klaim untuk Pemeriksa Realitas. Cerita pribadi hanya dari fakta yang diizinkan.','riset tren, membuat visual, memposting, mengarang fakta atau pengalaman, klaim hasil atau penghasilan.'],
+ '1.3':['Kreator Konten','Menulis naskah dengan metode Killer Script (hook, foreshadow, body, ending) yang dipetakan ke babak HOOK, PROBLEM, TWIST, SOLUSI, CTA agar orang berhenti scroll dan menonton sampai habis. Tiap adegan video maksimal 2 detik; teks layar 1-5 kata; caption, hashtag, dan Daftar Fakta & Klaim untuk Pemeriksa Realitas. Cerita pribadi hanya dari fakta yang diizinkan.','riset tren, membuat visual, memposting, mengarang fakta/pengalaman/angka, klaim hasil atau penghasilan, pembukaan basa-basi, naskah datar.'],
  '1.5':['Pencerita Visual','Pemilik paket visual. Carousel: memilih satu template (A Papan Tulis, B Neon Gelap, C Majalah, D Kartu Layar) sesuai topik dan tahap funnel (usulan: TOFU B atau A; MOFU A atau D; BOFU C). Video: mengisi Kartu Gaya dengan satu preset (Dentum, Orbit Megah, Glitch Digital, Kartu Layar, Editorial Cepat) sesuai kesan topik. Menandai satu kata kunci per slide/adegan.','mengubah isi atau makna naskah, membuat wajah atau suara tiruan Zulnan, menyatakan file sudah jadi sebelum Perender selesai.'],
+ '1.7':['Pelatih Editing Video Pendek','Menyusun rencana efek untuk claude-video-effects dari daftar 45 efek: jendela 1,5-4 detik, hanya di dalam segmen wajah, tidak menutup wajah, efek kamera lebih dulu.','menulis ulang naskah, memakai efek di luar daftar.'],
+ '1.10':['Spesialis Optimasi Video','Menguji naskah dengan checklist retensi Killer Script: hook selesai 3-8 detik dan bikin penasaran; clickbait tapi tidak bohong; ada visual di hook; satu foreshadow; body tidak mengulang hook dan tidak keluar dari janji; babak hook-problem-twist-solusi-cta jelas; twist benar-benar membalik sudut pandang; satu CTA; minimal 2 faktor viralitas; tidak ada bagian yang membosankan. Menulis ulang kalimat yang lemah, bukan hanya memberi saran.','mengubah niche, menambah klaim hasil. Tidak punya veto.'],
  '2.1':['Penjaga Merek','Mencocokkan suara dan gaya Zulnan, slogan tepat setelah hook pada video, kata terlarang, relevansi niche, tahap funnel dan CTA konsisten.','menulis ulang konten; menandai Tidak Lolos tanpa pelanggaran nyata.'],
  '2.2':['Pemeriksa Realitas','Memeriksa tiap item Daftar Fakta & Klaim dan semua teks yang tampil. Klaim hasil atau penghasilan tanpa bukti wajib dihapus. Cerita pribadi hanya dari fakta yang diizinkan. Hal tak terverifikasi diberi awalan "[Perlu keputusan Zulnan]". Toleransi salah fakta nol.','menulis ulang konten; meloloskan klaim yang tak bisa diverifikasi.'],
- '2.3':['Pengumpul Bukti','Memeriksa format dan file hasil render: urutan slide/adegan, hook di awal, CTA di akhir, teks terbaca, satu poin per slide, tiap adegan video maks 1,5 detik, caption cocok dengan visual, asal aset jelas. Batas platform yang diragukan ditandai untuk dicek, jangan menebak angka.','menulis ulang konten; menebak batas platform; menyatakan lolos tanpa data file jadi.'],
+ '2.3':['Pengumpul Bukti','Memeriksa format dan file hasil render: urutan slide/adegan, hook di awal, CTA di akhir, teks terbaca, satu poin per slide, tiap adegan video maks 2 detik, wajah (Mode Tampil) maks 3 detik berurutan lalu pindah ke motion, latar tidak pernah diam, babak hook-problem-twist-solusi-cta berurutan, caption cocok dengan visual, asal aset jelas. Batas platform yang diragukan ditandai untuk dicek, jangan menebak angka.','menulis ulang konten; menebak batas platform; menyatakan lolos tanpa data file jadi.'],
  '2.4':['Pemeriksa Kepatuhan Hukum','Memastikan CTA pengumpul kontak jelas tujuannya, tidak ada kata sandi/token/data pembayaran/data pribadi orang lain, tidak ada pesan otomatis atas nama Zulnan, testimoni dan studi kasus berizin.','menulis ulang konten; memberi nasihat hukum final.'],
  '3.1':['Kurator Instagram','Menyusun paket posting per platform untuk konten berstatus Disetujui: caption final, hashtag, cover, saran jadwal (tandai asumsi).','memposting, mengubah isi konten, menyatakan sudah memposting.']
 };
@@ -240,20 +245,41 @@ var TPL={A:'Papan Tulis',B:'Neon Gelap',C:'Majalah',D:'Kartu Layar'};
 var TPL_DEF={TOFU:'B',MOFU:'A',BOFU:'C'};
 
 function ctxCard(c,withContent){
-  var s='ID: '+c.id+'\nFormat: '+(c.format==='video'?'video motion grafis (Mode Tanpa Wajah)':'carousel 1080x1350')+'\nPlatform: '+c.platform+'\nTahap funnel: '+c.funnel+'\nIde: '+c.topik+'\nAngle: '+(c.angle||'-')+'\nHook: '+(c.hooks||[]).join(' | ')+'\nTujuan CTA: '+(c.cta||'-');
+  var s='ID: '+c.id+'\nFormat: '+(c.format==='video'?'video motion grafis ('+(S.mode==='tampil'?'Mode Tampil: wajah maks. 3 detik lalu motion':'Mode Tanpa Wajah')+')':'carousel 1080x1350')+'\nPlatform: '+c.platform+'\nTahap funnel: '+c.funnel+'\nIde: '+c.topik+'\nAngle: '+(c.angle||'-')+'\nHook: '+(c.hooks||[]).join(' | ')+'\nTujuan CTA: '+(c.cta||'-');
   if(withContent){
-    s+='\n\nISI KONTEN:\n'+JSON.stringify(c.konten)+'\n\n'+(c.format==='video'?'KARTU GAYA: '+JSON.stringify(c.kartuGaya):'TEMPLATE CAROUSEL: '+c.template+' '+TPL[c.template]+' (alasan: '+(c.visual.alasan||'-')+')')+'\n\nDATA FILE JADI (dari Perender):\n'+JSON.stringify(c.fileInfo||{});
+    s+='\n\nISI KONTEN:\n'+JSON.stringify(c.konten)+'\n\n'+(c.format==='video'?'KARTU GAYA: '+JSON.stringify(c.kartuGaya):'TEMPLATE CAROUSEL: '+c.template+' '+TPL[c.template]+' (alasan: '+(c.visual.alasan||'-')+')')+'\n\nDATA FILE/PAKET (dari Perender):\n'+JSON.stringify(c.fileInfo||{});
   }
   return s;
 }
+function risetTxt(){var R=S&&S.riset;return R?JSON.stringify(R):'(tidak ada)'}
 function p13(c,rev){
-  var vid=c.format==='video';
+  var vid=c.format==='video',tampil=S.mode==='tampil';
+  var metode='Gunakan metode Killer Script dan petakan ke 5 babak WAJIB berurutan: HOOK, PROBLEM, TWIST, SOLUSI, CTA. Tujuan: orang berhenti scroll dan menonton sampai habis; tiap kalimat harus menahan perhatian, kalau tidak, buang.\n'+
+  '- HOOK (3-8 detik): se-clickbait mungkin tapi tidak bohong, nyambung dengan isi, ada visual jelas di detik pertama. Pilih satu jenis: negative, proof (hanya dari fakta Zulnan yang diizinkan), promise, pain point audiens, atau transformation (hanya dari fakta Zulnan). Angka spesifik dan taruhan personal lebih kuat dari pertanyaan umum. Dilarang hook lembek seperti "Mau ...? Begini caranya".\n'+
+  '- Satu FORESHADOW tepat setelah hook (janji langkah, pertanyaan yang dijawab di akhir, atau penanda visual).\n'+
+  '- PROBLEM: masalah spesifik yang dialami pemula, pakai bahasa mereka sampai terasa "ini gue banget". Jangan mengulang kalimat hook.\n'+
+  '- TWIST: membalik sudut pandang atau fakta mengejutkan yang membuat orang tidak jadi scroll, dengan empati.\n'+
+  '- SOLUSI: 3-5 poin konkret yang bisa langsung dicoba pemula, tiap poin berdiri sendiri, tanpa jargon. Potong semua yang muter-muter atau tidak relevan dengan janji hook.\n'+
+  '- CTA: maksimal SATU ajakan (boleh nyeleneh), atau loop yang nyambung ke hook.\n'+
+  '- Pakai minimal 2 dari 7 faktor viralitas: pro/kontra, relate ke banyak orang, orang terkenal, lagi viral, emosi, fakta mengejutkan, komedi (hanya yang aman dan cocok).\n'+
+  '- Dilarang: pembukaan basa-basi, definisi panjang, kalimat bertele-tele, naskah datar yang bikin ngantuk, klaim hasil/penghasilan, mengarang fakta/pengalaman/angka/tren.\n'+
+  'BAHAN RISET (hipotesis, belum diverifikasi): '+risetTxt();
   var fm=vid
-   ?'Balas HANYA JSON: {"adegan":[{"babak":"hook" atau "isi" atau "penutup","teks":"teks layar 1-5 kata","detik":0.8 sampai 1.5}],"caption":"...","hashtag":["#..."],"fakta":["tiap fakta/klaim/cerita pribadi yang dipakai"]}. 14-22 adegan; panjang mengikuti topik. TIAP adegan maksimal 1,5 detik. Hook 2-4 adegan pertama; JANGAN menulis slogan (ditambahkan otomatis setelah hook); adegan terakhir penutup dengan CTA.'
-   :'Balas HANYA JSON: {"slides":[{"judul":"maks 7 kata","isi":"maks 28 kata, boleh kosong"}],"caption":"...","hashtag":["#..."],"fakta":["tiap fakta/klaim/cerita pribadi yang dipakai"]}. Jumlah slide mengikuti topik (5-9); slide 1 hook sebagai cover; satu poin per slide; slide terakhir CTA.';
+   ?'Balas HANYA JSON: {"big_idea":"satu kalimat","jenis_hook":"negative|proof|promise|pain|transformation","jenis_ending":"cta|loop|result","foreshadow":"satu kalimat","faktor_viral":["..."],"adegan":[{"babak":"hook|problem|twist|solusi|cta","vo":"kalimat yang diucapkan, maks 12 kata","teks":"teks layar 1-5 kata","visual":"apa yang tampil di layar","detik":0.8 sampai 2,"wajah":true atau false}],"caption":"...","hashtag":["#..."],"fakta":["tiap fakta/klaim/cerita pribadi yang dipakai"]}. 14-24 adegan berurutan hook, problem, twist, solusi, cta. TIAP adegan maksimal 2 detik dan visualnya berganti. Slogan ditambahkan otomatis setelah hook: jangan menulisnya. '+(tampil?'Mode Tampil: wajah:true hanya untuk adegan yang diucapkan Zulnan di kamera; wajah berurutan total maksimal 3 detik, lalu WAJIB pindah ke adegan motion (wajah:false).':'Mode Tanpa Wajah: semua wajah:false.')
+   :'Balas HANYA JSON: {"big_idea":"satu kalimat","jenis_hook":"negative|proof|promise|pain|transformation","jenis_ending":"cta|loop|result","foreshadow":"satu kalimat","faktor_viral":["..."],"slides":[{"babak":"hook|problem|twist|solusi|cta","judul":"maks 7 kata","isi":"maks 28 kata, boleh kosong"}],"caption":"...","hashtag":["#..."],"fakta":["tiap fakta/klaim/cerita pribadi yang dipakai"]}. 6-9 slide berurutan: slide 1 hook sebagai cover, lalu problem, twist, solusi (satu poin per slide), slide terakhir CTA.';
   var data=ctxCard(c,false);
   if(rev)data+='\n\nVERSI SEBELUMNYA:\n'+JSON.stringify(c.konten)+'\n\nCATATAN WAJIB DIPERBAIKI:\n'+rev;
-  return P('1.3',(rev?'REVISI: perbaiki sesuai catatan, pertahankan bagian yang sudah baik. ':'')+(vid?'Tulis naskah video motion grafis.':'Tulis teks carousel.')+' Caption untuk '+c.platform+'. Sertakan Daftar Fakta & Klaim.',data,fm);
+  return P('1.3',(rev?'REVISI: perbaiki sesuai catatan, pertahankan bagian yang sudah kuat. ':'')+metode+'\nCaption untuk '+c.platform+'. Sertakan Daftar Fakta & Klaim.',data,fm);
+}
+function pRiset(){
+  return P('1.1','Susun bahan riset untuk perintah Zulnan dan rencana kartu. Tidak ada akses pencarian: tulis semuanya sebagai HIPOTESIS yang perlu dicek, tanpa angka, tren, atau sumber karangan.',S.cmd+'\n\nKARTU: '+S.cards.map(function(c){return c.id+' '+c.format+' '+c.funnel+' '+c.topik}).join(' | '),'Balas HANYA JSON: {"masalah_audiens":["3-5 masalah nyata pemula 25-35 tahun, bahasa mereka"],"sudut_jarang":["2-3 sudut yang jarang dibahas"],"pola_hook":["2-3 pola hook yang cocok"],"catatan":"apa yang perlu dicek Zulnan"}');
+}
+function pOpt(c){
+  return P('1.10','Uji naskah ini dengan checklist retensi. Jika ada yang gagal, lolos=false dan tulis ulang kalimatnya (bukan hanya saran).',ctxCard(c,false)+'\n\nNASKAH:\n'+JSON.stringify(c.konten),'Balas HANYA JSON: {"lolos":true atau false,"skor":1 sampai 10,"gagal":["item checklist yang gagal"],"perbaikan":["tulis ulang: kalimat lama -> kalimat baru"]}');
+}
+function pEfek(c){
+  var ts=tl(c),rows=c.konten.adegan.map(function(a,i){return (i+1)+'. '+f1(ts[i].mulai)+'-'+f1(ts[i].selesai)+'s '+(a.wajah?'[WAJAH]':'[motion]')+' '+a.teks}).join('\n');
+  return P('1.7','Mode Tampil. Susun rencana efek claude-video-effects HANYA di dalam segmen [WAJAH] (jendela 1,5-4 detik, tidak keluar dari segmen). Pilih dari daftar efek saja; hindari efek yang butuh folder gambar. Maksimal 6 efek.',ctxCard(c,false)+'\n\nTABEL ADEGAN:\n'+rows+'\n\nDAFTAR EFEK: '+FX_LIST.join(', '),'Balas HANYA JSON: {"efek":[{"fx":"nama dari daftar","start":detik,"end":detik,"text":"teks efek atau kosong","alasan":"satu kalimat"}]}');
 }
 function p15(c){
   var vid=c.format==='video',list=vid?c.konten.adegan:c.konten.slides;
@@ -262,7 +288,7 @@ function p15(c){
   if(vid){
     var R=S.refs;
     fm='Balas HANYA JSON: {"gaya":"nama preset terdekat atau Dari referensi","kesan":"satu kalimat","alasan":"apa yang diambil dari referensi atau preset","palet":{"bg1":"#hex","bg2":"#hex","ink":"#hex","acc":"#hex"},"font":"'+FONTS.join('|')+'","huruf_besar":true atau false,"latar":"'+LATAR.join('|')+'","masuk":"'+MASUK.join('|')+'","kamera":"'+KAMERA.join('|')+'","ekstra":["'+EKSTRA.join('","')+'" pilih 2-5],"energi":1 sampai 3,"items":[{"kunci":"satu kata dari teks yang disorot"}]} tepat '+list.length+' item.';
-    info='Isi Kartu Gaya video. SATU video memakai SATU palet dan SATU latar dari awal sampai akhir (tidak campuran warna); ganti hanya antar video. Motion harus RAMAI: latar bergerak, elemen tambahan, kamera, tiap adegan maks 1,5 detik. '+
+    info='Isi Kartu Gaya video. SATU video memakai SATU palet dan SATU latar dari awal sampai akhir (tidak campuran warna); ganti hanya antar video. Motion harus RAMAI: latar selalu bergerak (tidak pernah diam), elemen tambahan, kamera, tiap adegan maks 2 detik. '+
       (R&&R.ada?'ADA REFERENSI dari Zulnan'+(R.catatan?' (kesan: "'+R.catatan+'")':'')+'. Gambar terlampir (cuplikan dari foto/video). DATA TERUKUR dari referensi: '+JSON.stringify(R.medido)+'. Ambil ARAH-nya saja: palet (pilih dari palet terukur), ritme dan energi gerak, jenis latar, jenis masuk teks, bentuk tipografi. Jangan menyalin teks, logo, wajah, atau karya orang lain. Jangan menebak di luar yang tampak di referensi.':
       'Tidak ada referensi. Pilih satu preset yang cocok: '+Object.keys(PRESET).map(function(k){return k+' ('+PRESET[k].kesan+')'}).join('; ')+', lalu isi parameter sesuai preset itu.');
   }else{
@@ -275,7 +301,7 @@ function pQA(k,c,round){
   var extra={
    '2.1':'Periksa suara dan merek. Pada video, slogan "'+SLOGAN+'" harus muncul tepat setelah hook (sudah ditambahkan otomatis; pastikan penempatannya wajar).',
    '2.2':'Periksa setiap item Daftar Fakta & Klaim dan semua teks yang tampil. Fakta Zulnan yang diizinkan hanya yang ada di BRIEF DASAR.',
-   '2.3':'Periksa format dan file jadi memakai DATA FILE JADI. Carousel 1080x1350, hook di slide 1, CTA di slide terakhir, satu poin per slide. Video: tiap adegan maksimal 1,5 detik, teks layar maks 5 kata, hook di awal, CTA di akhir. Handle akun belum diisi Zulnan: itu bukan alasan Tidak Lolos.',
+   '2.3':'Periksa format dan file jadi memakai DATA FILE JADI. Carousel 1080x1350, hook di slide 1, CTA di slide terakhir, satu poin per slide. Video: tiap adegan maksimal 2 detik, teks layar maks 5 kata, segmen wajah (Mode Tampil) maks 3 detik berurutan lalu motion, latar bergerak, urutan babak hook-problem-twist-solusi-cta. Video belum dirender (paket + rencana render); periksa data paket. Handle akun belum diisi Zulnan: itu bukan alasan Tidak Lolos.',
    '2.4':'Periksa CTA, privasi, dan izin.'
   }[k];
   return P(k,extra+' Anda hanya memberi keputusan dan catatan. Tidak Lolos hanya bila ada pelanggaran nyata pada tugas peran Anda; saran kecil masuk catatan dengan keputusan Lolos.'+(round?' Ini pemeriksaan ulang setelah revisi.':''),ctxCard(c,true),'Balas HANYA JSON: {"verdict":"Lolos" atau "Tidak Lolos","catatan":["maks 4 poin singkat"],"bagian":"teks" atau "visual" atau "keduanya" atau "-"}');
@@ -284,19 +310,23 @@ function pQA(k,c,round){
 function normKonten(c,k){
   var list;
   if(c.format==='video'){
-    list=(Array.isArray(k.adegan)?k.adegan:[]).map(function(a){return {babak:['hook','isi','penutup'].indexOf(a&&a.babak)>-1?a.babak:'isi',teks:String(a&&a.teks||'').slice(0,60),detik:Math.min(MAX_BEAT,Math.max(.8,Number(a&&a.detik)||1.2))}}).filter(function(a){return a.teks});
-    if(list.length<4)throw {code:'invalid_json'};
-    list=list.filter(function(a){return !/gue zulnan|hai, kenalin/i.test(a.teks)});
+    var tampil=S.mode==='tampil';
+    list=(Array.isArray(k.adegan)?k.adegan:[]).map(function(a){var t=String(a&&a.teks||'').slice(0,60);return {babak:BAB.indexOf(a&&a.babak)>-1?a.babak:'solusi',teks:t,vo:String(a&&a.vo||'').slice(0,200),visual:String(a&&a.visual||'').slice(0,200),detik:Math.min(MAX_BEAT,Math.max(.8,Number(a&&a.detik)||1.5)),wajah:tampil&&!!(a&&a.wajah)}}).filter(function(a){return a.teks});
+    if(list.length<8)throw {code:'invalid_json'};
+    list=list.filter(function(a){return !/gue zulnan|hai, kenalin/i.test(a.teks+' '+a.vo)});
     var h=0;while(h<list.length&&list[h].babak==='hook')h++;if(h===0)h=1;
-    var sl=SLOGAN_BEATS.map(function(t){return {babak:'slogan',teks:t,detik:1.3}});
+    var sl=[{babak:'slogan',teks:'Hai, kenalin',vo:'Hai, kenalin Gue Zulnan.',visual:tampil?'Zulnan menyapa ke kamera':'sapaan dengan animasi masuk',detik:1.8,wajah:tampil},{babak:'slogan',teks:'Gue sales',vo:'Gue sales yang belajar AI sambil bikin,',visual:'teks dengan ikon',detik:2,wajah:false},{babak:'slogan',teks:'bukan cuma ngomongin.',vo:'bukan cuma ngomongin.',visual:'penutup slogan',detik:1.6,wajah:false}];
     list=list.slice(0,h).concat(sl,list.slice(h));
+    var acc=0;list.forEach(function(a){if(a.wajah){if(acc+a.detik>MAX_FACE){a.wajah=false;acc=0}else acc+=a.detik}else acc=0});
+    list.forEach(function(a){if(!a.vo)a.vo=a.teks});
     k.adegan=list;
   }else{
-    list=(Array.isArray(k.slides)?k.slides:[]).map(function(s){return {judul:String(s&&s.judul||'').slice(0,90),isi:String(s&&s.isi||'').slice(0,260)}}).filter(function(s){return s.judul||s.isi});
+    list=(Array.isArray(k.slides)?k.slides:[]).map(function(s){return {babak:BAB.indexOf(s&&s.babak)>-1?s.babak:'solusi',judul:String(s&&s.judul||'').slice(0,90),isi:String(s&&s.isi||'').slice(0,260)}}).filter(function(s){return s.judul||s.isi});
     if(list.length<2)throw {code:'invalid_json'};
     k.slides=list.slice(0,10);
   }
-  k.caption=String(k.caption||'');k.hashtag=(Array.isArray(k.hashtag)?k.hashtag:[]).map(String).slice(0,12);k.fakta=(Array.isArray(k.fakta)?k.fakta:[]).map(String);
+  k.big_idea=String(k.big_idea||'');k.jenis_hook=String(k.jenis_hook||'');k.jenis_ending=String(k.jenis_ending||'');k.foreshadow=String(k.foreshadow||'');k.faktor_viral=arr(k.faktor_viral);
+  k.caption=String(k.caption||'');k.hashtag=arr(k.hashtag).slice(0,12);k.fakta=arr(k.fakta);
   return k;
 }
 function normVisual(c,v){
@@ -304,7 +334,7 @@ function normVisual(c,v){
   var it=Array.isArray(v&&v.items)?v.items:[];
   var items=list.map(function(x,i){
     var o=it[i]||{},txt=vid?x.teks:x.judul,kw=String(o.kunci||'').trim();
-    if(!kw||txt.toLowerCase().indexOf(kw.toLowerCase())<0)kw='';
+    if(!kw||!txt.split(/\s+/).some(function(w){return norm(w)===norm(kw)}))kw='';
     return {kunci:kw,pill:String(o.pill||'').slice(0,18).toUpperCase()};
   });
   var out={items:items,alasan:String(v&&v.alasan||'')};
@@ -315,7 +345,7 @@ function normVisual(c,v){
     var near=PRESET[g]?g:'Dentum';base=PRESET[near].P;
     c.gaya=g;c.P=cleanP(R&&R.ada?v:(S.forcePre||PRESET[v&&v.gaya])?null:v,base);
     var P=c.P;
-    c.kartuGaya={kartu:c.id,nama_gaya:g,mode:'Tanpa Wajah',kesan:String(v&&v.kesan||PRESET[near].kesan),palet:'latar '+P.bg1+' ke '+P.bg2+', teks '+P.ink+', aksen '+P.acc+' (tetap sepanjang video)',typography:P.font+(P.upper?' (huruf besar)':'')+' + Inter',gerak:'latar '+P.latar+'; masuk '+P.masuk+'; kamera '+P.kamera+'; ekstra '+P.ekstra.join(', ')+'; energi '+P.energi+'/3; tiap adegan maksimal 1,5 detik',referensi:R&&R.ada?R.nama.join(', ')+(R.catatan?' | kesan Zulnan: '+R.catatan:'')+' | terukur: '+JSON.stringify(R.medido):PRESET[near].ref,alasan:String(v&&v.alasan||''),elemen_tetap:'slogan setelah hook',asal_aset:'dibuat dengan kode (tanpa aset luar); tanpa suara dan musik',alat_render:'Canvas Zuno Studio (pratinjau WebM)',status:'File jadi (pratinjau tanpa suara)'};
+    c.kartuGaya={kartu:c.id,nama_gaya:g,mode:S.mode==='tampil'?'Mode Tampil (wajah maks. 3 detik, lalu motion)':'Tanpa Wajah (motion penuh)',kesan:String(v&&v.kesan||PRESET[near].kesan),palet:'latar '+P.bg1+' ke '+P.bg2+', teks '+P.ink+', aksen '+P.acc+' (tetap sepanjang video)',typography:P.font+(P.upper?' (huruf besar)':'')+' + Inter',gerak:'latar '+P.latar+'; masuk '+P.masuk+'; kamera '+P.kamera+'; ekstra '+P.ekstra.join(', ')+'; energi '+P.energi+'/3; tiap adegan maksimal 2 detik; latar selalu bergerak',referensi:R&&R.ada?R.nama.join(', ')+(R.catatan?' | kesan Zulnan: '+R.catatan:'')+' | terukur: '+JSON.stringify(R.medido):PRESET[near].ref,alasan:String(v&&v.alasan||''),elemen_tetap:'slogan setelah hook',asal_aset:'dibuat dengan kode (tanpa aset luar); tanpa suara dan musik',alat_render:'Render akhir di komputer Zulnan: HyperFrames (Tanpa Wajah) atau claude-video-effects (Mode Tampil). Kanvas Zuno Studio hanya pratinjau kasar.',status:'Paket render siap (video belum dirender)'};
   }else{
     var t=String(v&&v.template||'').toUpperCase();if(!TPL[t])t=TPL_DEF[c.funnel]||'A';
     if(S.forceTpl)t=S.forceTpl;
@@ -327,17 +357,154 @@ function normVisual(c,v){
 /* ---- alur ---- */
 function setCard(c,stage,kind){c.stage=stage;c.kind=kind||'';UI.update()}
 function notice(kind,html){S.notices.push({kind:kind,html:html});UI.update()}
+/* ---- paket konten (.md), rencana efek, komposisi HyperFrames ---- */
+function f1(n){return String(Math.round(n*10)/10)}
+function tl(c){var t=0;return c.konten.adegan.map(function(a){var o={mulai:t,selesai:t+a.detik};t+=a.detik;return o})}
+function slug(t){return String(t||'konten').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'').slice(0,40)||'konten'}
+function fn(c){return c.id.toLowerCase()+'_'+slug(c.topik)}
+function cell(t){return String(t==null?'':t).replace(/\|/g,'/').replace(/\n/g,' ')}
+function faceSegs(c){
+  var ts=tl(c),segs=[],cur=null;
+  c.konten.adegan.forEach(function(a,i){if(a.wajah){if(!cur){cur={dari:i,mulai:ts[i].mulai,selesai:ts[i].selesai};segs.push(cur)}else cur.selesai=ts[i].selesai}else cur=null});
+  segs.forEach(function(g,n){g.file='wajah-'+String(n+1).padStart(2,'0')});return segs;
+}
+function normEfek(c,j){
+  var segs=faceSegs(c),out=[];
+  (j&&Array.isArray(j.efek)?j.efek:[]).forEach(function(e){
+    var fx=String(e&&e.fx||''),st=Number(e&&e.start),en=Number(e&&e.end);
+    if(FX_LIST.indexOf(fx)<0||!isFinite(st)||!isFinite(en))return;
+    var g=segs.filter(function(x){return st>=x.mulai-.05&&st<x.selesai})[0];if(!g)return;
+    en=Math.min(en,g.selesai);if(en-st<1)return;
+    var o={fx:fx,start:Math.round((st-g.mulai)*10)/10,end:Math.round((en-g.mulai)*10)/10,segmen:g.file};
+    if(e.text)o.text=String(e.text).slice(0,60);out.push({o:o,alasan:String(e.alasan||'')});
+  });
+  return out.slice(0,6);
+}
+async function buildVideoPlan(c){
+  c.segs=faceSegs(c);c.efek=[];
+  if(S.mode==='tampil'&&c.segs.length){
+    setCard(c,'Menyusun rencana efek');UI.act('a1',c.id+': Pelatih Editing Video Pendek menyusun rencana efek untuk segmen wajah');
+    try{c.efek=normEfek(c,await ask('1.7',c.id,pEfek(c),'quick'))}catch(e){if(e&&(e.code==='cancelled'||FATAL.indexOf(e.code)>-1))throw e;c.efek=[]}
+  }
+  c.hf=buildHF(c);
+}
+function efekPlans(c){
+  var m={};(c.segs||[]).forEach(function(g){m[g.file+'_effects.json']={effects:[]}});
+  (c.efek||[]).forEach(function(e){var k=e.o.segmen+'_effects.json';if(m[k]){var o=Object.assign({},e.o);delete o.segmen;o.fx=e.o.fx;m[k].effects.push(o)}});
+  return m;
+}
+function buildHF(c){
+  var P=c.P,sc=c.konten.adegan,ts=tl(c),tot=ts[ts.length-1].selesai,id='zuno-'+c.id.toLowerCase();
+  var fam={'Anton':'Anton','Archivo Black':'Archivo+Black','Montserrat':'Montserrat:wght@800','Playfair Display':'Playfair+Display:ital,wght@1,700','Space Mono':'Space+Mono:wght@700','Permanent Marker':'Permanent+Marker'}[P.font]||'Anton';
+  var css={'Anton':'Anton,sans-serif','Archivo Black':'"Archivo Black",sans-serif','Montserrat':'Montserrat,sans-serif','Playfair Display':'"Playfair Display",serif;font-style:italic','Space Mono':'"Space Mono",monospace','Permanent Marker':'"Permanent Marker",cursive'}[P.font];
+  var el=[],js=[],fs=0,face=0;
+  var kwHtml=function(a,v){var t=P.upper?a.teks.toUpperCase():a.teks;t=esc(t);if(v&&v.kunci){var re=new RegExp('('+v.kunci.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','i');t=t.replace(re,'<span class="k">$1</span>')}return t};
+  sc.forEach(function(a,i){
+    var b='b'+i,st=f1(ts[i].mulai),du=f1(a.detik),tid=a.wajah?'wajah-'+String(++face).padStart(2,'0')+'.mp4':null;
+    if(a.wajah){
+      var g=(c.segs||[]).filter(function(x){return x.dari<=i&&ts[i].mulai>=x.mulai-.01&&ts[i].selesai<=x.selesai+.01})[0];
+      el.push('  <video id="'+b+'" class="clip face" data-start="'+st+'" data-duration="'+du+'" data-track-index="1" src="'+(g?g.file:'wajah-01')+'.mp4" muted playsinline></video>');
+    }else{
+      el.push('  <h1 id="'+b+'" class="clip beat" data-start="'+st+'" data-duration="'+du+'" data-track-index="2">'+kwHtml(a,c.visual.items[i])+'</h1>');
+      var m=P.masuk,from={hentak:'{opacity:0,scale:1.45,duration:0.2,ease:"power4.out"}',geser:'{opacity:0,x:'+(i%2?600:-600)+',duration:0.25,ease:"power3.out"}',masker:'{clipPath:"inset(0 100% 0 0)",duration:0.3,ease:"power3.out"}',ketik:'{opacity:0,y:30,duration:0.2,ease:"steps(6)"}',pop:'{opacity:0,scale:0.5,duration:0.3,ease:"back.out(1.7)"}',jatuh:'{opacity:0,y:-520,duration:0.25,ease:"power3.in"}'}[m]||'{opacity:0,y:40,duration:0.25}';
+      js.push('tl.from("#'+b+'",'+from+','+st+');');
+      js.push('tl.to("#'+b+'",{opacity:0,duration:0.12},'+f1(ts[i].selesai-0.12)+');');
+    }
+  });
+  var shapes='';for(var k=0;k<5+P.energi*2;k++){var sz=50+(k*37)%90;shapes+='  <div class="clip shape" data-start="0" data-duration="'+f1(tot)+'" data-track-index="0" style="left:'+((k*173)%980)+'px;top:'+((k*311)%1800)+'px;width:'+sz+'px;height:'+sz+'px;border-radius:'+(k%2?'50%':'8px')+'"></div>\n'}
+  return '<!DOCTYPE html>\n<html lang="id"><head><meta charset="utf-8"><title>'+esc(c.id+' '+c.topik)+'</title>\n<!-- DRAF komposisi HyperFrames dari Zuno Studio v2. BELUM diuji di HyperFrames. Cek dengan: npx hyperframes preview, lalu npx hyperframes render.\n     Kartu Gaya: '+esc(c.gaya)+' | latar '+P.latar+' | masuk '+P.masuk+' | palet tetap sepanjang video. Latar dan bentuk selalu bergerak.\n     Segmen wajah (Mode Tampil): taruh rekaman pendek bernama wajah-01.mp4, wajah-02.mp4, dst di folder yang sama (maks. 3 detik tiap segmen). -->\n<link href="https://fonts.googleapis.com/css2?family='+fam+'&family=Inter:wght@600&display=swap" rel="stylesheet">\n<style>\nhtml,body{margin:0;background:#000}\n#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:linear-gradient(160deg,'+P.bg1+','+P.bg2+');background-size:200% 200%;color:'+P.ink+';font-family:'+css+'}\n.shape{position:absolute;border:6px solid '+P.acc+';opacity:.45}\n.beat{position:absolute;left:90px;right:90px;top:50%;margin:0;transform:translateY(-50%);text-align:center;font-size:'+(P.font==='Anton'?210:P.font==='Playfair Display'?150:P.font==='Space Mono'?100:130)+'px;line-height:1.05;'+(P.upper?'text-transform:uppercase;':'')+'}\n.k{color:'+P.acc+'}\n.face{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}\n</style></head><body>\n<div id="stage" data-composition-id="'+id+'" data-start="0" data-width="1080" data-height="1920">\n'+shapes+el.join('\n')+'\n  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"><\/script>\n  <script>\n    const tl = gsap.timeline({ paused: true });\n    tl.fromTo("#stage",{backgroundPosition:"0% 0%"},{backgroundPosition:"100% 100%",duration:'+f1(tot)+',ease:"none"},0);\n    tl.to(".shape",{y:-320,rotation:360,duration:'+f1(tot)+',ease:"none"},0);\n    '+js.join('\n    ')+'\n    window.__timelines = window.__timelines || {};\n    window.__timelines["'+id+'"] = tl;\n  <\/script>\n</div>\n</body></html>\n';
+}
+var SFX={hook:'impact + whoosh pendek',problem:'glitch tipis',twist:'riser lalu impact',solusi:'pop / click',cta:'ding',slogan:'pop'};
+function buildMd(c){
+  var L=[],vid=c.format==='video',K=c.konten,R=S&&S.riset,tampil=S&&S.mode==='tampil';
+  var status=c.approved?'Disetujui Zulnan':c.verdict==='Lolos'?'Lolos QA, menunggu persetujuan Zulnan':c.verdict?'Tidak Lolos, menunggu keputusan Zulnan':'Draf';
+  L.push('# Paket Konten '+c.id+': '+(c.topik||'-'),'','> Dibuat Zuno Studio v2 pada '+new Date().toISOString().slice(0,10)+'. Status: **'+status+'**. Draf: suara perlu dicek (contoh tulisan Zulnan belum diisi di brief); handle akun belum diisi; belum diposting.','');
+  L.push('## 1. Kartu Konten','','| Hal | Isi |','|---|---|','| ID | '+c.id+' |','| Format | '+(vid?'Video motion grafis, '+(tampil?'Mode Tampil':'Mode Tanpa Wajah'):'Carousel 1080x1350')+' |','| Platform | '+cell(c.platform)+' |','| Tahap funnel | '+c.funnel+' |','| Ide | '+cell(c.topik)+' |','| Angle | '+cell(c.angle)+' |','| Kandidat hook | '+cell((c.hooks||[]).join(' / '))+' |','| Tujuan CTA | '+cell(c.cta)+' |','| Putaran revisi | '+c.revisi+' |','');
+  if(R){L.push('## 2. Bahan riset (hipotesis, belum diverifikasi)','','Tidak ada akses pencarian saat riset ini dibuat. Semua poin perlu dicek Zulnan sebelum dipakai sebagai fakta.','','**Masalah audiens**','');arr(R.masalah_audiens).forEach(function(x){L.push('- '+x)});L.push('','**Sudut yang jarang dibahas**','');arr(R.sudut_jarang).forEach(function(x){L.push('- '+x)});L.push('','**Pola hook**','');arr(R.pola_hook).forEach(function(x){L.push('- '+x)});L.push('','Catatan: '+(R.catatan||'-'),'')}
+  L.push('## 3. Naskah','','- **Big idea:** '+(K.big_idea||'-'),'- **Jenis hook:** '+(K.jenis_hook||'-'),'- **Foreshadow:** '+(K.foreshadow||'-'),'- **Jenis ending:** '+(K.jenis_ending||'-'),'- **Faktor viralitas:** '+(K.faktor_viral.join(', ')||'-'),'');
+  var NM={hook:'HOOK',slogan:'SLOGAN (perkenalan)',problem:'PROBLEM',twist:'TWIST',solusi:'SOLUSI',cta:'CTA'},last=null;
+  if(vid){K.adegan.forEach(function(a,i){if(a.babak!==last){L.push('','### '+NM[a.babak],'');last=a.babak}L.push('- '+(a.wajah?'**[WAJAH]** ':'')+'"'+(a.vo||a.teks)+'"')})}
+  else K.slides.forEach(function(sl,i){if(sl.babak!==last){L.push('','### '+NM[sl.babak],'');last=sl.babak}L.push('- Slide '+(i+1)+': **'+sl.judul+'**'+(sl.isi?' - '+sl.isi:''))});
+  L.push('');
+  if(vid){
+    var ts=tl(c),tot=ts[ts.length-1].selesai;
+    L.push('## 4. Storyboard per adegan','','Total ±'+Math.round(tot)+' detik, '+K.adegan.length+' adegan, tiap adegan maksimal 2 detik. Latar tidak pernah diam. SFX non-musikal (saran).','','| # | Waktu | Babak | Tipe | Teks layar | Narasi/VO | Visual | Latar & gerak | SFX |','|---|---|---|---|---|---|---|---|---|');
+    K.adegan.forEach(function(a,i){L.push('| '+(i+1)+' | '+f1(ts[i].mulai)+'-'+f1(ts[i].selesai)+'s | '+a.babak+' | '+(a.wajah?'WAJAH':'motion')+' | '+cell(a.teks)+(c.visual.items[i].kunci?' (sorot: '+cell(c.visual.items[i].kunci)+')':'')+' | '+cell(a.vo)+' | '+cell(a.visual)+' | latar '+c.P.latar+' bergerak; masuk '+c.P.masuk+'; kamera '+c.P.kamera+' | '+(SFX[a.babak]||'-')+' |')});
+    L.push('','## 5. Kartu Gaya (dari '+(S&&S.refs&&S.refs.ada?'referensi Zulnan':'preset')+')','');
+    Object.keys(c.kartuGaya).forEach(function(k){if(c.kartuGaya[k])L.push('- **'+k+':** '+c.kartuGaya[k])});L.push('');
+  }else{
+    L.push('## 4. Storyboard per slide','','| # | Babak | Judul | Isi | Sorot | Pill |','|---|---|---|---|---|---|');
+    K.slides.forEach(function(sl,i){L.push('| '+(i+1)+' | '+sl.babak+' | '+cell(sl.judul)+' | '+cell(sl.isi)+' | '+cell(c.visual.items[i].kunci)+' | '+cell(c.visual.items[i].pill)+' |')});
+    L.push('','## 5. Desain','','- Template: **'+c.template+' '+TPL[c.template]+'** ('+cell(c.visual.alasan)+')','- Ukuran 1080x1350, slide 1 hook, slide terakhir CTA, penomoran slide, handle akun belum diisi.','- Maskot voxel (`assets/maskot/`) dipasang saat desain final; belum dipakai di pratinjau ini.','');
+  }
+  L.push('## 6. Caption dan hashtag','',K.caption||'-','',K.hashtag.join(' '),'','## 7. Daftar fakta & klaim (untuk Pemeriksa Realitas)','');
+  (K.fakta.length?K.fakta:['(tidak ada)']).forEach(function(x){L.push('- '+x)});L.push('');
+  if(c.opt){L.push('## 8. Uji retensi (Spesialis Optimasi Video)','','- Skor: '+(c.opt.skor||'-')+'/10, '+(c.opt.lolos?'lolos':'perlu diperkuat'+(c.opt.diperkuat?' (sudah diperkuat Kreator Konten)':'')),'');arr(c.opt.gagal).forEach(function(x){L.push('- Gagal: '+x)});arr(c.opt.perbaikan).forEach(function(x){L.push('- Perbaikan: '+x)});L.push('')}
+  if(c.qaRes){L.push('## 9. Pemeriksaan Agen 2','','| Pemeriksa | Keputusan | Catatan |','|---|---|---|');c.qaRes.items.forEach(function(x){L.push('| '+ROLES[x.k][0]+' | '+(x.ok?'Lolos':'Tidak Lolos')+' | '+cell(x.catatan.join('; '))+' |')});L.push('')}
+  if(vid){
+    L.push('## 10. Rencana render','','Video **belum dirender**. Render di komputer Zulnan atau lewat Claude Code. Preview kanvas di Zuno Studio hanya pratinjau kasar.','');
+    if(tampil&&c.segs&&c.segs.length){
+      L.push('### Skrip rekam (Mode Tampil)','','Rekam tiap segmen wajah pendek (maks. 3 detik), lalu simpan dengan nama berikut:','','| File | Waktu di video | Ucapkan |','|---|---|---|');
+      c.segs.forEach(function(g){var t=K.adegan.slice(g.dari).filter(function(a,j){return tl(c)[g.dari+j].selesai<=g.selesai+.01}).map(function(a){return a.vo}).join(' ');L.push('| '+g.file+'.mp4 | '+f1(g.mulai)+'-'+f1(g.selesai)+'s | '+cell(t)+' |')});
+      L.push('','### Rencana efek claude-video-effects','','Satu berkas per segmen: simpan sebagai `<nama-video>_effects.json` di samping rekaman, lalu render dengan `fx.py --plan`. Waktu relatif terhadap awal segmen. '+((c.efek&&c.efek.length)?'':'Tidak ada efek yang valid dipilih; tambahkan manual.'),'');
+      var pl=efekPlans(c);Object.keys(pl).forEach(function(k){L.push('`'+k+'`','','```json',JSON.stringify(pl[k],null,2),'```','')});
+      (c.efek||[]).forEach(function(e){L.push('- '+e.o.fx+' ('+e.o.segmen+' '+e.o.start+'-'+e.o.end+'s): '+(e.alasan||'-'))});L.push('');
+    }
+    L.push('### Komposisi HyperFrames (draf, belum diuji)','','Dipakai untuk segmen motion'+(tampil?' (dan menyatukan segmen wajah)':'')+'. Simpan sebagai `index.html`, jalankan `npx hyperframes preview`, lalu `npx hyperframes render`.','','```html',c.hf,'```','');
+  }
+  if(c.paket){L.push('## '+(vid?'11':'10')+'. Paket posting (draf dari Kurator Instagram, belum diposting)','');Object.keys(c.paket).forEach(function(k){var x=c.paket[k];L.push('- **'+k+':** '+(Array.isArray(x)?x.join(' | '):x))});L.push('')}
+  L.push('## Status jujur','','- '+(vid?'Naskah, storyboard, Kartu Gaya, dan rencana render siap. File video belum dirender.':'Naskah dan desain siap; slide PNG dirender di Zuno Studio.'),'- Tidak ada angka performa, testimoni, atau hasil yang dikarang. Bahan riset adalah hipotesis.','- Posting dan iklan belum aktif.','');
+  return L.join('\n');
+}
+function mdInline(t){return esc(t).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>')}
+function mdToHtml(md){
+  var lines=md.split('\n'),out=[],i=0,list=null;
+  function closeList(){if(list){out.push('</'+list+'>');list=null}}
+  while(i<lines.length){
+    var l=lines[i];
+    if(/^```/.test(l)){closeList();var buf=[];i++;while(i<lines.length&&!/^```/.test(lines[i])){buf.push(lines[i]);i++}i++;out.push('<pre>'+esc(buf.join('\n'))+'</pre>');continue}
+    if(/^\|/.test(l)&&/^\|[-| ]+\|$/.test(lines[i+1]||'')){closeList();var h=l.split('|').slice(1,-1);i+=2;var rows=[];while(i<lines.length&&/^\|/.test(lines[i])){rows.push(lines[i].split('|').slice(1,-1));i++}out.push('<table><tr>'+h.map(function(x){return '<th>'+mdInline(x.trim())+'</th>'}).join('')+'</tr>'+rows.map(function(r){return '<tr>'+r.map(function(x){return '<td>'+mdInline(x.trim())+'</td>'}).join('')+'</tr>'}).join('')+'</table>');continue}
+    var m;
+    if((m=l.match(/^(#{1,3}) (.*)/))){closeList();out.push('<h'+m[1].length+'>'+mdInline(m[2])+'</h'+m[1].length+'>')}
+    else if(/^> /.test(l)){closeList();out.push('<blockquote>'+mdInline(l.slice(2))+'</blockquote>')}
+    else if(/^- /.test(l)){if(list!=='ul'){closeList();out.push('<ul>');list='ul'}out.push('<li>'+mdInline(l.slice(2))+'</li>')}
+    else if(l.trim()===''){closeList()}
+    else{closeList();out.push('<p>'+mdInline(l)+'</p>')}
+    i++;
+  }
+  closeList();return out.join('\n');
+}
+
 async function writeAndStyle(c,rev){
-  setCard(c,rev?'Merevisi teks (putaran '+c.revisi+')':'Menulis naskah');UI.act('a1',c.id+': Kreator Konten '+(rev?'merevisi naskah':'menulis naskah dan caption'));
+  setCard(c,rev?'Merevisi teks (putaran '+c.revisi+')':'Menulis naskah');UI.act('a1',c.id+': Kreator Konten '+(rev?'merevisi naskah':'menulis naskah (hook, problem, twist, solusi, CTA)'));
   c.konten=normKonten(c,await ask('1.3',c.id,p13(c,rev),'default'));
+  if(!rev){
+    setCard(c,'Menguji retensi naskah');UI.act('a1',c.id+': Spesialis Optimasi Video menguji hook dan retensi');
+    try{
+      var o=await ask('1.10',c.id,pOpt(c),'quick');
+      c.opt={lolos:o.lolos!==false,skor:Number(o.skor)||null,gagal:arr(o.gagal),perbaikan:arr(o.perbaikan)};
+      if(!c.opt.lolos&&(c.opt.gagal.length||c.opt.perbaikan.length)){
+        setCard(c,'Memperkuat naskah');UI.act('a1',c.id+': Kreator Konten memperkuat naskah dari catatan retensi');
+        c.konten=normKonten(c,await ask('1.3',c.id,p13(c,'CATATAN UJI RETENSI (wajib diperbaiki, tulis ulang kalimat yang lemah):\n'+c.opt.gagal.concat(c.opt.perbaikan).join('\n')),'default'));c.opt.diperkuat=true;
+      }
+    }catch(e){if(e&&(e.code==='cancelled'||FATAL.indexOf(e.code)>-1))throw e;c.opt=null}
+  }
   setCard(c,'Menyusun visual');UI.act('a1',c.id+': Pencerita Visual '+(c.format==='video'?'mengisi Kartu Gaya':'memilih template'));
   c.visual=normVisual(c,await ask('1.5',c.id,p15(c),c.format==='video'&&S.refs&&S.refs.ada?'default':'quick',c.format==='video'&&S.refs?S.refs.blobs:null));
+  if(c.format==='video')await buildVideoPlan(c);
 }
 async function renderCard(c){
-  setCard(c,'Perender membuat file');UI.act('a1',c.id+': Perender '+(c.format==='video'?'merender video (real-time, tunggu sebentar)':'merender slide ke PNG'));
-  c.hasil=await limRender(function(){if(aborted)throw {code:'cancelled'};return c.format==='video'?Render.video(c):Render.carousel(c)});
-  if(c.format==='video'){var d=c.konten.adegan;c.fileInfo={bentuk:'video WebM pratinjau',rasio:'9:16',resolusi:'540x960 (pratinjau)',jumlah_adegan:d.length,adegan_terpanjang_detik:Math.max.apply(null,d.map(function(x){return x.detik})),durasi_detik:Math.round(c.hasil.duration),suara:'tanpa suara',slogan_setelah_hook:true,gaya:c.gaya}}
-  else c.fileInfo={bentuk:'PNG per slide',ukuran:'1080x1350',jumlah_slide:c.hasil.png.length,template:c.template+' '+TPL[c.template],handle_akun:'belum diisi Zulnan',penomoran:'ada'};
+  if(c.format==='video'){
+    setCard(c,'Perender menyusun paket render');UI.act('a1',c.id+': Perender menyusun storyboard dan rencana render (video tidak dirender di sini)');
+    var d=c.konten.adegan,ts=tl(c),tot=ts[ts.length-1].selesai,fmax=0,run=0;d.forEach(function(a){if(a.wajah){run+=a.detik;fmax=Math.max(fmax,run)}else run=0});
+    c.hasil={paket:true,duration:tot};
+    c.fileInfo={bentuk:'paket naskah + storyboard + rencana render (video belum dirender; dirender di komputer Zulnan)',mode:S.mode==='tampil'?'Mode Tampil':'Mode Tanpa Wajah',rasio:'9:16',jumlah_adegan:d.length,adegan_terpanjang_detik:Math.max.apply(null,d.map(function(x){return x.detik})),durasi_total_detik:Math.round(tot),segmen_wajah_terpanjang_detik:Math.round(fmax*10)/10,latar_bergerak:true,urutan_babak:d.map(function(x){return x.babak}).filter(function(b,i,a){return a.indexOf(b)===i}),slogan_setelah_hook:true,gaya:c.gaya,efek_claude_video_effects:(c.efek||[]).length};
+  }else{
+    setCard(c,'Perender membuat file');UI.act('a1',c.id+': Perender merender slide ke PNG');
+    c.hasil=await limRender(function(){if(aborted)throw {code:'cancelled'};return Render.carousel(c)});
+    c.fileInfo={bentuk:'PNG per slide',ukuran:'1080x1350',jumlah_slide:c.hasil.png.length,template:c.template+' '+TPL[c.template],handle_akun:'belum diisi Zulnan',penomoran:'ada'};
+  }
+  c.md=buildMd(c);
 }
 async function qaRound(c,round){
   setCard(c,'Diperiksa Agen 2');UI.act('a2',c.id+': memeriksa suara, fakta, format file jadi, dan kepatuhan');
@@ -353,7 +520,7 @@ async function cardFlow(c){
   try{
     if(!c.konten){await writeAndStyle(c);await renderCard(c)}
     while(true){
-      var res=await qaRound(c,c.revisi);
+      var res=await qaRound(c,c.revisi);c.qaRes=res;
       if(res.pass){c.verdict='Lolos';break}
       var fails=res.items.filter(function(x){return !x.ok});
       var notes=fails.map(function(x){return x.k+' '+ROLES[x.k][0]+': '+x.catatan.join('; ')}).join('\n');
@@ -370,7 +537,7 @@ async function cardFlow(c){
       await writeAndStyle(c,notes+(c.zNote?'\nCatatan Zulnan: '+c.zNote:''));
       await renderCard(c);
     }
-    c.stage=c.verdict==='Lolos'?'Lolos QA, menunggu persetujuanmu':'Tidak Lolos, menunggu keputusanmu';c.kind=c.verdict==='Lolos'?'ok':'fail';UI.update();UI.results();
+    c.md=buildMd(c);c.stage=c.verdict==='Lolos'?'Lolos QA, menunggu persetujuanmu':'Tidak Lolos, menunggu keputusanmu';c.kind=c.verdict==='Lolos'?'ok':'fail';UI.update();UI.results();
   }catch(e){
     if(e&&e.code==='cancelled'){c.stage='Dihentikan';c.kind=''}
     else{c.stage='Tertahan (error)';c.kind='fail';if(!fatal&&e&&e.code)UI.error(errMsg(e))}
@@ -383,7 +550,7 @@ async function approve(c){
   try{
     running=true;aborted=false;ctl=new AbortController();
     c.paket=await ask('3.1',c.id,P('3.1','Susun paket posting untuk kartu ini. Fase 1: hanya menyiapkan paket, bukan memposting atau menjadwalkan. Saran jadwal tanpa data adalah asumsi dan harus ditandai.',ctxCard(c,false)+'\n\nCAPTION DRAF: '+c.konten.caption+'\nHASHTAG: '+c.konten.hashtag.join(' '),'Balas HANYA JSON: {"platform":"...","caption_final":"...","hashtag":["#..."],"cover":"slide/adegan mana sebagai cover dan alasannya","saran_jadwal":"saran + tulis (asumsi)","catatan":["maks 3 poin"]}'),'quick');
-    c.stage='Disetujui, paket posting siap (belum diposting)';
+    c.stage='Disetujui, paket posting siap (belum diposting)';c.md=buildMd(c);
   }catch(e){c.stage='Disetujui (paket gagal dibuat)';if(!(e&&e.code==='cancelled'))UI.error(errMsg(e))}
   running=false;UI.track('a3','done');UI.act('a3','Paket posting siap. Zuno belum memposting apa pun (Fase 1).');UI.update();UI.results();$('run').disabled=!sample;
 }
@@ -394,7 +561,7 @@ async function main(){
   var pk=$('count').value;
   var fm=pk==='cv'?['carousel','video']:pk==='v'?['video']:['carousel'];
   var PLAT=pk==='cv'?['Instagram','TikTok']:pk==='v'?['TikTok']:['Instagram'];
-  S={cmd:cmd,notices:[],act:{},forceTpl:$('tpl').value,forcePre:$('pre').value,cards:fm.map(function(f,i){return {id:'KK-00'+(i+1),format:f,platform:PLAT[i],funnel:['TOFU','MOFU'][i]||'TOFU',topik:'',stage:'Menunggu',kind:'',revisi:0}})};
+  S={cmd:cmd,mode:$('mode').value,riset:null,notices:[],act:{},forceTpl:$('tpl').value,forcePre:$('pre').value,cards:fm.map(function(f,i){return {id:'KK-00'+(i+1),format:f,platform:PLAT[i],funnel:['TOFU','MOFU'][i]||'TOFU',topik:'',stage:'Menunggu',kind:'',revisi:0}})};
   UI.start();
   try{
     S.refs=null;
@@ -408,8 +575,10 @@ async function main(){
       c.topik=String(k.ide||'').slice(0,160);
     });
     UI.track('lead','done');UI.act('lead','Rencana selesai, diserahkan ke Kreator Zuno. Juru Kabar memantau.');
-    UI.track('a1','run');UI.act('a1','Ahli Strategi Media Sosial menyusun angle dan hook untuk semua kartu');
-    var br=await ask('1.2',null,P('1.2','Susun brief untuk setiap kartu. Tahap funnel dan angle antar kartu harus berbeda. MOFU/BOFU boleh dikaitkan ke produk digital atau portofolio tanpa klaim hasil.',S.cards.map(function(c){return ctxCard(c,false)}).join('\n---\n'),'Balas HANYA JSON: {"briefs":[{"id":"KK-001","ide":"...","funnel":"TOFU/MOFU/BOFU","platform":"Instagram/TikTok/Threads","angle":"...","hooks":["...","...","..."],"tujuan_cta":"..."}]}'),'quick');
+    UI.track('a1','run');UI.act('a1','Peneliti Tren menyusun bahan riset (hipotesis, tanpa pencarian)');
+    try{var rs=await ask('1.1',null,pRiset(),'quick');S.riset={masalah_audiens:arr(rs.masalah_audiens),sudut_jarang:arr(rs.sudut_jarang),pola_hook:arr(rs.pola_hook),catatan:String(rs.catatan||'')}}catch(e){if(e&&(e.code==='cancelled'||FATAL.indexOf(e.code)>-1))throw e;S.riset=null}
+    UI.act('a1','Ahli Strategi Media Sosial menyusun angle dan hook untuk semua kartu');
+    var br=await ask('1.2',null,P('1.2','Susun brief untuk setiap kartu. Tahap funnel dan angle antar kartu harus berbeda. MOFU/BOFU boleh dikaitkan ke produk digital atau portofolio tanpa klaim hasil.',S.cards.map(function(c){return ctxCard(c,false)}).join('\n---\n')+'\n\nBAHAN RISET (hipotesis): '+risetTxt(),'Balas HANYA JSON: {"briefs":[{"id":"KK-001","ide":"...","funnel":"TOFU/MOFU/BOFU","platform":"Instagram/TikTok/Threads","angle":"...","hooks":["...","...","..."],"tujuan_cta":"..."}]}'),'quick');
     (br.briefs||[]).forEach(function(b){
       var c=S.cards.filter(function(x){return x.id===b.id})[0];if(!c)return;
       if(b.ide)c.topik=String(b.ide).slice(0,160);
@@ -556,6 +725,10 @@ function drawBeat(ctx,W,H,P,idx,s,v,lt,now,total,n){
   var kw=norm(v.kunci||''),txt=P.upper?s.teks.toUpperCase():s.teks,cx=W/2,e=P.energi;
   ctx.save();
   bgLayer(ctx,W,H,P,now);extraLayer(ctx,W,H,P,now,idx);
+  if(s.wajah){
+    ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';ctx.strokeStyle=P.acc;ctx.lineWidth=8;ctx.setLineDash([30,20]);rr(ctx,120,420,W-240,1000,60);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=P.acc;ctx.font=vFont(P,96);ctx.fillText('REKAM',cx,720);ctx.fillStyle=P.ink;ctx.font='600 44px Inter,sans-serif';ctx.fillText('WAJAH ZULNAN, maks. 3 detik',cx,820);ctx.font='500 40px Inter,sans-serif';var vl=wrapW(ctx,'"'+(s.vo||s.teks)+'"',W-360);vl.slice(0,4).forEach(function(r,k){ctx.fillText(r.join(' '),cx,940+k*56)});ctx.restore();ctx.restore();
+    ctx.fillStyle=P.acc;ctx.fillRect(0,H-14,W*Math.min(1,now/total),14);return;
+  }
   /* kata kunci raksasa samar di belakang */
   if(v.kunci){ctx.save();ctx.font=vFont(P,420);ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=A(P.acc,.09);ctx.fillText(P.upper?v.kunci.toUpperCase():v.kunci,cx+Math.sin(now*.8+idx)*60,H/2+(idx%2?-1:1)*180);ctx.restore()}
   /* kamera */
@@ -724,7 +897,7 @@ var UI={
   derive:function(){
     var cs=S.cards,st=Object.assign({},tstate);
     var any=function(f){return cs.some(f)},all=function(f){return cs.every(f)};
-    var a1=function(c){return /^(Menulis|Merevisi|Menyusun|Perender)/.test(c.stage)},qa=function(c){return /^Diperiksa/.test(c.stage)};
+    var a1=function(c){return /^(Menulis|Merevisi|Menyusun|Perender|Menguji|Memperkuat)/.test(c.stage)},qa=function(c){return /^Diperiksa/.test(c.stage)};
     if(tstate.a1!=='wait'){st.a1=any(a1)?'run':(all(function(c){return c.hasil||c.held})?'done':'run')}
     if(any(qa))st.a2='run';
     else if(any(function(c){return c.hasil})&&all(function(c){return c.verdict||c.held}))st.a2=any(function(c){return c.verdict==='Tidak Lolos'})?'bad':'done';
@@ -761,9 +934,9 @@ var UI={
   },
   resCard:function(c){
     var d=document.createElement('div');d.className='res';
-    var ok=c.verdict==='Lolos',ap=c.approved;
-    d.innerHTML='<h3>'+c.id+' · '+esc(c.topik||'-')+'<span class="pill '+(ap?'ok':ok?'':'bad')+'">'+(ap?'Disetujui':ok?'Lolos QA':'Tidak Lolos')+'</span></h3><div class="muted">'+esc(c.platform)+' · '+esc(c.funnel)+' · '+(c.format==='video'?'gaya '+esc(c.gaya):'template '+c.template+' '+TPL[c.template])+(c.revisi?' · '+c.revisi+' revisi':'')+'</div><div class="muted">Draf: suara perlu dicek (contoh tulisan Zulnan belum diisi) · handle akun belum diisi</div>';
-    if(c.format==='carousel'){
+    var ok=c.verdict==='Lolos',ap=c.approved,vid=c.format==='video';
+    d.innerHTML='<h3>'+c.id+' · '+esc(c.topik||'-')+'<span class="pill '+(ap?'ok':ok?'':'bad')+'">'+(ap?'Disetujui':ok?'Lolos QA':'Tidak Lolos')+'</span></h3><div class="muted">'+esc(c.platform)+' · '+esc(c.funnel)+' · '+(vid?'gaya '+esc(c.gaya)+(S&&S.mode==='tampil'?' · Mode Tampil':' · Tanpa Wajah'):'template '+c.template+' '+TPL[c.template])+(c.revisi?' · '+c.revisi+' revisi':'')+'</div>';
+    if(!vid){
       var sl=document.createElement('div');sl.className='slides';
       c.hasil.png.forEach(function(u,i){
         var s=document.createElement('div');s.className='slide';
@@ -773,16 +946,31 @@ var UI={
       d.appendChild(sl);
       var ba=document.createElement('button');ba.className='btn';ba.textContent='Unduh semua slide';
       ba.onclick=async function(){for(var i=0;i<c.hasil.png.length;i++){await Save.file(c.id+'-slide-'+(i+1)+'.png',dataToBlob(c.hasil.png[i]),ba)}};d.appendChild(ba);
-    }else{
-      var v=document.createElement('video');v.controls=true;v.playsInline=true;v.src=URL.createObjectURL(c.hasil.blob);d.appendChild(v);
-      var m=document.createElement('p');m.className='muted';m.textContent='Durasi '+Math.round(c.hasil.duration)+' detik, tanpa suara (suara dan musik belum aktif). Tiap adegan maksimal 1,5 detik. Pratinjau 540x960.';d.appendChild(m);
-      var det=document.createElement('details');det.innerHTML='<summary class="muted">Kartu Gaya</summary><pre class="cap">'+esc(Object.keys(c.kartuGaya).map(function(k){return k+': '+c.kartuGaya[k]}).join('\n'))+'</pre>';d.appendChild(det);
-      var bv=document.createElement('button');bv.className='btn';bv.textContent='Unduh video (.webm)';bv.onclick=function(){Save.file(c.id+'-video.webm',c.hasil.blob,bv)};d.appendChild(bv);
     }
-    var cp=document.createElement('div');cp.className='cap';cp.textContent=(c.konten.caption||'')+'\n\n'+(c.konten.hashtag||[]).join(' ');d.appendChild(cp);
-    if(c.paket){var pk=document.createElement('div');pk.className='cap';pk.textContent='PAKET POSTING (draf, belum diposting)\n'+Object.keys(c.paket).map(function(k){var x=c.paket[k];return k+': '+(Array.isArray(x)?x.join(' | '):x)}).join('\n');d.appendChild(pk)}
+    /* pratinjau paket .md */
+    var det=document.createElement('details');det.open=true;det.innerHTML='<summary class="muted">Pratinjau paket naskah dan storyboard (.md)</summary><div class="mdprev"></div>';
+    det.querySelector('.mdprev').innerHTML=mdToHtml(c.md||buildMd(c));d.appendChild(det);
     var bt=document.createElement('div');bt.className='btns';
-    var bc=document.createElement('button');bc.className='btn';bc.textContent='Salin caption';bc.onclick=function(){try{navigator.clipboard.writeText(cp.textContent).then(function(){bc.textContent='Tersalin'},function(){bc.textContent='Salin manual dari kotak'})}catch(e){bc.textContent='Salin manual dari kotak'}};bt.appendChild(bc);
+    var bm=document.createElement('button');bm.className='btn primary';bm.textContent='Unduh paket (.md)';bm.onclick=function(){Save.file(fn(c)+'.md',new Blob([c.md||buildMd(c)],{type:'text/markdown'}),bm)};bt.appendChild(bm);
+    if(vid){
+      var bh=document.createElement('button');bh.className='btn';bh.textContent='Unduh komposisi HyperFrames (.html)';bh.onclick=function(){Save.file(fn(c)+'_hyperframes.html',new Blob([c.hf],{type:'text/html'}),bh)};bt.appendChild(bh);
+      if(S&&S.mode==='tampil'&&c.segs&&c.segs.length){var be=document.createElement('button');be.className='btn';be.textContent='Unduh rencana efek (.json)';be.onclick=function(){Save.file(fn(c)+'_effects.json',new Blob([JSON.stringify(efekPlans(c),null,2)],{type:'application/json'}),be)};bt.appendChild(be)}
+      var pv=document.createElement('button');pv.className='btn';pv.textContent='Lihat pratinjau kasar (kanvas, ±'+Math.round(c.hasil.duration)+' detik)';
+      var pbox=document.createElement('div');
+      pv.onclick=async function(){
+        if(running){pv.textContent='Tunggu proses selesai';return}
+        pv.disabled=true;pv.textContent='Merender pratinjau kasar...';aborted=false;
+        try{
+          if(!c.prev)c.prev=await limRender(function(){return Render.video(c)});
+          pbox.innerHTML='';var v=document.createElement('video');v.controls=true;v.playsInline=true;v.src=URL.createObjectURL(c.prev.blob);pbox.appendChild(v);
+          var m=document.createElement('p');m.className='muted';m.textContent='Pratinjau kasar, tanpa suara. Bukan hasil akhir.';pbox.appendChild(m);
+          pv.textContent='Pratinjau siap';
+        }catch(e){pv.disabled=false;pv.textContent='Pratinjau gagal: '+((e&&(e.code||e.message))||'error')}
+      };
+      bt.appendChild(pv);d.appendChild(pbox);
+    }
+    var cp=(c.konten.caption||'')+'\n\n'+(c.konten.hashtag||[]).join(' ');
+    var bc=document.createElement('button');bc.className='btn';bc.textContent='Salin caption';bc.onclick=function(){try{navigator.clipboard.writeText(cp).then(function(){bc.textContent='Tersalin'},function(){bc.textContent='Salin dari paket .md'})}catch(e){bc.textContent='Salin dari paket .md'}};bt.appendChild(bc);
     if(!ap){
       var bp=document.createElement('button');bp.className='btn ok';bp.textContent='Setujui';bp.disabled=running;bp.onclick=function(){approve(c)};bt.appendChild(bp);
       var nt=document.createElement('input');nt.type='text';nt.placeholder='Catatan revisi (opsional)';nt.style.maxWidth='260px';nt.setAttribute('aria-label','Catatan revisi untuk '+c.id);bt.appendChild(nt);
@@ -793,12 +981,13 @@ var UI={
   rework:async function(c,note){
     if(running||!sample)return;
     running=true;aborted=false;ctl=new AbortController();$('run').disabled=true;$('stop').disabled=false;
-    c.zNote=note;c.revisi=0;c.verdict=null;c.hasil=null;c.held=false;c.approved=false;c.paket=null;c.kind='';
+    c.zNote=note;c.revisi=0;c.verdict=null;c.hasil=null;c.held=false;c.approved=false;c.paket=null;c.prev=null;c.opt=null;c.kind='';
     try{
       notice('info','Revisi ulang <b>'+esc(c.id)+'</b>'+(note?' dengan catatanmu: '+esc(note):'')+'.');
       setCard(c,'Merevisi teks (catatanmu)');
       c.konten=normKonten(c,await ask('1.3',c.id,p13(c,'Catatan Zulnan: '+(note||'tolong perbaiki secara umum')),'default'));
-      c.visual=normVisual(c,await ask('1.5',c.id,p15(c),'quick',c.format==='video'&&S.refs?S.refs.blobs:null));
+      c.visual=normVisual(c,await ask('1.5',c.id,p15(c),c.format==='video'&&S.refs&&S.refs.ada?'default':'quick',c.format==='video'&&S.refs?S.refs.blobs:null));
+      if(c.format==='video')await buildVideoPlan(c);
       await renderCard(c);await cardFlow(c);
     }catch(e){c.held=true;c.stage=(e&&e.code==='cancelled')?'Dihentikan':'Tertahan (error)';c.kind='fail';if(!(e&&e.code==='cancelled'))UI.error(errMsg(e))}
     running=false;UI.end();
@@ -827,7 +1016,7 @@ $('tabc').addEventListener('click',function(){UI.tab('c')});$('tabv').addEventLi
 (async function(){
   var info=$('capinfo');
   try{if(window.claude&&typeof window.claude.use==='function'){sample=await window.claude.use('sample');try{downloads=await window.claude.use('downloads')}catch(e){downloads=null}}}catch(e){sample=null}
-  if(sample){info.textContent='Siap. Saat pertama dijalankan kamu akan diminta mengizinkan halaman ini memakai Claude.';$('run').disabled=false}
+  if(sample){info.classList.add('hidden');$('run').disabled=false}
   else{info.className='banner warn';info.textContent='Halaman ini baru bisa menjalankan agen saat dibuka di claude.ai dan diberi izin memakai Claude.'}
 })();
 })();

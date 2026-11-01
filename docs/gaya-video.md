@@ -8,7 +8,7 @@ Dibuat 2026-11-01 dari permintaan Zulnan: gaya motion video berubah-ubah sesuai 
 - Suara: **campur** (Mode Tampil rekaman sendiri; Tanpa Wajah boleh suara AI generik, dicatat bukan suara Zulnan).
 - Panjang video dan jumlah slide: **mengikuti topik**, tidak dikunci.
 - Gaya visual **berubah-ubah per video**, dipilih per Kartu Konten (bukan satu gaya tetap).
-- **Tiap adegan maksimal 1,5 detik** (dikonfirmasi Zulnan 2026-11-01): ada potongan atau perubahan visual setidaknya tiap 1,5 detik.
+- **Tiap adegan maksimal 2 detik** (dikonfirmasi Zulnan 2026-11-01): ada potongan atau perubahan visual setidaknya tiap 2 detik.
 - **Satu video, satu palet dan satu latar (footage visual yang sama dari awal sampai akhir).** Tidak ada campuran warna atau pergantian latar antar adegan; warna boleh berbeda hanya antar video (keputusan Zulnan 2026-11-01).
 - **Megah dan penuh motion.** Gerak kamera, tipografi besar, transisi tegas.
 - Dua mode: **Tanpa Wajah** (motion grafis penuh) atau **Mode Tampil** (Zulnan di kamera). Pada Mode Tampil wajah tidak boleh tertutup teks atau elemen.
@@ -42,7 +42,7 @@ Nama preset dibuat untuk Zuno agar mudah dipanggil ("pakai gaya Dentum"). Nomor 
 | **Kartu Layar** | Tampilan aplikasi: notifikasi, toggle, hitung naik | #056 Toast notification, #059 Toggle switch, #068 Step indicator, #007 Count-up, #058 Carousel | `messages`, `apple-toggles`, `checklist`, `liquid-glass-graph` |
 | **Editorial Cepat** | Majalah, potongan tegas, teks bermasker | #042 Match cut, #043 Whip pan, #137 Push transition, #133 Text mask, #130 Wave text, #005 Mask reveal | `match-cut`, `headline-box`, `split-headline`, `cover-star` |
 
-Aturan pakai: satu preset per video (boleh campur dua bila Zulnan minta). Dengan batas 1,5 detik per adegan, pilih elemen yang bisa terjadi dalam satu hentakan; gerak panjang (misalnya orbit penuh) dipecah jadi beberapa potongan.
+Aturan pakai: satu preset per video (boleh campur dua bila Zulnan minta). Dengan batas 2 detik per adegan, pilih elemen yang bisa terjadi dalam satu hentakan; gerak panjang (misalnya orbit penuh) dipecah jadi beberapa potongan.
 
 ## 4. Typography
 
@@ -84,7 +84,7 @@ Referensi     : gambar Pinterest (dilampirkan) | nomor Motion Prompt | nama efek
 Kesan         : 1 kalimat dari Zulnan
 Palet         : warna utama, aksen, latar
 Typography    : font display + font isi
-Gerak         : kamera, transisi, gerak teks (tiap adegan maksimal 1,5 detik)
+Gerak         : kamera, transisi, gerak teks (tiap adegan maksimal 2 detik)
 Elemen tetap  : slogan setelah hook; posisi nama atau handle
 Larangan      : wajah tertutup, aset berhak cipta tanpa label, dan seterusnya
 Asal aset     : buatan sendiri | AI | berlisensi (sebut sumber)
@@ -100,7 +100,7 @@ Bila Zulnan tidak memberi referensi, tim memakai gaya terakhir yang disetujui, a
 
 Sudah diputuskan Zulnan (2026-11-01):
 - Suara: campur. Mode Tampil rekaman sendiri; Tanpa Wajah boleh suara AI generik.
-- Arti 1,5 detik: tiap adegan maksimal 1,5 detik.
+- Batas adegan: tiap adegan maksimal 2 detik (diubah Zulnan dari 1,5 detik pada 2026-11-01).
 - Alat render video pertama yang dicoba: claude-video-effects (Mode Tampil, jalan di komputer Zulnan; butuh ffmpeg dan Python 3.12).
 - Panjang video dan jumlah slide mengikuti topik.
 - Carousel: campuran sesuai topik (template A sampai D dipilih per carousel).

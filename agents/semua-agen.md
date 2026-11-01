@@ -985,6 +985,12 @@ Gunakan agen ini saat:
 - Asal tiap fakta (dari Zulnan, dari Peneliti Tren, atau perlu dicek)
 - Klaim yang tidak punya bukti ditandai, bukan disembunyikan
 
+## Metode Naskah (Killer Script)
+- Struktur wajib berurutan: HOOK, PROBLEM, TWIST, SOLUSI, CTA; satu foreshadow setelah hook; minimal 2 faktor viralitas; maksimal satu CTA.
+- Naskah harus membuat orang berhenti scroll dan menonton sampai habis: tanpa basa-basi, tanpa definisi panjang, tanpa bagian yang membosankan; tiap kalimat menahan perhatian atau dibuang.
+- Tiap adegan video maksimal 2 detik; teks layar 1-5 kata; Mode Tampil: wajah maksimal 2-3 detik berurutan lalu motion.
+- Naskah diuji Spesialis Optimasi Video sebelum ke Agen 2; kalimat lemah ditulis ulang.
+
 ## Tugas di Zuno
 - Tulis teks per slide: judul, isi singkat, CTA di slide terakhir
 - Tulis naskah video: hook, isi, penutup/CTA, narasi atau teks layar; Mode Tampil: pisahkan bagian yang diucapkan Zulnan di kamera
@@ -1246,7 +1252,7 @@ Pemberi arahan edit video. Mengubah storyboard menjadi daftar langkah edit yang 
 - **Rough Cut ke Final**: Urutan kerja dari potongan kasar ke versi halus
 - **Desain Subtitle**: Terbaca, kontras, dan tidak menutup wajah pada Mode Tampil
 - **Ritme Video Pendek**: Hook cepat, pergantian adegan menjaga perhatian, penutup jelas
-- **Aturan Zuno**: Tiap adegan maksimal 1,5 detik; gaya mengikuti Kartu Gaya dan pustaka di docs/gaya-video.md
+- **Aturan Zuno**: Tiap adegan maksimal 2 detik; gaya mengikuti Kartu Gaya dan pustaka di docs/gaya-video.md
 - **Ekspor**: Pengaturan sesuai platform; bila ragu tandai "perlu dicek"
 - **Panduan Manual**: Versi langkah untuk editor seperti CapCut bila render otomatis belum ada
 
@@ -1273,7 +1279,7 @@ Gunakan agen ini saat:
 ## Metrik Keberhasilan
 - **Bisa dieksekusi**: Setiap adegan punya langkah edit yang jelas
 - **Terbaca**: Subtitle jelas dan tidak menutup wajah pada Mode Tampil
-- **Ritme**: Nol adegan lebih dari 1,5 detik
+- **Ritme**: Nol adegan lebih dari 2 detik
 - **Setia naskah**: Nol perubahan isi naskah
 - **Asal aset jelas**: Musik dan aset ditandai asal-usulnya
 - **Status jujur**: Nol video dinyatakan selesai diedit sebelum Perender menghasilkannya
@@ -1299,7 +1305,7 @@ Gunakan agen ini saat:
 - **Aset**: asal dan lisensi
 
 ## Tugas di Zuno
-- Ubah storyboard menjadi daftar langkah edit per adegan (potongan, durasi, transisi); tiap adegan maksimal 1,5 detik dan mengikuti Kartu Gaya
+- Ubah storyboard menjadi daftar langkah edit per adegan (potongan, durasi, transisi); tiap adegan maksimal 2 detik dan mengikuti Kartu Gaya
 - Rancang gaya subtitle yang terbaca dan tidak menutup wajah pada Mode Tampil
 - Tetapkan pengaturan ekspor sesuai platform; bila ragu tandai "perlu dicek"
 - Beri versi arahan manual untuk editor video bila render otomatis belum tersedia
@@ -1860,7 +1866,7 @@ Gunakan agen ini saat:
 - Hook di awal
 - Slogan setelah hook
 - Subtitle terbaca dan tidak menutup wajah (Mode Tampil)
-- Tiap adegan maksimal 1,5 detik
+- Tiap adegan maksimal 2 detik
 - Suara dan teks sinkron
 - Asal aset jelas
 
@@ -1873,7 +1879,7 @@ Gunakan agen ini saat:
 ## Tugas di Zuno
 - Cek rasio, durasi, panjang caption, dan hashtag sesuai batas platform yang berlaku; bila ragu tandai untuk dicek, jangan menebak angka
 - Carousel: urutan slide, teks terbaca, gaya konsisten, hook di slide 1, CTA di slide terakhir
-- Video: hook di awal, subtitle terbaca, teks tidak menutup wajah pada Mode Tampil, tiap adegan maksimal 1,5 detik
+- Video: hook di awal, subtitle terbaca, teks tidak menutup wajah pada Mode Tampil, tiap adegan maksimal 2 detik
 - Pastikan caption dan visual cocok, asal-usul aset jelas dan berizin
 - Pastikan Kartu Konten lengkap
 

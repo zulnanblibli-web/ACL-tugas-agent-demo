@@ -85,6 +85,12 @@ Gunakan agen ini saat:
 - Asal tiap fakta (dari Zulnan, dari Peneliti Tren, atau perlu dicek)
 - Klaim yang tidak punya bukti ditandai, bukan disembunyikan
 
+## Metode Naskah (Killer Script)
+- Struktur wajib berurutan: HOOK, PROBLEM, TWIST, SOLUSI, CTA; satu foreshadow setelah hook; minimal 2 faktor viralitas; maksimal satu CTA.
+- Naskah harus membuat orang berhenti scroll dan menonton sampai habis: tanpa basa-basi, tanpa definisi panjang, tanpa bagian yang membosankan; tiap kalimat menahan perhatian atau dibuang.
+- Tiap adegan video maksimal 2 detik; teks layar 1-5 kata; Mode Tampil: wajah maksimal 2-3 detik berurutan lalu motion.
+- Naskah diuji Spesialis Optimasi Video sebelum ke Agen 2; kalimat lemah ditulis ulang.
+
 ## Tugas di Zuno
 - Tulis teks per slide: judul, isi singkat, CTA di slide terakhir
 - Tulis naskah video: hook, isi, penutup/CTA, narasi atau teks layar; Mode Tampil: pisahkan bagian yang diucapkan Zulnan di kamera

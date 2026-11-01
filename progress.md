@@ -14,7 +14,7 @@ File: `prototypes/zuno-studio-v2.html` (artifact Claude, capability `sample` dan
 - Alur mengikuti `agents/README.md`: Orkestraror Agen, Ahli Strategi Media Sosial, Kreator Konten, Pencerita Visual, Perender (render sebelum QA), Agen 2 paralel (Penjaga Merek, Pemeriksa Realitas, Pengumpul Bukti, Pemeriksa Kepatuhan Hukum), gerbang Zulnan, lalu Kurator Instagram menyiapkan paket posting (belum memposting). Peneliti Tren dan agen standby lain belum dipanggil (tidak ada akses pencarian di artifact).
 - Memori inti dari `docs/brief-gaya-konten.md` masuk ke prompt: audiens 25-35, fakta yang boleh dipakai, larangan, harga [HARGA BELUM DITENTUKAN], TOFU/MOFU/BOFU. SMK Broadcasting tidak dipakai (belum dikonfirmasi).
 - Carousel: Pencerita Visual memilih satu template A Papan Tulis, B Neon Gelap, C Majalah, atau D Kartu Layar per carousel (usulan TOFU B/A, MOFU A/D, BOFU C); bisa dipaksa lewat pilihan di layar. Dirender ke PNG 1080x1350 dengan nama dan penomoran (handle belum diisi).
-- Video: Kartu Gaya dengan lima preset (Dentum, Orbit Megah, Glitch Digital, Kartu Layar, Editorial Cepat); tiap adegan maksimal 1,5 detik; slogan lengkap disisipkan otomatis setelah hook; WebM pratinjau 540x960 tanpa suara. Mode Tampil dan alat claude-video-effects tetap di komputer Zulnan.
+- Video: Kartu Gaya dengan lima preset (Dentum, Orbit Megah, Glitch Digital, Kartu Layar, Editorial Cepat); tiap adegan maksimal 2 detik; slogan lengkap disisipkan otomatis setelah hook; WebM pratinjau 540x960 tanpa suara. Mode Tampil dan alat claude-video-effects tetap di komputer Zulnan.
 - Veto: Juru Kabar memberi pemberitahuan (kartu, bagian, siapa memperbaiki, putaran) sebelum status berubah; Tidak Lolos hanya setelah 2 revisi habis.
 - **Paket per perintah: 1 carousel + 1 video.** Satu video = satu palet dan satu latar (bisa beda antar video).
 - **Referensi video (foto/video, maks. 3) diinput langsung di tool.** Tool mengukur palet dominan dan energi gerak, mengirim cuplikan gambar ke Pencerita Visual, dan Kartu Gaya diisi dari referensi (palet, font, latar, jenis masuk teks, kamera, ekstra, energi). Tanpa referensi: preset. Mesin render video kini parametrik dan ramai (latar bergerak, teks berjalan, bentuk, partikel, kamera, irisan transisi).
@@ -31,7 +31,7 @@ Folder `agents/` (baca `agents/README.md` dulu; `agents/semua-agen.md` adalah ve
 
 ## Gaya visual (2026-11-01)
 Baca `docs/gaya-video.md`. Ringkas:
-- Video: gaya berubah per video, dipilih lewat Kartu Gaya (pemilik: Pencerita Visual). Adegan maksimal 1,5 detik, megah, penuh motion; Mode Tampil atau Tanpa Wajah; typography mengikuti referensi. Referensi dari Zulnan (Pinterest) dilampirkan sebagai gambar.
+- Video: gaya berubah per video, dipilih lewat Kartu Gaya (pemilik: Pencerita Visual). Adegan maksimal 2 detik, megah, penuh motion; Mode Tampil atau Tanpa Wajah; typography mengikuti referensi. Referensi dari Zulnan (Pinterest) dilampirkan sebagai gambar.
 - Sumber gaya: Motion Prompt (MIT), claude-video-effects (MIT), HyperFrames (Apache 2.0), Remotion (lisensi khusus; cek bila Zuno dijual).
 - Carousel: **campuran sesuai topik** (keputusan Zulnan). Satu carousel memakai satu dari 4 template (A Papan Tulis, B Neon Gelap, C Majalah, D Kartu Layar), dipilih Pencerita Visual. Contoh: artifact "Pilihan Template Carousel" (https://claude.ai/artifact/PHNp692VhrsaWiqzwhusP4), salinan di `prototypes/zuno-carousel-opsi.html`.
 - Brief dasar lengkap (memori inti): `docs/brief-gaya-konten.md`. Isi tanda **[ISI]** di sana bersama Zulnan; jangan menebak.
@@ -39,7 +39,7 @@ Baca `docs/gaya-video.md`. Ringkas:
 
 ## Tugas berikutnya
 00. **Lanjut di Claude Code (urutan):**
-   a. Zulnan mengirim satu rekaman asli (video vertikal) dan memilih satu preset di `docs/gaya-video.md`. Uji claude-video-effects di komputernya (butuh ffmpeg dan Python 3.12): clone ke `~/.claude/skills/effects`, tulis `<video>_effects.json`, cek frame, render. Catat hasilnya jujur (berhasil atau gagal) di riwayat. Batas: tiap adegan maksimal 1,5 detik; wajah tidak tertutup.
+   a. Zulnan mengirim satu rekaman asli (video vertikal) dan memilih satu preset di `docs/gaya-video.md`. Uji claude-video-effects di komputernya (butuh ffmpeg dan Python 3.12): clone ke `~/.claude/skills/effects`, tulis `<video>_effects.json`, cek frame, render. Catat hasilnya jujur (berhasil atau gagal) di riwayat. Batas: tiap adegan maksimal 2 detik; wajah tidak tertutup.
    b. Bersama Zulnan isi butir **[ISI]** di `docs/brief-gaya-konten.md` bagian 10 (contoh suara, handle, detail 5 web Nexamind, ukuran konten menang, tayangan minimal, harga, alat video Tanpa Wajah, izin latar SMK Broadcasting).
    c. Pilih alat video Tanpa Wajah (HyperFrames atau Remotion; cek lisensi Remotion bila Zuno dijual).
    d. Render satu carousel contoh (HTML/canvas ke PNG) memakai template pilihan sesuai topik.
@@ -50,6 +50,9 @@ Baca `docs/gaya-video.md`. Ringkas:
 2. Uji unduhan `downloads.save` dengan Blob di claude.ai (format data belum terverifikasi).
 3. Opsional: ekspor PDF carousel, MP4, musik/suara, Mode Tampil, 1.1 riset tren, 3.x agen penerbit.
 4. Pindah ke web app (Vercel/Supabase): ganti `sample` dengan API backend.
+
+## Video: paket + rencana render, bukan render di tool (2026-11-01)
+Keputusan Zulnan: Zuno Studio menghasilkan **paket .md** (naskah hook-problem-twist-solusi-cta, storyboard per adegan maks. 2 detik, Kartu Gaya dari referensi, rencana efek `claude-video-effects` untuk Mode Tampil, komposisi HTML HyperFrames untuk Tanpa Wajah) yang bisa diunduh dan dipratinjau; video dirender di komputer Zulnan atau lewat Claude Code. Kanvas hanya pratinjau kasar (opsional). Wajah maks. 2-3 detik lalu motion; latar selalu bergerak. Naskah memakai metode Killer Script plus uji retensi. Carousel tidak diubah. Format rencana efek dan HTML HyperFrames diambil dari README kedua repo; **belum diuji dijalankan**.
 
 ## Maskot (2026-11-01)
 Dua gambar maskot voxel disimpan di `assets/maskot/` dan dicatat di `docs/brief-gaya-konten.md` (bagian 6, "Maskot di carousel"). Zuno Studio v2 **belum** memakai maskot; carousel di preview tetap sama sampai Zulnan minta. Varian default dan pemakaian di video menunggu keputusan Zulnan.

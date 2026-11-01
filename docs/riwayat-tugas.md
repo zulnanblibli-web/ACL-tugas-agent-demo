@@ -85,4 +85,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Penjelasan video: lihat jawaban di chat; mesin render canvas hanya meniru arah (palet, energi, jenis gerak), bukan footage atau efek referensi.
 - Tertunda: maskot belum dipakai di Zuno Studio v2; keputusan varian default; aturan maskot untuk video.
 
-## 16. (entri berikutnya di sini)
+## 16. Paket naskah dan storyboard (.md), rencana render, naskah Killer Script (2026-11-01)
+- Permintaan: video lewat paket (naskah dan storyboard maks. 2 detik, Kartu Gaya dari referensi, rencana efek claude-video-effects atau HTML HyperFrames); wajah maks. 2-3 detik lalu motion; latar tidak diam; naskah tidak datar dengan riset dan alur hook-problem-twist-solusi-cta (memakai skill Killer Script); hapus keterangan di bawah judul; keluaran .md yang bisa diunduh dengan pratinjau.
+- Hasil: `prototypes/zuno-studio-v2.html` ditulis ulang di bagian naskah dan keluaran: Peneliti Tren (hipotesis), Kreator Konten dengan metode Killer Script, uji retensi Spesialis Optimasi Video, pilihan Mode Tampil, rencana efek per segmen wajah (Pelatih Editing Video Pendek), komposisi HyperFrames, paket .md per konten dengan pratinjau dan tombol unduh, pratinjau kanvas hanya opsional. Keterangan di bawah judul dan catatan kecil dihapus. Batas adegan 2 detik diterapkan di kode, brief, gaya-video, dan profil agen.
+- Batas jujur: bahan riset hanya hipotesis (tidak ada pencarian); rencana efek dan HTML HyperFrames belum diuji dijalankan di alatnya masing-masing; kualitas naskah bergantung pada Claude asli (tes memakai Claude tiruan).
+- Tertunda: uji dengan Claude asli; uji render dengan HyperFrames dan claude-video-effects; musik/suara; commit belum didorong ke GitHub atas permintaan Zulnan.
+
+## 17. (entri berikutnya di sini)

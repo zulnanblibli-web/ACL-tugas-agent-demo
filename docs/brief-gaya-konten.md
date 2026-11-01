@@ -111,7 +111,10 @@ Sumber lengkap, preset, dan alat render: `docs/gaya-video.md`.
 - **Dalam satu video palet warna dan latar harus sama dari awal sampai akhir (tidak campuran warna); boleh berbeda hanya antar video** (keputusan Zulnan 2026-11-01).
 - **Paket per perintah: 1 carousel + 1 video** (keputusan Zulnan 2026-11-01).
 - **Motion harus ramai, tidak sepi:** latar bergerak, elemen tambahan (teks berjalan, bentuk, partikel), kamera, dan potongan tegas di tiap adegan.
-- **Tiap adegan maksimal 1,5 detik.**
+- **Tiap adegan maksimal 2 detik.**
+- **Latar tidak pernah diam:** minimal bergerak (gradien, grid, partikel, bentuk) di setiap adegan.
+- **Wajah (Mode Tampil):** tampil paling lama 2-3 detik berurutan, lalu langsung berganti ke motion sesuai referensi; jangan menahan wajah lebih lama.
+- **Keluaran video dari Zuno Studio:** paket naskah dan storyboard (.md, bisa diunduh dan dipratinjau), Kartu Gaya dari referensi, rencana efek untuk claude-video-effects (Mode Tampil), dan komposisi HTML untuk HyperFrames (Tanpa Wajah). Video dirender di komputer Zulnan atau lewat Claude Code; kanvas Zuno Studio hanya pratinjau kasar.
 - Megah dan penuh motion: gerak kamera, tipografi besar, transisi tegas.
 - Dua mode: **Tanpa Wajah** (motion grafis penuh) atau **Mode Tampil** (Zulnan di kamera). Pada Mode Tampil wajah tidak boleh tertutup.
 - Typography mengikuti referensi (font di claude-video-effects: Anton, Archivo Black, Montserrat, Inter, Playfair Display, Instrument Serif, Permanent Marker, Space Mono). Usulan: satu font display dan satu font isi per video.
@@ -125,6 +128,19 @@ Sumber lengkap, preset, dan alat render: `docs/gaya-video.md`.
 **Referensi dari Zulnan:** diunggah langsung di Zuno Studio v2 (foto atau video, maks. 3, plus satu kalimat kesan). Tool mengukur palet dominan dan energi gerak dari file itu, lalu Pencerita Visual mengisi Kartu Gaya dari referensi, bukan menebak. (Pinterest: kirim sebagai tangkapan layar; agen tidak membuka Pinterest sendiri.) Referensi dipakai sebagai arah, bukan untuk meniru karya orang lain. Tanpa referensi, tim memakai gaya terakhir yang disetujui atau bertanya satu kali.
 
 **Alat render video:** pertama dicoba claude-video-effects (Mode Tampil; jalan di komputer Zulnan, butuh ffmpeg dan Python 3.12). Alat Tanpa Wajah (HyperFrames atau Remotion) belum dipilih. Belum ada alat yang diuji.
+
+## 7b. Metode naskah (video dan carousel)
+
+Naskah wajib membuat orang berhenti scroll dan menonton sampai habis. Metode: skill **Killer Script** (hook, foreshadow, body, ending) dipetakan ke lima babak berurutan **HOOK, PROBLEM, TWIST, SOLUSI, CTA**.
+- **Hook** (3-8 detik): se-clickbait mungkin tapi tidak bohong, nyambung dengan isi, ada visual jelas. Jenis: negative, proof, promise, pain point, transformation (proof dan transformation hanya dari fakta Zulnan yang diizinkan).
+- **Foreshadow**: satu, tepat setelah hook.
+- **Problem**: masalah spesifik pemula, bahasa mereka, tidak mengulang hook.
+- **Twist**: membalik sudut pandang atau fakta mengejutkan, dengan empati.
+- **Solusi**: 3-5 poin konkret, tiap poin berdiri sendiri, tanpa jargon; potong yang muter-muter.
+- **CTA**: maksimal satu (boleh nyeleneh) atau loop ke hook.
+- Pakai minimal 2 dari 7 faktor viralitas. Dilarang: basa-basi, definisi panjang, naskah datar, klaim hasil, mengarang fakta/angka/tren.
+- Setelah ditulis, **Spesialis Optimasi Video** menguji retensi dengan checklist Killer Script dan menulis ulang kalimat yang lemah sebelum masuk Agen 2.
+- Riset: Peneliti Tren tidak punya akses pencarian di Zuno Studio, jadi bahan riset adalah **hipotesis yang perlu dicek** dan ditandai begitu di paket .md.
 
 ## 8. Cara kerja tim
 
