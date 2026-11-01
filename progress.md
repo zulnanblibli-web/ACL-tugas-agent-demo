@@ -6,26 +6,22 @@ Terakhir diperbarui: 2026-11-01
 - Blueprint dan prompt orkestrasi: **selesai** (`docs/prompt-orkestrasi-zuno.md`, juga Word dan Claude Doc).
 - Preview skema (simulasi berskrip): **selesai**, tidak memanggil AI.
 - Zuno Studio v1 (tool live, tiap sub-agen memanggil Claude): **jalan, tapi terlalu rumit** menurut Zulnan. Dipakai sebagai bahan, akan diganti v2.
-- Zuno Studio v2 (sederhana, output nyata): **belum dikerjakan. Ini tugas berikutnya.**
+- Zuno Studio v2 (sederhana, output nyata): **sudah dibangun, lolos tes stub; belum diuji dengan Claude asli.**
 
-## Tugas berikutnya: Zuno Studio v2
-Permintaan Zulnan (inti):
-1. Ketik perintah, lalu agen dan sub-agen berkoordinasi. Tampilkan **proses garis besar saja** per agen dengan tanda/status (menunggu, bekerja, selesai). **Jangan** tampilkan output tiap sub-agen.
-2. **Jangan menyatakan tugas "Tidak Lolos" tanpa memberi tahu dulu.** Bila Agen 2 menolak, tampilkan pemberitahuan jelas (kartu mana, bagian mana, akan direvisi) sebelum status berubah.
-3. Hasil akhir **nyata**: carousel dan video, bukan laporan.
-4. Akan dijadikan web app, jadi arsitektur harus bisa dipindah ke app sungguhan.
+## Zuno Studio v2: sudah dibangun (2026-11-01)
+File: `prototypes/zuno-studio-v2.html` (artifact Claude, butuh capability `sample` dan `downloads`).
+- Proses garis besar: 4 baris (Lead, Agen 1, Agen 2, Agen 3) dengan status dan satu kalimat aktivitas. Output sub-agen tidak ditampilkan; disimpan di log tersembunyi (tombol "Unduh log debug").
+- Veto: pemberitahuan muncul dulu (kartu, bagian, putaran revisi), jeda, baru revisi. "Tidak Lolos" hanya setelah 2 revisi habis dan setelah pemberitahuan.
+- Hasil nyata: carousel (canvas, PNG per slide) dan video motion grafis teks (canvas + MediaRecorder, WebM, tanpa suara), plus caption. Status Disetujui hanya dari tombol Setujui milik Zulnan; ada "Revisi ulang" dengan catatan.
+- Slogan pasca-hook dipaksa di kode untuk video bila model lupa.
+- Struktur kode: CORE (agen, tanpa DOM), RENDER, UI, agar mudah dipindah ke web app.
+Keputusan Zulnan: carousel HTML/canvas ke PNG; video animasi teks di browser; jalan sebagai artifact dulu; log tersembunyi disimpan.
 
-Pertanyaan yang perlu diputuskan sebelum membangun (tanyakan ke Zulnan, jangan menebak):
-- Bentuk "carousel nyata": slide yang bisa dilihat dan diunduh (PNG/PDF) dari HTML/SVG? Atau gambar AI?
-- Bentuk "video nyata": video motion grafis dari teks animasi (dirender di browser atau server, mis. MP4/WebM), atau generator video AI (mis. lewat connector Higgsfield)?
-- Berjalan di mana: tetap artifact Claude (`sample`), atau web app dengan backend dan API key sendiri (Vercel/Supabase seperti proyek lain)?
-- Kesepakatan: proses tak terlihat tapi apakah log detail tetap perlu disimpan untuk debugging?
-
-Usulan desain v2 (belum disetujui):
-- Satu layar: kotak perintah, jalur proses 4 baris (Lead, Agen 1, Agen 2, Agen 3), tiap baris punya status dan satu kalimat aktivitas ("Kreator menulis slide"). Output sub-agen disimpan di memori halaman, tidak ditampilkan.
-- Notifikasi veto: banner "Agen 2 menemukan masalah di KK-001 (bagian teks). Menunggu revisi" sebelum kartu ditandai gagal; kartu baru ditandai Tidak Lolos setelah revisi habis dan Zulnan diberi tahu.
-- Hasil: tab "Carousel" (slide dirender) dan "Video" (preview + unduh), plus caption.
-- Reuse dari v1: `ROLES`, `BASE`, `P()` (rakitan prompt per sub-agen), limiter, `qaLoop`/`revise`, panel gerbang persetujuan, tes stub Playwright.
+## Tugas berikutnya
+1. Publikasikan v2 sebagai artifact (declare capability `sample` dan `downloads`) dan uji dengan Claude asli (belum diuji; hanya tes stub).
+2. Uji unduhan `downloads.save` dengan Blob di claude.ai (format data belum terverifikasi).
+3. Opsional: ekspor PDF carousel, MP4, musik/suara, Mode Tampil, 1.1 riset tren, 3.x agen penerbit.
+4. Pindah ke web app (Vercel/Supabase): ganti `sample` dengan API backend.
 
 ## Keputusan yang sudah diambil
 - Nama agen: Zuno. Target awal: Zulnan sendiri, lalu content creator pemula 25-35 tahun.
@@ -47,3 +43,5 @@ Usulan desain v2 (belum disetujui):
 
 ## Cara menjalankan tes v1
 `NODE_PATH=$(npm root -g) node tests/zuno-studio-v1-stub-test.js` dari akar repo (butuh Playwright). Tes memakai Claude tiruan, jadi tidak memakai kuota.
+
+Tes v2: `NODE_PATH=$(npm root -g) node tests/zuno-studio-v2-stub-test.js`

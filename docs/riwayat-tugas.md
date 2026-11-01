@@ -27,4 +27,9 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Hasil: memori diperbarui; repo disiapkan dengan progress.md, CLAUDE.md, README, dan riwayat ini.
 - Catatan: dari sesi chat, push ke GitHub tidak bisa (tidak ada izin push ke repo). Paket diberikan sebagai file untuk didorong dari komputer Zulnan.
 
-## 7. (entri berikutnya di sini: Zuno Studio v2)
+## 7. Zuno Studio v2 (2026-11-01)
+- Permintaan: lanjutkan dari catatan; push ke GitHub.
+- Hasil: repo didorong ke branch `claude/gifted-turing-csug5l`; v2 dibangun (`prototypes/zuno-studio-v2.html`) dengan proses garis besar, pemberitahuan veto sebelum gagal, carousel PNG dan video WebM nyata. Tes stub `tests/zuno-studio-v2-stub-test.js` lolos tanpa error.
+- Tertunda: uji dengan Claude asli, uji unduhan di claude.ai, publikasi artifact, PDF/MP4/suara.
+
+## 8. (entri berikutnya di sini)

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zuno Studio v2</title>
+<style>
+:root{--bg:#f4f6f8;--surface:#fff;--surface-2:#eef1f5;--ink:#15202b;--muted:#566373;--line:#d6dce4;--accent:#0e6b62;--accent-soft:#dcefec;--warn:#a45f00;--warn-soft:#fbecd2;--bad:#b0261d;--bad-soft:#fbe2df;--info:#2a5bc6;--info-soft:#e0e8fa;--font:'Segoe UI',system-ui,-apple-system,Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#10161d;--surface:#18212b;--surface-2:#1e2935;--ink:#e7edf3;--muted:#9aa8b8;--line:#2c3a49;--accent:#4fc3b4;--accent-soft:#16352f;--warn:#f0b04a;--warn-soft:#3a2b10;--bad:#ff8b82;--bad-soft:#3d1c1a;--info:#7ea4f5;--info-soft:#1b2a4a}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font)}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px 48px}
+h1{font:700 clamp(26px,4vw,38px)/1.1 var(--font);margin:30px 0 6px}
+h2{font:700 18px/1.25 var(--font);margin:0 0 10px}
+.sub{color:var(--muted);margin:0 0 16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:14px 0}
+textarea,select,input[type=text]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+textarea{min-height:80px;resize:vertical}
+:focus-visible{outline:3px solid var(--info);outline-offset:2px}
+.btns{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 15px var(--font);padding:8px 15px;border-radius:9px;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.ok{background:var(--accent-soft);border-color:var(--accent)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{border:1px solid var(--line);background:var(--surface-2);color:var(--ink);font:400 13.5px var(--font);padding:5px 11px;border-radius:999px;cursor:pointer}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:560px){.row2{grid-template-columns:1fr}}
+.hidden{display:none!important}
+.banner{border-radius:10px;padding:10px 14px;font-size:14.5px;margin:10px 0 0;border:1px solid var(--line);background:var(--surface-2)}
+.banner.warn{background:var(--warn-soft);border-color:var(--warn)}
+.banner.bad{background:var(--bad-soft);border-color:var(--bad)}
+.banner.info{background:var(--info-soft);border-color:var(--info)}
+.track{display:grid;grid-template-columns:34px 150px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.track:first-of-type{border-top:0}
+.dot{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:14px;background:var(--surface-2);border:2px solid var(--line);color:var(--muted)}
+.track[data-s=run] .dot{border-color:var(--info);color:var(--info);animation:pulse 1.2s ease-in-out infinite}
+.track[data-s=done] .dot{background:var(--accent);border-color:var(--accent);color:#fff}
+.track[data-s=bad] .dot{background:var(--bad);border-color:var(--bad);color:#fff}
+@keyframes pulse{50%{box-shadow:0 0 0 6px var(--info-soft)}}
+@media(prefers-reduced-motion:reduce){.track[data-s=run] .dot{animation:none}}
+.tname{font-weight:600}.tact{color:var(--muted);font-size:14.5px}
+.tstat{font:600 12.5px var(--font);padding:3px 10px;border-radius:999px;background:var(--surface-2)}
+.track[data-s=run] .tstat{background:var(--info-soft);color:var(--info)}
+.track[data-s=done] .tstat{background:var(--accent-soft);color:var(--accent)}
+.track[data-s=bad] .tstat{background:var(--bad-soft);color:var(--bad)}
+@media(max-width:560px){.track{grid-template-columns:34px 1fr auto}.tact{grid-column:2/4}}
+.cards{display:grid;gap:8px;margin-top:12px}
+.kc{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);font-size:14.5px}
+.kc b{font-weight:700}.kc .st{margin-left:auto;font-weight:600}
+.kc[data-s=fail] .st{color:var(--bad)}.kc[data-s=ok] .st{color:var(--accent)}
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+.tab{border:1px solid var(--line);background:var(--surface-2);color:var(--ink);padding:7px 16px;border-radius:9px;cursor:pointer;font:600 14.5px var(--font)}
+.tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.res{border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0;background:var(--bg)}
+.res h3{margin:0 0 4px;font-size:16px}
+.slides{display:flex;gap:12px;overflow-x:auto;padding:8px 0 12px}
+.slide{flex:0 0 auto;width:210px}
+.slide img{width:210px;display:block;border-radius:8px;border:1px solid var(--line)}
+.slide .btn{width:100%;margin-top:6px;font-size:13px;padding:5px}
+video{width:230px;max-width:100%;border-radius:10px;background:#000;display:block}
+.cap{white-space:pre-wrap;background:var(--surface-2);border-radius:8px;padding:10px 12px;font-size:14.5px;margin-top:8px}
+.pill{display:inline-block;font:600 12.5px var(--font);padding:2px 9px;border-radius:999px;margin-left:6px;background:var(--surface-2)}
+.pill.ok{background:var(--accent-soft);color:var(--accent)}.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.muted{color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Zuno Studio</h1>
+<p class="sub">Ketik perintah. Tim Zuno bekerja di belakang layar; kamu hanya melihat garis besar prosesnya, lalu menerima carousel dan video yang bisa diunduh.</p>
+
+<div class="panel">
+  <label for="cmd" class="muted">Perintah atau bahan konten</label>
+  <textarea id="cmd" placeholder="Contoh: bikin konten hari ini tentang cara pemula pakai AI untuk merapikan pekerjaan kantor"></textarea>
+  <div class="chips" id="chips"></div>
+  <div class="row2">
+    <div><label for="count" class="muted">Paket</label>
+      <select id="count"><option value="3">Harian: 2 carousel + 1 video</option><option value="1">Satu carousel saja</option><option value="v">Satu video saja</option></select></div>
+    <div><label class="muted">Mode video</label><input type="text" value="Tanpa Wajah (motion grafis teks)" disabled></div>
+  </div>
+  <div class="btns">
+    <button class="btn primary" id="run" disabled>Jalankan</button>
+    <button class="btn" id="stop" disabled>Berhenti</button>
+    <button class="btn" id="reset">Reset</button>
+    <button class="btn hidden" id="dlog">Unduh log debug</button>
+  </div>
+  <div class="banner" id="capinfo">Memeriksa izin Claude...</div>
+  <div class="banner bad hidden" id="errbox" role="alert"></div>
+</div>
+
+<div class="panel hidden" id="noticep" aria-live="polite"><h2>Pemberitahuan</h2><div id="notices"></div></div>
+
+<div class="panel hidden" id="procp">
+  <h2>Proses</h2>
+  <div id="tracks"></div>
+  <div class="cards" id="cardlist"></div>
+</div>
+
+<div class="panel hidden" id="resp">
+  <h2>Hasil</h2>
+  <div class="tabs" role="tablist"><button class="tab" role="tab" id="tabc" aria-selected="true">Carousel</button><button class="tab" role="tab" id="tabv" aria-selected="false">Video</button></div>
+  <div id="resc"></div><div id="resv" class="hidden"></div>
+</div>
+</div>
+
+<script>
+/* =====================================================================
+   ZUNO STUDIO v2
+   Bagian 1  CORE   : peran, prompt, alur agen (tanpa DOM; hanya memanggil hook UI)
+   Bagian 2  RENDER : carousel (canvas -> PNG) dan video (canvas -> WebM)
+   Bagian 3  UI     : tampilan garis besar proses dan hasil
+   Pindah ke web app: ganti `sample` dengan panggilan API backend; Bagian 2 dan 3 tetap.
+   ===================================================================== */
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+var SLOGAN='Hai, kenalin Gue Zulnan. Gue sales yang belajar AI sambil bikin, bukan cuma ngomongin.';
+var NOTICE_DELAY=typeof window.__ZUNO_NOTICE_DELAY==='number'?window.__ZUNO_NOTICE_DELAY:2200;
+var MAX_REV=2;
+
+/* ---------------- Bagian 1: CORE ---------------- */
+var BASE=[
+'Anda adalah bagian dari tim agent AI "Zuno" milik Zulnan, content creator pemula (sales FMCG sekitar 12 tahun, resign, belajar AI dari nol sambil berproses; portofolio 5 web Nexamind).',
+'MEMORI INTI: suara santai, lucu, lugas di momen tertentu, empatik, friendly, tidak bertele-tele. Niche produk digital (cuan dari AI, tutorial, storytelling proses membangun, peluang produk digital, tools AI, AI agent). Rumus TOFU/MOFU/BOFU. Platform Instagram, TikTok, Threads. Audiens pemula 25-35 tahun, karyawan swasta. Positioning: membantu pekerjaan jadi lebih mudah dan produktif dengan AI.',
+'LARANGAN: klaim hasil atau penghasilan yang belum terbukti, kata berlebihan, mengaku-ngaku, menipu, menjanjikan hasil, bertele-tele. Jangan mengarang fakta, pengalaman Zulnan, testimoni, atau angka. Harga produk belum ditentukan: pakai placeholder. Topik harus mudah dipahami pemula, tidak teknis.',
+'Tulis dalam Bahasa Indonesia. Kerjakan hanya peran Anda. Jawab langsung dengan hasil, tanpa basa-basi.'
+].join('\n');
+var ROLES={
+ lead:['Lead Orchestrator','Menggolongkan permintaan Zulnan, merencanakan Kartu Konten dengan tahap TOFU/MOFU/BOFU dan platform yang seimbang.','membuat konten, memposting, menyentuh iklan.'],
+ '1.2':['Strategi Konten & Angle','Menentukan angle, tahap funnel, platform, dan 2-3 kandidat hook per kartu.','menulis naskah penuh, mengubah niche, menetapkan harga.'],
+ '1.3':['Penulis Naskah & Caption','Menulis teks slide carousel (slide 1 hook, slide terakhir CTA) atau adegan video motion grafis (hook, isi, CTA), caption, hashtag, dan daftar fakta/klaim untuk diperiksa Agen 2. Gaya Zulnan. Pada video, adegan kedua WAJIB slogan: "'+SLOGAN+'"','riset tren, membuat visual, memposting, mengarang fakta atau pengalaman, klaim hasil atau penghasilan.'],
+ '1.5':['Editor Visual/Video','Memilih gaya visual (teal, krem, ungu, biru) dan satu emoji ikon per slide/adegan yang cocok dengan isinya.','mengubah isi atau makna naskah, membuat wajah atau suara tiruan.'],
+ '2.1':['Penjaga Suara & Brand','Mencocokkan gaya Zulnan, slogan setelah hook pada video, kata terlarang, relevansi niche, tahap funnel dan CTA konsisten.'],
+ '2.2':['Pemeriksa Fakta & Klaim','Memeriksa tiap item Daftar Fakta & Klaim dan semua teks yang tampil. Klaim hasil atau penghasilan tanpa bukti wajib dihapus. Toleransi salah fakta nol.'],
+ '2.3':['Pemeriksa Format & Platform','Memeriksa urutan slide/adegan, hook di awal, CTA di akhir, panjang teks per slide terbaca, caption cocok dengan isi. Jika ragu soal batas platform, tandai, jangan menebak angka.'],
+ '2.4':['Pemeriksa Leads & Privasi','Memastikan CTA jelas tujuannya, tidak ada kata sandi/token/data pembayaran/data pribadi orang lain, tidak ada pesan otomatis atas nama Zulnan.']
+};
+function P(k,kerja,data,format){
+  var r=ROLES[k];
+  return BASE+'\n\nPERAN ANDA: '+k+' '+r[0]+'\nTUGAS PERAN: '+r[1]+(r[2]?'\nDILARANG: '+r[2]:'')+'\n\nPEKERJAAN SEKARANG:\n'+kerja+'\n\nDATA:\n'+data+'\n\nFORMAT KELUARAN:\n'+format;
+}
+
+var sample=null,downloads=null,ctl=null,aborted=false,fatal=null,running=false;
+var S=null;            /* state satu putaran kerja */
+var LOG=[];            /* log debug tersembunyi: output tiap sub-agen */
+var FATAL=['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed','session_expired','rate_limited'];
+var COPY={not_granted:'Izin Claude belum diberikan.',sampling_disabled:'Claude tidak tersedia untuk akunmu di halaman ini.',not_declared:'Halaman ini belum diberi izin memanggil Claude.',capability_disabled:'Pemanggilan Claude tidak bisa dipakai di tampilan ini.',capability_removed:'Versi aplikasi belum mendukung fitur yang dibutuhkan. Perbarui lalu muat ulang.',session_expired:'Sesi berakhir. Masuk lagi lalu jalankan ulang.',rate_limited:'Batas pemakaian tercapai. Tunggu sebentar lalu jalankan lagi.',refused:'Claude menolak memproses bagian ini. Ubah bahan lalu coba lagi.',upstream_error:'Koneksi ke Claude terputus. Coba jalankan ulang.',invalid_json:'Salah satu agen menjawab dengan format yang tidak terbaca. Coba jalankan ulang.'};
+
+function limiter(n){var a=0,q=[];function next(){if(a>=n||!q.length)return;a++;var t=q.shift();Promise.resolve().then(t.fn).then(t.res,t.rej).then(function(){a--;next()})}return function(fn){return new Promise(function(res,rej){q.push({fn:fn,res:res,rej:rej});next()})}}
+var lim=limiter(3), limRender=limiter(1);
+
+function parseJSON(t){
+  try{return JSON.parse(t)}catch(e){}
+  var m=t.match(/```(?:json)?\s*([\s\S]*?)```/);if(m){try{return JSON.parse(m[1])}catch(e){}}
+  var a=t.indexOf('{'),b=t.lastIndexOf('}');if(a>-1&&b>a){try{return JSON.parse(t.slice(a,b+1))}catch(e){}}
+  throw {code:'invalid_json'};
+}
+/* satu-satunya pintu ke model. Output disimpan di LOG, tidak ditampilkan. */
+async function ask(who,cardId,prompt,tier){
+  var last;
+  for(var attempt=0;attempt<2;attempt++){
+    if(aborted)throw {code:'cancelled'};
+    try{
+      var j=await lim(async function(){
+        if(aborted)throw {code:'cancelled'};
+        var opts={cache:false,signal:ctl.signal,modelTier:tier||'quick'};
+        if(typeof sample.json==='function')return sample.json(prompt,opts);
+        var r=await sample(prompt,opts);return parseJSON(r.text);
+      });
+      LOG.push({t:new Date().toISOString(),who:who,kartu:cardId||null,output:j});
+      return j;
+    }catch(e){
+      last=e;
+      LOG.push({t:new Date().toISOString(),who:who,kartu:cardId||null,error:(e&&(e.code||e.message))||String(e)});
+      if(aborted||(e&&e.code==='cancelled'))throw {code:'cancelled'};
+      if(e&&FATAL.indexOf(e.code)>-1){fatal=e.code;throw e}
+      if(e&&e.code==='refused')throw e;
+    }
+  }
+  throw last;
+}
+
+function ctxCard(c,withContent){
+  var s='ID: '+c.id+'\nFormat: '+(c.format==='video'?'video motion grafis (Mode Tanpa Wajah)':'carousel')+'\nPlatform: '+c.platform+'\nTahap funnel: '+c.funnel+'\nIde: '+c.topik+'\nAngle: '+(c.angle||'-')+'\nHook: '+(c.hooks||[]).join(' | ');
+  if(withContent)s+='\n\nISI KONTEN:\n'+JSON.stringify(c.konten)+'\nGAYA VISUAL: '+JSON.stringify(c.visual);
+  return s;
+}
+function p13(c,rev){
+  var vid=c.format==='video';
+  var fm=vid
+    ?'Balas HANYA JSON: {"adegan":[{"teks":"teks layar maks 14 kata","detik":3 sampai 5}],"caption":"...","hashtag":["#..."],"fakta":["tiap fakta/klaim/cerita pribadi yang dipakai"]}. 5-7 adegan; adegan 1 hook; adegan 2 slogan persis; adegan terakhir CTA.'
+    :'Balas HANYA JSON: {"slides":[{"judul":"maks 8 kata","isi":"maks 30 kata"}],"caption":"...","hashtag":["#..."],"fakta":["tiap fakta/klaim/cerita pribadi yang dipakai"]}. 6-8 slide; slide 1 hook sebagai cover; slide terakhir CTA.';
+  var data=ctxCard(c,false);
+  if(rev)data+='\n\nVERSI SEBELUMNYA:\n'+JSON.stringify(c.konten)+'\n\nCATATAN WAJIB DIPERBAIKI:\n'+rev;
+  return P('1.3',(rev?'REVISI: perbaiki sesuai catatan, pertahankan bagian yang sudah baik. ':'')+(vid?'Tulis naskah video motion grafis.':'Tulis carousel.')+' Caption untuk '+c.platform+'.',data,fm);
+}
+function p15(c){
+  var n=c.format==='video'?c.konten.adegan.length:c.konten.slides.length;
+  return P('1.5','Pilih gaya visual dan '+n+' emoji ikon (satu per '+(c.format==='video'?'adegan':'slide')+', urut).',ctxCard(c,false)+'\n\nISI:\n'+JSON.stringify(c.konten),'Balas HANYA JSON: {"gaya":"teal" atau "krem" atau "ungu" atau "biru","ikon":["emoji", ... tepat '+n+' item]}');
+}
+function pQA(k,c,round){
+  return P(k,'Anda hanya memberi keputusan dan catatan, tidak menulis ulang. Tidak Lolos hanya bila ada pelanggaran nyata pada tugas peran Anda; saran kecil masuk catatan dengan keputusan Lolos.'+(round?' Ini pemeriksaan ulang setelah revisi.':''),ctxCard(c,true),'Balas HANYA JSON: {"verdict":"Lolos" atau "Tidak Lolos","catatan":["maks 4 poin singkat"],"bagian":"teks" atau "visual" atau "keduanya" atau "-"}');
+}
+
+function normKonten(c,k){
+  var list;
+  if(c.format==='video'){
+    list=(Array.isArray(k.adegan)?k.adegan:[]).map(function(a){return {teks:String(a&&a.teks||'').slice(0,140),detik:Math.min(6,Math.max(2.5,Number(a&&a.detik)||3.5))}}).filter(function(a){return a.teks});
+    if(!list.length)throw {code:'invalid_json'};
+    var hasSlogan=list.some(function(a){return /gue zulnan/i.test(a.teks)});
+    if(!hasSlogan)list.splice(1,0,{teks:SLOGAN,detik:5});
+    k.adegan=list;
+  }else{
+    list=(Array.isArray(k.slides)?k.slides:[]).map(function(s){return {judul:String(s&&s.judul||'').slice(0,90),isi:String(s&&s.isi||'').slice(0,260)}}).filter(function(s){return s.judul||s.isi});
+    if(list.length<2)throw {code:'invalid_json'};
+    k.slides=list.slice(0,9);
+  }
+  k.caption=String(k.caption||'');k.hashtag=(Array.isArray(k.hashtag)?k.hashtag:[]).map(String).slice(0,12);k.fakta=(Array.isArray(k.fakta)?k.fakta:[]).map(String);
+  return k;
+}
+function normVisual(c,v){
+  var n=c.format==='video'?c.konten.adegan.length:c.konten.slides.length;
+  var g=['teal','krem','ungu','biru'].indexOf(v&&v.gaya)>-1?v.gaya:'teal';
+  var ik=Array.isArray(v&&v.ikon)?v.ikon.map(function(x){return String(x||'').slice(0,4)}):[];
+  while(ik.length<n)ik.push('✨');
+  return {gaya:g,ikon:ik.slice(0,n)};
+}
+
+/* ---- alur ---- */
+function setCard(c,stage,kind){c.stage=stage;c.kind=kind||'';UI.update()}
+function notice(kind,html){S.notices.push({kind:kind,html:html});UI.update()}
+
+async function writeAndStyle(c,rev){
+  setCard(c,rev?'Merevisi teks (putaran '+c.revisi+')':'Menulis naskah');UI.act('a1',rev?c.id+': merevisi naskah':c.id+': menulis naskah dan caption');
+  c.konten=normKonten(c,await ask('1.3',c.id,p13(c,rev),'default'));
+  setCard(c,'Menyusun gaya visual');UI.act('a1',c.id+': menyusun gaya visual');
+  c.visual=normVisual(c,await ask('1.5',c.id,p15(c),'quick'));
+}
+async function qaRound(c,round){
+  setCard(c,'Diperiksa Agen 2');UI.act('a2',c.id+': memeriksa suara, fakta, format, dan privasi');
+  var r=await Promise.all(['2.1','2.2','2.3','2.4'].map(async function(k){
+    var j=await ask(k,c.id,pQA(k,c,round),'quick');
+    return {k:k,ok:String(j.verdict).toLowerCase()==='lolos',catatan:(Array.isArray(j.catatan)?j.catatan:[String(j.catatan||'')]).map(String),bagian:j.bagian||'-'};
+  }));
+  return {items:r,pass:r.every(function(x){return x.ok})};
+}
+function bagianText(fails){
+  var b={};fails.forEach(function(x){b[x.bagian==='-'||!x.bagian?'teks':x.bagian]=1});
+  return Object.keys(b).join(' dan ');
+}
+async function cardFlow(c,startRevisi){
+  try{
+    if(!c.konten)await writeAndStyle(c);
+    while(true){
+      var res=await qaRound(c,c.revisi);
+      if(res.pass){c.verdict='Lolos';break}
+      var fails=res.items.filter(function(x){return !x.ok});
+      var notes=fails.map(function(x){return x.k+' '+ROLES[x.k][0]+': '+x.catatan.join('; ')}).join('\n');
+      var sebut=fails.map(function(x){return x.k+' ('+x.catatan[0]+')'}).join('; ');
+      if(c.revisi>=MAX_REV){
+        notice('bad','<b>'+esc(c.id)+'</b> belum lolos setelah '+MAX_REV+' kali revisi (masalah di bagian '+esc(bagianText(fails))+': '+esc(sebut)+'). Kartu akan ditandai <b>Tidak Lolos</b> dan menunggu keputusanmu.');
+        UI.act('a2',c.id+': revisi habis, menunggu keputusanmu');
+        await sleep(NOTICE_DELAY);
+        c.verdict='Tidak Lolos';break;
+      }
+      /* pemberitahuan dulu, status berubah sesudahnya */
+      notice('warn','Agen 2 menemukan masalah di <b>'+esc(c.id)+'</b>, bagian <b>'+esc(bagianText(fails))+'</b>: '+esc(sebut)+'. Akan direvisi (putaran '+(c.revisi+1)+' dari '+MAX_REV+'). Belum ditandai gagal.');
+      UI.act('a2',c.id+': menemukan masalah di bagian '+bagianText(fails)+', meminta revisi');
+      await sleep(NOTICE_DELAY);
+      c.revisi++;
+      await writeAndStyle(c,notes+(c.zNote?'\nCatatan Zulnan: '+c.zNote:''));
+    }
+    await renderCard(c);
+    c.stage=c.verdict==='Lolos'?'Selesai, menunggu persetujuanmu':'Tidak Lolos, menunggu keputusanmu';c.kind=c.verdict==='Lolos'?'ok':'fail';UI.update();UI.results();
+  }catch(e){
+    if(e&&e.code==='cancelled'){c.stage='Dihentikan';c.kind='';}
+    else{c.stage='Tertahan (error)';c.kind='fail';if(!fatal&&e&&e.code)UI.error(COPY[e.code]||COPY.upstream_error)}
+    c.held=true;UI.update();
+  }
+}
+async function renderCard(c){
+  setCard(c,'Agen 3 merender '+(c.format==='video'?'video':'slide'));UI.act('a3',c.id+': merender '+(c.format==='video'?'video (real-time, tunggu sebentar)':'slide ke gambar'));
+  c.hasil=await limRender(function(){
+    if(aborted)throw {code:'cancelled'};
+    return c.format==='video'?Render.video(c):Render.carousel(c);
+  });
+  UI.act('a3',c.id+': paket siap diunduh');
+}
+
+async function main(){
+  var raw=$('cmd').value.trim();
+  var cmd=raw||'(Tidak ada bahan. Zulnan lagi buntu ide: cari ide dari nol sesuai niche.)';
+  var pk=$('count').value;
+  var fm=pk==='3'?['carousel','carousel','video']:pk==='v'?['video']:['carousel'];
+  var PLAT=['Instagram','Instagram','TikTok'];
+  S={cmd:cmd,notices:[],act:{},cards:fm.map(function(f,i){return {id:'KK-00'+(i+1),format:f,platform:f==='video'?'TikTok':PLAT[i],funnel:['TOFU','MOFU','TOFU'][i]||'TOFU',topik:'',stage:'Menunggu',kind:'',revisi:0}})};
+  UI.start();
+  try{
+    UI.act('lead','Membaca perintah dan merencanakan '+S.cards.length+' kartu konten');UI.track('lead','run');
+    var plan=await ask('lead',null,P('lead','Golongkan permintaan dan rencanakan '+S.cards.length+' Kartu Konten dengan ID dan format tetap: '+S.cards.map(function(c){return c.id+' '+c.format}).join(', ')+'. Tahap funnel dan topik tiap kartu harus berbeda.',cmd,'Balas HANYA JSON: {"golongan":"ide baru atau bahan mentah","kartu":[{"id":"KK-001","platform":"Instagram atau TikTok atau Threads","funnel":"TOFU atau MOFU atau BOFU","ide":"satu kalimat"}]}'),'quick');
+    (plan.kartu||[]).forEach(function(k,i){
+      var c=S.cards.filter(function(x){return x.id===k.id})[0]||S.cards[i];if(!c)return;
+      if(['Instagram','TikTok','Threads'].indexOf(k.platform)>-1)c.platform=k.platform;
+      if(['TOFU','MOFU','BOFU'].indexOf(k.funnel)>-1)c.funnel=k.funnel;
+      c.topik=String(k.ide||'').slice(0,160);
+    });
+    UI.track('lead','done');UI.act('lead','Rencana selesai, diserahkan ke Agen 1');
+    UI.track('a1','run');
+    UI.act('a1','Menyusun angle dan hook untuk semua kartu');
+    var br=await ask('1.2',null,P('1.2','Susun brief untuk setiap kartu. Tahap funnel dan angle antar kartu harus berbeda.',S.cards.map(function(c){return ctxCard(c,false)}).join('\n---\n'),'Balas HANYA JSON: {"briefs":[{"id":"KK-001","ide":"...","funnel":"TOFU/MOFU/BOFU","platform":"Instagram/TikTok/Threads","angle":"...","hooks":["...","...","..."]}]}'),'quick');
+    (br.briefs||[]).forEach(function(b){
+      var c=S.cards.filter(function(x){return x.id===b.id})[0];if(!c)return;
+      if(b.ide)c.topik=String(b.ide).slice(0,160);
+      if(['TOFU','MOFU','BOFU'].indexOf(b.funnel)>-1)c.funnel=b.funnel;
+      if(['Instagram','TikTok','Threads'].indexOf(b.platform)>-1)c.platform=b.platform;
+      c.angle=String(b.angle||'');c.hooks=(Array.isArray(b.hooks)?b.hooks:[]).map(String).slice(0,3);
+    });
+    UI.update();
+    await Promise.all(S.cards.map(function(c){return cardFlow(c)}));
+  }catch(e){
+    if(!(e&&e.code==='cancelled')){UI.error(COPY[(e&&e.code)]||COPY.upstream_error)}
+  }
+  running=false;UI.end();
+}
+
+/* ---------------- Bagian 2: RENDER ---------------- */
+var THEMES={
+ teal:{bg:'#0b2a2a',bg2:'#0e6b62',ink:'#f2fbf9',acc:'#ffd166'},
+ krem:{bg:'#fbf4e6',bg2:'#f3dfb8',ink:'#1d2430',acc:'#c2410c'},
+ ungu:{bg:'#1c1433',bg2:'#4c2f9a',ink:'#f5f1ff',acc:'#7ee0c3'},
+ biru:{bg:'#0f1b33',bg2:'#1f4fb0',ink:'#eef4ff',acc:'#ffb454'}
+};
+var FONT='"Segoe UI",system-ui,-apple-system,Arial,sans-serif';
+function wrap(ctx,text,maxW){
+  var words=String(text).split(/\s+/).filter(Boolean),lines=[],cur='';
+  words.forEach(function(w){var t=cur?cur+' '+w:w;if(ctx.measureText(t).width>maxW&&cur){lines.push(cur);cur=w}else cur=t});
+  if(cur)lines.push(cur);return lines;
+}
+/* cocokkan teks ke kotak: kecilkan font sampai muat */
+function fit(ctx,text,maxW,maxH,start,min,weight,lh){
+  var size=start,lines;
+  for(;size>=min;size-=2){ctx.font=weight+' '+size+'px '+FONT;lines=wrap(ctx,text,maxW);if(lines.length*size*lh<=maxH)break}
+  return {size:size,lines:lines,lh:lh};
+}
+function gradient(ctx,w,h,t){var g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,t.bg);g.addColorStop(1,t.bg2);ctx.fillStyle=g;ctx.fillRect(0,0,w,h)}
+function drawLines(ctx,f,x,y){f.lines.forEach(function(l,i){ctx.fillText(l,x,y+i*f.size*f.lh)});return y+f.lines.length*f.size*f.lh}
+
+function drawSlide(c,i){
+  var W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;var ctx=cv.getContext('2d');
+  var t=THEMES[c.visual.gaya],s=c.konten.slides[i],n=c.konten.slides.length,first=i===0,last=i===n-1;
+  gradient(ctx,W,H,t);
+  ctx.globalAlpha=.08;ctx.fillStyle=t.acc;ctx.beginPath();ctx.arc(W-120,160,260,0,7);ctx.fill();ctx.globalAlpha=1;
+  ctx.textBaseline='top';ctx.textAlign='left';
+  ctx.fillStyle=t.ink;ctx.globalAlpha=.75;ctx.font='600 34px '+FONT;ctx.fillText('ZULNAN',90,86);ctx.globalAlpha=1;
+  ctx.font='140px '+FONT;ctx.fillStyle=t.ink;ctx.fillText(c.visual.ikon[i]||'✨',90,170);
+  var y=first?470:400;
+  ctx.fillStyle=t.acc;ctx.fillRect(90,y-34,120,10);
+  var tf=fit(ctx,s.judul,W-180,first?480:300,first?104:84,48,'700',1.15);
+  ctx.fillStyle=t.ink;ctx.font='700 '+tf.size+'px '+FONT;y=drawLines(ctx,tf,90,y)+34;
+  if(s.isi){var bf=fit(ctx,s.isi,W-180,H-y-200,48,28,'400',1.4);ctx.font='400 '+bf.size+'px '+FONT;ctx.globalAlpha=.92;drawLines(ctx,bf,90,y);ctx.globalAlpha=1}
+  ctx.font='600 32px '+FONT;ctx.fillStyle=t.ink;ctx.globalAlpha=.7;ctx.textAlign='right';ctx.fillText((i+1)+' / '+n,W-90,H-100);ctx.globalAlpha=1;
+  if(!last){ctx.textAlign='left';ctx.fillStyle=t.acc;ctx.font='700 32px '+FONT;ctx.fillText('geser →',90,H-100)}
+  return cv;
+}
+var Render={
+  carousel:async function(c){
+    var out=[];
+    for(var i=0;i<c.konten.slides.length;i++){
+      if(aborted)throw {code:'cancelled'};
+      out.push(drawSlide(c,i).toDataURL('image/png'));
+      if(i%2)await sleep(0);
+    }
+    return {png:out};
+  },
+  video:function(c){
+    return new Promise(function(resolve,reject){
+      try{
+        var W=540,H=960,cv=document.createElement('canvas');cv.width=W;cv.height=H;var ctx=cv.getContext('2d');
+        var t=THEMES[c.visual.gaya],sc=c.konten.adegan,total=sc.reduce(function(a,s){return a+s.detik},0);
+        if(typeof MediaRecorder==='undefined'||!cv.captureStream)throw {code:'no_recorder'};
+        var mt=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'].filter(function(m){return MediaRecorder.isTypeSupported(m)})[0];
+        var rec=new MediaRecorder(cv.captureStream(30),mt?{mimeType:mt,videoBitsPerSecond:2500000}:undefined),chunks=[];
+        rec.ondataavailable=function(e){if(e.data&&e.data.size)chunks.push(e.data)};
+        rec.onstop=function(){clearInterval(tm);resolve({blob:new Blob(chunks,{type:'video/webm'}),url:null,duration:total})};
+        rec.onerror=function(e){clearInterval(tm);reject(e.error||e)};
+        var starts=[],acc=0;sc.forEach(function(s){starts.push(acc);acc+=s.detik});
+        var t0=performance.now(),tm;
+        function ease(x){x=Math.max(0,Math.min(1,x));return 1-Math.pow(1-x,3)}
+        function frame(){
+          if(aborted){clearInterval(tm);try{rec.stop()}catch(e){}return}
+          var now=(performance.now()-t0)/1000;
+          if(now>=total+0.3){clearInterval(tm);rec.stop();return}
+          var idx=0;for(var k=0;k<sc.length;k++)if(now>=starts[k])idx=k;
+          var lt=now-starts[idx],s=sc[idx];
+          gradient(ctx,W,H,t);
+          ctx.globalAlpha=.08;ctx.fillStyle=t.acc;ctx.beginPath();ctx.arc(W-60+Math.sin(now)*20,100,150,0,7);ctx.fill();ctx.globalAlpha=1;
+          var fadeIn=ease(lt/0.35),fadeOut=lt>s.detik-0.3?1-ease((lt-(s.detik-0.3))/0.3):1,al=Math.min(fadeIn,fadeOut);
+          ctx.globalAlpha=al;ctx.textBaseline='top';ctx.textAlign='center';
+          ctx.font='110px '+FONT;ctx.fillStyle=t.ink;ctx.fillText(c.visual.ikon[idx]||'✨',W/2,150+(1-fadeIn)*30);
+          var f=fit(ctx,s.teks,W-100,520,idx===1?40:56,26,'700',1.25);
+          ctx.font='700 '+f.size+'px '+FONT;
+          /* kata muncul bertahap */
+          var wordsAll=s.teks.split(/\s+/).length,shown=Math.ceil(wordsAll*Math.min(1,lt/Math.max(0.8,s.detik*0.55))),cnt=0,y=330;
+          f.lines.forEach(function(line){
+            var ws=line.split(' '),vis=[];
+            ws.forEach(function(w){cnt++;if(cnt<=shown)vis.push(w)});
+            if(vis.length){ctx.fillStyle=ws.length===vis.length?t.ink:t.acc;ctx.fillText(vis.join(' '),W/2,y+(1-ease(lt/0.5))*20)}
+            y+=f.size*f.lh;
+          });
+          ctx.globalAlpha=1;
+          ctx.fillStyle=t.acc;ctx.fillRect(0,H-12,W*Math.min(1,now/total),12);
+          ctx.fillStyle=t.ink;ctx.globalAlpha=.7;ctx.font='600 22px '+FONT;ctx.fillText('ZULNAN',W/2,H-70);ctx.globalAlpha=1;
+        }
+        rec.start(250);tm=setInterval(frame,1000/30);frame();
+      }catch(e){reject(e)}
+    });
+  }
+};
+
+/* ---------------- Bagian 3: UI ---------------- */
+var TRACKS=[['lead','Lead','Koordinator'],['a1','Agen 1','Konten'],['a2','Agen 2','Pemeriksa (veto)'],['a3','Agen 3','Produksi']];
+var tstate={};
+var UI={
+  start:function(){
+    LOG.length=0;fatal=null;aborted=false;running=true;ctl=new AbortController();tstate={lead:'wait',a1:'wait',a2:'wait',a3:'wait'};
+    $('errbox').classList.add('hidden');$('run').disabled=true;$('stop').disabled=false;$('dlog').classList.add('hidden');
+    ['noticep','procp'].forEach(function(i){$(i).classList.remove('hidden')});$('resp').classList.add('hidden');$('resc').innerHTML='';$('resv').innerHTML='';
+    S.act={};UI.update();
+  },
+  end:function(){
+    $('run').disabled=!sample;$('stop').disabled=true;$('dlog').classList.remove('hidden');
+    S.cards.forEach(function(c){if(c.stage==='Menunggu'){c.stage='Tidak dijalankan'}});
+    UI.update();UI.results();
+  },
+  act:function(k,t){S.act[k]=t;UI.update()},
+  track:function(k,st){tstate[k]=st;UI.update()},
+  error:function(m){var b=$('errbox');b.textContent=m;b.classList.remove('hidden')},
+  derive:function(){
+    var cs=S.cards,st=Object.assign({},tstate);
+    var any=function(f){return cs.some(f)},all=function(f){return cs.every(f)};
+    var wr=function(c){return /^(Menulis|Merevisi|Menyusun)/.test(c.stage)},qa=function(c){return /^Diperiksa/.test(c.stage)},rn=function(c){return /^Agen 3/.test(c.stage)};
+    var fin=function(c){return c.verdict||c.held};
+    if(tstate.a1!=='wait'){st.a1=any(wr)?'run':(tstate.a1==='run'&&!any(function(c){return c.konten})?'run':'done')}
+    if(any(qa))st.a2='run';else if(any(function(c){return c.konten})&&all(function(c){return fin(c)||c.held}))st.a2=any(function(c){return c.verdict==='Tidak Lolos'})?'bad':'done';else if(any(function(c){return c.konten}))st.a2='run';
+    if(any(rn))st.a3='run';else if(all(function(c){return c.hasil||c.held})&&any(function(c){return c.hasil}))st.a3='done';
+    if(!running&&all(fin)){if(st.a1==='run')st.a1='done'}
+    return st;
+  },
+  update:function(){
+    var st=UI.derive(),h='';
+    var ic={wait:'·',run:'●',done:'✓',bad:'!'},lb={wait:'Menunggu',run:'Bekerja',done:'Selesai',bad:'Perlu keputusan'};
+    TRACKS.forEach(function(t){
+      var s=st[t[0]]||'wait';
+      h+='<div class="track" data-s="'+s+'"><div class="dot">'+ic[s]+'</div><div><div class="tname">'+t[1]+'</div><div class="muted">'+t[2]+'</div></div><div class="tact">'+esc(S.act[t[0]]||'—')+'</div><div class="tstat">'+lb[s]+'</div></div>';
+    });
+    $('tracks').innerHTML=h;
+    $('cardlist').innerHTML=S.cards.map(function(c){
+      return '<div class="kc" data-s="'+c.kind+'"><b>'+c.id+'</b><span>'+(c.format==='video'?'Video':'Carousel')+' · '+esc(c.platform)+' · '+esc(c.funnel)+'</span><span class="muted">'+esc(c.topik)+'</span><span class="st">'+esc(c.stage)+(c.revisi?' · revisi '+c.revisi:'')+'</span></div>';
+    }).join('');
+    $('notices').innerHTML=S.notices.map(function(n){return '<div class="banner '+n.kind+'">'+n.html+'</div>'}).join('');
+    $('noticep').classList.toggle('hidden',!S.notices.length);
+  },
+  results:function(){
+    var done=S.cards.filter(function(c){return c.hasil});
+    if(!done.length)return;
+    $('resp').classList.remove('hidden');
+    ['carousel','video'].forEach(function(f){
+      var box=$(f==='video'?'resv':'resc'),list=done.filter(function(c){return c.format===f});
+      box.innerHTML='';
+      if(!list.length){box.innerHTML='<p class="muted">Belum ada '+(f==='video'?'video':'carousel')+' pada putaran ini.</p>';return}
+      list.forEach(function(c){box.appendChild(UI.resCard(c))});
+    });
+    if(!done.some(function(c){return c.format==='carousel'})&&done.some(function(c){return c.format==='video'}))UI.tab('v');
+  },
+  resCard:function(c){
+    var d=document.createElement('div');d.className='res';
+    var ok=c.verdict==='Lolos',ap=c.approved;
+    var h='<h3>'+c.id+' · '+esc(c.topik||'-')+'<span class="pill '+(ap?'ok':ok?'':'bad')+'">'+(ap?'Disetujui':ok?'Lolos QA':'Tidak Lolos')+'</span></h3><div class="muted">'+esc(c.platform)+' · '+esc(c.funnel)+(c.revisi?' · '+c.revisi+' revisi':'')+'</div>';
+    d.innerHTML=h;
+    if(c.format==='carousel'){
+      var sl=document.createElement('div');sl.className='slides';
+      c.hasil.png.forEach(function(u,i){
+        var s=document.createElement('div');s.className='slide';
+        s.innerHTML='<img alt="Slide '+(i+1)+' dari '+c.hasil.png.length+': '+esc(c.konten.slides[i].judul)+'" src="'+u+'"><button class="btn">Unduh PNG '+(i+1)+'</button>';
+        s.querySelector('button').onclick=function(){Save.file(c.id+'-slide-'+(i+1)+'.png',dataToBlob(u),this)};
+        sl.appendChild(s);
+      });
+      d.appendChild(sl);
+      var ba=document.createElement('button');ba.className='btn';ba.textContent='Unduh semua slide';
+      ba.onclick=async function(){for(var i=0;i<c.hasil.png.length;i++){await Save.file(c.id+'-slide-'+(i+1)+'.png',dataToBlob(c.hasil.png[i]),ba)}};
+      d.appendChild(ba);
+    }else{
+      var v=document.createElement('video');v.controls=true;v.playsInline=true;v.src=URL.createObjectURL(c.hasil.blob);
+      d.appendChild(v);
+      var m=document.createElement('p');m.className='muted';m.textContent='Durasi '+Math.round(c.hasil.duration)+' detik, tanpa suara. Tambahkan musik berlisensi di aplikasi edit pilihanmu.';d.appendChild(m);
+      var bv=document.createElement('button');bv.className='btn';bv.textContent='Unduh video (.webm)';
+      bv.onclick=function(){Save.file(c.id+'-video.webm',c.hasil.blob,bv)};d.appendChild(bv);
+    }
+    var cp=document.createElement('div');cp.className='cap';cp.textContent=(c.konten.caption||'')+'\n\n'+(c.konten.hashtag||[]).join(' ');d.appendChild(cp);
+    var bt=document.createElement('div');bt.className='btns';
+    var bc=document.createElement('button');bc.className='btn';bc.textContent='Salin caption';bc.onclick=function(){try{navigator.clipboard.writeText(cp.textContent).then(function(){bc.textContent='Tersalin'},function(){bc.textContent='Salin manual dari kotak'})}catch(e){bc.textContent='Salin manual dari kotak'}};bt.appendChild(bc);
+    if(!ap){
+      var bp=document.createElement('button');bp.className='btn ok';bp.textContent='Setujui';bp.onclick=function(){c.approved=true;c.stage='Disetujui';c.kind='ok';UI.update();UI.results()};bt.appendChild(bp);
+      var nt=document.createElement('input');nt.type='text';nt.placeholder='Catatan revisi (opsional)';nt.style.maxWidth='260px';nt.setAttribute('aria-label','Catatan revisi untuk '+c.id);bt.appendChild(nt);
+      var br=document.createElement('button');br.className='btn';br.textContent='Revisi ulang';br.disabled=running;
+      br.onclick=function(){UI.rework(c,nt.value.trim())};bt.appendChild(br);
+    }
+    d.appendChild(bt);
+    return d;
+  },
+  rework:async function(c,note){
+    if(running||!sample)return;
+    running=true;aborted=false;ctl=new AbortController();$('run').disabled=true;$('stop').disabled=false;
+    c.zNote=note;c.revisi=0;c.verdict=null;c.hasil=null;c.held=false;c.approved=false;c.kind='';
+    try{
+      notice('info','Revisi ulang <b>'+esc(c.id)+'</b>'+(note?' dengan catatanmu: '+esc(note):'')+'.');
+      setCard(c,'Merevisi teks (catatanmu)');
+      c.konten=normKonten(c,await ask('1.3',c.id,p13(c,'Catatan Zulnan: '+(note||'tolong perbaiki secara umum')),'default'));
+      c.visual=normVisual(c,await ask('1.5',c.id,p15(c),'quick'));
+      await cardFlow(c);
+    }catch(e){c.held=true;c.stage=(e&&e.code==='cancelled')?'Dihentikan':'Tertahan (error)';c.kind='fail';if(!(e&&e.code==='cancelled'))UI.error(COPY[e&&e.code]||COPY.upstream_error)}
+    running=false;UI.end();
+  },
+  tab:function(w){
+    var v=w==='v';$('tabc').setAttribute('aria-selected',!v);$('tabv').setAttribute('aria-selected',v);$('resc').classList.toggle('hidden',v);$('resv').classList.toggle('hidden',!v);
+  }
+};
+function dataToBlob(u){var p=u.split(','),b=atob(p[1]),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return new Blob([a],{type:'image/png'})}
+var Save={
+  file:async function(name,blob,btn){
+    var old=btn&&btn.textContent;
+    try{
+      if(downloads){await downloads.save({filename:name,data:blob});if(btn)btn.textContent='Tersimpan ✓';return true}
+      var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();
+      if(btn)btn.textContent='Diunduh ✓';return true;
+    }catch(e){
+      if(btn){btn.textContent='Gagal menyimpan. Klik kanan gambar/video untuk menyimpan.';setTimeout(function(){btn.textContent=old},4000)}
+      return false;
+    }
+  }
+};
+
+/* ---- event ---- */
+var EX=['Bikin konten hari ini: cara pemula pakai AI buat merapikan kerjaan kantor','Ceritakan proses aku belajar bikin AI agent dari nol','Konten tentang peluang produk digital buat pemula'];
+$('chips').innerHTML=EX.map(function(x,i){return '<button class="chip" data-i="'+i+'">'+esc(x)+'</button>'}).join('');
+$('chips').addEventListener('click',function(e){var b=e.target.closest('.chip');if(b)$('cmd').value=EX[+b.dataset.i]});
+$('run').addEventListener('click',function(){if(!running&&sample)main()});
+$('stop').addEventListener('click',function(){aborted=true;try{ctl&&ctl.abort()}catch(e){}});
+$('reset').addEventListener('click',function(){aborted=true;try{ctl&&ctl.abort()}catch(e){}running=false;S=null;['noticep','procp','resp'].forEach(function(i){$(i).classList.add('hidden')});$('run').disabled=!sample;$('stop').disabled=true;$('errbox').classList.add('hidden')});
+$('dlog').addEventListener('click',function(){Save.file('zuno-log-debug.json',new Blob([JSON.stringify(LOG,null,2)],{type:'application/json'}),$('dlog'))});
+$('tabc').addEventListener('click',function(){UI.tab('c')});$('tabv').addEventListener('click',function(){UI.tab('v')});
+
+(async function(){
+  var info=$('capinfo');
+  try{
+    if(window.claude&&typeof window.claude.use==='function'){
+      sample=await window.claude.use('sample');
+      try{downloads=await window.claude.use('downloads')}catch(e){downloads=null}
+    }
+  }catch(e){sample=null}
+  if(sample){info.textContent='Siap. Saat pertama dijalankan kamu akan diminta mengizinkan halaman ini memakai Claude.';$('run').disabled=false}
+  else{info.className='banner warn';info.textContent='Halaman ini baru bisa menjalankan agen saat dibuka di claude.ai dan diberi izin memakai Claude.'}
+})();
+})();
+</script>
+</body>
+</html>
