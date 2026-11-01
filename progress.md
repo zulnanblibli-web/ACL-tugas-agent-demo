@@ -16,6 +16,8 @@ File: `prototypes/zuno-studio-v2.html` (artifact Claude, capability `sample` dan
 - Carousel: Pencerita Visual memilih satu template A Papan Tulis, B Neon Gelap, C Majalah, atau D Kartu Layar per carousel (usulan TOFU B/A, MOFU A/D, BOFU C); bisa dipaksa lewat pilihan di layar. Dirender ke PNG 1080x1350 dengan nama dan penomoran (handle belum diisi).
 - Video: Kartu Gaya dengan lima preset (Dentum, Orbit Megah, Glitch Digital, Kartu Layar, Editorial Cepat); tiap adegan maksimal 1,5 detik; slogan lengkap disisipkan otomatis setelah hook; WebM pratinjau 540x960 tanpa suara. Mode Tampil dan alat claude-video-effects tetap di komputer Zulnan.
 - Veto: Juru Kabar memberi pemberitahuan (kartu, bagian, siapa memperbaiki, putaran) sebelum status berubah; Tidak Lolos hanya setelah 2 revisi habis.
+- **Paket per perintah: 1 carousel + 1 video.** Satu video = satu palet dan satu latar (bisa beda antar video).
+- **Referensi video (foto/video, maks. 3) diinput langsung di tool.** Tool mengukur palet dominan dan energi gerak, mengirim cuplikan gambar ke Pencerita Visual, dan Kartu Gaya diisi dari referensi (palet, font, latar, jenis masuk teks, kamera, ekstra, energi). Tanpa referensi: preset. Mesin render video kini parametrik dan ramai (latar bergerak, teks berjalan, bentuk, partikel, kamera, irisan transisi).
 - Draf diberi tanda "suara perlu dicek" dan "handle belum diisi" sampai butir [ISI] brief terisi.
 - `docs/desain-zulnan-motion.md` (brief motion Zulnan: Teal Tech, avatar voxel, MP4 VO ElevenLabs) disimpan sebagai referensi. Pada hal yang bertentangan, `docs/brief-gaya-konten.md` yang berlaku (gaya video berubah per video, bukan satu palet tetap).
 

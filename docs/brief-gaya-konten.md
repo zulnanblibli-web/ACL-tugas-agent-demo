@@ -92,6 +92,8 @@ Sumber lengkap, preset, dan alat render: `docs/gaya-video.md`.
 **Aturan (keputusan Zulnan):**
 - Gaya berubah per video dan dipilih lewat **Kartu Gaya** (pemilik: Pencerita Visual).
 - **Dalam satu video palet warna dan latar harus sama dari awal sampai akhir (tidak campuran warna); boleh berbeda hanya antar video** (keputusan Zulnan 2026-11-01).
+- **Paket per perintah: 1 carousel + 1 video** (keputusan Zulnan 2026-11-01).
+- **Motion harus ramai, tidak sepi:** latar bergerak, elemen tambahan (teks berjalan, bentuk, partikel), kamera, dan potongan tegas di tiap adegan.
 - **Tiap adegan maksimal 1,5 detik.**
 - Megah dan penuh motion: gerak kamera, tipografi besar, transisi tegas.
 - Dua mode: **Tanpa Wajah** (motion grafis penuh) atau **Mode Tampil** (Zulnan di kamera). Pada Mode Tampil wajah tidak boleh tertutup.
@@ -103,7 +105,7 @@ Sumber lengkap, preset, dan alat render: `docs/gaya-video.md`.
 
 **Preset awal (usulan, belum dirender):** Dentum, Orbit Megah, Glitch Digital, Kartu Layar, Editorial Cepat. Zulnan boleh menambah atau menghapus.
 
-**Referensi dari Zulnan (Pinterest):** kirim sebagai gambar atau tangkapan layar, plus satu kalimat kesan ("neon, cepat, kayak ini"). Agen tidak membuka Pinterest sendiri. Referensi dipakai sebagai arah, bukan untuk meniru karya orang lain. Tanpa referensi, tim memakai gaya terakhir yang disetujui atau bertanya satu kali.
+**Referensi dari Zulnan:** diunggah langsung di Zuno Studio v2 (foto atau video, maks. 3, plus satu kalimat kesan). Tool mengukur palet dominan dan energi gerak dari file itu, lalu Pencerita Visual mengisi Kartu Gaya dari referensi, bukan menebak. (Pinterest: kirim sebagai tangkapan layar; agen tidak membuka Pinterest sendiri.) Referensi dipakai sebagai arah, bukan untuk meniru karya orang lain. Tanpa referensi, tim memakai gaya terakhir yang disetujui atau bertanya satu kali.
 
 **Alat render video:** pertama dicoba claude-video-effects (Mode Tampil; jalan di komputer Zulnan, butuh ffmpeg dan Python 3.12). Alat Tanpa Wajah (HyperFrames atau Remotion) belum dipilih. Belum ada alat yang diuji.
 

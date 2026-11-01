@@ -67,4 +67,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `prototypes/zuno-studio-v2.html`, `tests/zuno-studio-v2-stub-test.js`, `progress.md`, `docs/riwayat-tugas.md`; `docs/desain-zulnan-motion.md` ditambah; `docs/profil-agen-zuno.md` dihapus.
 - Tertunda: uji dengan Claude asli; suara dan MP4 (butuh backend); Mode Tampil; butir [ISI] brief; commit belum didorong ke GitHub atas permintaan Zulnan.
 
-## 13. (entri berikutnya di sini)
+## 13. Satu output per jenis, motion lebih ramai, input referensi (2026-11-01)
+- Permintaan: output carousel 1 dan video 1; video terasa sepi; tool menerima referensi video atau foto supaya tidak menebak. Juga: satu video satu warna dan satu latar.
+- Hasil: paket default 1 carousel + 1 video. Mesin video parametrik dengan latar bergerak, teks berjalan, bentuk, partikel, kamera, dan irisan transisi (palet tetap per video). Referensi diunggah di tool: palet dan energi gerak diukur di browser, cuplikan dikirim ke Pencerita Visual, Kartu Gaya diisi dari referensi. Kemampuan `sample` dideklarasikan dengan `images`. Tes stub diperbarui (mengunggah foto dan video sungguhan).
+- Batas jujur: ketepatan "meniru kesan" bergantung pada Claude membaca cuplikan; yang terukur hanya palet, energi gerak, dan perkiraan potongan per detik. Video referensi panjang diukur dari 4 detik pertama.
+- Tertunda: uji dengan Claude asli; suara dan MP4; Mode Tampil; commit belum didorong ke GitHub atas permintaan Zulnan.
+
+## 14. (entri berikutnya di sini)
