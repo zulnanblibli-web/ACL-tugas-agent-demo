@@ -79,4 +79,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Hasil: pesan error menyebut kode dan detail; bila Claude menolak gambar, alur lanjut tanpa gambar dengan pemberitahuan; referensi tidak terbaca tidak menghentikan alur (kembali ke preset, disertai alasan); MP4/MOV/WebM dikenali lewat ekstensi juga; ukuran gambar dikecilkan dan jumlahnya dibatasi 8; log debug mencatat file, tipe, ukuran, dan error. Diuji: MP4+PNG, Claude menolak gambar, MP4 rusak.
 - Tertunda: uji dengan Claude asli; video HEVC/H.265 (mis. sebagian rekaman iPhone) tetap tidak bisa dibaca browser dan perlu diekspor ulang sebagai H.264.
 
-## 15. (entri berikutnya di sini)
+## 15. Maskot untuk carousel (2026-11-01)
+- Permintaan: dua gambar maskot untuk carousel (desain disesuaikan agen saat mengerjakan), tambahkan ke brief; juga tanya kenapa hasil video belum sesuai referensi.
+- Hasil: gambar disimpan di `assets/maskot/` (PNG transparan), bagian "Maskot di carousel" ditambahkan ke `docs/brief-gaya-konten.md` (dua varian, aturan pakai, larangan mengubah karakter, butir [ISI] untuk varian default). `progress.md` diperbarui.
+- Penjelasan video: lihat jawaban di chat; mesin render canvas hanya meniru arah (palet, energi, jenis gerak), bukan footage atau efek referensi.
+- Tertunda: maskot belum dipakai di Zuno Studio v2; keputusan varian default; aturan maskot untuk video.
+
+## 16. (entri berikutnya di sini)

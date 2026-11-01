@@ -85,6 +85,23 @@ Aturan carousel:
 - Slogan tidak wajib di carousel (aturan slogan berlaku untuk video).
 - Render: HTML atau canvas ke PNG per slide. Status "Prompt siap generate" sampai file PNG benar-benar ada.
 
+### Maskot di carousel
+
+Zulnan memberi dua gambar maskot voxel (diterima 2026-11-01) agar carousel lebih estetik. File: `assets/maskot/` (PNG, latar transparan).
+
+| Varian | File | Ciri |
+|---|---|---|
+| **A** | `assets/maskot/maskot-a-kaos-teal-cargo.png` | Rambut hitam tebal bergelombang, kaos teal, celana cargo abu gelap, sneakers putih, jam tangan hitam di tangan kiri; berdiri tegak, tersenyum lebar |
+| **B** | `assets/maskot/maskot-b-kaos-putih-jeans.png` | Rambut hitam pendek bertekstur, kaos putih, jeans biru dengan lipatan, sneakers putih, jam tangan hitam di tangan kiri; tangan kanan terbuka seperti menjelaskan |
+
+Aturan pakai (keputusan Zulnan: desain disesuaikan oleh agen saat mengerjakan):
+- Pencerita Visual yang menyesuaikan penempatan, ukuran, dan kecocokan dengan template A sampai D di tiap carousel (misalnya cover dan slide CTA lebih besar, slide isi kecil atau di sudut). Satu varian per carousel; jangan campur A dan B dalam satu carousel.
+- Boleh diskalakan, dipotong sebagian dari tepi slide, atau diberi bayangan lembut. **Dilarang** mengubah wajah, proporsi, gaya rambut, atau pakaian, menggambar ulang dengan AI, atau membuat varian baru tanpa persetujuan Zulnan.
+- Teks tidak boleh menutup wajah maskot. Maskot tidak boleh mengambil ruang yang membuat teks slide sulit dibaca.
+- Pilihan varian default per template atau topik: **[ISI Zulnan]**. Sampai terisi, Pencerita Visual memilih dan mencatat alasannya di Kartu Konten.
+- Video: aturan maskot untuk video belum ditetapkan (brief motion lama menyebut avatar berkaos putih dan berjeans biru, mirip varian B). Jangan dipakai di video sebelum Zulnan menegaskan.
+- Pengecek: Pengumpul Bukti memastikan maskot tidak terpotong sehingga wajahnya hilang, tidak memudar, dan konsisten dengan file asli; Penjaga Merek memastikan penampilannya sama dengan file asli.
+
 ## 7. Gaya video
 
 Sumber lengkap, preset, dan alat render: `docs/gaya-video.md`.
@@ -138,3 +155,4 @@ Tim menyusun rencana tiga konten, Kartu Konten, dan Kartu Gaya, lalu menunggu pe
 6. Satu rekaman asli plus satu preset untuk uji pertama claude-video-effects.
 7. Alat render video Tanpa Wajah.
 8. Konfirmasi memakai latar SMK Broadcasting di konten.
+9. Varian maskot default per template atau topik (A kaos teal atau B kaos putih), dan apakah maskot dipakai juga di video.

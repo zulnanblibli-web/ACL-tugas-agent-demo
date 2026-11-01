@@ -51,6 +51,9 @@ Baca `docs/gaya-video.md`. Ringkas:
 3. Opsional: ekspor PDF carousel, MP4, musik/suara, Mode Tampil, 1.1 riset tren, 3.x agen penerbit.
 4. Pindah ke web app (Vercel/Supabase): ganti `sample` dengan API backend.
 
+## Maskot (2026-11-01)
+Dua gambar maskot voxel disimpan di `assets/maskot/` dan dicatat di `docs/brief-gaya-konten.md` (bagian 6, "Maskot di carousel"). Zuno Studio v2 **belum** memakai maskot; carousel di preview tetap sama sampai Zulnan minta. Varian default dan pemakaian di video menunggu keputusan Zulnan.
+
 ## Keputusan yang sudah diambil
 - Nama agen: Zuno. Target awal: Zulnan sendiri, lalu content creator pemula 25-35 tahun.
 - Platform: Instagram, TikTok, Threads. Target harian: 2 carousel + 1 video motion grafis (Mode Tampil / Tanpa Wajah).
