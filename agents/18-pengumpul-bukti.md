@@ -74,7 +74,7 @@ Gunakan agen ini saat:
 - Hook di awal
 - Slogan setelah hook
 - Subtitle terbaca dan tidak menutup wajah (Mode Tampil)
-- Durasi per adegan wajar
+- Tiap adegan maksimal 1,5 detik
 - Suara dan teks sinkron
 - Asal aset jelas
 
@@ -87,7 +87,7 @@ Gunakan agen ini saat:
 ## Tugas di Zuno
 - Cek rasio, durasi, panjang caption, dan hashtag sesuai batas platform yang berlaku; bila ragu tandai untuk dicek, jangan menebak angka
 - Carousel: urutan slide, teks terbaca, gaya konsisten, hook di slide 1, CTA di slide terakhir
-- Video: hook di awal, subtitle terbaca, teks tidak menutup wajah pada Mode Tampil, durasi per adegan wajar
+- Video: hook di awal, subtitle terbaca, teks tidak menutup wajah pada Mode Tampil, tiap adegan maksimal 1,5 detik
 - Pastikan caption dan visual cocok, asal-usul aset jelas dan berizin
 - Pastikan Kartu Konten lengkap
 

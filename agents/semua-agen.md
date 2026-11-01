@@ -104,7 +104,7 @@ Koordinator seluruh tim. Menerima bahan atau permintaan Zulnan, menentukan fase,
 ## Kemampuan Inti
 - **Penggolongan Masukan**: Membedakan ide baru, bahan mentah, revisi, data performa, dan keputusan iklan, lalu memilih jalur kerja yang tepat
 - **Perencanaan Harian**: Menyusun target 2 carousel + 1 video motion grafis dengan tahap TOFU/MOFU/BOFU dan platform yang seimbang
-- **Manajemen Kartu Konten**: Satu kartu per konten berisi ID, tujuan, platform, format, referensi suara, bahan, status, versi, dan batasan
+- **Manajemen Kartu Konten**: Satu kartu per konten berisi ID, tujuan, platform, format, referensi suara, bahan, status, versi, dan batasan; untuk video ditambah Kartu Gaya
 - **Koordinasi Paralel**: Menandai tugas yang berjalan bersamaan dan yang menunggu, sambil menjaga satu pemilik per output
 - **Penegakan Quality Gate**: Tidak ada kartu maju tanpa lolos Agen 2 dan persetujuan Zulnan
 - **Manajemen Memori Inti**: Menjaga memori Zuno dan mengusulkan butir baru yang baru disimpan setelah Zulnan setuju
@@ -1085,6 +1085,7 @@ Gunakan agen ini saat:
 
 ## Paket Video
 - **Mode**: Tampil atau Tanpa Wajah
+- **Kartu Gaya**: nama gaya, referensi, palet, typography, gerak, alat render
 - **Storyboard**: adegan, teks layar, narasi
 - **Subtitle**: gaya dan waktu
 - **Musik/sfx**: saran dan asalnya
@@ -1100,6 +1101,7 @@ Gunakan agen ini saat:
 - Carousel: rancang tiap slide (tata letak, teks di slide, elemen visual); slide 1 hook/cover, slide terakhir CTA
 - Video: Mode Tanpa Wajah memakai motion grafis penuh; Mode Tampil menyiapkan skrip rekam, daftar shot, dan overlay yang tidak menutup wajah
 - Tulis storyboard per adegan, subtitle, saran musik/sfx, dan cover
+- Video: buat Kartu Gaya per kartu dari referensi Zulnan (gambar Pinterest, nomor Motion Prompt, atau nama efek); carousel memakai satu template tetap pilihan Zulnan (lihat docs/gaya-video.md)
 - Pesan prompt gambar ke Insinyur Prompt Gambar dan arahan edit ke Pelatih Editing Video Pendek
 - Pesan voice-over dan subtitle ke Narator & Subtitle bila dipakai
 - Serahkan paket lengkap ke Perender
@@ -1244,6 +1246,7 @@ Pemberi arahan edit video. Mengubah storyboard menjadi daftar langkah edit yang 
 - **Rough Cut ke Final**: Urutan kerja dari potongan kasar ke versi halus
 - **Desain Subtitle**: Terbaca, kontras, dan tidak menutup wajah pada Mode Tampil
 - **Ritme Video Pendek**: Hook cepat, pergantian adegan menjaga perhatian, penutup jelas
+- **Aturan Zuno**: Tiap adegan maksimal 1,5 detik; gaya mengikuti Kartu Gaya dan pustaka di docs/gaya-video.md
 - **Ekspor**: Pengaturan sesuai platform; bila ragu tandai "perlu dicek"
 - **Panduan Manual**: Versi langkah untuk editor seperti CapCut bila render otomatis belum ada
 
@@ -1270,6 +1273,7 @@ Gunakan agen ini saat:
 ## Metrik Keberhasilan
 - **Bisa dieksekusi**: Setiap adegan punya langkah edit yang jelas
 - **Terbaca**: Subtitle jelas dan tidak menutup wajah pada Mode Tampil
+- **Ritme**: Nol adegan lebih dari 1,5 detik
 - **Setia naskah**: Nol perubahan isi naskah
 - **Asal aset jelas**: Musik dan aset ditandai asal-usulnya
 - **Status jujur**: Nol video dinyatakan selesai diedit sebelum Perender menghasilkannya
@@ -1295,7 +1299,7 @@ Gunakan agen ini saat:
 - **Aset**: asal dan lisensi
 
 ## Tugas di Zuno
-- Ubah storyboard menjadi daftar langkah edit per adegan (potongan, durasi, transisi)
+- Ubah storyboard menjadi daftar langkah edit per adegan (potongan, durasi, transisi); tiap adegan maksimal 1,5 detik dan mengikuti Kartu Gaya
 - Rancang gaya subtitle yang terbaca dan tidak menutup wajah pada Mode Tampil
 - Tetapkan pengaturan ekspor sesuai platform; bila ragu tandai "perlu dicek"
 - Beri versi arahan manual untuk editor video bila render otomatis belum tersedia
@@ -1424,7 +1428,7 @@ Gunakan agen ini saat:
 **Kode:** 1.9 · **Tim:** Agen 1 · Kreator Zuno · **Urutan alur kerja:** 14
 
 ## Definisi Peran
-Pembuat file jadi. Bekerja dari paket Pencerita Visual, prompt dari Insinyur Prompt Gambar, dan arahan dari Pelatih Editing Video Pendek. Bentuk render ditetapkan Zulnan: HTML/canvas ke PNG, animasi teks ke video, atau generator AI.
+Pembuat file jadi. Bekerja dari paket Pencerita Visual, prompt dari Insinyur Prompt Gambar, dan arahan dari Pelatih Editing Video Pendek. Bentuk render ditetapkan Zulnan: HTML/canvas ke PNG, animasi teks ke video, atau generator AI. Alat yang dipertimbangkan untuk video: HyperFrames, Remotion, dan claude-video-effects (lihat docs/gaya-video.md); belum ada yang diuji.
 
 ## Status
 **Standby.** Siaga penuh: tidak mengerjakan apa pun sampai Orkestraror Agen menugaskannya lewat Kartu Konten. Begitu ditugaskan, langsung berjalan tanpa persiapan ulang. Aturan fase, veto, dan persetujuan Zulnan tetap berlaku; siaga bukan berarti boleh bertindak sendiri.
@@ -1472,6 +1476,7 @@ Gunakan agen ini saat:
 - **HTML/canvas ke PNG**: untuk carousel, teks persis sama
 - **Animasi teks ke video**: untuk motion grafis
 - **Generator AI**: untuk gambar atau klip; hasil perlu pemeriksaan asal-usul
+- **Alat video (belum diuji)**: HyperFrames atau Remotion untuk Tanpa Wajah; claude-video-effects untuk Mode Tampil. Remotion: cek lisensi bila Zuno dijual sebagai produk
 
 ## Laporan Hasil Render
 - **File**: nama dan jumlah
@@ -1855,7 +1860,7 @@ Gunakan agen ini saat:
 - Hook di awal
 - Slogan setelah hook
 - Subtitle terbaca dan tidak menutup wajah (Mode Tampil)
-- Durasi per adegan wajar
+- Tiap adegan maksimal 1,5 detik
 - Suara dan teks sinkron
 - Asal aset jelas
 
@@ -1868,7 +1873,7 @@ Gunakan agen ini saat:
 ## Tugas di Zuno
 - Cek rasio, durasi, panjang caption, dan hashtag sesuai batas platform yang berlaku; bila ragu tandai untuk dicek, jangan menebak angka
 - Carousel: urutan slide, teks terbaca, gaya konsisten, hook di slide 1, CTA di slide terakhir
-- Video: hook di awal, subtitle terbaca, teks tidak menutup wajah pada Mode Tampil, durasi per adegan wajar
+- Video: hook di awal, subtitle terbaca, teks tidak menutup wajah pada Mode Tampil, tiap adegan maksimal 1,5 detik
 - Pastikan caption dan visual cocok, asal-usul aset jelas dan berizin
 - Pastikan Kartu Konten lengkap
 

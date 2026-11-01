@@ -1,6 +1,6 @@
 # Progress: Zuno
 
-Terakhir diperbarui: 2026-11-01 (profil agen ditulis ulang ke format lengkap)
+Terakhir diperbarui: 2026-11-01 (pustaka gaya video dan pilihan template carousel)
 
 ## Status singkat
 - Blueprint dan prompt orkestrasi: **selesai** (`docs/prompt-orkestrasi-zuno.md`, juga Word dan Claude Doc).
@@ -26,7 +26,15 @@ Folder `agents/` (baca `agents/README.md` dulu; `agents/semua-agen.md` adalah ve
 - Tambahan baru: Juru Kabar (kabar sebelum Tidak Lolos), Insinyur Prompt Gambar, Pelatih Editing Video Pendek, Perender (file jadi), Narator & Subtitle, Spesialis Optimasi Video, Arsitek Tata Kelola Otomasi, Pelacak Eksperimen, Penyintesis Umpan Balik.
 - Katalog tidak punya agen yang benar-benar merender gambar atau video; Perender dan Narator & Subtitle dibuat sendiri.
 
+## Gaya visual (2026-11-01)
+Baca `docs/gaya-video.md`. Ringkas:
+- Video: gaya berubah per video, dipilih lewat Kartu Gaya (pemilik: Pencerita Visual). Adegan maksimal 1,5 detik, megah, penuh motion; Mode Tampil atau Tanpa Wajah; typography mengikuti referensi. Referensi dari Zulnan (Pinterest) dilampirkan sebagai gambar.
+- Sumber gaya: Motion Prompt (MIT), claude-video-effects (MIT), HyperFrames (Apache 2.0), Remotion (lisensi khusus; cek bila Zuno dijual).
+- Carousel: satu template tetap. Pilihan A/B/C/D ada di artifact "Pilihan Template Carousel" (https://claude.ai/artifact/PHNp692VhrsaWiqzwhusP4), salinan di `prototypes/zuno-carousel-opsi.html`. **Menunggu pilihan Zulnan.**
+- Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
+
 ## Tugas berikutnya
+00. Zulnan memilih template carousel dan menjawab pertanyaan terbuka (bagian 7 di `docs/gaya-video.md`: arti 1,5 detik, bentuk suara, alat render video pertama, panjang video, jumlah slide).
 0. Zulnan mengecek `agents/`; setelah setuju, perbarui `docs/prompt-orkestrasi-zuno.md` (dan .docx, Claude Doc) dengan 9 tambahan dan Juru Kabar, lalu hubungkan profil ke Zuno Studio v2.
 1. Publikasikan v2 sebagai artifact (declare capability `sample` dan `downloads`) dan uji dengan Claude asli (belum diuji; hanya tes stub).
 2. Uji unduhan `downloads.save` dengan Blob di claude.ai (format data belum terverifikasi).

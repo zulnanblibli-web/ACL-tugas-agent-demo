@@ -7,6 +7,8 @@ Mulai dari sini:
 - `progress.md`: status terkini, keputusan, yang belum nyata, dan tugas berikutnya. **Baca ini dulu.**
 - `docs/riwayat-tugas.md`: catatan berurutan tiap tugas. Tambah entri baru di bawah, jangan hapus yang lama.
 - `docs/prompt-orkestrasi-zuno.md`: prompt orkestrasi lengkap (juga ada versi `.docx`).
-- `prototypes/`: skema preview, Zuno Studio v1, dan Zuno Studio v2.
+- `prototypes/`: skema preview, Zuno Studio v1, Zuno Studio v2, dan pilihan template carousel.
+- `agents/`: 23 profil agen (baca `agents/README.md`).
+- `docs/gaya-video.md`: pustaka gaya video, Kartu Gaya, dan alat render.
 - `CLAUDE.md`: aturan kerja untuk Claude Code di repo ini.
 - `agents/`: profil 23 agen Zuno (nama, tanggung jawab, status standby), urut sesuai alur kerja. Mulai dari `agents/README.md`.

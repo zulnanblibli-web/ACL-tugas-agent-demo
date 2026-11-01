@@ -47,4 +47,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: seluruh `agents/*.md`, `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: Zulnan mengecek profil; prompt orkestrasi (md/docx/Claude Doc) belum memuat 9 tambahan dan Juru Kabar; profil belum dihubungkan ke Zuno Studio v2; publikasi dan uji v2.
 
-## 10. (entri berikutnya di sini)
+## 10. Pustaka gaya video dan template carousel (2026-11-01)
+- Permintaan: gaya visual video berubah-ubah (referensi dari Pinterest); carousel boleh satu template tetap. Sumber gaya editing: Motion Prompt, claude-video-effects, Remotion, HyperFrames. Video: adegan berubah tidak lebih dari 1,5 detik, megah, penuh motion, Mode Tampil atau Tanpa Wajah; typography mengikuti referensi. Carousel: beri pilihan dengan contoh. Hal lain boleh ditanyakan.
+- Hasil: `docs/gaya-video.md` (aturan gaya, 5 preset awal yang dipetakan ke nomor Motion Prompt dan nama efek claude-video-effects, typography, alat render per bentuk, template Kartu Gaya, daftar yang masih terbuka). `prototypes/zuno-carousel-opsi.html` (artifact "Pilihan Template Carousel": A Papan Tulis, B Neon Gelap, C Majalah, D Kartu Layar, masing-masing 3 slide contoh). Profil Pencerita Visual, Pelatih Editing Video Pendek, Perender, Pengumpul Bukti, dan Orkestraror Agen diperbarui (Kartu Gaya, aturan 1,5 detik, alat render).
+- Catatan sumber: tautan 2 dan 3 awalnya sama; tautan 3 dikoreksi Zulnan menjadi Remotion. Lisensi: Motion Prompt dan claude-video-effects MIT, HyperFrames Apache 2.0, Remotion berlisensi khusus (gratis untuk individu dan sampai 3 karyawan; cek remotion.pro bila Zuno dijual sebagai produk).
+- Tertunda: belum ada alat render yang diuji; preset hanyalah usulan; Zulnan memilih template carousel dan menjawab pertanyaan terbuka (suara, panjang video, jumlah slide, arti 1,5 detik); prompt orkestrasi belum diperbarui; Zuno Studio v2 belum memakai Kartu Gaya.
+
+## 11. (entri berikutnya di sini)

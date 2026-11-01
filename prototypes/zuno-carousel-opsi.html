@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pilihan Template Carousel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;800&family=Permanent+Marker&family=Playfair+Display:ital,wght@0,600;1,500;1,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: kolom tunggal, tiap opsi satu baris berisi 3 slide 4:5 (cover, isi, ajakan). */
+:root{
+  --bg:#f3f4f6; --panel:#ffffff; --ink:#111827; --muted:#5b6472; --line:#dde1e7; --accent:#0e6b62;
+  --f-display:'Archivo Black','Inter',system-ui,sans-serif; --f-body:'Inter',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1318; --panel:#171c23; --ink:#eef1f5; --muted:#9aa4b2; --line:#2a313b; --accent:#4cc9b8;}}
+:root[data-theme="dark"]{--bg:#0f1318; --panel:#171c23; --ink:#eef1f5; --muted:#9aa4b2; --line:#2a313b; --accent:#4cc9b8;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.5}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 16px 56px}
+h1{font-family:var(--f-display);font-size:clamp(26px,5vw,38px);line-height:1.1;margin:0 0 8px;text-wrap:balance}
+.lead{color:var(--muted);max-width:62ch;margin:0 0 28px}
+.opt{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin:0 0 20px}
+.opt-head{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}
+.badge{font-family:var(--f-display);font-size:22px;background:var(--ink);color:var(--bg);border-radius:8px;padding:0 10px;line-height:1.5}
+.opt h2{margin:0;font-size:20px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.chip{font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted)}
+.fit{margin:0 0 14px;color:var(--muted);font-size:14.5px;max-width:70ch}
+.row{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x proximity}
+.slide{flex:0 0 min(260px,72vw);aspect-ratio:4/5;position:relative;overflow:hidden;border-radius:10px;container-type:inline-size;scroll-snap-align:start}
+.slide *{margin:0}
+.foot{position:absolute;left:8cqw;right:8cqw;bottom:6cqw;display:flex;justify-content:space-between;font-size:3.6cqw}
+.pad{position:absolute;inset:0;padding:9cqw 8cqw 17cqw;display:flex;flex-direction:column}
+.note{color:var(--muted);font-size:13.5px;max-width:70ch;margin-top:8px}
+
+/* A — Papan Tulis */
+.a{background:#f4f6f8;color:#101418}
+.a .tag{font-family:'Permanent Marker',cursive;font-size:5cqw;color:#101418}
+.a h3{font-family:'Archivo Black',sans-serif;font-size:11.5cqw;line-height:1.02;margin-top:auto;margin-bottom:auto;text-wrap:balance}
+.a mark{background:#ffe14d;color:inherit;padding:0 1.5cqw}
+.a .n{font-family:'Archivo Black';font-size:34cqw;line-height:.8;color:#ffe14d;-webkit-text-stroke:.6cqw #101418}
+.a p{font-size:6cqw;line-height:1.35;font-weight:500}
+.a h4{font-family:'Archivo Black';font-size:8.6cqw;line-height:1.08;margin:3cqw 0 4cqw}
+.a .foot{color:#101418;opacity:.7;font-family:'Inter';font-weight:600}
+.a .pill{align-self:flex-start;background:#101418;color:#fff;border-radius:99cqw;padding:2cqw 5cqw;font-weight:700;font-size:5cqw;margin-top:5cqw}
+
+/* B — Neon Gelap */
+.b{background:#0b0d12;color:#fff}
+.b::before{content:"";position:absolute;width:90cqw;height:90cqw;right:-35cqw;top:-25cqw;border-radius:50%;background:radial-gradient(circle,#ff3d71 0%,rgba(255,61,113,0) 65%)}
+.b::after{content:"";position:absolute;width:80cqw;height:80cqw;left:-40cqw;bottom:-35cqw;border-radius:50%;background:radial-gradient(circle,#3df0ff 0%,rgba(61,240,255,0) 65%)}
+.b .pad{z-index:1}
+.b .tag{font-family:'Space Mono',monospace;font-size:4cqw;color:#3df0ff;letter-spacing:.3cqw;text-transform:uppercase}
+.b h3{font-family:'Anton',sans-serif;font-size:14.5cqw;line-height:1;text-transform:uppercase;margin-top:auto;margin-bottom:auto}
+.b h3 em{font-style:normal;background:linear-gradient(90deg,#ff3d71,#3df0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.b .n{font-family:'Anton';font-size:40cqw;line-height:.85;color:transparent;-webkit-text-stroke:.5cqw #3df0ff}
+.b h4{font-family:'Anton';font-size:12cqw;line-height:1;text-transform:uppercase;margin:3cqw 0 4cqw}
+.b p{font-size:5.6cqw;line-height:1.4;color:#d7dbe3}
+.b .foot{font-family:'Space Mono',monospace;color:#8b93a1;z-index:1}
+.b .pill{align-self:flex-start;border:.5cqw solid #3df0ff;color:#3df0ff;font-family:'Space Mono';font-weight:700;padding:2cqw 4.5cqw;font-size:4.6cqw;margin-top:5cqw}
+
+/* C — Majalah */
+.c{background:#e9e4d9;color:#1a1a1a}
+.c .tag{font-family:'Inter';font-weight:700;font-size:3.6cqw;letter-spacing:.5cqw;text-transform:uppercase;color:#b3261e;border-top:.6cqw solid #1a1a1a;padding-top:2.5cqw}
+.c h3{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:14cqw;line-height:1.02;margin-top:auto;margin-bottom:auto;text-wrap:balance}
+.c h3 b{font-style:normal;color:#b3261e}
+.c .n{font-family:'Playfair Display';font-style:italic;font-size:36cqw;line-height:.8;color:#b3261e}
+.c h4{font-family:'Playfair Display';font-weight:600;font-size:9.4cqw;line-height:1.1;margin:3cqw 0 4cqw}
+.c p{font-size:5.6cqw;line-height:1.45;font-family:'Inter'}
+.c .foot{font-family:'Inter';font-weight:600;color:#1a1a1a;border-top:.4cqw solid #1a1a1a;padding-top:2cqw;bottom:5cqw}
+.c .pill{align-self:flex-start;background:#b3261e;color:#fff;font-family:'Inter';font-weight:700;padding:2.2cqw 5cqw;font-size:4.8cqw;margin-top:5cqw}
+
+/* D — Kartu Layar */
+.d{background:linear-gradient(160deg,#e3dcff 0%,#d4ecff 100%);color:#16192a}
+.d .card{background:rgba(255,255,255,.72);border:.4cqw solid rgba(255,255,255,.9);border-radius:6cqw;padding:6cqw;box-shadow:0 4cqw 10cqw rgba(60,60,140,.16)}
+.d .tag{font-family:'Montserrat';font-weight:800;font-size:3.8cqw;color:#5a4df0}
+.d h3{font-family:'Montserrat',sans-serif;font-weight:800;font-size:10.6cqw;line-height:1.08;margin-top:auto;margin-bottom:auto;text-wrap:balance}
+.d h3 span{color:#5a4df0}
+.d .row2{display:flex;align-items:center;gap:4cqw}
+.d .chk{flex:0 0 9cqw;height:9cqw;border-radius:50%;background:#5a4df0;position:relative}
+.d .chk::after{content:"";position:absolute;left:2.9cqw;top:1.6cqw;width:2cqw;height:4.2cqw;border:solid #fff;border-width:0 .9cqw .9cqw 0;transform:rotate(45deg)}
+.d h4{font-family:'Montserrat';font-weight:800;font-size:7.4cqw;line-height:1.12}
+.d p{font-size:5.4cqw;line-height:1.4;margin-top:4cqw;color:#2c3050}
+.d .toggle{width:16cqw;height:9cqw;border-radius:99cqw;background:#5a4df0;position:relative;flex:0 0 auto}
+.d .toggle::after{content:"";position:absolute;right:1cqw;top:1cqw;width:7cqw;height:7cqw;border-radius:50%;background:#fff}
+.d .foot{font-family:'Inter';font-weight:600;color:#3a3f66;z-index:1}
+.d .pill{align-self:flex-start;background:#16192a;color:#fff;font-family:'Montserrat';font-weight:800;padding:2.2cqw 5cqw;border-radius:99cqw;font-size:4.6cqw;margin-top:5cqw}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Pilihan template carousel</h1>
+  <p class="lead">Empat arah tampilan untuk carousel Zuno, masing-masing ditampilkan dengan tiga slide: cover, isi, dan ajakan. Semua teks di sini contoh, bukan konten final. Balas dengan huruf pilihanmu, atau gabungkan (misalnya font A dengan warna B).</p>
+
+  <section class="opt" id="opsi-a">
+    <div class="opt-head"><span class="badge">A</span><h2>Papan Tulis</h2></div>
+    <div class="meta"><span class="chip">Archivo Black + Permanent Marker + Inter</span><span class="chip">Putih dingin, hitam, stabilo kuning</span></div>
+    <p class="fit">Terbaca cepat di layar kecil dan terasa seperti catatan belajar. Cocok untuk tutorial dan cerita proses.</p>
+    <div class="row">
+      <div class="slide a"><div class="pad"><div class="tag">contoh cover</div><h3>Mulai pakai AI di kerjaan kantor, <mark>dari mana?</mark></h3></div><div class="foot"><span>[handle kamu]</span><span>1/3</span></div></div>
+      <div class="slide a"><div class="pad"><div class="n">1</div><h4>Pilih satu tugas yang paling bikin capek</h4><p>Jangan semuanya. Satu dulu. Misalnya merapikan catatan rapat.</p></div><div class="foot"><span>[handle kamu]</span><span>2/3</span></div></div>
+      <div class="slide a"><div class="pad"><div class="tag">ajakan</div><h3 style="margin-top:auto;margin-bottom:0">Simpan dulu, <mark>coba besok.</mark></h3><div class="pill">Kirim ke temen yang bingung</div></div><div class="foot"><span>[handle kamu]</span><span>3/3</span></div></div>
+    </div>
+  </section>
+
+  <section class="opt" id="opsi-b">
+    <div class="opt-head"><span class="badge">B</span><h2>Neon Gelap</h2></div>
+    <div class="meta"><span class="chip">Anton + Space Mono + Inter</span><span class="chip">Hitam, magenta, cyan</span></div>
+    <p class="fit">Paling dekat dengan gaya video yang cepat dan megah, jadi carousel dan video terasa satu keluarga. Cocok untuk TOFU yang perlu menahan scroll.</p>
+    <div class="row">
+      <div class="slide b"><div class="pad"><div class="tag">contoh cover</div><h3>Mulai pakai AI di kerjaan kantor, <em>dari mana?</em></h3></div><div class="foot"><span>[handle kamu]</span><span>1/3</span></div></div>
+      <div class="slide b"><div class="pad"><div class="n">1</div><h4>Pilih satu tugas yang paling bikin capek</h4><p>Jangan semuanya. Satu dulu. Misalnya merapikan catatan rapat.</p></div><div class="foot"><span>[handle kamu]</span><span>2/3</span></div></div>
+      <div class="slide b"><div class="pad"><div class="tag">ajakan</div><h3 style="margin-top:auto;margin-bottom:0">Simpan dulu, <em>coba besok.</em></h3><div class="pill">KIRIM KE TEMEN YANG BINGUNG</div></div><div class="foot"><span>[handle kamu]</span><span>3/3</span></div></div>
+    </div>
+  </section>
+
+  <section class="opt" id="opsi-c">
+    <div class="opt-head"><span class="badge">C</span><h2>Majalah</h2></div>
+    <div class="meta"><span class="chip">Playfair Display + Inter</span><span class="chip">Krem abu, hitam, merah tua</span></div>
+    <p class="fit">Terkesan rapi dan dipercaya, mirip sampul majalah. Cocok untuk MOFU dan BOFU: cerita proses, portofolio, dan studi kasus.</p>
+    <div class="row">
+      <div class="slide c"><div class="pad"><div class="tag">contoh cover</div><h3>Mulai pakai AI di kerjaan kantor, <b>dari mana?</b></h3></div><div class="foot"><span>[handle kamu]</span><span>1/3</span></div></div>
+      <div class="slide c"><div class="pad"><div class="n">1</div><h4>Pilih satu tugas yang paling bikin capek</h4><p>Jangan semuanya. Satu dulu. Misalnya merapikan catatan rapat.</p></div><div class="foot"><span>[handle kamu]</span><span>2/3</span></div></div>
+      <div class="slide c"><div class="pad"><div class="tag">ajakan</div><h3 style="margin-top:auto;margin-bottom:0">Simpan dulu, <b>coba besok.</b></h3><div class="pill">Kirim ke temen yang bingung</div></div><div class="foot"><span>[handle kamu]</span><span>3/3</span></div></div>
+    </div>
+  </section>
+
+  <section class="opt" id="opsi-d">
+    <div class="opt-head"><span class="badge">D</span><h2>Kartu Layar</h2></div>
+    <div class="meta"><span class="chip">Montserrat + Inter</span><span class="chip">Gradasi lavender-biru, ungu, kaca</span></div>
+    <p class="fit">Terlihat seperti tampilan aplikasi: kartu kaca, centang, dan toggle. Cocok untuk tutorial langkah demi langkah dan topik tools AI.</p>
+    <div class="row">
+      <div class="slide d"><div class="pad"><div class="tag">contoh cover</div><h3>Mulai pakai AI di kerjaan kantor, <span>dari mana?</span></h3></div><div class="foot"><span>[handle kamu]</span><span>1/3</span></div></div>
+      <div class="slide d"><div class="pad" style="justify-content:center"><div class="card"><div class="row2"><div class="chk"></div><h4>Pilih satu tugas yang paling bikin capek</h4></div><p>Jangan semuanya. Satu dulu. Misalnya merapikan catatan rapat.</p></div></div><div class="foot"><span>[handle kamu]</span><span>2/3</span></div></div>
+      <div class="slide d"><div class="pad"><div class="tag">ajakan</div><h3 style="margin-top:auto;margin-bottom:0">Simpan dulu, <span>coba besok.</span></h3><div class="pill">Kirim ke temen yang bingung</div></div><div class="foot"><span>[handle kamu]</span><span>3/3</span></div></div>
+    </div>
+  </section>
+
+  <p class="note">Ukuran file akhir 1080 x 1350 piksel (rasio 4:5). Handle dan nama akun masih placeholder sampai kamu isi. Font semuanya bebas pakai (lisensi terbuka).</p>
+</div>
+</body>
+</html>
