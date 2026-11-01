@@ -91,4 +91,9 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Batas jujur: bahan riset hanya hipotesis (tidak ada pencarian); rencana efek dan HTML HyperFrames belum diuji dijalankan di alatnya masing-masing; kualitas naskah bergantung pada Claude asli (tes memakai Claude tiruan).
 - Tertunda: uji dengan Claude asli; uji render dengan HyperFrames dan claude-video-effects; musik/suara; commit belum didorong ke GitHub atas permintaan Zulnan.
 
-## 17. (entri berikutnya di sini)
+## 17. Penutup sesi: push ke GitHub (2026-11-01)
+- Permintaan: push ke GitHub dan catat progress sampai titik ini.
+- Hasil: `progress.md` diperbarui (status, tugas berikutnya, tautan preview, cara menjalankan tes v2). Seluruh commit sesi ini didorong ke branch `claude/gifted-turing-csug5l` (tanpa PR).
+- Keadaan: v2 lolos tes dengan Claude tiruan; belum diuji dengan Claude asli; video belum dirender oleh alat mana pun.
+
+## 18. (entri berikutnya di sini)

@@ -1,12 +1,12 @@
 # Progress: Zuno
 
-Terakhir diperbarui: 2026-11-01 (brief gaya konten lengkap; siap lanjut di Claude Code)
+Terakhir diperbarui: 2026-11-01 (Zuno Studio v2: paket naskah dan storyboard .md, input referensi, maskot di brief; semua sudah di GitHub)
 
 ## Status singkat
 - Blueprint dan prompt orkestrasi: **selesai** (`docs/prompt-orkestrasi-zuno.md`, juga Word dan Claude Doc).
 - Preview skema (simulasi berskrip): **selesai**, tidak memanggil AI.
 - Zuno Studio v1 (tool live, tiap sub-agen memanggil Claude): **jalan, tapi terlalu rumit** menurut Zulnan. Dipakai sebagai bahan, akan diganti v2.
-- Zuno Studio v2 (sederhana, output nyata): **sudah dibangun, lolos tes stub; belum diuji dengan Claude asli.**
+- Zuno Studio v2: **dibangun dan dipublikasikan sebagai preview, lolos tes stub (Claude tiruan); belum diuji dengan Claude asli.** Carousel: PNG nyata (template A-D). Video: paket naskah + storyboard + Kartu Gaya + rencana render (.md, bisa diunduh), bukan file video; pratinjau kanvas hanya kasar.
 - Profil agen (23 peran, nama dan format dari katalog agency-agents-id): **selesai ditulis ulang lengkap di `agents/`, menunggu dicek Zulnan.**
 
 ## Zuno Studio v2: terhubung ke profil agen dan brief (2026-11-01)
@@ -38,18 +38,12 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
-00. **Lanjut di Claude Code (urutan):**
-   a. Zulnan mengirim satu rekaman asli (video vertikal) dan memilih satu preset di `docs/gaya-video.md`. Uji claude-video-effects di komputernya (butuh ffmpeg dan Python 3.12): clone ke `~/.claude/skills/effects`, tulis `<video>_effects.json`, cek frame, render. Catat hasilnya jujur (berhasil atau gagal) di riwayat. Batas: tiap adegan maksimal 2 detik; wajah tidak tertutup.
-   b. Bersama Zulnan isi butir **[ISI]** di `docs/brief-gaya-konten.md` bagian 10 (contoh suara, handle, detail 5 web Nexamind, ukuran konten menang, tayangan minimal, harga, alat video Tanpa Wajah, izin latar SMK Broadcasting).
-   c. Pilih alat video Tanpa Wajah (HyperFrames atau Remotion; cek lisensi Remotion bila Zuno dijual).
-   d. Render satu carousel contoh (HTML/canvas ke PNG) memakai template pilihan sesuai topik.
-   e. Perbarui prompt orkestrasi (md, docx, Claude Doc): 9 tambahan, Juru Kabar, Kartu Gaya, memori inti dari brief.
-   f. ~~Hubungkan profil, brief, dan Kartu Gaya ke Zuno Studio v2~~ (selesai 2026-11-01). Sisa: uji v2 dengan Claude asli dan unduhan `downloads.save`.
-0. Zulnan mengecek `agents/`; setelah setuju, perbarui `docs/prompt-orkestrasi-zuno.md` (dan .docx, Claude Doc) dengan 9 tambahan dan Juru Kabar, lalu hubungkan profil ke Zuno Studio v2.
-1. Publikasikan v2 sebagai artifact (declare capability `sample` dan `downloads`) dan uji dengan Claude asli (belum diuji; hanya tes stub).
-2. Uji unduhan `downloads.save` dengan Blob di claude.ai (format data belum terverifikasi).
-3. Opsional: ekspor PDF carousel, MP4, musik/suara, Mode Tampil, 1.1 riset tren, 3.x agen penerbit.
-4. Pindah ke web app (Vercel/Supabase): ganti `sample` dengan API backend.
+1. **Uji v2 dengan Claude asli** di preview (https://claude.ai/artifact/8B5S1yzoCDfKY2f9P5zZ2g): jalankan satu perintah, cek kualitas naskah (hook, problem, twist, solusi, CTA), cek unggah referensi (foto, MP4, WebM), dan cek tombol unduh (`downloads.save` dengan Blob belum terverifikasi). Bila error, minta Zulnan mengirim pesan error atau log debug (tombol "Unduh log debug").
+2. **Uji render nyata** paket video: jalankan komposisi HyperFrames (`npx hyperframes preview`, lalu `render`) dan satu rencana efek `claude-video-effects` (butuh rekaman asli Zulnan, ffmpeg, Python 3.12). Format keduanya diambil dari README, belum pernah dijalankan. Catat hasilnya jujur di riwayat. Bila kualitas tampilan tidak sesuai referensi, perbaiki templat HyperFrames di `buildHF` atau pindahkan render ke Claude Code.
+3. **Pasang maskot** (`assets/maskot/`) di carousel Zuno Studio bila Zulnan minta; tunggu keputusan varian default (A kaos teal atau B kaos putih) dan apakah maskot dipakai di video.
+4. Isi butir **[ISI]** di `docs/brief-gaya-konten.md` bagian 10 bersama Zulnan (contoh suara, handle, detail 5 web Nexamind, ukuran konten menang, tayangan minimal, harga, alat video Tanpa Wajah, izin latar SMK Broadcasting). Jangan menebak.
+5. Perbarui prompt orkestrasi (`docs/prompt-orkestrasi-zuno.md`, .docx, Claude Doc): 9 tambahan agen, Juru Kabar, Kartu Gaya, metode naskah Killer Script, batas adegan 2 detik, memori inti dari brief.
+6. Opsional: suara dan musik, MP4 1080x1920, Peneliti Tren dengan akses pencarian, agen standby lain (Pelacak Eksperimen, Penyintesis Umpan Balik, Operasional Studio), lalu pindah ke web app (Vercel/Supabase): ganti `sample` dengan API backend; Bagian RENDER dan UI di `zuno-studio-v2.html` tetap.
 
 ## Video: paket + rencana render, bukan render di tool (2026-11-01)
 Keputusan Zulnan: Zuno Studio menghasilkan **paket .md** (naskah hook-problem-twist-solusi-cta, storyboard per adegan maks. 2 detik, Kartu Gaya dari referensi, rencana efek `claude-video-effects` untuk Mode Tampil, komposisi HTML HyperFrames untuk Tanpa Wajah) yang bisa diunduh dan dipratinjau; video dirender di komputer Zulnan atau lewat Claude Code. Kanvas hanya pratinjau kasar (opsional). Wajah maks. 2-3 detik lalu motion; latar selalu bergerak. Naskah memakai metode Killer Script plus uji retensi. Carousel tidak diubah. Format rencana efek dan HTML HyperFrames diambil dari README kedua repo; **belum diuji dijalankan**.
@@ -71,6 +65,7 @@ Dua gambar maskot voxel disimpan di `assets/maskot/` dan dicatat di `docs/brief-
 - Dokumen 1 (125 pertanyaan) masih punya bagian "Langkah berikutnya" yang usang dan belum memuat jawaban Word. Perbarui hanya bila diminta.
 
 ## Artifact dan dokumen (claude.ai)
+- Zuno Studio v2 (preview, hanya terlihat pemilik): https://claude.ai/artifact/8B5S1yzoCDfKY2f9P5zZ2g
 - Skema Simulasi Zuno (preview): https://claude.ai/artifact/Te8QVoUJPGZp6bZSiiE12p
 - Zuno Studio v1 (tool live): https://claude.ai/artifact/P59ifFpbatkQKxDEn6Z5tc
 - Prompt Orkestrasi Zuno (Claude Doc): https://claude.ai/artifact/5B8WKpCnj4t79CwtAWAPM7
@@ -78,4 +73,4 @@ Dua gambar maskot voxel disimpan di `assets/maskot/` dan dicatat di `docs/brief-
 ## Cara menjalankan tes v1
 `NODE_PATH=$(npm root -g) node tests/zuno-studio-v1-stub-test.js` dari akar repo (butuh Playwright). Tes memakai Claude tiruan, jadi tidak memakai kuota.
 
-Tes v2: `NODE_PATH=$(npm root -g) node tests/zuno-studio-v2-stub-test.js`
+Tes v2 (Claude tiruan): `NODE_PATH=$(npm root -g) node tests/zuno-studio-v2-stub-test.js [--tampil] [file-referensi...]`. Argumen `--tampil` mengetes Mode Tampil; file referensi (foto/video) diunggah ke tool.
