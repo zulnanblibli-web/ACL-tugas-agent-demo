@@ -9,14 +9,15 @@ Terakhir diperbarui: 2026-11-01 (brief gaya konten lengkap; siap lanjut di Claud
 - Zuno Studio v2 (sederhana, output nyata): **sudah dibangun, lolos tes stub; belum diuji dengan Claude asli.**
 - Profil agen (23 peran, nama dan format dari katalog agency-agents-id): **selesai ditulis ulang lengkap di `agents/`, menunggu dicek Zulnan.**
 
-## Zuno Studio v2: sudah dibangun (2026-11-01)
-File: `prototypes/zuno-studio-v2.html` (artifact Claude, butuh capability `sample` dan `downloads`).
-- Proses garis besar: 4 baris (Lead, Agen 1, Agen 2, Agen 3) dengan status dan satu kalimat aktivitas. Output sub-agen tidak ditampilkan; disimpan di log tersembunyi (tombol "Unduh log debug").
-- Veto: pemberitahuan muncul dulu (kartu, bagian, putaran revisi), jeda, baru revisi. "Tidak Lolos" hanya setelah 2 revisi habis dan setelah pemberitahuan.
-- Hasil nyata: carousel (canvas, PNG per slide) dan video motion grafis teks (canvas + MediaRecorder, WebM, tanpa suara), plus caption. Status Disetujui hanya dari tombol Setujui milik Zulnan; ada "Revisi ulang" dengan catatan.
-- Slogan pasca-hook dipaksa di kode untuk video bila model lupa.
-- Struktur kode: CORE (agen, tanpa DOM), RENDER, UI, agar mudah dipindah ke web app.
-Keputusan Zulnan: carousel HTML/canvas ke PNG; video animasi teks di browser; jalan sebagai artifact dulu; log tersembunyi disimpan.
+## Zuno Studio v2: terhubung ke profil agen dan brief (2026-11-01)
+File: `prototypes/zuno-studio-v2.html` (artifact Claude, capability `sample` dan `downloads`). Belum diuji dengan Claude asli; baru tes stub (`tests/zuno-studio-v2-stub-test.js`).
+- Alur mengikuti `agents/README.md`: Orkestraror Agen, Ahli Strategi Media Sosial, Kreator Konten, Pencerita Visual, Perender (render sebelum QA), Agen 2 paralel (Penjaga Merek, Pemeriksa Realitas, Pengumpul Bukti, Pemeriksa Kepatuhan Hukum), gerbang Zulnan, lalu Kurator Instagram menyiapkan paket posting (belum memposting). Peneliti Tren dan agen standby lain belum dipanggil (tidak ada akses pencarian di artifact).
+- Memori inti dari `docs/brief-gaya-konten.md` masuk ke prompt: audiens 25-35, fakta yang boleh dipakai, larangan, harga [HARGA BELUM DITENTUKAN], TOFU/MOFU/BOFU. SMK Broadcasting tidak dipakai (belum dikonfirmasi).
+- Carousel: Pencerita Visual memilih satu template A Papan Tulis, B Neon Gelap, C Majalah, atau D Kartu Layar per carousel (usulan TOFU B/A, MOFU A/D, BOFU C); bisa dipaksa lewat pilihan di layar. Dirender ke PNG 1080x1350 dengan nama dan penomoran (handle belum diisi).
+- Video: Kartu Gaya dengan lima preset (Dentum, Orbit Megah, Glitch Digital, Kartu Layar, Editorial Cepat); tiap adegan maksimal 1,5 detik; slogan lengkap disisipkan otomatis setelah hook; WebM pratinjau 540x960 tanpa suara. Mode Tampil dan alat claude-video-effects tetap di komputer Zulnan.
+- Veto: Juru Kabar memberi pemberitahuan (kartu, bagian, siapa memperbaiki, putaran) sebelum status berubah; Tidak Lolos hanya setelah 2 revisi habis.
+- Draf diberi tanda "suara perlu dicek" dan "handle belum diisi" sampai butir [ISI] brief terisi.
+- `docs/desain-zulnan-motion.md` (brief motion Zulnan: Teal Tech, avatar voxel, MP4 VO ElevenLabs) disimpan sebagai referensi. Pada hal yang bertentangan, `docs/brief-gaya-konten.md` yang berlaku (gaya video berubah per video, bukan satu palet tetap).
 
 ## Profil agen: sudah ditulis (2026-11-01)
 Folder `agents/` (baca `agents/README.md` dulu; `agents/semua-agen.md` adalah versi gabungan).
@@ -41,7 +42,7 @@ Baca `docs/gaya-video.md`. Ringkas:
    c. Pilih alat video Tanpa Wajah (HyperFrames atau Remotion; cek lisensi Remotion bila Zuno dijual).
    d. Render satu carousel contoh (HTML/canvas ke PNG) memakai template pilihan sesuai topik.
    e. Perbarui prompt orkestrasi (md, docx, Claude Doc): 9 tambahan, Juru Kabar, Kartu Gaya, memori inti dari brief.
-   f. Hubungkan profil `agents/`, brief, dan Kartu Gaya ke Zuno Studio v2; publikasikan v2 dan uji dengan Claude asli.
+   f. ~~Hubungkan profil, brief, dan Kartu Gaya ke Zuno Studio v2~~ (selesai 2026-11-01). Sisa: uji v2 dengan Claude asli dan unduhan `downloads.save`.
 0. Zulnan mengecek `agents/`; setelah setuju, perbarui `docs/prompt-orkestrasi-zuno.md` (dan .docx, Claude Doc) dengan 9 tambahan dan Juru Kabar, lalu hubungkan profil ke Zuno Studio v2.
 1. Publikasikan v2 sebagai artifact (declare capability `sample` dan `downloads`) dan uji dengan Claude asli (belum diuji; hanya tes stub).
 2. Uji unduhan `downloads.save` dengan Blob di claude.ai (format data belum terverifikasi).

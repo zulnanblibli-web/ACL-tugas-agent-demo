@@ -60,4 +60,11 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Kesalahan yang diperbaiki: commit `a1e7ed1` memotong `docs/gaya-video.md` jadi tinggal bagian 7 (file ditulis ulang sebelum dibaca). Dipulihkan penuh dari commit `6dbdbce`.
 - Tertunda: seluruh butir [ISI] di brief; uji claude-video-effects menunggu rekaman asli; alat Tanpa Wajah belum dipilih; prompt orkestrasi dan Zuno Studio v2 belum memakai brief.
 
-## 12. (entri berikutnya di sini)
+## 12. Hubungkan profil agen dan brief ke Zuno Studio v2 (2026-11-01)
+- Permintaan: ganti isi v2 sesuai data agen dan brief konten yang dikirim; cek GitHub untuk meneruskan task.
+- Temuan: file kiriman identik dengan `agents/semua-agen.md` dan `docs/brief-gaya-konten.md` di GitHub (sesi lain sudah lebih dulu mendorong). Dua commit lokal saya di-rebase di atas `246d965` tanpa konflik. `docs/profil-agen-zuno.md` (draf saya) dihapus karena digantikan `agents/`.
+- Hasil: `prototypes/zuno-studio-v2.html` ditulis ulang mengikuti profil dan brief (lihat `progress.md`). Gaya Teal Tech dan avatar voxel dari putaran sebelumnya dilepas karena bertentangan dengan brief (gaya video berubah per video, carousel template A-D). Dicek lewat tes stub dan tangkapan layar tiap template dan preset.
+- File berubah: `prototypes/zuno-studio-v2.html`, `tests/zuno-studio-v2-stub-test.js`, `progress.md`, `docs/riwayat-tugas.md`; `docs/desain-zulnan-motion.md` ditambah; `docs/profil-agen-zuno.md` dihapus.
+- Tertunda: uji dengan Claude asli; suara dan MP4 (butuh backend); Mode Tampil; butir [ISI] brief; commit belum didorong ke GitHub atas permintaan Zulnan.
+
+## 13. (entri berikutnya di sini)
