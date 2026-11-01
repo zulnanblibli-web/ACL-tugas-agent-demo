@@ -191,11 +191,11 @@ async function ask(who,cardId,prompt,tier){
 
 /* ---- preset video (Kartu Gaya) ---- */
 var PRESET={
- 'Dentum':{kesan:'cepat, keras, penuh hentakan',font:'Anton',fontIsi:'Inter',palet:'hitam #111 dan kuning #FFE14D bergantian',gerak:'impact shake, smash cut, kinetic typography',ref:'Motion Prompt #024, #046, #008'},
- 'Orbit Megah':{kesan:'sinematik, kamera bergerak besar',font:'Montserrat',fontIsi:'Inter',palet:'biru malam #0A1030 ke ungu #2A1B6E, aksen cyan #7EE0FF',gerak:'orbit, dolly in, zoom in',ref:'Motion Prompt #030, #027, #028'},
- 'Glitch Digital':{kesan:'teknologi, glitch, mengetik',font:'Space Mono',fontIsi:'Inter',palet:'hitam #05080C, teks #D8FFE8, aksen cyan #3DF0FF dan magenta #FF3D71',gerak:'glitch, chromatic aberration, typewriter',ref:'Motion Prompt #023, #111, #006'},
- 'Kartu Layar':{kesan:'tampilan aplikasi: kartu, notifikasi, centang',font:'Montserrat',fontIsi:'Inter',palet:'lavender #E3DCFF ke biru muda #D4ECFF, aksen ungu #5A4DF0',gerak:'toast notification, toggle, step indicator',ref:'Motion Prompt #056, #059, #068'},
- 'Editorial Cepat':{kesan:'majalah, potongan tegas, teks bermasker',font:'Playfair Display',fontIsi:'Inter',palet:'krem #E9E4D9, hitam #1A1A1A, merah tua #B3261E',gerak:'match cut, text mask, push transition',ref:'Motion Prompt #042, #133, #137'}
+ 'Dentum':{kesan:'cepat, keras, penuh hentakan',font:'Anton',fontIsi:'Inter',palet:'latar hitam #111, teks putih, aksen kuning #FFE14D (tetap sepanjang video)',gerak:'impact shake, smash cut, kinetic typography',ref:'Motion Prompt #024, #046, #008'},
+ 'Orbit Megah':{kesan:'sinematik, kamera bergerak besar',font:'Montserrat',fontIsi:'Inter',palet:'latar biru malam #0A1030 ke #16225A, teks putih, aksen cyan #7EE0FF (tetap sepanjang video)',gerak:'orbit, dolly in, zoom in',ref:'Motion Prompt #030, #027, #028'},
+ 'Glitch Digital':{kesan:'teknologi, glitch, mengetik',font:'Space Mono',fontIsi:'Inter',palet:'latar hitam #05080C, teks #D8FFE8, aksen cyan #3DF0FF (tetap sepanjang video)',gerak:'glitch, chromatic aberration, typewriter',ref:'Motion Prompt #023, #111, #006'},
+ 'Kartu Layar':{kesan:'tampilan aplikasi: kartu, notifikasi, centang',font:'Montserrat',fontIsi:'Inter',palet:'latar lavender #E3DCFF ke #D9E2FF, teks #16192A, aksen ungu #5A4DF0 (tetap sepanjang video)',gerak:'toast notification, toggle, step indicator',ref:'Motion Prompt #056, #059, #068'},
+ 'Editorial Cepat':{kesan:'majalah, potongan tegas, teks bermasker',font:'Playfair Display',fontIsi:'Inter',palet:'latar krem #E9E4D9, teks hitam #1A1A1A, aksen merah tua #B3261E (tetap sepanjang video)',gerak:'match cut, text mask, push transition',ref:'Motion Prompt #042, #133, #137'}
 };
 var TPL={A:'Papan Tulis',B:'Neon Gelap',C:'Majalah',D:'Kartu Layar'};
 var TPL_DEF={TOFU:'B',MOFU:'A',BOFU:'C'};
@@ -222,7 +222,7 @@ function p15(c){
   var fm=vid
    ?'Balas HANYA JSON: {"gaya":"Dentum" atau "Orbit Megah" atau "Glitch Digital" atau "Kartu Layar" atau "Editorial Cepat","kesan":"satu kalimat","items":[{"kunci":"satu kata dari teks yang disorot"}]} tepat '+list.length+' item.'
    :'Balas HANYA JSON: {"template":"A" atau "B" atau "C" atau "D","alasan":"satu kalimat","items":[{"kunci":"satu kata dari judul yang disorot","pill":"label singkat atau kosong"}]} tepat '+list.length+' item.';
-  var info=vid?'Pilih satu preset video: '+Object.keys(PRESET).map(function(k){return k+' ('+PRESET[k].kesan+')'}).join('; ')+'.':'Pilih satu template untuk seluruh carousel: A Papan Tulis (tutorial, cerita proses), B Neon Gelap (TOFU menahan scroll), C Majalah (MOFU/BOFU, portofolio), D Kartu Layar (tutorial langkah dan tools AI).';
+  var info=vid?'Pilih satu preset video; seluruh video memakai satu palet dan satu latar yang sama, tanpa mengganti warna antar adegan: '+Object.keys(PRESET).map(function(k){return k+' ('+PRESET[k].kesan+')'}).join('; ')+'.':'Pilih satu template untuk seluruh carousel: A Papan Tulis (tutorial, cerita proses), B Neon Gelap (TOFU menahan scroll), C Majalah (MOFU/BOFU, portofolio), D Kartu Layar (tutorial langkah dan tools AI).';
   return P('1.5',info+' Lalu tandai satu kata kunci per '+(vid?'adegan':'slide')+'.',ctxCard(c,false)+'\n\n'+desc,fm);
 }
 function pQA(k,c,round){
@@ -473,12 +473,12 @@ function drawBeat(ctx,W,H,g,idx,s,v,lt,now,total){
   ctx.save();
   /* ---- latar + gerak per preset ---- */
   if(g==='Dentum'){
-    var inv=idx%2===1;dark=inv?{bg:'#ffe14d',ink:'#111',acc:'#ff3d71'}:{bg:'#111',ink:'#fff',acc:'#ffe14d'};
+    dark={bg:'#111',ink:'#fff',acc:'#ffe14d'};
     ctx.fillStyle=dark.bg;ctx.fillRect(0,0,W,H);
     var sh=Math.max(0,1-lt/.25)*16;ctx.translate((Math.random()-.5)*sh*2,(Math.random()-.5)*sh*2);
     var sc=1+Math.max(0,1-lt/.18)*.35;ctx.translate(cx,cy);ctx.scale(sc,sc);ctx.translate(-cx,-cy);
   }else if(g==='Orbit Megah'){
-    ctx.fillStyle=grad(ctx,0,0,W,H,160,[[0,'#0a1030'],[1,'#2a1b6e']]);ctx.fillRect(0,0,W,H);dark={ink:'#fff',acc:'#7ee0ff'};
+    ctx.fillStyle=grad(ctx,0,0,W,H,160,[[0,'#0a1030'],[1,'#16225a']]);ctx.fillRect(0,0,W,H);dark={ink:'#fff',acc:'#7ee0ff'};
     ctx.strokeStyle='rgba(126,224,255,.35)';ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(cx,cy,W*.42,W*.16,now*.9+idx,0,7);ctx.stroke();
     ctx.fillStyle='#7ee0ff';var ox=cx+Math.cos(now*3+idx)*W*.42*Math.cos(now*.9+idx)-Math.sin(now*3+idx)*W*.16*Math.sin(now*.9+idx),oy=cy+Math.cos(now*3+idx)*W*.42*Math.sin(now*.9+idx)+Math.sin(now*3+idx)*W*.16*Math.cos(now*.9+idx);ctx.beginPath();ctx.arc(ox,oy,14,0,7);ctx.fill();
     var z=1+lt*.09;ctx.translate(cx,cy);ctx.scale(z,z);ctx.translate(-cx,-cy);
@@ -486,7 +486,7 @@ function drawBeat(ctx,W,H,g,idx,s,v,lt,now,total){
     ctx.fillStyle='#05080c';ctx.fillRect(0,0,W,H);dark={ink:'#d8ffe8',acc:'#3df0ff'};
     ctx.fillStyle='rgba(61,240,255,.06)';for(var yy=0;yy<H;yy+=8)ctx.fillRect(0,yy,W,3);
   }else if(g==='Kartu Layar'){
-    ctx.fillStyle=grad(ctx,0,0,W,H,160,[[0,'#e3dcff'],[1,'#d4ecff']]);ctx.fillRect(0,0,W,H);dark={ink:'#16192a',acc:'#5a4df0'};
+    ctx.fillStyle=grad(ctx,0,0,W,H,160,[[0,'#e3dcff'],[1,'#d9e2ff']]);ctx.fillRect(0,0,W,H);dark={ink:'#16192a',acc:'#5a4df0'};
   }else{
     ctx.fillStyle='#e9e4d9';ctx.fillRect(0,0,W,H);dark={ink:'#1a1a1a',acc:'#b3261e'};
     ctx.fillStyle='#1a1a1a';ctx.fillRect(90,260,W-180,6);ctx.font='700 34px Inter,sans-serif';ctx.fillStyle='#b3261e';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText(String(idx+1).padStart(2,'0'),90,284);
@@ -507,7 +507,7 @@ function drawBeat(ctx,W,H,g,idx,s,v,lt,now,total){
   function drawWord(w,x,yy,ww,size){
     var isK=kw&&norm(w)===kw,col=isK?dark.acc:dark.ink,ww2=w;
     if(cnt>=lim)return;ww2=w.slice(0,Math.max(0,lim-cnt));cnt+=w.length+1;
-    if(g==='Glitch Digital'&&lt<.3){ctx.fillStyle='#ff3d71';ctx.fillText(ww2,x-10+off,yy);ctx.fillStyle='#3df0ff';ctx.fillText(ww2,x+10-off,yy)}
+    if(g==='Glitch Digital'&&lt<.3){ctx.fillStyle='rgba(61,240,255,.55)';ctx.fillText(ww2,x-10+off,yy);ctx.fillStyle='rgba(61,240,255,.3)';ctx.fillText(ww2,x+10-off,yy)}
     if(g==='Editorial Cepat'&&isK){ctx.fillStyle=dark.acc;ctx.fillText(ww2,x,yy);return}
     ctx.fillStyle=col;ctx.fillText(ww2,x,yy);
   }
@@ -516,10 +516,9 @@ function drawBeat(ctx,W,H,g,idx,s,v,lt,now,total){
   drawWords(ctx,f,cx,yy0,'center',W,drawWord);
   ctx.restore();
   /* flash potong untuk Dentum */
-  if(g==='Dentum'&&lt<.06){ctx.fillStyle='rgba(255,255,255,.7)';ctx.fillRect(0,0,W,H)}
   /* footer */
-  ctx.save();ctx.textBaseline='middle';ctx.textAlign='center';ctx.font='600 30px Inter,sans-serif';ctx.globalAlpha=.7;ctx.fillStyle=(g==='Kartu Layar'||g==='Editorial Cepat')?'#1a1a1a':(g==='Dentum'&&idx%2===1?'#111':'#fff');ctx.fillText('ZULNAN',cx,H-120);ctx.restore();
-  ctx.fillStyle=g==='Dentum'&&idx%2===1?'#111':(dark.acc||'#fff');ctx.fillRect(0,H-14,W*Math.min(1,now/total),14);
+  ctx.save();ctx.textBaseline='middle';ctx.textAlign='center';ctx.font='600 30px Inter,sans-serif';ctx.globalAlpha=.7;ctx.fillStyle=(g==='Kartu Layar'||g==='Editorial Cepat')?'#1a1a1a':'#fff';ctx.fillText('ZULNAN',cx,H-120);ctx.restore();
+  ctx.fillStyle=dark.acc||'#fff';ctx.fillRect(0,H-14,W*Math.min(1,now/total),14);
 }
 var Render={
   carousel:async function(c){

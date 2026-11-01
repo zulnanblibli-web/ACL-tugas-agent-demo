@@ -9,6 +9,7 @@ Dibuat 2026-11-01 dari permintaan Zulnan: gaya motion video berubah-ubah sesuai 
 - Panjang video dan jumlah slide: **mengikuti topik**, tidak dikunci.
 - Gaya visual **berubah-ubah per video**, dipilih per Kartu Konten (bukan satu gaya tetap).
 - **Tiap adegan maksimal 1,5 detik** (dikonfirmasi Zulnan 2026-11-01): ada potongan atau perubahan visual setidaknya tiap 1,5 detik.
+- **Satu video, satu palet dan satu latar (footage visual yang sama dari awal sampai akhir).** Tidak ada campuran warna atau pergantian latar antar adegan; warna boleh berbeda hanya antar video (keputusan Zulnan 2026-11-01).
 - **Megah dan penuh motion.** Gerak kamera, tipografi besar, transisi tegas.
 - Dua mode: **Tanpa Wajah** (motion grafis penuh) atau **Mode Tampil** (Zulnan di kamera). Pada Mode Tampil wajah tidak boleh tertutup teks atau elemen.
 - **Typography mengikuti referensi** (lihat bagian 4), bukan satu font tetap.

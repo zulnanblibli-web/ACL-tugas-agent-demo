@@ -91,6 +91,7 @@ Sumber lengkap, preset, dan alat render: `docs/gaya-video.md`.
 
 **Aturan (keputusan Zulnan):**
 - Gaya berubah per video dan dipilih lewat **Kartu Gaya** (pemilik: Pencerita Visual).
+- **Dalam satu video palet warna dan latar harus sama dari awal sampai akhir (tidak campuran warna); boleh berbeda hanya antar video** (keputusan Zulnan 2026-11-01).
 - **Tiap adegan maksimal 1,5 detik.**
 - Megah dan penuh motion: gerak kamera, tipografi besar, transisi tegas.
 - Dua mode: **Tanpa Wajah** (motion grafis penuh) atau **Mode Tampil** (Zulnan di kamera). Pada Mode Tampil wajah tidak boleh tertutup.
