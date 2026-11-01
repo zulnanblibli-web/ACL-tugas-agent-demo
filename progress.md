@@ -34,7 +34,7 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
-00. Zulnan memilih template carousel dan menjawab pertanyaan terbuka (bagian 7 di `docs/gaya-video.md`: arti 1,5 detik, bentuk suara, alat render video pertama, panjang video, jumlah slide).
+00. Zulnan memilih template carousel (A/B/C/D). Lalu uji claude-video-effects di komputer Zulnan dengan satu rekaman asli dan satu preset (keputusan sudah diambil: suara campur, adegan maksimal 1,5 detik, panjang dan jumlah slide mengikuti topik).
 0. Zulnan mengecek `agents/`; setelah setuju, perbarui `docs/prompt-orkestrasi-zuno.md` (dan .docx, Claude Doc) dengan 9 tambahan dan Juru Kabar, lalu hubungkan profil ke Zuno Studio v2.
 1. Publikasikan v2 sebagai artifact (declare capability `sample` dan `downloads`) dan uji dengan Claude asli (belum diuji; hanya tes stub).
 2. Uji unduhan `downloads.save` dengan Blob di claude.ai (format data belum terverifikasi).
