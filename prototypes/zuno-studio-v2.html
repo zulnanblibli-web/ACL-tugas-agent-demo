@@ -86,8 +86,8 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
       <select id="pre"><option value="">Otomatis (dipilih Pencerita Visual)</option><option>Dentum</option><option>Orbit Megah</option><option>Glitch Digital</option><option>Kartu Layar</option><option>Editorial Cepat</option></select></div>
   </div>
   <div class="refbox">
-    <label for="reffile" class="muted">Referensi gaya video (foto atau video, maks. 3)</label>
-    <input type="file" id="reffile" accept="image/*,video/*" multiple>
+    <label for="reffile" class="muted">Referensi gaya video (foto JPG/PNG atau video MP4/WebM, maks. 3)</label>
+    <input type="file" id="reffile" accept="image/*,video/mp4,video/quicktime,video/webm,.mp4,.m4v,.mov,.webm" multiple>
     <input type="text" id="refnote" placeholder="Kesan dalam satu kalimat, mis. neon, cepat, penuh gerak" aria-label="Kesan referensi">
     <div id="reflist" class="muted"></div>
     <div class="muted">Referensi dipakai sebagai arah (warna, ritme, jenis gerak), bukan untuk meniru karya orang lain. Tanpa referensi, tim memakai preset yang dipilih.</div>
@@ -166,6 +166,12 @@ var S=null,LOG=[],imagesOK=false,REFS=[];
 var FATAL=['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed','session_expired','rate_limited'];
 var COPY={not_granted:'Izin Claude belum diberikan.',sampling_disabled:'Claude tidak tersedia untuk akunmu di halaman ini.',not_declared:'Halaman ini belum diberi izin memanggil Claude.',capability_disabled:'Pemanggilan Claude tidak bisa dipakai di tampilan ini.',capability_removed:'Versi aplikasi belum mendukung fitur yang dibutuhkan. Perbarui lalu muat ulang.',session_expired:'Sesi berakhir. Masuk lagi lalu jalankan ulang.',rate_limited:'Batas pemakaian tercapai. Tunggu sebentar lalu jalankan lagi.',refused:'Claude menolak memproses bagian ini. Ubah bahan lalu coba lagi.',upstream_error:'Koneksi ke Claude terputus. Coba jalankan ulang.',invalid_json:'Salah satu agen menjawab dengan format yang tidak terbaca. Coba jalankan ulang.',no_recorder:'Browser ini tidak bisa merekam video. Coba buka di Chrome.'};
 
+function errMsg(e){
+  if(!e)return COPY.upstream_error;
+  if(COPY[e.code]&&e.code!=='upstream_error')return COPY[e.code];
+  var d=[e.code,e.message].filter(Boolean).join(' - ');
+  return (COPY[e.code]||'Terjadi error.')+(d?' Detail: '+String(d).slice(0,240):'')+' (unduh log debug untuk rincian)';
+}
 function limiter(n){var a=0,q=[];function next(){if(a>=n||!q.length)return;a++;var t=q.shift();Promise.resolve().then(t.fn).then(t.res,t.rej).then(function(){a--;next()})}return function(fn){return new Promise(function(res,rej){q.push({fn:fn,res:res,rej:rej});next()})}}
 var lim=limiter(3), limRender=limiter(1);
 function parseJSON(t){
@@ -175,22 +181,25 @@ function parseJSON(t){
   throw {code:'invalid_json'};
 }
 async function ask(who,cardId,prompt,tier,images){
-  var last;
-  for(var attempt=0;attempt<2;attempt++){
+  var last,useImg=!!(images&&images.length&&imagesOK),tries=useImg?3:2;
+  for(var attempt=0;attempt<tries;attempt++){
     if(aborted)throw {code:'cancelled'};
     try{
+      var withImg=useImg;
       var j=await lim(async function(){
         if(aborted)throw {code:'cancelled'};
-        var opts={cache:false,signal:ctl.signal,modelTier:tier||'quick'};if(images&&images.length&&imagesOK)opts.images=images;
+        var opts={cache:false,signal:ctl.signal,modelTier:tier||'quick'};
+        if(withImg){opts.images=images;var r0=await sample(prompt,opts);return parseJSON(r0.text)}
         if(typeof sample.json==='function')return sample.json(prompt,opts);
         var r=await sample(prompt,opts);return parseJSON(r.text);
       });
-      LOG.push({t:new Date().toISOString(),who:who,kartu:cardId||null,output:j});
+      LOG.push({t:new Date().toISOString(),who:who,kartu:cardId||null,gambar:withImg?images.length:0,output:j});
       return j;
     }catch(e){
-      last=e;LOG.push({t:new Date().toISOString(),who:who,kartu:cardId||null,error:(e&&(e.code||e.message))||String(e)});
+      last=e;LOG.push({t:new Date().toISOString(),who:who,kartu:cardId||null,error:(e&&(e.code||e.message))||String(e),detail:e&&e.message||null});
       if(aborted||(e&&e.code==='cancelled'))throw {code:'cancelled'};
       if(e&&FATAL.indexOf(e.code)>-1){fatal=e.code;throw e}
+      if(useImg&&e&&e.code!=='refused'){useImg=false;if(S)notice('info','Gambar referensi gagal diproses Claude ('+esc((e&&(e.code||e.message))||'error')+'). Dilanjutkan tanpa gambar; referensimu dipakai lewat data terukur (palet dan energi gerak).');continue}
       if(e&&e.code==='refused')throw e;
     }
   }
@@ -364,7 +373,7 @@ async function cardFlow(c){
     c.stage=c.verdict==='Lolos'?'Lolos QA, menunggu persetujuanmu':'Tidak Lolos, menunggu keputusanmu';c.kind=c.verdict==='Lolos'?'ok':'fail';UI.update();UI.results();
   }catch(e){
     if(e&&e.code==='cancelled'){c.stage='Dihentikan';c.kind=''}
-    else{c.stage='Tertahan (error)';c.kind='fail';if(!fatal&&e&&e.code)UI.error(COPY[e.code]||COPY.upstream_error)}
+    else{c.stage='Tertahan (error)';c.kind='fail';if(!fatal&&e&&e.code)UI.error(errMsg(e))}
     c.held=true;UI.update();
   }
 }
@@ -375,7 +384,7 @@ async function approve(c){
     running=true;aborted=false;ctl=new AbortController();
     c.paket=await ask('3.1',c.id,P('3.1','Susun paket posting untuk kartu ini. Fase 1: hanya menyiapkan paket, bukan memposting atau menjadwalkan. Saran jadwal tanpa data adalah asumsi dan harus ditandai.',ctxCard(c,false)+'\n\nCAPTION DRAF: '+c.konten.caption+'\nHASHTAG: '+c.konten.hashtag.join(' '),'Balas HANYA JSON: {"platform":"...","caption_final":"...","hashtag":["#..."],"cover":"slide/adegan mana sebagai cover dan alasannya","saran_jadwal":"saran + tulis (asumsi)","catatan":["maks 3 poin"]}'),'quick');
     c.stage='Disetujui, paket posting siap (belum diposting)';
-  }catch(e){c.stage='Disetujui (paket gagal dibuat)';if(!(e&&e.code==='cancelled'))UI.error(COPY[e&&e.code]||COPY.upstream_error)}
+  }catch(e){c.stage='Disetujui (paket gagal dibuat)';if(!(e&&e.code==='cancelled'))UI.error(errMsg(e))}
   running=false;UI.track('a3','done');UI.act('a3','Paket posting siap. Zuno belum memposting apa pun (Fase 1).');UI.update();UI.results();$('run').disabled=!sample;
 }
 
@@ -389,7 +398,7 @@ async function main(){
   UI.start();
   try{
     S.refs=null;
-    if(REFS.length&&fm.indexOf('video')>-1){UI.act('lead','Membaca referensi gaya dari Zulnan ('+REFS.length+' file)');S.refs=await readRefs()}
+    if(REFS.length&&fm.indexOf('video')>-1){UI.act('lead','Membaca referensi gaya dari Zulnan ('+REFS.length+' file)');try{S.refs=await readRefs()}catch(e){S.refs=null;notice('warn','Referensi gagal dibaca ('+esc(e&&e.message||'error')+'). Video memakai preset.')}}
     UI.act('lead','Orkestraror Agen membaca perintah dan merencanakan '+S.cards.length+' Kartu Konten');UI.track('lead','run');
     var plan=await ask('lead',null,P('lead','Golongkan permintaan dan rencanakan '+S.cards.length+' Kartu Konten dengan ID dan format tetap: '+S.cards.map(function(c){return c.id+' '+c.format}).join(', ')+'. Tahap funnel dan topik tiap kartu harus berbeda.',cmd,'Balas HANYA JSON: {"golongan":"ide baru atau bahan mentah","kartu":[{"id":"KK-001","platform":"Instagram atau TikTok atau Threads","funnel":"TOFU atau MOFU atau BOFU","ide":"satu kalimat"}]}'),'quick');
     (plan.kartu||[]).forEach(function(k,i){
@@ -411,7 +420,7 @@ async function main(){
     UI.update();
     await Promise.all(S.cards.map(function(c){return cardFlow(c)}));
   }catch(e){
-    if(!(e&&e.code==='cancelled'))UI.error(COPY[(e&&e.code)]||COPY.upstream_error);
+    if(!(e&&e.code==='cancelled'))UI.error(errMsg(e));
   }
   running=false;UI.end();
 }
@@ -628,7 +637,7 @@ var Render={
 };
 
 /* ---------------- Referensi gaya dari Zulnan (foto atau video) ---------------- */
-function toBlob(cv,q){return new Promise(function(r){cv.toBlob(r,'image/jpeg',q||.8)})}
+function toBlob(cv,q){return new Promise(function(r){cv.toBlob(r,'image/jpeg',q||.7)})}
 function sampleCanvas(src,w,h){var c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d',{willReadFrequently:true});x.drawImage(src,0,0,w,h);return x.getImageData(0,0,w,h).data}
 function hex2(r,g,b){return '#'+[r,g,b].map(function(v){return Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')}).join('')}
 function topColors(bins,k){
@@ -637,45 +646,62 @@ function topColors(bins,k){
   return out.map(function(c){return hex2(c.r,c.g,c.b)});
 }
 function addBins(bins,d){for(var i=0;i<d.length;i+=4){var key=(d[i]>>5)+','+(d[i+1]>>5)+','+(d[i+2]>>5),b=bins[key]||(bins[key]={n:0,r:0,g:0,b:0});b.n++;b.r+=d[i];b.g+=d[i+1];b.b+=d[i+2]}}
-function seek(v,t){return new Promise(function(res){var done=false,f=function(){if(!done){done=true;res()}};v.onseeked=f;setTimeout(f,3000);try{v.currentTime=t}catch(e){f()}})}
+var VID_EXT=/\.(mp4|m4v|mov|webm|mkv)$/i,IMG_EXT=/\.(jpe?g|png|webp|gif|bmp|avif)$/i,MAX_VID=300*1024*1024,MAX_IMG=12*1024*1024;
+function isVid(f){return /^video\//.test(f.type)||VID_EXT.test(f.name)}
+function isImg(f){return /^image\//.test(f.type)||IMG_EXT.test(f.name)}
+function seek(v,t){return new Promise(function(res){var done=false,f=function(){if(!done){done=true;v.onseeked=null;res()}};if(Math.abs(v.currentTime-t)<.02)return res();v.onseeked=f;setTimeout(f,1500);try{v.currentTime=t}catch(e){f()}})}
+function loadVideo(f){
+  return new Promise(function(res,rej){
+    var v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='auto';v.setAttribute('playsinline','');
+    var url=URL.createObjectURL(f),fin=false;
+    function ok(){if(fin)return;if(!(v.videoWidth>0&&v.videoHeight>0))return;fin=true;res({v:v,url:url})}
+    function bad(m){if(fin)return;fin=true;URL.revokeObjectURL(url);rej(new Error(m))}
+    v.onloadeddata=ok;v.onloadedmetadata=function(){setTimeout(ok,300)};
+    v.onerror=function(){bad('browser tidak bisa memutar file ini (codec tidak didukung, mis. HEVC/H.265). Ekspor ulang sebagai MP4 H.264')};
+    setTimeout(function(){bad('video terlalu lama dimuat')},15000);
+    v.src=url;try{v.load()}catch(e){}
+  });
+}
 async function readRefs(){
-  var bins={},blobs=[],nama=[],motion=[],cuts=0,spanTotal=0,durasi=[];
+  var bins={},blobs=[],nama=[],motion=[],cuts=0,spanTotal=0,durasi=[],masalah=[],terbaca=0;
   for(var fi=0;fi<REFS.length;fi++){
-    var f=REFS[fi];nama.push(f.name);
+    var f=REFS[fi],ket=f.name;
     try{
-      if(/^image\//.test(f.type)){
-        var bmp=await createImageBitmap(f),sc=Math.min(1,768/Math.max(bmp.width,bmp.height)),cv=document.createElement('canvas');cv.width=Math.round(bmp.width*sc);cv.height=Math.round(bmp.height*sc);cv.getContext('2d').drawImage(bmp,0,0,cv.width,cv.height);
-        blobs.push(await toBlob(cv));addBins(bins,sampleCanvas(cv,48,48));
-      }else if(/^video\//.test(f.type)){
-        var v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='auto';var url=URL.createObjectURL(f);v.src=url;
-        await new Promise(function(res,rej){v.onloadedmetadata=res;v.onerror=function(){rej(new Error('video'))};setTimeout(function(){rej(new Error('timeout'))},10000)});
-        var d=isFinite(v.duration)&&v.duration>0?v.duration:3;durasi.push(Math.round(d*10)/10);
-        var keys=[.08,.3,.5,.7,.9];
-        for(var ki=0;ki<keys.length;ki++){await seek(v,d*keys[ki]);var cv2=document.createElement('canvas');var sc2=Math.min(1,640/Math.max(v.videoWidth||640,v.videoHeight||640));cv2.width=Math.round((v.videoWidth||640)*sc2);cv2.height=Math.round((v.videoHeight||360)*sc2);cv2.getContext('2d').drawImage(v,0,0,cv2.width,cv2.height);blobs.push(await toBlob(cv2));addBins(bins,sampleCanvas(cv2,48,48))}
-        /* ukur gerak: selisih antar cuplikan berdekatan */
-        var step=Math.min(.25,d/16),prev=null,span=Math.min(d,4);
+      if(isImg(f)&&!isVid(f)){
+        if(f.size>MAX_IMG)throw new Error('foto lebih dari 12 MB');
+        var bmp=await createImageBitmap(f),sc=Math.min(1,640/Math.max(bmp.width,bmp.height)),cv=document.createElement('canvas');cv.width=Math.max(1,Math.round(bmp.width*sc));cv.height=Math.max(1,Math.round(bmp.height*sc));cv.getContext('2d').drawImage(bmp,0,0,cv.width,cv.height);
+        blobs.push(await toBlob(cv));addBins(bins,sampleCanvas(cv,48,48));nama.push(f.name);terbaca++;
+      }else if(isVid(f)){
+        if(f.size>MAX_VID)throw new Error('video lebih dari 300 MB, potong dulu menjadi beberapa detik');
+        var L=await loadVideo(f),v=L.v,d=isFinite(v.duration)&&v.duration>0?v.duration:3;durasi.push(Math.round(d*10)/10);
+        var keys=d<2?[.2,.8]:[.1,.35,.6,.85];
+        for(var ki=0;ki<keys.length;ki++){await seek(v,d*keys[ki]);var sc2=Math.min(1,640/Math.max(v.videoWidth,v.videoHeight)),cv2=document.createElement('canvas');cv2.width=Math.max(1,Math.round(v.videoWidth*sc2));cv2.height=Math.max(1,Math.round(v.videoHeight*sc2));cv2.getContext('2d').drawImage(v,0,0,cv2.width,cv2.height);blobs.push(await toBlob(cv2));addBins(bins,sampleCanvas(cv2,48,48))}
+        var span=Math.min(d,4),step=Math.max(.2,span/12),prev=null;
         for(var t=0;t<span;t+=step){await seek(v,t);var g=sampleCanvas(v,32,32),gray=[];for(var q=0;q<g.length;q+=4)gray.push((g[q]+g[q+1]+g[q+2])/3);
           if(prev){var df=0;for(var z=0;z<gray.length;z++)df+=Math.abs(gray[z]-prev[z]);df/=gray.length;motion.push(df);if(df>35)cuts++}prev=gray}
-        spanTotal+=span;URL.revokeObjectURL(url);
-      }
-    }catch(e){LOG.push({t:new Date().toISOString(),who:'referensi',error:String(e&&e.message||e)})}
+        spanTotal+=span;URL.revokeObjectURL(L.url);nama.push(f.name);terbaca++;
+      }else throw new Error('format tidak dikenal. Pakai MP4, WebM, JPG, atau PNG');
+    }catch(e){masalah.push(ket+': '+(e&&e.message||e));LOG.push({t:new Date().toISOString(),who:'referensi',file:f.name,tipe:f.type,ukuran:f.size,error:String(e&&e.message||e)})}
   }
+  if(masalah.length)notice('warn','Sebagian referensi tidak bisa dibaca: '+esc(masalah.join(' | '))+'. Format yang aman: MP4 (H.264), WebM, JPG, PNG.');
+  if(!terbaca){notice('warn','Tidak ada referensi yang terbaca, jadi video memakai preset.');return null}
+  blobs=blobs.length>8?blobs.filter(function(_,i){return i%Math.ceil(blobs.length/8)===0}).slice(0,8):blobs;
   var avg=motion.length?motion.reduce(function(a,b){return a+b},0)/motion.length:null;
   var medido={palet_dominan:topColors(bins,5)};
   if(avg!=null){medido.energi_gerak=avg<6?'rendah':avg<16?'sedang':'tinggi';medido.perkiraan_potongan_per_detik=Math.round(cuts/Math.max(1,spanTotal)*10)/10;medido.durasi_video_detik=durasi}
-  var lim=null;try{lim=sample&&sample.limits?await sample.limits():null}catch(e){}
-  imagesOK=!!(lim&&lim.images);
+  var lim0=null;try{lim0=sample&&typeof sample.limits==='function'?await sample.limits():null}catch(e){}
+  imagesOK=!!(lim0&&lim0.images);
   if(!imagesOK)notice('info','Tampilan ini belum menerima gambar untuk Claude, jadi referensimu dipakai lewat data terukur saja (palet dan energi gerak), bukan dilihat langsung.');
-  return {ada:true,nama:nama,catatan:($('refnote').value||'').trim().slice(0,200),blobs:blobs.slice(0,12),medido:medido};
+  return {ada:true,nama:nama,catatan:($('refnote').value||'').trim().slice(0,200),blobs:blobs,medido:medido};
 }
 function renderRefList(){
   var box=$('reflist');if(!REFS.length){box.textContent='';return}
   box.innerHTML='<div class="thumbs"></div><div>'+REFS.map(function(f){return esc(f.name)}).join(', ')+' <button class="btn" id="refclear" style="padding:2px 10px;font-size:13px">Hapus referensi</button></div>';
   var th=box.querySelector('.thumbs');
-  REFS.forEach(function(f){if(/^image\//.test(f.type)){var im=document.createElement('img');im.alt='Referensi '+f.name;im.src=URL.createObjectURL(f);th.appendChild(im)}else{var sp=document.createElement('span');sp.className='pill';sp.textContent='video: '+f.name;th.appendChild(sp)}});
+  REFS.forEach(function(f){if(isImg(f)&&!isVid(f)){var im=document.createElement('img');im.alt='Referensi '+f.name;im.src=URL.createObjectURL(f);th.appendChild(im)}else{var sp=document.createElement('span');sp.className='pill';sp.textContent='video: '+f.name;th.appendChild(sp)}});
   $('refclear').onclick=function(){REFS=[];$('reffile').value='';renderRefList()};
 }
-$('reffile').addEventListener('change',function(){REFS=Array.prototype.slice.call(this.files||[]).filter(function(f){return /^(image|video)\//.test(f.type)}).slice(0,3);renderRefList()});
+$('reffile').addEventListener('change',function(){REFS=Array.prototype.slice.call(this.files||[]).filter(function(f){return isImg(f)||isVid(f)}).slice(0,3);renderRefList()});
 
 /* ---------------- Bagian 3: UI ---------------- */
 var TRACKS=[['lead','Lead','Orkestraror Agen · Juru Kabar'],['a1','Agen 1','Kreator Zuno (termasuk Perender)'],['a2','Agen 2','Penjaga Mutu Zuno (veto)'],['a3','Agen 3','Operator Zuno (setelah kamu setuju)']];
@@ -774,7 +800,7 @@ var UI={
       c.konten=normKonten(c,await ask('1.3',c.id,p13(c,'Catatan Zulnan: '+(note||'tolong perbaiki secara umum')),'default'));
       c.visual=normVisual(c,await ask('1.5',c.id,p15(c),'quick',c.format==='video'&&S.refs?S.refs.blobs:null));
       await renderCard(c);await cardFlow(c);
-    }catch(e){c.held=true;c.stage=(e&&e.code==='cancelled')?'Dihentikan':'Tertahan (error)';c.kind='fail';if(!(e&&e.code==='cancelled'))UI.error(COPY[e&&e.code]||COPY.upstream_error)}
+    }catch(e){c.held=true;c.stage=(e&&e.code==='cancelled')?'Dihentikan':'Tertahan (error)';c.kind='fail';if(!(e&&e.code==='cancelled'))UI.error(errMsg(e))}
     running=false;UI.end();
   },
   tab:function(w){var v=w==='v';$('tabc').setAttribute('aria-selected',!v);$('tabv').setAttribute('aria-selected',v);$('resc').classList.toggle('hidden',v);$('resv').classList.toggle('hidden',!v)}

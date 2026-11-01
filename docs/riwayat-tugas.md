@@ -73,4 +73,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Batas jujur: ketepatan "meniru kesan" bergantung pada Claude membaca cuplikan; yang terukur hanya palet, energi gerak, dan perkiraan potongan per detik. Video referensi panjang diukur dari 4 detik pertama.
 - Tertunda: uji dengan Claude asli; suara dan MP4; Mode Tampil; commit belum didorong ke GitHub atas permintaan Zulnan.
 
-## 14. (entri berikutnya di sini)
+## 14. Perbaikan error referensi dan dukungan MP4 (2026-11-01)
+- Permintaan: Zuno Studio v2 error saat diberi referensi; rapikan dukungan MP4.
+- Temuan: pesan error lama terlalu umum ("koneksi terputus") sehingga penyebab sebenarnya tersembunyi; pengiriman gambar ke Claude tidak punya cadangan; pembacaan video rapuh (seek tanpa guard, tipe file kosong tidak dikenali, satu file gagal bisa menggagalkan alur). Penyebab persis di Claude asli belum bisa direproduksi (tes memakai Claude tiruan).
+- Hasil: pesan error menyebut kode dan detail; bila Claude menolak gambar, alur lanjut tanpa gambar dengan pemberitahuan; referensi tidak terbaca tidak menghentikan alur (kembali ke preset, disertai alasan); MP4/MOV/WebM dikenali lewat ekstensi juga; ukuran gambar dikecilkan dan jumlahnya dibatasi 8; log debug mencatat file, tipe, ukuran, dan error. Diuji: MP4+PNG, Claude menolak gambar, MP4 rusak.
+- Tertunda: uji dengan Claude asli; video HEVC/H.265 (mis. sebagian rekaman iPhone) tetap tidak bisa dibaca browser dan perlu diekspor ulang sebagai H.264.
+
+## 15. (entri berikutnya di sini)
