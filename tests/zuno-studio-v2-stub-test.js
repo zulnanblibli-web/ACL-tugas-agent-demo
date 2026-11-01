@@ -10,9 +10,9 @@ const { chromium } = require('playwright');
       const role=(input.match(/PERAN ANDA: (\S+)/)||[])[1];
       if(role==='lead') return {golongan:'ide baru',kartu:[{id:'KK-001',platform:'Instagram',funnel:'TOFU',ide:'AI rapikan kerja'},{id:'KK-002',platform:'Instagram',funnel:'MOFU',ide:'Prompt harian'},{id:'KK-003',platform:'TikTok',funnel:'BOFU',ide:'Cerita bikin agent'}]};
       if(role==='1.2') return {briefs:[1,2,3].map(i=>({id:'KK-00'+i,ide:'Ide '+i,funnel:['TOFU','MOFU','BOFU'][i-1],platform:'Instagram',angle:'a',hooks:['h']}))};
-      if(role==='1.3'){ if(/ID: KK-003/.test(input)) return {adegan:[{teks:'Capek kerjaan numpuk?',detik:2},{teks:'Coba pakai AI buat bantu rapikan',detik:2},{teks:'Simpan ya',detik:2}],caption:'cap v',hashtag:['#ai'],fakta:[]};
+      if(role==='1.3'){ if(/ID: KK-003/.test(input)) return {adegan:[{babak:'hook',teks:'Capek kerjaan numpuk?',detik:2.5},{babak:'perkenalan',teks:'Gue Zulnan',detik:4.5},{babak:'problem',teks:'Semua serba telat',detik:2.5},{babak:'solusi',teks:'Coba rapikan pakai AI',detik:3},{babak:'penutup',teks:'Simpan dulu ya',detik:3}],caption:'cap v',hashtag:['#ai'],fakta:[]};
         return {slides:[1,2,3,4,5,6].map(i=>({judul:'Judul panjang slide nomor '+i,isi:'Isi singkat slide '+i+' yang cukup panjang supaya teks membungkus beberapa baris dengan rapi di kanvas'})),caption:'cap',hashtag:['#ai','#produktif'],fakta:['tidak ada']}; }
-      if(role==='1.5'){const n=/ID: KK-003/.test(input)?4:6;return {gaya:/KK-003/.test(input)?'ungu':'teal',ikon:Array(n).fill('🚀')}}
+      if(role==='1.5'){const n=/ID: KK-003/.test(input)?5:6;return {items:Array.from({length:n},(_,i)=>({suasana:(i==0||i==n-1)?'gelap':'terang',ikon:['🚀','💡','⏰','✅','📌','🎯'][i%6],pill:i==2?'TIPS':'',kunci:i==0?'Capek':'AI'}))}}
       if(/^2\./.test(role)){ const bad=failOnce&&role==='2.2'&&/ID: KK-001/.test(input); if(bad){failOnce=false; window.__order.push('veto')} return {verdict:bad?'Tidak Lolos':'Lolos',catatan:bad?['klaim penghasilan']:['ok'],bagian:bad?'teks':'-'}; }
       return {};
     };
