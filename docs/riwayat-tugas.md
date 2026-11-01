@@ -32,4 +32,12 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Hasil: repo didorong ke branch `claude/gifted-turing-csug5l`; v2 dibangun (`prototypes/zuno-studio-v2.html`) dengan proses garis besar, pemberitahuan veto sebelum gagal, carousel PNG dan video WebM nyata. Tes stub `tests/zuno-studio-v2-stub-test.js` lolos tanpa error.
 - Tertunda: uji dengan Claude asli, uji unduhan di claude.ai, publikasi artifact, PDF/MP4/suara.
 
-## 8. (entri berikutnya di sini)
+## 8. Profil agen Zuno (2026-11-01)
+- Permintaan: isi profile agent untuk Zuno, Lead, dan sub-agen memakai katalog agency-agents-id; beri nama dan tanggung jawab; tambahan boleh asal relevan untuk automation konten; semua tetap ada dengan status standby; file .md urut sesuai alur kerja.
+- Hasil: folder `agents/` berisi 23 profil bernomor menurut urutan kerja, `README.md` (tim, diagram alur, aturan standby, daftar), dan `semua-agen.md` (gabungan untuk dibaca sekali jalan). Nama jabatan dari katalog (Orkestraror Agen, Peneliti Tren, Kreator Konten, Pencerita Visual, Penjaga Merek, Pemeriksa Realitas, dan seterusnya).
+- Sembilan tambahan, semuanya standby atau aktif sesuai fungsinya: Juru Kabar (baru), Insinyur Prompt Gambar, Pelatih Editing Video Pendek, Perender (baru), Narator & Subtitle (baru), Spesialis Optimasi Video, Arsitek Tata Kelola Otomasi, Pelacak Eksperimen, Penyintesis Umpan Balik.
+- Perubahan lingkup: Pengumpul Bukti (2.3) juga memeriksa file hasil render; Juru Kabar wajib memberi kabar sebelum kartu ditandai Tidak Lolos.
+- Catatan: katalog aslinya tidak punya editor yang benar-benar membuat file gambar atau video; Pelatih Editing Video Pendek dan Insinyur Prompt Gambar hanya memberi arahan dan prompt, jadi file jadi dibuat Perender (peran baru).
+- Tertunda: prompt orkestrasi belum diperbarui untuk tambahan ini; profil belum dihubungkan ke Zuno Studio v2; nama kode baru (L.1, 1.6 sampai 1.10, 3.5 sampai 3.7) perlu dikonfirmasi saat prompt diperbarui.
+
+## 9. (entri berikutnya di sini)

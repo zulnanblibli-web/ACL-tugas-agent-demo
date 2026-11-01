@@ -1,12 +1,13 @@
 # Progress: Zuno
 
-Terakhir diperbarui: 2026-11-01
+Terakhir diperbarui: 2026-11-01 (profil agen ditambahkan)
 
 ## Status singkat
 - Blueprint dan prompt orkestrasi: **selesai** (`docs/prompt-orkestrasi-zuno.md`, juga Word dan Claude Doc).
 - Preview skema (simulasi berskrip): **selesai**, tidak memanggil AI.
 - Zuno Studio v1 (tool live, tiap sub-agen memanggil Claude): **jalan, tapi terlalu rumit** menurut Zulnan. Dipakai sebagai bahan, akan diganti v2.
 - Zuno Studio v2 (sederhana, output nyata): **sudah dibangun, lolos tes stub; belum diuji dengan Claude asli.**
+- Profil agen (23 peran, nama dari katalog agency-agents-id): **selesai ditulis di `agents/`, menunggu dicek Zulnan.**
 
 ## Zuno Studio v2: sudah dibangun (2026-11-01)
 File: `prototypes/zuno-studio-v2.html` (artifact Claude, butuh capability `sample` dan `downloads`).
@@ -17,7 +18,15 @@ File: `prototypes/zuno-studio-v2.html` (artifact Claude, butuh capability `sampl
 - Struktur kode: CORE (agen, tanpa DOM), RENDER, UI, agar mudah dipindah ke web app.
 Keputusan Zulnan: carousel HTML/canvas ke PNG; video animasi teks di browser; jalan sebagai artifact dulu; log tersembunyi disimpan.
 
+## Profil agen: sudah ditulis (2026-11-01)
+Folder `agents/` (baca `agents/README.md` dulu; `agents/semua-agen.md` adalah versi gabungan).
+- 23 profil, nomor file = urutan alur kerja. Format mengikuti katalog (frontmatter name, description, tools, color, emoji, vibe) ditambah kode, tim, urutan, status, acuan.
+- Semua agen ada; yang tidak ikut alur harian berstatus **standby** (siaga, jalan saat ditugaskan lewat Kartu Konten). Aturan fase, veto Agen 2, 2 putaran revisi, dan persetujuan Zulnan tetap berlaku.
+- Tambahan baru: Juru Kabar (kabar sebelum Tidak Lolos), Insinyur Prompt Gambar, Pelatih Editing Video Pendek, Perender (file jadi), Narator & Subtitle, Spesialis Optimasi Video, Arsitek Tata Kelola Otomasi, Pelacak Eksperimen, Penyintesis Umpan Balik.
+- Katalog tidak punya agen yang benar-benar merender gambar atau video; Perender dan Narator & Subtitle dibuat sendiri.
+
 ## Tugas berikutnya
+0. Zulnan mengecek `agents/`; setelah setuju, perbarui `docs/prompt-orkestrasi-zuno.md` (dan .docx, Claude Doc) dengan 9 tambahan dan Juru Kabar, lalu hubungkan profil ke Zuno Studio v2.
 1. Publikasikan v2 sebagai artifact (declare capability `sample` dan `downloads`) dan uji dengan Claude asli (belum diuji; hanya tes stub).
 2. Uji unduhan `downloads.save` dengan Blob di claude.ai (format data belum terverifikasi).
 3. Opsional: ekspor PDF carousel, MP4, musik/suara, Mode Tampil, 1.1 riset tren, 3.x agen penerbit.
