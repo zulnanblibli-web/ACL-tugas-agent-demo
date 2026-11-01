@@ -40,4 +40,11 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Catatan: katalog aslinya tidak punya editor yang benar-benar membuat file gambar atau video; Pelatih Editing Video Pendek dan Insinyur Prompt Gambar hanya memberi arahan dan prompt, jadi file jadi dibuat Perender (peran baru).
 - Tertunda: prompt orkestrasi belum diperbarui untuk tambahan ini; profil belum dihubungkan ke Zuno Studio v2; nama kode baru (L.1, 1.6 sampai 1.10, 3.5 sampai 3.7) perlu dikonfirmasi saat prompt diperbarui.
 
-## 9. (entri berikutnya di sini)
+## 9. Profil agen format lengkap ala katalog (2026-11-01)
+- Permintaan: setiap agen dibuat seperti contoh katalog ("Agent Ahli Strategi Media Sosial"), jelas di tiap bagian; jangan cuma ambil nama, tugas dan tanggung jawab harus lengkap.
+- Hasil: 23 profil di `agents/` ditulis ulang. Tiap file kini punya: Definisi Peran, Status, Kemampuan Inti, Keahlian Khusus, Integrasi Alur Kerja (Menerima dari / Berkolaborasi dengan / Menyerahkan ke / Mengeskalasi ke / Paralel), Kerangka Pengambilan Keputusan, Metrik Keberhasilan, Contoh Kasus Penggunaan, kerangka khusus peran (2-3 per agen), Tugas di Zuno, Dilarang, Masukan, Keluaran, Gaya Komunikasi, Pembelajaran & Memori. `README.md` dan `semua-agen.md` dibuat ulang.
+- Aturan isi: metrik berupa metrik proses (misalnya nol klaim tanpa bukti, maksimal 2 putaran revisi), bukan angka tolok ukur katalog; ambang performa menunggu Zulnan. Angka yang ada (5-10 temuan, 2-3 hari, basi 1-2 minggu) berasal dari prompt orkestrasi. Nama 5 web Nexamind tidak dikarang.
+- File berubah: seluruh `agents/*.md`, `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: Zulnan mengecek profil; prompt orkestrasi (md/docx/Claude Doc) belum memuat 9 tambahan dan Juru Kabar; profil belum dihubungkan ke Zuno Studio v2; publikasi dan uji v2.
+
+## 10. (entri berikutnya di sini)

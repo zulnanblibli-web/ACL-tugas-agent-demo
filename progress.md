@@ -1,13 +1,13 @@
 # Progress: Zuno
 
-Terakhir diperbarui: 2026-11-01 (profil agen ditambahkan)
+Terakhir diperbarui: 2026-11-01 (profil agen ditulis ulang ke format lengkap)
 
 ## Status singkat
 - Blueprint dan prompt orkestrasi: **selesai** (`docs/prompt-orkestrasi-zuno.md`, juga Word dan Claude Doc).
 - Preview skema (simulasi berskrip): **selesai**, tidak memanggil AI.
 - Zuno Studio v1 (tool live, tiap sub-agen memanggil Claude): **jalan, tapi terlalu rumit** menurut Zulnan. Dipakai sebagai bahan, akan diganti v2.
 - Zuno Studio v2 (sederhana, output nyata): **sudah dibangun, lolos tes stub; belum diuji dengan Claude asli.**
-- Profil agen (23 peran, nama dari katalog agency-agents-id): **selesai ditulis di `agents/`, menunggu dicek Zulnan.**
+- Profil agen (23 peran, nama dan format dari katalog agency-agents-id): **selesai ditulis ulang lengkap di `agents/`, menunggu dicek Zulnan.**
 
 ## Zuno Studio v2: sudah dibangun (2026-11-01)
 File: `prototypes/zuno-studio-v2.html` (artifact Claude, butuh capability `sample` dan `downloads`).
@@ -20,7 +20,8 @@ Keputusan Zulnan: carousel HTML/canvas ke PNG; video animasi teks di browser; ja
 
 ## Profil agen: sudah ditulis (2026-11-01)
 Folder `agents/` (baca `agents/README.md` dulu; `agents/semua-agen.md` adalah versi gabungan).
-- 23 profil, nomor file = urutan alur kerja. Format mengikuti katalog (frontmatter name, description, tools, color, emoji, vibe) ditambah kode, tim, urutan, status, acuan.
+- 23 profil, nomor file = urutan alur kerja. Format mengikuti contoh katalog: Definisi Peran, Kemampuan Inti, Keahlian Khusus, Integrasi Alur Kerja, Kerangka Pengambilan Keputusan, Metrik Keberhasilan, Contoh Kasus Penggunaan, kerangka khusus peran, Gaya Komunikasi, Pembelajaran & Memori; ditambah bagian Zuno (Status, Tugas di Zuno, Dilarang, Masukan, Keluaran). Frontmatter: name, description, tools, color, emoji, vibe, kode, tim, urutan, status, acuan.
+- Metrik = metrik proses; tidak ada angka target karangan. Ambang performa menunggu Zulnan.
 - Semua agen ada; yang tidak ikut alur harian berstatus **standby** (siaga, jalan saat ditugaskan lewat Kartu Konten). Aturan fase, veto Agen 2, 2 putaran revisi, dan persetujuan Zulnan tetap berlaku.
 - Tambahan baru: Juru Kabar (kabar sebelum Tidak Lolos), Insinyur Prompt Gambar, Pelatih Editing Video Pendek, Perender (file jadi), Narator & Subtitle, Spesialis Optimasi Video, Arsitek Tata Kelola Otomasi, Pelacak Eksperimen, Penyintesis Umpan Balik.
 - Katalog tidak punya agen yang benar-benar merender gambar atau video; Perender dan Narator & Subtitle dibuat sendiri.

@@ -85,3 +85,5 @@ Semua 23 agen ada dan siaga. **Aktif harian** berarti ikut setiap kartu. **Stand
 
 - Prompt orkestrasi (`docs/prompt-orkestrasi-zuno.md`) masih menyebut 13 sub-agen; tambahan 1.6 sampai 1.10, 3.5 sampai 3.7, dan Juru Kabar belum dimasukkan. Perbarui setelah profil ini disetujui.
 - Profil ini belum dipakai di Zuno Studio v2; di sana tiap peran masih berupa potongan prompt di kode.
+- Format tiap profil mengikuti contoh katalog (Definisi Peran, Kemampuan Inti, Keahlian Khusus, Integrasi Alur Kerja, Kerangka Pengambilan Keputusan, Metrik Keberhasilan, Contoh Kasus Penggunaan, kerangka khusus peran, Gaya Komunikasi, Pembelajaran & Memori) ditambah bagian khusus Zuno (Status, Tugas di Zuno, Dilarang, Masukan, Keluaran).
+- Metrik sengaja bukan angka tolok ukur katalog. Angka target performa menunggu ditetapkan Zulnan (ukuran konten menang dan tayangan minimal belum ada).
