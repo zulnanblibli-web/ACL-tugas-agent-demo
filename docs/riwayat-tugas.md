@@ -54,4 +54,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Keputusan Zulnan (setelah pertanyaan): suara campur; tiap adegan maksimal 1,5 detik; alat render pertama claude-video-effects; panjang video dan jumlah slide mengikuti topik.
 - Tertunda: belum ada alat render yang diuji; preset hanyalah usulan; Zulnan memilih template carousel; uji claude-video-effects menunggu rekaman asli; alat Tanpa Wajah belum dipilih; prompt orkestrasi belum diperbarui; Zuno Studio v2 belum memakai Kartu Gaya.
 
-## 11. (entri berikutnya di sini)
+## 11. Brief gaya konten lengkap, siap pindah ke Claude Code (2026-11-01)
+- Permintaan: butuh brief .md gaya konten yang lengkap, simpan di git beserta langkah berikutnya; Zulnan pindah ke Claude Code. Jawaban: carousel campuran sesuai topik; rekaman video dikirim nanti di Claude Code.
+- Hasil: `docs/brief-gaya-konten.md` (posisi dan audiens, suara, fakta yang boleh dipakai, larangan, TOFU/MOFU/BOFU, gaya carousel 4 template, gaya video, cara kerja tim, cara memberi perintah, daftar [ISI]). `docs/gaya-video.md` dipulihkan dan disesuaikan (carousel campuran). `CLAUDE.md` dan `README.md` menunjuk ke brief. Profil Pencerita Visual diperbarui. `progress.md` berisi urutan kerja berikutnya.
+- Kesalahan yang diperbaiki: commit `a1e7ed1` memotong `docs/gaya-video.md` jadi tinggal bagian 7 (file ditulis ulang sebelum dibaca). Dipulihkan penuh dari commit `6dbdbce`.
+- Tertunda: seluruh butir [ISI] di brief; uji claude-video-effects menunggu rekaman asli; alat Tanpa Wajah belum dipilih; prompt orkestrasi dan Zuno Studio v2 belum memakai brief.
+
+## 12. (entri berikutnya di sini)

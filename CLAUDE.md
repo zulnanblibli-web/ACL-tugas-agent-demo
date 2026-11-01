@@ -10,6 +10,9 @@ Pemilik: Zulnan (Bahasa Indonesia, santai, to the point). Jawab dan tulis dokume
 1. Perbarui `progress.md` (status, keputusan baru, tugas berikutnya).
 2. Tambah satu entri baru di bawah `docs/riwayat-tugas.md` (tanggal, permintaan, hasil, file yang berubah, yang tertunda). Jangan menghapus entri lama.
 
+## Gaya konten
+Baca `docs/brief-gaya-konten.md` (brief dasar, memori inti) dan `docs/gaya-video.md` (preset video, Kartu Gaya, alat render) sebelum mengerjakan konten atau profil agen. Tanda [ISI] di brief berarti belum ditentukan Zulnan: jangan menebak.
+
 ## Aturan produk Zuno (dari prompt orkestrasi)
 - Satu pemilik per output; Agen 2 punya veto; maksimal 2 putaran revisi; status Disetujui hanya dari Zulnan.
 - Jangan mengarang angka performa, testimoni, atau pengalaman Zulnan. Harga produk belum ditentukan: pakai placeholder.

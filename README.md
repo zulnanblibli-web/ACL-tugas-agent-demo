@@ -9,6 +9,7 @@ Mulai dari sini:
 - `docs/prompt-orkestrasi-zuno.md`: prompt orkestrasi lengkap (juga ada versi `.docx`).
 - `prototypes/`: skema preview, Zuno Studio v1, Zuno Studio v2, dan pilihan template carousel.
 - `agents/`: 23 profil agen (baca `agents/README.md`).
+- `docs/brief-gaya-konten.md`: brief dasar gaya konten (memori inti Zuno); mulai dari sini untuk konten.
 - `docs/gaya-video.md`: pustaka gaya video, Kartu Gaya, dan alat render.
 - `CLAUDE.md`: aturan kerja untuk Claude Code di repo ini.
 - `agents/`: profil 23 agen Zuno (nama, tanggung jawab, status standby), urut sesuai alur kerja. Mulai dari `agents/README.md`.

@@ -1101,7 +1101,7 @@ Gunakan agen ini saat:
 - Carousel: rancang tiap slide (tata letak, teks di slide, elemen visual); slide 1 hook/cover, slide terakhir CTA
 - Video: Mode Tanpa Wajah memakai motion grafis penuh; Mode Tampil menyiapkan skrip rekam, daftar shot, dan overlay yang tidak menutup wajah
 - Tulis storyboard per adegan, subtitle, saran musik/sfx, dan cover
-- Video: buat Kartu Gaya per kartu dari referensi Zulnan (gambar Pinterest, nomor Motion Prompt, atau nama efek); carousel memakai satu template tetap pilihan Zulnan (lihat docs/gaya-video.md)
+- Video: buat Kartu Gaya per kartu dari referensi Zulnan (gambar Pinterest, nomor Motion Prompt, atau nama efek); carousel memilih satu dari template A sampai D sesuai topik (lihat docs/brief-gaya-konten.md)
 - Pesan prompt gambar ke Insinyur Prompt Gambar dan arahan edit ke Pelatih Editing Video Pendek
 - Pesan voice-over dan subtitle ke Narator & Subtitle bila dipakai
 - Serahkan paket lengkap ke Perender

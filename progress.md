@@ -1,6 +1,6 @@
 # Progress: Zuno
 
-Terakhir diperbarui: 2026-11-01 (pustaka gaya video dan pilihan template carousel)
+Terakhir diperbarui: 2026-11-01 (brief gaya konten lengkap; siap lanjut di Claude Code)
 
 ## Status singkat
 - Blueprint dan prompt orkestrasi: **selesai** (`docs/prompt-orkestrasi-zuno.md`, juga Word dan Claude Doc).
@@ -30,11 +30,18 @@ Folder `agents/` (baca `agents/README.md` dulu; `agents/semua-agen.md` adalah ve
 Baca `docs/gaya-video.md`. Ringkas:
 - Video: gaya berubah per video, dipilih lewat Kartu Gaya (pemilik: Pencerita Visual). Adegan maksimal 1,5 detik, megah, penuh motion; Mode Tampil atau Tanpa Wajah; typography mengikuti referensi. Referensi dari Zulnan (Pinterest) dilampirkan sebagai gambar.
 - Sumber gaya: Motion Prompt (MIT), claude-video-effects (MIT), HyperFrames (Apache 2.0), Remotion (lisensi khusus; cek bila Zuno dijual).
-- Carousel: satu template tetap. Pilihan A/B/C/D ada di artifact "Pilihan Template Carousel" (https://claude.ai/artifact/PHNp692VhrsaWiqzwhusP4), salinan di `prototypes/zuno-carousel-opsi.html`. **Menunggu pilihan Zulnan.**
+- Carousel: **campuran sesuai topik** (keputusan Zulnan). Satu carousel memakai satu dari 4 template (A Papan Tulis, B Neon Gelap, C Majalah, D Kartu Layar), dipilih Pencerita Visual. Contoh: artifact "Pilihan Template Carousel" (https://claude.ai/artifact/PHNp692VhrsaWiqzwhusP4), salinan di `prototypes/zuno-carousel-opsi.html`.
+- Brief dasar lengkap (memori inti): `docs/brief-gaya-konten.md`. Isi tanda **[ISI]** di sana bersama Zulnan; jangan menebak.
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
-00. Zulnan memilih template carousel (A/B/C/D). Lalu uji claude-video-effects di komputer Zulnan dengan satu rekaman asli dan satu preset (keputusan sudah diambil: suara campur, adegan maksimal 1,5 detik, panjang dan jumlah slide mengikuti topik).
+00. **Lanjut di Claude Code (urutan):**
+   a. Zulnan mengirim satu rekaman asli (video vertikal) dan memilih satu preset di `docs/gaya-video.md`. Uji claude-video-effects di komputernya (butuh ffmpeg dan Python 3.12): clone ke `~/.claude/skills/effects`, tulis `<video>_effects.json`, cek frame, render. Catat hasilnya jujur (berhasil atau gagal) di riwayat. Batas: tiap adegan maksimal 1,5 detik; wajah tidak tertutup.
+   b. Bersama Zulnan isi butir **[ISI]** di `docs/brief-gaya-konten.md` bagian 10 (contoh suara, handle, detail 5 web Nexamind, ukuran konten menang, tayangan minimal, harga, alat video Tanpa Wajah, izin latar SMK Broadcasting).
+   c. Pilih alat video Tanpa Wajah (HyperFrames atau Remotion; cek lisensi Remotion bila Zuno dijual).
+   d. Render satu carousel contoh (HTML/canvas ke PNG) memakai template pilihan sesuai topik.
+   e. Perbarui prompt orkestrasi (md, docx, Claude Doc): 9 tambahan, Juru Kabar, Kartu Gaya, memori inti dari brief.
+   f. Hubungkan profil `agents/`, brief, dan Kartu Gaya ke Zuno Studio v2; publikasikan v2 dan uji dengan Claude asli.
 0. Zulnan mengecek `agents/`; setelah setuju, perbarui `docs/prompt-orkestrasi-zuno.md` (dan .docx, Claude Doc) dengan 9 tambahan dan Juru Kabar, lalu hubungkan profil ke Zuno Studio v2.
 1. Publikasikan v2 sebagai artifact (declare capability `sample` dan `downloads`) dan uji dengan Claude asli (belum diuji; hanya tes stub).
 2. Uji unduhan `downloads.save` dengan Blob di claude.ai (format data belum terverifikasi).
