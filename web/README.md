@@ -1,0 +1,38 @@
+# Zuno Web (Vercel)
+
+Versi live Zuno Studio v2 dengan tampilan HUD. Logika agen tetap dari `prototypes/zuno-studio-v2.html`. Di artifact, halaman memanggil Claude lewat `window.claude`; di web, panggilan itu lewat server sendiri (`/api/ai`), dan API key hanya disimpan di Vercel.
+
+## Isi folder
+| File | Fungsi |
+|---|---|
+| `index.html` | Halaman jadi (hasil `build.mjs`, jangan diedit langsung) |
+| `src/hero.html`, `src/tail.html`, `src/hud.css`, `src/hud.js` | Tampilan HUD: judul ZUNO, inti, panel status, diagram "Cara kerja" yang ikut proses asli |
+| `src/live.js` | Jembatan: `window.claude.use('sample')` diarahkan ke `/api/ai` (streaming) |
+| `api/ai.js` | Server AI. Penyedia bisa diganti lewat `AI_PROVIDER` |
+| `api/status.js` | Status untuk panel HUD (tanpa membocorkan kunci) |
+| `build.mjs` | Membangun ulang `index.html` setelah `zuno-studio-v2.html` berubah: `node web/build.mjs` |
+
+## Setelan Vercel
+- Root Directory: `web`. Framework: Other. Tanpa build command.
+- Environment variables:
+
+| Nama | Isi | Wajib |
+|---|---|---|
+| `ZUNO_ACCESS_KEY` | Kunci akses halaman (acak, min. 16 karakter). Diisi sekali di tombol KUNCI AKSES | Ya |
+| `AI_PROVIDER` | `claude` (bawaan), `openai`, `gemini`, `openrouter` | Tidak |
+| `ANTHROPIC_API_KEY` | API key Claude (bila `claude`) | Ya untuk Claude |
+| `OPENAI_API_KEY` / `GEMINI_API_KEY` / `OPENROUTER_API_KEY` | Bila ganti penyedia | Sesuai penyedia |
+| `AI_MODEL` | Nama model. Bawaan Claude: `claude-opus-5-5` | Wajib untuk selain Claude |
+| `AI_MODEL_QUICK` | Model untuk langkah ringan (opsional, mis. lebih murah) | Tidak |
+| `CLAUDE_FALLBACK` | `off` untuk mematikan fallback otomatis saat model menolak | Tidak |
+
+- Batas waktu fungsi: 300 detik (`vercel.json`). Jawaban panjang yang terpotong dilanjutkan otomatis oleh halaman.
+
+## Catatan
+- Fallback otomatis Claude (`fallbacks: "default"`) aktif: bila model menolak sebuah permintaan, server API mencoba ulang di model lain. Matikan dengan `CLAUDE_FALLBACK=off`.
+- Selain Claude, penyedia lain belum streaming (jawaban datang sekaligus) dan belum diuji dengan key asli.
+- Biaya pemakaian API ditanggung akun penyedia AI. Kunci akses mencegah orang lain memakai server ini.
+
+## Uji
+- `cd web && npm install && node ../tests/zuno-web-api-test.mjs` (server AI dengan Claude tiruan)
+- `node tests/zuno-web-stub-test.js` (halaman web + HUD dengan AI tiruan, butuh Playwright)

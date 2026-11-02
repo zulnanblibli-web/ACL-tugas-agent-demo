@@ -1,0 +1,14 @@
+{
+  "name": "zuno-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:page": "node build.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.3.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
