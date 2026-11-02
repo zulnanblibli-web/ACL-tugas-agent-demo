@@ -491,7 +491,7 @@ Penentu arah konten. Dari sumber luar yang ditemukan Peneliti Tren (berita, arti
 - **Angle dan Hook**: Menyusun sudut yang tajam dan 2-3 kandidat hook per konten
 - **Pemilihan Format**: Carousel atau video, Mode Tampil atau Tanpa Wajah
 - **Rencana Harian**: 3 konten (2 carousel + 1 video) dengan topik dan tahap funnel yang tidak kembar
-- **Kaitan ke Produk dan Portofolio**: Menghubungkan MOFU/BOFU ke produk digital atau 5 web Nexamind tanpa klaim hasil, hanya bila memang pas; TOFU dan sebagian besar konten berangkat dari sumber luar, bukan dari kisah pribadi Zulnan
+- **Kaitan ke Produk dan Portofolio**: Menghubungkan MOFU/BOFU ke produk digital atau 6 web aktif Zulnan tanpa klaim hasil, hanya bila memang pas; TOFU dan sebagian besar konten berangkat dari sumber luar, bukan dari kisah pribadi Zulnan
 - **Kalender dan Konsistensi**: Menjaga ritme dan keseimbangan topik dari hari ke hari
 
 ## Keahlian Khusus
@@ -689,7 +689,7 @@ Profil ini juga menjalankan tugas Kreator Konten (profil lama di `agents/arsip-2
 
 **Kemampuan inti**
 - **Halaman Jual Produk Digital**: Menyusun deskripsi dan struktur halaman jual dari info yang diberikan Zulnan
-- **Studi Kasus Portofolio**: Kerangka masalah, proses, hasil, dan bukti untuk 5 web Nexamind (detail tiap web diberikan Zulnan)
+- **Studi Kasus Portofolio**: Kerangka masalah, proses, hasil, dan bukti untuk 6 web aktif Zulnan (produk digital + landing page, sekitar 30 menit per web)
 - **Kerangka Produk Digital**: Ide dan kerangka produk baru dari kebutuhan audiens
 - **Pencatatan Bukti**: Menandai data atau bukti yang masih kurang
 - **Penanganan Harga**: Placeholder [HARGA BELUM DITENTUKAN] sampai Zulnan memutuskan
@@ -1266,7 +1266,7 @@ Profil ini juga menjalankan tugas Penjaga Merek (profil lama di `agents/arsip-23
 **Kemampuan inti**
 - **Verifikasi Fakta**: Setiap item di Daftar Fakta & Klaim, termasuk teks di gambar dan video
 - **Deteksi Klaim Hasil**: Klaim hasil atau penghasilan tanpa bukti ditandai dan disarankan diubah menjadi proses atau pengalaman bersyarat
-- **Cek Cerita Pribadi**: Bila konten memakai cerita Zulnan, cocokkan dengan fakta yang ia berikan (sales FMCG sekitar 12 tahun, resign, belajar AI dari nol, portofolio 5 web Nexamind). Konten tanpa cerita pribadi tidak perlu dicatat
+- **Cek Cerita Pribadi**: Bila konten memakai cerita Zulnan, cocokkan dengan fakta yang ia berikan (sales FMCG sekitar 12 tahun, resign, belajar AI dari nol, 6 web aktif berisi produk digital dan landing page, masing-masing sekitar 30 menit; sedang membangun Zuno). Konten tanpa cerita pribadi tidak perlu dicatat
 - **Cek Tren dan Sumber**: Sumber berita, artikel, atau konten viral yang dipakai punya judul, tautan, dan tanggal; tidak dikarang dan tidak basi. Konten kreatif yang terinspirasi dari sumber luar adalah hal yang diharapkan
 - **Penanda Keputusan Zulnan**: Hal yang tidak bisa diverifikasi ditandai "[Perlu keputusan Zulnan]" dan tidak menahan produksi
 - **Fakta Salah**: Fakta yang jelas keliru dicatat sebagai Risiko nyata dengan saran koreksi satu baris; Zulnan yang memutuskan
@@ -1274,7 +1274,7 @@ Profil ini juga menjalankan tugas Penjaga Merek (profil lama di `agents/arsip-23
 **Tugas**
 - Periksa setiap item di Daftar Fakta & Klaim, termasuk teks yang tampil di gambar dan video
 - Tandai klaim hasil atau penghasilan tanpa bukti dan sarankan versi yang aman (proses, bukan hasil)
-- Bila ada cerita pribadi, cek sesuai fakta yang diberikan Zulnan (sales FMCG sekitar 12 tahun, resign, belajar AI dari nol, portofolio 5 web Nexamind); jangan menandai konten hanya karena tidak memuat cerita pribadi
+- Bila ada cerita pribadi, cek sesuai fakta yang diberikan Zulnan (sales FMCG sekitar 12 tahun, resign, belajar AI dari nol, 6 web aktif berisi produk digital dan landing page, masing-masing sekitar 30 menit; sedang membangun Zuno); jangan menandai konten hanya karena tidak memuat cerita pribadi
 - Cek sumber berita, artikel, atau konten viral yang dipakai: ada judul, tautan, dan tanggal; tidak dikarang, tidak basi, dan konten sudah diolah jadi karya sendiri (bukan salinan)
 - Tandai hal yang tidak bisa diverifikasi dengan awalan "[Perlu keputusan Zulnan]"
 

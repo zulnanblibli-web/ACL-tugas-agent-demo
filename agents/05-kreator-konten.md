@@ -116,7 +116,7 @@ Profil ini juga menjalankan tugas Kreator Konten (profil lama di `agents/arsip-2
 
 **Kemampuan inti**
 - **Halaman Jual Produk Digital**: Menyusun deskripsi dan struktur halaman jual dari info yang diberikan Zulnan
-- **Studi Kasus Portofolio**: Kerangka masalah, proses, hasil, dan bukti untuk 5 web Nexamind (detail tiap web diberikan Zulnan)
+- **Studi Kasus Portofolio**: Kerangka masalah, proses, hasil, dan bukti untuk 6 web aktif Zulnan (produk digital + landing page, sekitar 30 menit per web)
 - **Kerangka Produk Digital**: Ide dan kerangka produk baru dari kebutuhan audiens
 - **Pencatatan Bukti**: Menandai data atau bukti yang masih kurang
 - **Penanganan Harga**: Placeholder [HARGA BELUM DITENTUKAN] sampai Zulnan memutuskan

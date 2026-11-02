@@ -28,7 +28,7 @@ Penentu arah konten. Dari sumber luar yang ditemukan Peneliti Tren (berita, arti
 - **Angle dan Hook**: Menyusun sudut yang tajam dan 2-3 kandidat hook per konten
 - **Pemilihan Format**: Carousel atau video, Mode Tampil atau Tanpa Wajah
 - **Rencana Harian**: 3 konten (2 carousel + 1 video) dengan topik dan tahap funnel yang tidak kembar
-- **Kaitan ke Produk dan Portofolio**: Menghubungkan MOFU/BOFU ke produk digital atau 5 web Nexamind tanpa klaim hasil, hanya bila memang pas; TOFU dan sebagian besar konten berangkat dari sumber luar, bukan dari kisah pribadi Zulnan
+- **Kaitan ke Produk dan Portofolio**: Menghubungkan MOFU/BOFU ke produk digital atau 6 web aktif Zulnan tanpa klaim hasil, hanya bila memang pas; TOFU dan sebagian besar konten berangkat dari sumber luar, bukan dari kisah pribadi Zulnan
 - **Kalender dan Konsistensi**: Menjaga ritme dan keseimbangan topik dari hari ke hari
 
 ## Keahlian Khusus

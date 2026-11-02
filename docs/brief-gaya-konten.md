@@ -22,15 +22,27 @@ Dokumen ini adalah **brief dasar** (memori inti Zuno) untuk semua agen. Isinya s
 | Rumus konten | Semua konten TOFU, MOFU, atau BOFU |
 | Fase aktif | Fase 1 (ide sampai naskah dan edit). Tidak memposting, tidak menjalankan iklan. |
 
+### Pilar konten (fondasi, keputusan Zulnan 2026-11-02)
+
+Setiap konten berdiri di **satu pilar** dan punya **arah** yang jelas: untuk siapa, masalah apa, dapat apa setelah nonton. Ide yang bisa dipakai siapa saja tentang apa saja dianggap terlalu umum dan dipertajam dulu.
+
+1. Cuan dari AI (sebagai topik dan proses, tanpa janji hasil)
+2. Tutorial
+3. Storytelling proses membangun
+4. Peluang produk digital
+5. Tools AI
+6. AI agent
+
 Topik global boleh, asal tidak teknis dan mudah dipahami pemula. Hati-hati dengan "cuan dari AI": hanya sebagai topik dan proses, tidak boleh menjanjikan atau mengklaim hasil.
 
 ## 2. Suara dan bahasa
 
+- Register **lu/gua**, santai tapi tetap informatif (keputusan Zulnan 2026-11-02).
 - Santai dan lucu, lugas di momen tertentu, empatik, friendly, tidak bertele-tele.
 - Bahasa sehari-hari, kalimat pendek, tanpa jargon teknis untuk pemula. Kata "Gue" dipakai di slogan.
 - **Slogan setelah hook pada setiap video:** "Hai, kenalin Gue Zulnan. Gue sales yang belajar AI sambil bikin, bukan cuma ngomongin."
-- Contoh tulisan atau ucapan Zulnan yang dianggap "ini gue banget": **[ISI]** (2 sampai 3 contoh; sampai terisi, agen menulis dengan suara di atas dan menandai draf sebagai "suara perlu dicek").
-- Sapaan ke audiens dan kata khas yang ingin dipakai: **[ISI]**.
+- Contoh tulisan Zulnan: **tidak diperlukan** (keputusan Zulnan 2026-11-02). Video motion memakai suara AI; konten yang memakai rekaman Zulnan otomatis memakai suaranya sendiri.
+- Sapaan: lu/gua.
 
 ## 3. Fakta Zulnan yang boleh dipakai di konten
 
@@ -40,9 +52,15 @@ Bila cerita pribadi dipakai, hanya fakta di bawah yang boleh. Fakta lain wajib d
 
 - Sales sekitar 12 tahun (FMCG), fokus develop area.
 - Resign, lalu belajar AI dari nol dan berproses.
-- Portofolio: 5 web Nexamind (detail tiap web: **[ISI]** oleh Zulnan sebelum dibahas di konten).
-- Latar pendidikan SMK jurusan Broadcasting: **[konfirmasi Zulnan boleh dipakai di konten atau tidak]**.
-- Hasil nyata (penjualan, jumlah pengguna, tangkapan layar): **[ISI]**. Sampai ada, tidak ada klaim hasil.
+- Sudah membangun **6 web aktif** berisi produk digital Zulnan dan landing page produknya; tiap web dibuat **kurang lebih 30 menit** dengan AI (2026-11-02).
+- Sedang membangun **Zuno**: tim agent AI sebagai karyawan konten dan engineering miliknya sendiri.
+- Latar pendidikan SMK: **tidak dipakai** di konten.
+- Cerita gagal atau lucu: belum ada; dipakai hanya bila Zulnan memintanya.
+- Hasil nyata (penjualan, jumlah pengguna, penghasilan): belum ada. Tidak ada klaim hasil.
+
+**BOFU = bukti tentang Zulnan** supaya audiens percaya (fakta di atas), arahnya ke follow dan komentar. TOFU dan MOFU tetap dari sumber luar; fakta Zulnan hanya bumbu bila pas.
+
+Tokoh dan brand terkenal (ChatGPT, Gemini, Claude, tokoh teknologi) boleh disebut selama informatif dan benar.
 
 ## 4. Larangan
 
@@ -136,12 +154,15 @@ Sumber lengkap, preset, dan alat render: `docs/gaya-video.md`.
 ## 7b. Metode naskah (video dan carousel)
 
 Naskah wajib membuat orang berhenti scroll dan menonton sampai habis. Metode: skill **Killer Script** (hook, foreshadow, body, ending) dipetakan ke lima babak berurutan **HOOK, PROBLEM, TWIST, SOLUSI, CTA**.
-- **Hook** (3-8 detik): se-clickbait mungkin tapi tidak bohong, nyambung dengan isi, ada visual jelas. Jenis: negative, proof, promise, pain point, transformation (proof dan transformation hanya dari fakta Zulnan yang diizinkan).
+- **Arah dulu**: big idea satu kalimat dari pilar dan arah kartu. Kalau masih umum, pertajam (tools spesifik, situasi kerja spesifik, hasil yang bisa dicoba).
+- **Hook** (3-8 detik) adalah bagian terpenting: se-clickbait mungkin tapi tidak bohong, nyambung dengan isi, ada visual jelas. Penulis membuat 3 kandidat hook berbeda jenis lalu memakai yang paling kuat. Jenis: negative, proof, promise, pain point, transformation (proof dan transformation hanya dari fakta Zulnan di bagian 3).
+- **Storytelling boleh** di body, asal hook tetap kuat dan tiap kalimat memberi informasi.
 - **Foreshadow**: satu, tepat setelah hook.
 - **Problem**: masalah spesifik pemula, bahasa mereka, tidak mengulang hook.
 - **Twist**: membalik sudut pandang atau fakta mengejutkan, dengan empati.
 - **Solusi**: 3-5 poin konkret, tiap poin berdiri sendiri, tanpa jargon; potong yang muter-muter.
-- **CTA**: maksimal satu (boleh nyeleneh) atau loop ke hook.
+- **CTA**: satu kalimat, utamakan memancing komentar; BOFU boleh menggabungkan follow + komentar. Boleh nyeleneh atau loop ke hook.
+- **Durasi**: video motion normalnya sekitar 30 detik, tapi yang utama naskah lengkap dan informasinya jelas.
 - Pakai minimal 2 dari 7 faktor viralitas. Dilarang: basa-basi, definisi panjang, naskah datar, klaim hasil, mengarang fakta/angka/tren.
 - Setelah ditulis, **Spesialis Optimasi Video** menguji retensi dengan checklist Killer Script dan menulis ulang kalimat yang lemah sebelum masuk desain.
 - Riset: lihat bagian 7c.
@@ -151,7 +172,8 @@ Naskah wajib membuat orang berhenti scroll dan menonton sampai habis. Metode: sk
 Konten harian berangkat dari **dunia luar**, bukan dari memori tentang Zulnan (keputusan Zulnan 2026-11-02).
 - **Peneliti Tren mencari sumber**: berita, artikel, thread, dan konten viral yang relevan dengan niche (produk digital, AI, tools AI, produktivitas kerja) dan audiens pemula 25-35 tahun. Tiap sumber dicatat dengan judul, tautan, tanggal, jenis, dan satu kalimat kenapa relevan.
 - **Diolah jadi konten kreatif sendiri**: ambil inti atau fakta pendukungnya, balik sudutnya, tulis ulang dengan bahasa Zulnan dan struktur hook-problem-twist-solusi-cta. Sumber hanya inspirasi dan bahan fakta; dilarang menyalin teks, visual, atau suara orang lain. Sumber disebut di Daftar Sumber pada paket.
-- **Zuno Studio v2 tidak punya akses pencarian**: Zulnan bisa menempel tautan, judul, atau isi berita/konten viral di kolom Sumber. Tanpa sumber, riset bersifat hipotesis dan ditandai "perlu dicek"; produksi tidak ditahan. Pencarian sumber sungguhan berjalan di Claude Code (alat pencarian web).
+- **Riset otomatis (keputusan Zulnan 2026-11-02)**: saat Zuno live, Peneliti Tren disambungkan ke scraper (Apify atau Scrapelyfy) untuk mencari sumber sendiri. Sampai itu tersambung, Zuno Studio v2 tidak punya akses pencarian: Zulnan bisa menempel tautan atau isi berita di kolom Sumber. Tanpa sumber, Peneliti Tren mengisi **bahan dari pengetahuan umum per pilar** (fitur tools AI terkenal, langkah kerja, situasi kantor yang relate) bertanda "perlu dicek", tanpa berita, tren, angka, atau tautan karangan; produksi tidak ditahan.
+- **Video referensi** dari Zulnan diunggah di Zuno Studio sebagai arah gaya.
 - Tidak ada sumber, angka, atau tren karangan. Bila ragu, tandai "perlu dicek".
 
 ## 8. Cara kerja tim
@@ -167,7 +189,7 @@ Keputusan Zulnan 2026-11-02: **otoritas atas konten ada di Zulnan.** Pemeriksaan
 - Status **Disetujui hanya dari Zulnan.**
 - Rantai status: Ide, Draf, Teredit, Ditinjau, Disetujui, Terjadwal, Tayang, Terukur.
 - Kartu Konten berisi: ID, tujuan, platform, format, referensi suara, bahan, status, versi, batasan; untuk video ditambah Kartu Gaya.
-- Data performa: tidak ada angka karangan. Ukuran "konten menang": **[ISI]**. Tayangan minimal: **[ISI]**.
+- Data performa: tidak ada angka karangan. Ukuran "konten menang" (keputusan Zulnan 2026-11-02): ditonton paling lama (retensi), komentar banyak, dan view banyak; alat ukur paling penting adalah **komentar**, karena menunjukkan konten relate dan disukai audiens. Tayangan minimal: **[ISI]**.
 
 ## 9. Cara memberi perintah
 
@@ -180,12 +202,12 @@ Tim menyusun rencana tiga konten, Kartu Konten, dan Kartu Gaya, lalu menunggu pe
 
 ## 10. Yang masih perlu diisi Zulnan
 
-1. Contoh suara (2 sampai 3 tulisan atau ucapan khas).
-2. Handle akun untuk footer carousel.
-3. Detail tiap web Nexamind dan hasil nyata yang boleh dibahas.
-4. Ukuran "konten menang" dan tayangan minimal.
-5. Harga produk (selama kosong tetap placeholder).
-6. Satu rekaman asli plus satu preset untuk uji pertama claude-video-effects.
-7. Alat render video Tanpa Wajah.
-8. Konfirmasi memakai latar SMK Broadcasting di konten.
-9. Varian maskot default per template atau topik (A kaos teal atau B kaos putih), dan apakah maskot dipakai juga di video.
+Sudah dijawab 2026-11-02: contoh suara (tidak diperlukan), detail web (6 web aktif, produk digital + landing page, sekitar 30 menit per web), ukuran konten menang (komentar sebagai alat ukur utama), latar SMK (tidak dipakai).
+
+1. Handle akun untuk footer carousel.
+2. Hasil nyata yang boleh dibahas (penjualan, pengguna) bila nanti ada.
+3. Tayangan minimal.
+4. Harga produk (selama kosong tetap placeholder).
+5. Satu rekaman asli plus satu preset untuk uji pertama claude-video-effects.
+6. Alat render video Tanpa Wajah.
+7. Varian maskot default per template atau topik (A kaos teal atau B kaos putih), dan apakah maskot dipakai juga di video.

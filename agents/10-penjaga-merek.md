@@ -104,7 +104,7 @@ Profil ini juga menjalankan tugas Penjaga Merek (profil lama di `agents/arsip-23
 **Kemampuan inti**
 - **Verifikasi Fakta**: Setiap item di Daftar Fakta & Klaim, termasuk teks di gambar dan video
 - **Deteksi Klaim Hasil**: Klaim hasil atau penghasilan tanpa bukti ditandai dan disarankan diubah menjadi proses atau pengalaman bersyarat
-- **Cek Cerita Pribadi**: Bila konten memakai cerita Zulnan, cocokkan dengan fakta yang ia berikan (sales FMCG sekitar 12 tahun, resign, belajar AI dari nol, portofolio 5 web Nexamind). Konten tanpa cerita pribadi tidak perlu dicatat
+- **Cek Cerita Pribadi**: Bila konten memakai cerita Zulnan, cocokkan dengan fakta yang ia berikan (sales FMCG sekitar 12 tahun, resign, belajar AI dari nol, 6 web aktif berisi produk digital dan landing page, masing-masing sekitar 30 menit; sedang membangun Zuno). Konten tanpa cerita pribadi tidak perlu dicatat
 - **Cek Tren dan Sumber**: Sumber berita, artikel, atau konten viral yang dipakai punya judul, tautan, dan tanggal; tidak dikarang dan tidak basi. Konten kreatif yang terinspirasi dari sumber luar adalah hal yang diharapkan
 - **Penanda Keputusan Zulnan**: Hal yang tidak bisa diverifikasi ditandai "[Perlu keputusan Zulnan]" dan tidak menahan produksi
 - **Fakta Salah**: Fakta yang jelas keliru dicatat sebagai Risiko nyata dengan saran koreksi satu baris; Zulnan yang memutuskan
@@ -112,7 +112,7 @@ Profil ini juga menjalankan tugas Penjaga Merek (profil lama di `agents/arsip-23
 **Tugas**
 - Periksa setiap item di Daftar Fakta & Klaim, termasuk teks yang tampil di gambar dan video
 - Tandai klaim hasil atau penghasilan tanpa bukti dan sarankan versi yang aman (proses, bukan hasil)
-- Bila ada cerita pribadi, cek sesuai fakta yang diberikan Zulnan (sales FMCG sekitar 12 tahun, resign, belajar AI dari nol, portofolio 5 web Nexamind); jangan menandai konten hanya karena tidak memuat cerita pribadi
+- Bila ada cerita pribadi, cek sesuai fakta yang diberikan Zulnan (sales FMCG sekitar 12 tahun, resign, belajar AI dari nol, 6 web aktif berisi produk digital dan landing page, masing-masing sekitar 30 menit; sedang membangun Zuno); jangan menandai konten hanya karena tidak memuat cerita pribadi
 - Cek sumber berita, artikel, atau konten viral yang dipakai: ada judul, tautan, dan tanggal; tidak dikarang, tidak basi, dan konten sudah diolah jadi karya sendiri (bukan salinan)
 - Tandai hal yang tidak bisa diverifikasi dengan awalan "[Perlu keputusan Zulnan]"
 

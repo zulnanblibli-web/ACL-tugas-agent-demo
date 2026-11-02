@@ -1,6 +1,6 @@
 # Progress: Zuno
 
-Terakhir diperbarui: 2026-11-02 (perbaikan Pengembang tertahan di Build App, menunggu dicoba ulang Zulnan; Engineering standby + tab Build App di Zuno Studio v2; Divisi Engineering 4 agen ditambahkan; prompt orkestrasi ditulis ulang ke Lead + 6 divisi; tim dirampingkan jadi Lead + 6 divisi, 14 agen; Divisi Mutu penasihat tanpa veto; sumber luar sebagai bahan konten)
+Terakhir diperbarui: 2026-11-02 (naskah konten dipertajam: pilar, bank fakta Zulnan, hook kuat, CTA komentar; Build App aman menurut Zulnan; perbaikan Pengembang tertahan di Build App, menunggu dicoba ulang Zulnan; Engineering standby + tab Build App di Zuno Studio v2; Divisi Engineering 4 agen ditambahkan; prompt orkestrasi ditulis ulang ke Lead + 6 divisi; tim dirampingkan jadi Lead + 6 divisi, 14 agen; Divisi Mutu penasihat tanpa veto; sumber luar sebagai bahan konten)
 
 ## Status singkat
 - Blueprint dan prompt orkestrasi: **selesai, struktur Lead + 6 divisi kreatif + Divisi Engineering (18 agen)** (`docs/prompt-orkestrasi-zuno.md`, Word, dan Claude Doc sudah sama).
@@ -9,6 +9,15 @@ Terakhir diperbarui: 2026-11-02 (perbaikan Pengembang tertahan di Build App, men
 - Zuno Studio v1 (tool live, tiap sub-agen memanggil Claude): **jalan, tapi terlalu rumit** menurut Zulnan. Dipakai sebagai bahan, akan diganti v2.
 - Zuno Studio v2: **dibangun dan dipublikasikan sebagai preview, lolos tes stub (Claude tiruan); belum diuji dengan Claude asli.** Carousel: PNG nyata (template A-D). Video: paket naskah + storyboard + Kartu Gaya + rencana render (.md, bisa diunduh), bukan file video; pratinjau kanvas hanya kasar.
 - Profil agen (23 peran, nama dan format dari katalog agency-agents-id): **selesai ditulis ulang lengkap di `agents/`, menunggu dicek Zulnan.**
+
+## Naskah konten (keputusan Zulnan 2026-11-02)
+- Metode tetap Killer Script; masalahnya bahan kosong dan arah tidak jelas, bukan strukturnya.
+- 6 pilar konten jadi fondasi (cuan dari AI, tutorial, storytelling proses membangun, peluang produk digital, tools AI, AI agent); satu konten satu pilar dan satu arah.
+- Hook paling penting; storytelling boleh. Register lu/gua, santai tapi informatif. Video motion sekitar 30 detik, utamakan naskah lengkap.
+- Bank fakta: 6 web aktif (produk digital + landing page, sekitar 30 menit per web), sedang membangun Zuno. SMK tidak dipakai. Contoh suara tidak diperlukan (motion = suara AI, rekaman = suara Zulnan).
+- BOFU = bukti tentang Zulnan, arah ke follow dan komentar. Tokoh/brand boleh disebut bila informatif.
+- Konten menang: retensi, komentar, view; alat ukur utama komentar.
+- Riset otomatis via Apify/Scrapelyfy saat live; video referensi diunggah Zulnan.
 
 ## Divisi Engineering (keputusan Zulnan 2026-11-02)
 - Kantor dua sayap di bawah Lead: kreatif (6 divisi konten) dan Engineering (build web app).
@@ -68,13 +77,15 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
-00. **Coba ulang tab Build App** di preview (versi 1793597823-5d32). Error sebelumnya: Pengembang (T.3) tertahan saat menulis kode. Dugaan penyebab: satu jawaban kode panjang melewati batas panjang/waktu `sample` (sekitar 5 menit per jawaban). Perbaikan: `askText` menulis bertahap (streaming, `effort: low`, target index.html di bawah 450 baris) dan melanjutkan otomatis bila jawaban terpotong atau putus di tengah (maks. 5 bagian); progres "KB tertulis" tampil; pesan error menyebut agen yang tertahan; tombol "Coba lagi" dan "Unduh log debug" di tab Build App. Penyebab pasti belum terbukti dengan Claude asli: bila masih error, minta Zulnan unduh log debug Build App (`zuno-build-log-debug.json`) dan kirim. Tes: `node tests/zuno-studio-v2-build-stub-test.js [--klien|--buruk|--potong|--gagal]`.
+000. **Uji naskah baru tab Konten dengan Claude asli** (preview versi 1793600384-376a). Zulnan menilai naskah sebelumnya "basi, umum, tidak jelas arahnya". Perbaikan: tiap kartu wajib satu dari 6 pilar konten + arah (untuk siapa, masalah apa, dapat apa); P.1 menulis 3 kandidat hook berbeda jenis lalu memakai yang terkuat; storytelling boleh; bank fakta Zulnan (6 web aktif, sekitar 30 menit per web, sedang membangun Zuno) untuk hook proof dan BOFU; CTA memancing komentar; register lu/gua; tanpa sumber, Peneliti Tren mengisi bahan pengetahuan umum per pilar (perlu dicek). Minta Zulnan menilai naskah baru; bila masih umum, minta contoh video referensi dan naskahnya.
+00. **(Zulnan: sudah aman 2026-11-02) Coba ulang tab Build App** di preview (versi 1793597823-5d32). Error sebelumnya: Pengembang (T.3) tertahan saat menulis kode. Dugaan penyebab: satu jawaban kode panjang melewati batas panjang/waktu `sample` (sekitar 5 menit per jawaban). Perbaikan: `askText` menulis bertahap (streaming, `effort: low`, target index.html di bawah 450 baris) dan melanjutkan otomatis bila jawaban terpotong atau putus di tengah (maks. 5 bagian); progres "KB tertulis" tampil; pesan error menyebut agen yang tertahan; tombol "Coba lagi" dan "Unduh log debug" di tab Build App. Penyebab pasti belum terbukti dengan Claude asli: bila masih error, minta Zulnan unduh log debug Build App (`zuno-build-log-debug.json`) dan kirim. Tes: `node tests/zuno-studio-v2-build-stub-test.js [--klien|--buruk|--potong|--gagal]`.
 0. **Cek alur baru Penjaga Mutu** di preview: jalankan satu perintah dengan tautan atau isi berita di kolom Sumber; pastikan tidak ada penolakan atau revisi otomatis, Ringkasan Sebelum Terbit terbaca jelas, dan catatan Agen 2 tidak berlebihan.
 1. **Uji v2 dengan Claude asli** di preview (https://claude.ai/artifact/8B5S1yzoCDfKY2f9P5zZ2g): jalankan satu perintah, cek kualitas naskah (hook, problem, twist, solusi, CTA), cek unggah referensi (foto, MP4, WebM), dan cek tombol unduh (`downloads.save` dengan Blob belum terverifikasi). Bila error, minta Zulnan mengirim pesan error atau log debug (tombol "Unduh log debug").
 2. **Uji render nyata** paket video: jalankan komposisi HyperFrames (`npx hyperframes preview`, lalu `render`) dan satu rencana efek `claude-video-effects` (butuh rekaman asli Zulnan, ffmpeg, Python 3.12). Format keduanya diambil dari README, belum pernah dijalankan. Catat hasilnya jujur di riwayat. Bila kualitas tampilan tidak sesuai referensi, perbaiki templat HyperFrames di `buildHF` atau pindahkan render ke Claude Code.
 3. **Pasang maskot** (`assets/maskot/`) di carousel Zuno Studio bila Zulnan minta; tunggu keputusan varian default (A kaos teal atau B kaos putih) dan apakah maskot dipakai di video.
 4. **Proyek pertama Divisi Engineering**: coba tab Build App di preview dengan Claude asli (cek apakah index.html tidak terpotong dan pratinjau jalan); jalankan alur T.1-T.4 dengan tiga gerbang. Bila Zulnan setuju, unggah ulang .zip di `skills/engineering/` ke claude.ai agar versi skill di akun sama.
-5. Isi butir **[ISI]** di `docs/brief-gaya-konten.md` bagian 10 bersama Zulnan (contoh suara, handle, detail 5 web Nexamind, ukuran konten menang, tayangan minimal, harga, alat video Tanpa Wajah, izin latar SMK Broadcasting). Jangan menebak.
+5. Isi sisa butir **[ISI]** di `docs/brief-gaya-konten.md` bagian 10 (handle, hasil nyata bila ada, tayangan minimal, harga, alat video Tanpa Wajah, varian maskot). Contoh suara, detail web, ukuran konten menang, dan latar SMK sudah dijawab 2026-11-02. Jangan menebak.
+5b. **Riset otomatis saat live**: sambungkan Peneliti Tren ke Apify atau Scrapelyfy (keputusan Zulnan). Konektor Apify gagal tersambung di sesi ini; perlu dicek ulang saat dikerjakan.
 6. Opsional: suara dan musik, MP4 1080x1920, Peneliti Tren dengan akses pencarian, Pelapor Analitik dan Strategis Iklan di v2, lalu pindah ke web app (Vercel/Supabase): ganti `sample` dengan API backend; Bagian RENDER dan UI di `zuno-studio-v2.html` tetap.
 
 ## Video: paket + rencana render, bukan render di tool (2026-11-01)

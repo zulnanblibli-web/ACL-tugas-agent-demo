@@ -146,4 +146,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `docs/riwayat-tugas.md`.
 - Tertunda: coba ulang Build App (bila error, kirim log debug); uji tab Konten dengan Claude asli; penyimpanan permanen; butir [ISI]; akses cari sumber; eksekusi Fase 2 (posting, suara, render, deploy); template penawaran dan serah terima jasa Engineering; artemis di-hold.
 
-## 26. (entri berikutnya di sini)
+## 26. Naskah konten dipertajam (skill Killer Script + jawaban Zulnan) (2026-11-02)
+- Permintaan: Build App sudah aman. Naskah konten belum oke (bahan kosong, umum, arah tidak jelas). Cek skill killer-script dan tanyakan yang dibutuhkan; Zulnan menjawab 13 pertanyaan (lu/gua, 6 web aktif sekitar 30 menit per web, sedang membangun Zuno, SMK tidak dipakai, riset otomatis via Apify/Scrapelyfy nanti, storytelling boleh tapi hook kuat, berpijak pada pilar konten, motion sekitar 30 detik, konten menang diukur dari komentar, tokoh boleh, BOFU = bukti tentang Zulnan ke follow dan komentar).
+- Hasil: struktur Killer Script sudah ada di P.1; penyebab naskah lemah adalah bahan kosong, fakta Zulnan belum ada, dan tidak ada pilar/arah. Zuno Studio v2: konstanta 6 pilar; L.0 memberi pilar dan arah per kartu (tampil di kartu dan paket .md); BASE berisi pilar, suara lu/gua, bank fakta, aturan BOFU, ukuran konten menang, aturan tokoh; P.1 menentukan arah dulu, menulis 3 kandidat hook lalu memakai yang terkuat, storytelling boleh, CTA memancing komentar, durasi sekitar 30 detik; P.2 mengecek pilar/arah dan hook spesifik; R.1 tanpa sumber mengisi bahan pengetahuan umum per pilar (perlu dicek, tanpa berita/angka karangan). Brief, prompt orkestrasi (.md/.docx), dan profil agen 04, 05, 10 diperbarui ke 6 web aktif. Tes stub konten dan build lolos. Preview dipublikasikan ulang (versi 1793600384-376a).
+- File berubah: `prototypes/zuno-studio-v2.html`, `docs/brief-gaya-konten.md`, `docs/prompt-orkestrasi-zuno.md`, `docs/prompt-orkestrasi-zuno.docx`, `agents/04-ahli-strategi-media-sosial.md`, `agents/05-kreator-konten.md`, `agents/10-penjaga-merek.md`, `agents/semua-agen.md`, `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: Zulnan uji naskah baru dengan Claude asli; sambungan riset otomatis (Apify/Scrapelyfy); Claude Doc prompt orkestrasi belum disinkronkan dengan perubahan fakta; sisa butir [ISI].
+
+## 27. (entri berikutnya di sini)
