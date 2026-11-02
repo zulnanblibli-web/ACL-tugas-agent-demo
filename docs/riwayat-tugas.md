@@ -133,4 +133,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: perbaikan error Build App; uji Konten dengan Claude asli; penyimpanan permanen; butir [ISI]; akses cari sumber; eksekusi Fase 2 (posting, suara, render, deploy); template penawaran dan serah terima jasa Engineering.
 
-## 24. (entri berikutnya di sini)
+## 24. Perbaikan "Pengembang tertahan" di Build App (2026-11-02)
+- Permintaan: error muncul saat Pengembang menulis kode (tertahan); tambahkan tombol log dan perbaiki; hapus keterangan di bawah Zuno Studio pada tab Divisi Engineering.
+- Hasil: banner keterangan standby di tab Build App dihapus. `askText` ditulis ulang: streaming dengan progres KB, `effort: low`, kelanjutan otomatis bila jawaban terpotong (`truncated`) atau putus dengan teks sebagian (`e.text`), maks. 5 bagian; berhenti langsung pada refused/prompt_too_large/invalid_request/izin. Target index.html diperkecil (di bawah 450 baris). Pesan error menyebut agen yang tertahan; tombol "Coba lagi" mengulang tahap itu; tombol "Unduh log debug" khusus Build App. Tes stub baru `--potong` dan `--gagal` lolos, tes lama (portofolio, klien, buruk, konten) tetap lolos. Preview diperbarui (versi 1793597823-5d32). Penyebab pasti belum dibuktikan dengan Claude asli.
+- File berubah: `prototypes/zuno-studio-v2.html`, `tests/zuno-studio-v2-build-stub-test.js`, `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: Zulnan coba ulang Build App; bila masih error, kirim log debug Build App.
+
+## 25. (entri berikutnya di sini)

@@ -1,10 +1,10 @@
 const { chromium } = require('playwright');
 // Tes alur Build App (Divisi Engineering) dengan Claude tiruan. Argumen: --klien untuk proyek klien.
-const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.includes('--buruk');
+const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.includes('--buruk'); const POTONG = process.argv.includes('--potong'); const GAGAL = process.argv.includes('--gagal');
 (async()=>{
   const b = await chromium.launch(); const p = await b.newPage({viewport:{width:1100,height:900}});
   const errs=[]; p.on('pageerror',e=>errs.push('PAGEERR '+e.message)); p.on('console',m=>{if(m.type()==='error')errs.push('CONSOLE '+m.text())});
-  await p.addInitScript((BURUK)=>{
+  await p.addInitScript(([BURUK,POTONG,GAGAL])=>{
     window.__calls=[];
     const sleep=ms=>new Promise(r=>setTimeout(r,ms));
     const APP=(kredit,contoh)=>BURUK?'<html><body><script>var pw="admin2026"; // TODO login\nundefinedFn();<\/script><h1>App</h1>':'<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="'+kredit+'"><title>Absensi</title></head><body><script>const IS_PREVIEW = true; const TAMPILKAN_CONTOH_LOGIN = '+contoh+';async function h(p){const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(p));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,"0")).join("")}<\/script><h1>Login</h1><div id="contoh">Contoh akses</div><nav>Dashboard · Absensi · Reset Akses</nav><footer>'+kredit+'</footer></body></html>';
@@ -20,9 +20,19 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
       const kredit=(input.match(/Kredit (?:wajib|klien): "([^"]+)"/)||[])[1]||'?'; const contoh=(input.match(/TAMPILKAN_CONTOH_LOGIN: (\w+)/)||[])[1];
       window.__akun=(input.match(/AKUN AWAL \(acak, dibuat sistem\): ([^\n]+)/)||[])[1];
       return /index\.html lengkap/.test(input)?'```html\n'+APP(kredit,contoh)+'\n```':'function doGet(){}\nfunction setupDatabase(){ /* Utilities.computeDigest SHA_256 */ }'; };
-    const sample=async(i,o)=>/Balas HANYA isi file/.test(i)?{text:await txt(i)}:{text:JSON.stringify(await gen(i))}; sample.json=async(i)=>gen(i);
+    window.__opts=[];
+    const sample=async(i,o)=>{
+      const first=Array.isArray(i)?i[0].content:i; window.__opts.push({effort:o&&o.effort,lanjut:Array.isArray(i)});
+      if(!/Balas HANYA isi file/.test(first)) return {text:JSON.stringify(await gen(i))};
+      if(Array.isArray(i)){ const full=window.__full[first]; const sofar=i[1].content; window.__calls.push({role:'T.3',file:'lanjutan'}); if(o&&o.onText)o.onText({text:full.slice(sofar.length),delta:full.slice(sofar.length)}); return {text:full.slice(sofar.length),truncated:false}; }
+      if(GAGAL&&(window.__gagal=(window.__gagal||0)+1)<=2) throw {code:'upstream_error',message:'koneksi putus'};
+      const full=await txt(i); window.__full=window.__full||{}; window.__full[first]=full;
+      if(POTONG){ const half=full.slice(0,Math.floor(full.length/2)); if(/index\.html lengkap/.test(first)) return {text:half,truncated:true}; throw {code:'upstream_error',message:'putus',text:half}; }
+      if(o&&o.onText)o.onText({text:full,delta:full}); return {text:full,truncated:false};
+    };
+    sample.json=async(i)=>gen(i);
     window.claude={use:async n=>n==='sample'?sample:n==='downloads'?{save:async(o)=>{window.__saved=(window.__saved||[]).concat([o.filename+':'+(o.data&&o.data.size)])}}:null};
-  },BURUK);
+  },[BURUK,POTONG,GAGAL]);
   await p.goto('file://'+process.cwd()+'/prototypes/zuno-studio-v2.html'); await p.waitForTimeout(300);
   console.log('konten terlihat awal:', await p.isVisible('#wsKonten'), '| build tersembunyi:', !(await p.isVisible('#wsBuild')));
   await p.click('#wsB'); console.log('setelah klik Build: konten tersembunyi', !(await p.isVisible('#wsKonten')), '| build terlihat', await p.isVisible('#wsBuild'));
@@ -39,6 +49,8 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   await p.waitForSelector('text=Setujui tampilan',{timeout:15000});
   console.log('animasi tanpa tujuan dibuang:', await p.$eval('#bres',e=>!e.innerText.includes('logo (hiasan')));
   await p.click('#bres button:has-text("Setujui tampilan")');
+  if(GAGAL){ await p.waitForSelector('#bres button:has-text("Coba lagi")',{timeout:30000}); console.log('error tampil:', (await p.$eval('#berr',e=>e.innerText)).slice(0,120), '| log tampil:', await p.isVisible('#bdlog'));
+    await p.click('#bdlog'); await p.click('#bres button:has-text("Coba lagi")'); }
   await p.waitForSelector('text=Setujui hasil uji',{timeout:30000});
   const rows=await p.$$eval('#bres table.uji:first-of-type tr',r=>r.slice(1).map(x=>x.children[0].innerText+'='+x.children[1].innerText));
   console.log('cek otomatis:', rows.join(' | '));
@@ -51,6 +63,8 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   console.log('tracks:', await p.$$eval('#btracks .track',e=>e.map(x=>x.querySelector('.tname').textContent+'='+x.dataset.s).join(', ')));
   console.log('urutan peran:', (await p.evaluate(()=>window.__calls)).map(c=>c.role+(c.file?':'+c.file:'')+(c.rev?'(rev)':'')).join(','));
   console.log('unduhan:', await p.evaluate(()=>window.__saved));
+  console.log('lanjutan dipakai:', (await p.evaluate(()=>window.__opts)).filter(o=>o.lanjut).length, '| effort T.3:', [...new Set((await p.evaluate(()=>window.__opts)).filter(o=>o.effort).map(o=>o.effort))].join(','));
+  console.log('tombol log tampil:', await p.isVisible('#bdlog'), '| keterangan standby dihapus:', !(await p.$eval('#wsBuild',e=>e.innerText.includes('standby'))));
   // alur konten tidak tersentuh
   await p.click('#wsK'); console.log('kembali ke konten, kartu konten kosong:', await p.$$eval('.kc',e=>e.filter(x=>x.closest('#wsKonten')).length)===0);
   await p.screenshot({path:'/tmp/v2-build.png',fullPage:true});
