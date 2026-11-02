@@ -158,4 +158,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `web/` (baru), `tests/zuno-web-api-test.mjs`, `tests/zuno-web-stub-test.js` (baru), `prototypes/zuno-studio-v2.html`, `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: izin push; proyek Vercel + env (`ANTHROPIC_API_KEY`, `ZUNO_ACCESS_KEY`) oleh Zulnan; deploy; uji dengan Claude asli; penyedia selain Claude belum diuji dengan key asli.
 
-## 28. (entri berikutnya di sini)
+## 28. Push dan deploy Zuno Web, pakai Gemini (2026-11-02)
+- Permintaan: push dan deploy; API key pakai AI Studio, model Gemini.
+- Hasil: jalur Gemini di `web/api/ai.js` ditulis ulang jadi streaming (`streamGenerateContent?alt=sse`, key lewat header, bagian "thought" disaring, MAX_TOKENS dan blokir keamanan dipetakan). Nama model tidak ditebak: bila `AI_MODEL` kosong, server membaca daftar model Google dan memilih Pro stabil versi tertinggi (Flash untuk tahap ringan) dengan batas output dari daftar itu. Panel HUD menampilkan penyedia aktif. Tes baru `tests/zuno-web-gemini-test.mjs` 9/9 lolos; tes Claude 11/11 dan tes halaman tetap lolos. Push 2 commit. Proyek Vercel `zuno-studio` dibuat (Root Directory `web`, terhubung ke repo, env `AI_PROVIDER=gemini`), deploy production READY dengan build bersih: https://zuno-studio-dusky.vercel.app.
+- File berubah: `web/api/ai.js`, `web/api/status.js`, `web/src/hud.js`, `web/src/tail.html`, `web/index.html`, `web/hud.js`, `web/README.md`, `tests/zuno-web-gemini-test.mjs` (baru), `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: Zulnan isi `GEMINI_API_KEY` dan `ZUNO_ACCESS_KEY` di Vercel lalu Redeploy; uji dengan Gemini asli (belum bisa dicek dari sesi ini karena domain vercel.app dan dokumentasi Google diblokir jaringan sesi).
+
+## 29. (entri berikutnya di sini)
