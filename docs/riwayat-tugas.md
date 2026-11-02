@@ -139,4 +139,11 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `prototypes/zuno-studio-v2.html`, `tests/zuno-studio-v2-build-stub-test.js`, `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: Zulnan coba ulang Build App; bila masih error, kirim log debug Build App.
 
-## 25. (entri berikutnya di sini)
+## 25. Penutup sesi: commit, push, catat (2026-11-02)
+- Permintaan: commit dan push, catat riwayat seperti biasa.
+- Hasil: semua perubahan sesi ini sudah di-commit dan di-push ke `claude/gifted-turing-csug5l` (tanpa PR). Ringkasan sesi: prompt orkestrasi ke struktur divisi (entri 20), Divisi Engineering 4 agen + aturan + skill (21), Engineering standby + tab Build App terpisah di Zuno Studio v2 (22), laporan error Build App (23), perbaikan Pengembang tertahan (24).
+- Keadaan: Zuno Studio v2 (preview versi 1793597823-5d32) lolos semua tes stub (konten dan build); belum terbukti dengan Claude asli. Tab Build App menunggu dicoba ulang Zulnan.
+- File berubah: `docs/riwayat-tugas.md`.
+- Tertunda: coba ulang Build App (bila error, kirim log debug); uji tab Konten dengan Claude asli; penyimpanan permanen; butir [ISI]; akses cari sumber; eksekusi Fase 2 (posting, suara, render, deploy); template penawaran dan serah terima jasa Engineering; artemis di-hold.
+
+## 26. (entri berikutnya di sini)
