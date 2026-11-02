@@ -1,91 +1,79 @@
 # Profil Agen Zuno
 
-Tim: **Lead (Orkestraror Agen) + Juru Kabar + 21 sub-agen dalam 3 tim (Kreator, Penjaga Mutu, Operator) = 23 profil**. Zuno adalah nama tim. Nama jabatan mengikuti katalog [agency-agents-id](https://github.com/jnMetaCode/agency-agents-id) (MIT); yang bertanda "baru" atau "nama sendiri" dibuat khusus untuk Zuno.
+Struktur dirampingkan 2026-11-02 atas permintaan Zulnan: dari 23 profil menjadi **14 agen dalam Lead + 6 divisi**. Profil diambil dari 23 profil lama (nama dan isi tetap); tugas profil yang mirip digabung ke satu agen supaya serah-terima lebih sedikit, tanpa membuat satu agen terlalu berat. Profil lama tersimpan utuh di `agents/arsip-23-agen/`. Nama jabatan mengikuti katalog [agency-agents-id](https://github.com/jnMetaCode/agency-agents-id) (MIT).
 
-## Tiga tim
+Tujuan tetap: Zulnan bisa ngonten pakai AI agent, dari ide sampai paket siap tayang, dengan keputusan akhir di tangan Zulnan.
 
-| Tim | Fungsi | Anggota |
-|---|---|---|
-| **Kreator Zuno** (Agen 1) | Membuat konten sampai file jadi | Peneliti Tren, Ahli Strategi Media Sosial, Penulis Produk & Portofolio, Kreator Konten, Pencerita Visual, Insinyur Prompt Gambar, Pelatih Editing Video Pendek, Narator & Subtitle, Perender, Spesialis Optimasi Video |
-| **Penjaga Mutu Zuno** (Agen 2) | Penasihat mutu: memberi Catatan Mutu ke Lead, tanpa veto | Penjaga Merek, Pemeriksa Realitas, Pengumpul Bukti, Pemeriksa Kepatuhan Hukum |
-| **Operator Zuno** (Agen 3) | Menjalankan operasional setelah Zulnan setuju | Kurator Instagram, Pelapor Analitik, Operasional Studio, Strategis Iklan Sosial Berbayar, Arsitek Tata Kelola Otomasi, Pelacak Eksperimen, Penyintesis Umpan Balik |
+## Lead dan divisi
 
-Lead: Orkestraror Agen dan Juru Kabar.
+| Divisi | Fungsi | Agen (kode) | Gabungan dari profil lama |
+|---|---|---|---|
+| **Lead** | Memimpin, merencanakan, melapor ke Zulnan sebelum terbit | Orkestraror Agen (L.0), Juru Kabar (L.1) | + Arsitek Tata Kelola Otomasi |
+| **1. Riset** | Sumber, tren, umpan balik, arah konten | Peneliti Tren (R.1), Ahli Strategi Media Sosial (R.2) | + Penyintesis Umpan Balik |
+| **2. Produksi** | Naskah, caption, uji retensi | Kreator Konten (P.1), Spesialis Optimasi Video (P.2) | + Penulis Produk & Portofolio |
+| **3. Desain** | Template carousel, maskot, Kartu Gaya video, prompt gambar | Pencerita Visual (D.1) | + Insinyur Prompt Gambar |
+| **4. Editing** | Rencana edit video, VO, subtitle, file jadi | Pelatih Editing Video Pendek (E.1), Perender (E.2) | + Narator & Subtitle |
+| **5. Mutu** (tambahan) | Catatan Mutu, tanpa veto | Penjaga Merek (Q.1), Pengumpul Bukti (Q.2) | + Pemeriksa Realitas, + Pemeriksa Kepatuhan Hukum |
+| **6. Marketing** | Paket posting, leads dan arsip, performa, iklan | Kurator Instagram (M.1), Pelapor Analitik (M.2), Strategis Iklan Sosial Berbayar (M.3) | + Operasional Studio, + Pelacak Eksperimen |
+
+Divisi Mutu tetap ada sebagai divisi kecil karena pemeriksaan fakta, klaim, dan kepatuhan tetap perlu. Sifatnya penasihat: tidak menolak, tidak menahan, tidak ada revisi otomatis.
 
 ## Alur kerja (urutan file = urutan kerja)
 
 ```
-Zulnan memberi perintah
+Zulnan memberi perintah (+ sumber berita/artikel/viral, + referensi gaya bila ada)
    v
-[01 Orkestraror Agen]   rencana + Kartu Konten        [02 Juru Kabar] menyala sepanjang proses
+LEAD      [01 Orkestraror Agen] rencana + Kartu Konten        [02 Juru Kabar] status sepanjang proses
    v
-[03 Peneliti Tren] ===paralel=== [04 Pelapor Analitik]     (05 Penyintesis Umpan Balik: standby)
+RISET     [03 Peneliti Tren] sumber + sudut  ==paralel==  [13 Pelapor Analitik] pelajaran performa lama
+          [04 Ahli Strategi Media Sosial] ide, funnel, platform, angle, hook
    v
-[06 Ahli Strategi Media Sosial]                            (07 Pelacak Eksperimen: standby)
-   v                                    \
-[09 Kreator Konten]         [08 Penulis Produk & Portofolio] (standby; bila menyangkut produk)
+PRODUKSI  [05 Kreator Konten] naskah Killer Script, caption, Daftar Fakta & Klaim
+          [06 Spesialis Optimasi Video] uji retensi, tulis ulang kalimat lemah (satu kali)
    v
-[10 Pencerita Visual]  pemilik paket visual
-   |--> [11 Insinyur Prompt Gambar]   (carousel)
-   |--> [12 Pelatih Editing Video Pendek]   (video)
-   |--> [13 Narator & Subtitle]   (video; standby)
+DESAIN    [07 Pencerita Visual] template carousel + maskot / Kartu Gaya video
    v
-[14 Perender]  file jadi: slide PNG / video       (standby sampai bentuk render ditetapkan)
+EDITING   [08 Pelatih Editing Video Pendek] storyboard, efek, VO, subtitle (video)
+          [09 Perender] PNG carousel / paket render video
    v
-[15 Spesialis Optimasi Video]  saran hook, retensi, cover (standby; tanpa veto)
+MUTU      [10 Penjaga Merek] ==paralel== [11 Pengumpul Bukti]   Catatan Mutu, tanpa veto, satu putaran
    v
-Agen 2 paralel: [16 Penjaga Merek] [17 Pemeriksa Realitas] [18 Pengumpul Bukti] [19 Pemeriksa Kepatuhan Hukum]
-   |  Catatan Mutu (Aman / Saran / Perlu keputusan Zulnan / Risiko nyata), tanpa veto, satu putaran
+LEAD      [01 + 02] Ringkasan Sebelum Terbit: kualitas, kesesuaian dengan keinginan Zulnan, catatan penting
    v
-[01 Orkestraror Agen + 02 Juru Kabar]  Ringkasan Sebelum Terbit: kualitas, kesesuaian dengan keinginan Zulnan, catatan penting
+GERBANG   Zulnan: Setujui / revisi bagian tertentu (status Disetujui hanya dari Zulnan)
    v
-GERBANG: Zulnan menyetujui (status Disetujui hanya dari Zulnan)
-   v
-Agen 3 paralel: [20 Kurator Instagram] [21 Operasional Studio]
-   (22 Arsitek Tata Kelola Otomasi: audit sebelum auto-posting atau iklan nyala; standby)
-   v
-Setelah tayang: [04 Pelapor Analitik] -> (07 Pelacak Eksperimen) -> (05 Penyintesis Umpan Balik) -> kembali ke 03 dan 06
-   v
-Fase 4: (23 Strategis Iklan Sosial Berbayar; standby; butuh label Menang + persetujuan Agen 2 dan Zulnan + batas anggaran)
+MARKETING [12 Kurator Instagram] paket posting + leads/arsip (Fase 1: belum memposting)
+          [13 Pelapor Analitik] baca performa setelah tayang -> pelajaran ke Riset
+          [14 Strategis Iklan Sosial Berbayar] Fase 4 saja (standby)
 ```
 
-Catatan nomor: kode (1.1, 3.2, dan seterusnya) mengikuti prompt orkestrasi. Kode baru: L.1 Juru Kabar; 1.6 sampai 1.10 tambahan di tim Kreator; 3.5 sampai 3.7 tambahan di tim Operator. Nomor file mengikuti urutan kerja, bukan nomor kode.
+Tugas paralel: antar kartu; Peneliti Tren dengan Pelapor Analitik; Penjaga Merek dengan Pengumpul Bukti.
 
-## Aturan standby
+## Aturan tim
 
-Semua 23 agen ada dan siaga. **Aktif harian** berarti ikut setiap kartu. **Standby** berarti tidak berbuat apa pun sampai Orkestraror Agen menugaskan lewat Kartu Konten, lalu langsung berjalan. Standby tidak melonggarkan aturan: Fase 1 tetap tidak memposting dan tidak menjalankan iklan; Agen 2 hanya penasihat (Catatan Mutu, tanpa veto); revisi hanya atas permintaan Zulnan; status Disetujui hanya dari Zulnan.
+- Otoritas konten ada di Zulnan; status Disetujui hanya dari Zulnan. Satu pemilik per output.
+- Divisi Mutu hanya memberi Catatan Mutu (Aman, Saran, Perlu keputusan Zulnan, Risiko nyata). Lead merangkumnya dan memberi tahu Zulnan sebelum konten terbit. Revisi hanya atas permintaan Zulnan.
+- Memori tentang Zulnan dipakai untuk suara dan gaya, bukan bahan konten. Bahan utama dari sumber luar yang diolah jadi karya sendiri dan disebut sumbernya.
+- Fase 1 (default): tidak memposting, tidak menjalankan iklan. Strategis Iklan Sosial Berbayar standby sampai Fase 4.
+- Tidak ada angka, testimoni, sumber, atau pengalaman Zulnan yang dikarang. Harga: [HARGA BELUM DITENTUKAN].
 
 ## Daftar
 
-| # | Nama | Kode | Tim | Status | Tanggung jawab |
+| # | Nama | Kode | Divisi | Status | Tanggung jawab |
 |---|---|---|---|---|---|
-| 1 | [Orkestraror Agen](01-orkestraror-agen.md) | Lead | Lead · Koordinator | aktif harian | Koordinator tim Zuno: menerima perintah Zulnan, merencanakan, membuat Kartu Konten, dan menunjuk siapa yang jalan. |
-| 2 | [Juru Kabar](02-juru-kabar.md) | L.1 | Lead · Koordinator | aktif harian | Juru bicara tim: satu baris status per agen, dan bersama Orkestraror Agen memberi tahu Zulnan lebih dulu tentang konten yang akan terbit. |
-| 3 | [Peneliti Tren](03-peneliti-tren.md) | 1.1 | Agen 1 · Kreator Zuno | aktif harian | Mencari berita, artikel, dan konten viral yang relevan dengan niche, lalu menyiapkannya sebagai bahan untuk diolah jadi konten kreatif. |
-| 4 | [Pelapor Analitik](04-pelapor-analitik.md) | 3.2 | Agen 3 · Operator Zuno | aktif harian | Membaca performa konten dan melabeli Menang, Kalah, atau Data belum cukup; di Fase 1 menyusun rencana ukur. |
-| 5 | [Penyintesis Umpan Balik](05-penyintesis-umpan-balik.md) | 3.7 | Agen 3 · Operator Zuno | standby | Mengubah komentar, pertanyaan audiens, dan umpan balik leads menjadi ide dan prioritas konten. |
-| 6 | [Ahli Strategi Media Sosial](06-ahli-strategi-media-sosial.md) | 1.2 | Agen 1 · Kreator Zuno | aktif harian | Memilih ide, angle, tahap funnel, platform, dan hook untuk setiap Kartu Konten. |
-| 7 | [Pelacak Eksperimen](07-pelacak-eksperimen.md) | 3.6 | Agen 3 · Operator Zuno | standby | Merancang dan mencatat A/B test (misalnya hook) dan menentukan kapan hasilnya cukup untuk disimpulkan. |
-| 8 | [Penulis Produk & Portofolio](08-penulis-produk-portofolio.md) | 1.4 | Agen 1 · Kreator Zuno | standby | Menulis halaman jual produk digital dan studi kasus portofolio (5 web Nexamind) dari data nyata. |
-| 9 | [Kreator Konten](09-kreator-konten.md) | 1.3 | Agen 1 · Kreator Zuno | aktif harian | Menulis teks slide carousel, naskah video, caption, dan hashtag dengan gaya Zulnan. |
-| 10 | [Pencerita Visual](10-pencerita-visual.md) | 1.5 | Agen 1 · Kreator Zuno | aktif harian | Pemilik paket visual: merancang tata letak slide dan storyboard video dari teks Kreator Konten. |
-| 11 | [Insinyur Prompt Gambar](11-insinyur-prompt-gambar.md) | 1.6 | Agen 1 · Kreator Zuno | aktif harian | Menulis prompt gambar siap generate per slide dan adegan beserta spesifikasinya. |
-| 12 | [Pelatih Editing Video Pendek](12-pelatih-editing-video-pendek.md) | 1.7 | Agen 1 · Kreator Zuno | aktif harian | Menyusun arahan edit pasca-produksi: potongan, ritme, subtitle, motion grafis, dan ekspor per platform. |
-| 13 | [Narator & Subtitle](13-narator-subtitle.md) | 1.8 | Agen 1 · Kreator Zuno | standby | Menyiapkan voice-over dari naskah dan subtitle dengan waktu yang pas. |
-| 14 | [Perender](14-perender.md) | 1.9 | Agen 1 · Kreator Zuno | standby | Mengubah rancangan menjadi file nyata: slide carousel (PNG) dan video motion grafis. |
-| 15 | [Spesialis Optimasi Video](15-spesialis-optimasi-video.md) | 1.10 | Agen 1 · Kreator Zuno | standby | Memberi saran hook, retensi, pembabakan, dan cover sebelum video masuk QA. |
-| 16 | [Penjaga Merek](16-penjaga-merek.md) | 2.1 | Agen 2 · Penjaga Mutu Zuno | aktif harian | Penasihat suara dan brand: catatan tentang suara, gaya, slogan, dan konsistensi. |
-| 17 | [Pemeriksa Realitas](17-pemeriksa-realitas.md) | 2.2 | Agen 2 · Penjaga Mutu Zuno | aktif harian | Penasihat fakta dan sumber: menandai klaim yang perlu dicek, tanpa menolak. |
-| 18 | [Pengumpul Bukti](18-pengumpul-bukti.md) | 2.3 | Agen 2 · Penjaga Mutu Zuno | aktif harian | Penasihat format dan tampilan: catatan tentang aturan platform, keterbacaan, dan file render. |
-| 19 | [Pemeriksa Kepatuhan Hukum](19-pemeriksa-kepatuhan-hukum.md) | 2.4 | Agen 2 · Penjaga Mutu Zuno | aktif harian | Penasihat kepatuhan: catatan tentang leads, privasi, dan izin testimoni. Bukan nasihat hukum. |
-| 20 | [Kurator Instagram](20-kurator-instagram.md) | 3.1 | Agen 3 · Operator Zuno | aktif harian | Menyusun paket posting per platform untuk konten yang sudah Disetujui Zulnan. |
-| 21 | [Operasional Studio](21-operasional-studio.md) | 3.3 | Agen 3 · Operator Zuno | aktif harian | Mencatat leads dan arsip, serta memperbarui Papan Kerja Mingguan. |
-| 22 | [Arsitek Tata Kelola Otomasi](22-arsitek-tata-kelola-otomasi.md) | 3.5 | Agen 3 · Operator Zuno | standby | Mengaudit nilai, risiko, dan kemudahan pemeliharaan sebelum otomasi posting atau iklan dinyalakan. |
-| 23 | [Strategis Iklan Sosial Berbayar](23-strategis-iklan-sosial-berbayar.md) | 3.4 | Agen 3 · Operator Zuno | standby | Menyiapkan dan menjalankan iklan Meta Ads; baru aktif di Fase 4 setelah persetujuan Zulnan. |
+| 1 | [Orkestraror Agen](01-orkestraror-agen.md) | L.0 | Lead | aktif harian | Memimpin tim, Kartu Konten, tata kelola otomasi, Ringkasan Sebelum Terbit bersama Juru Kabar |
+| 2 | [Juru Kabar](02-juru-kabar.md) | L.1 | Lead | aktif harian | Status per divisi dan Ringkasan Sebelum Terbit untuk Zulnan |
+| 3 | [Peneliti Tren](03-peneliti-tren.md) | R.1 | Riset | aktif harian | Berita, artikel, konten viral, umpan balik audiens jadi bahan dan sudut konten |
+| 4 | [Ahli Strategi Media Sosial](04-ahli-strategi-media-sosial.md) | R.2 | Riset | aktif harian | Ide, funnel, platform, angle, hook per kartu |
+| 5 | [Kreator Konten](05-kreator-konten.md) | P.1 | Produksi | aktif harian | Naskah Killer Script, teks carousel, caption, Daftar Fakta & Klaim, halaman produk bila ditugaskan |
+| 6 | [Spesialis Optimasi Video](06-spesialis-optimasi-video.md) | P.2 | Produksi | aktif harian | Uji retensi dan tulis ulang kalimat lemah sebelum desain |
+| 7 | [Pencerita Visual](07-pencerita-visual.md) | D.1 | Desain | aktif harian | Template carousel, maskot, Kartu Gaya video, prompt gambar |
+| 8 | [Pelatih Editing Video Pendek](08-pelatih-editing-video-pendek.md) | E.1 | Editing | aktif harian (video) | Storyboard, efek, VO, subtitle, ekspor |
+| 9 | [Perender](09-perender.md) | E.2 | Editing | aktif harian | PNG carousel dan paket render video |
+| 10 | [Penjaga Merek](10-penjaga-merek.md) | Q.1 | Mutu | aktif harian | Catatan suara, merek, fakta, klaim, sumber |
+| 11 | [Pengumpul Bukti](11-pengumpul-bukti.md) | Q.2 | Mutu | aktif harian | Catatan format file, platform, privasi, izin |
+| 12 | [Kurator Instagram](12-kurator-instagram.md) | M.1 | Marketing | setelah Disetujui | Paket posting per platform, leads, arsip, papan kerja |
+| 13 | [Pelapor Analitik](13-pelapor-analitik.md) | M.2 | Marketing | aktif harian (Fase 1: rencana ukur) | Performa, label Menang/Kalah, uji hook, pelajaran ke Riset |
+| 14 | [Strategis Iklan Sosial Berbayar](14-strategis-iklan-sosial-berbayar.md) | M.3 | Marketing | standby (Fase 4) | Draf iklan Meta dari konten Menang, dalam batas anggaran Zulnan |
 
-## Catatan untuk perbaikan berikutnya
-
-- Prompt orkestrasi (`docs/prompt-orkestrasi-zuno.md`) masih menyebut 13 sub-agen; tambahan 1.6 sampai 1.10, 3.5 sampai 3.7, dan Juru Kabar belum dimasukkan. Perbarui setelah profil ini disetujui.
-- Profil ini belum dipakai di Zuno Studio v2; di sana tiap peran masih berupa potongan prompt di kode.
-- Format tiap profil mengikuti contoh katalog (Definisi Peran, Kemampuan Inti, Keahlian Khusus, Integrasi Alur Kerja, Kerangka Pengambilan Keputusan, Metrik Keberhasilan, Contoh Kasus Penggunaan, kerangka khusus peran, Gaya Komunikasi, Pembelajaran & Memori) ditambah bagian khusus Zuno (Status, Tugas di Zuno, Dilarang, Masukan, Keluaran).
-- Metrik sengaja bukan angka tolok ukur katalog. Angka target performa menunggu ditetapkan Zulnan (ukuran konten menang dan tayangan minimal belum ada).
+Versi gabungan semua profil: `agents/semua-agen.md`.

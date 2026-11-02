@@ -66,7 +66,7 @@ Usulan aturan: satu font display dan satu font isi per video. Gerak teks dipilih
 |---|---|---|
 | Tanpa Wajah | HyperFrames (Apache 2.0) atau Remotion (cek lisensi bila jadi produk) | Perender, memakai arahan Pelatih Editing Video Pendek |
 | Mode Tampil | claude-video-effects (lokal di komputer Zulnan, ffmpeg dan Python 3.12) | Zulnan merekam; Pelatih Editing menulis rencana efek (`<nama-video>_effects.json`); Perender menjalankan |
-| Subtitle | Remotion captions, atau tulis manual di editor (CapCut) | Narator & Subtitle |
+| Subtitle | Remotion captions, atau tulis manual di editor (CapCut) | Pelatih Editing Video Pendek |
 | Pratinjau di browser | Canvas di Zuno Studio v2 (sudah ada) | Zuno Studio |
 
 Status jujur: belum ada alat di atas yang diuji dari sesi ini. Sampai satu file video benar-benar dirender, status tetap "Prompt siap generate", bukan "selesai".

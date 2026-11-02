@@ -46,7 +46,7 @@ Bila cerita pribadi dipakai, hanya fakta di bawah yang boleh. Fakta lain wajib d
 
 ## 4. Larangan
 
-Daftar ini adalah pedoman penulis dan acuan catatan Agen 2. Pelanggaran yang ditemukan menjadi **catatan** untuk Zulnan, bukan alasan menolak atau menahan konten (lihat bagian 8).
+Daftar ini adalah pedoman penulis dan acuan catatan Divisi Mutu. Pelanggaran yang ditemukan menjadi **catatan** untuk Zulnan, bukan alasan menolak atau menahan konten (lihat bagian 8).
 
 - Klaim hasil atau penghasilan yang belum terbukti.
 - Kata berlebihan, mengaku-ngaku, menipu, menjanjikan hasil, bertele-tele.
@@ -143,7 +143,7 @@ Naskah wajib membuat orang berhenti scroll dan menonton sampai habis. Metode: sk
 - **Solusi**: 3-5 poin konkret, tiap poin berdiri sendiri, tanpa jargon; potong yang muter-muter.
 - **CTA**: maksimal satu (boleh nyeleneh) atau loop ke hook.
 - Pakai minimal 2 dari 7 faktor viralitas. Dilarang: basa-basi, definisi panjang, naskah datar, klaim hasil, mengarang fakta/angka/tren.
-- Setelah ditulis, **Spesialis Optimasi Video** menguji retensi dengan checklist Killer Script dan menulis ulang kalimat yang lemah sebelum masuk Agen 2.
+- Setelah ditulis, **Spesialis Optimasi Video** menguji retensi dengan checklist Killer Script dan menulis ulang kalimat yang lemah sebelum masuk desain.
 - Riset: lihat bagian 7c.
 
 ## 7c. Sumber dan olah kreatif
@@ -158,8 +158,9 @@ Konten harian berangkat dari **dunia luar**, bukan dari memori tentang Zulnan (k
 
 Keputusan Zulnan 2026-11-02: **otoritas atas konten ada di Zulnan.** Pemeriksaan mutu tetap berjalan, tetapi tidak menghambat produksi.
 
+- Struktur tim (2026-11-02): Lead (Orkestraror Agen, Juru Kabar) + divisi Riset, Produksi, Desain, Editing, Mutu, Marketing; 14 agen. Rincian: `agents/README.md`.
 - Satu pemilik per output.
-- **Agen 2 (Penjaga Merek, Pemeriksa Realitas, Pengumpul Bukti, Pemeriksa Kepatuhan Hukum) adalah penasihat, tanpa veto.** Satu putaran periksa, hasilnya **Catatan Mutu**: Aman, Saran, Perlu keputusan Zulnan, atau Risiko nyata. Agen 2 tidak menolak dan tidak mengembalikan kartu sendiri.
+- **Divisi Mutu (Penjaga Merek: suara, merek, fakta, sumber; Pengumpul Bukti: format, platform, kepatuhan) adalah penasihat, tanpa veto.** Satu putaran periksa, hasilnya **Catatan Mutu**: Aman, Saran, Perlu keputusan Zulnan, atau Risiko nyata. Divisi Mutu tidak menolak dan tidak mengembalikan kartu sendiri.
 - Pola dasar hukum dan kepatuhan (klaim hasil, data sensitif, privasi, izin testimoni) **tetap dicek**, tetapi hasilnya catatan yang proporsional dan satu baris saran, bukan penolakan. Risiko nyata ditaruh paling atas di ringkasan; keputusannya di Zulnan.
 - **Lead (Orkestraror Agen dan Juru Kabar) menerima semua Catatan Mutu** dan menyusun **Ringkasan Sebelum Terbit** untuk Zulnan: kualitas, kesesuaian dengan keinginan Zulnan untuk video dan carousel, serta catatan penting. Zulnan diberi tahu dulu sebelum konten terbit.
 - Tidak ada putaran revisi otomatis dan tidak ada status Tidak Lolos otomatis. Revisi hanya dikerjakan atas permintaan Zulnan.

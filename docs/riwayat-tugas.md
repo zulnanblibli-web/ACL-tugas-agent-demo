@@ -103,4 +103,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `CLAUDE.md`, `progress.md`, `docs/brief-gaya-konten.md`, `docs/prompt-orkestrasi-zuno.md`, `agents/` (01, 02, 03, 05, 06, 07, 08, 09, 10, 13, 14, 15, 16, 17, 18, 19, 22, 23, README, semua-agen), `prototypes/zuno-studio-v2.html`, `tests/zuno-studio-v2-stub-test.js`.
 - Tertunda: uji dengan Claude asli; samakan `prompt-orkestrasi-zuno.docx` dan Claude Doc; v2 belum punya pencarian web sendiri (sumber ditempel Zulnan atau dicari lewat Claude Code); belum di-push (menunggu izin Zulnan).
 
-## 19. (entri berikutnya di sini)
+## 19. Rampingkan tim jadi Lead + 6 divisi (2026-11-02)
+- Permintaan: rampingkan divisi agen (research, production, editing, design, marketing; tambahan boleh asal tidak gemuk), sub-agen secukupnya, profil cukup dirampingkan, tujuan tetap (ngonten pakai AI agent). Lead tetap ada. Ambil dari 23 profil yang relevan, jangan buat baru.
+- Hasil: 14 agen: Lead (Orkestraror Agen, Juru Kabar), Riset (Peneliti Tren, Ahli Strategi Media Sosial), Produksi (Kreator Konten, Spesialis Optimasi Video), Desain (Pencerita Visual), Editing (Pelatih Editing Video Pendek, Perender), Mutu (Penjaga Merek, Pengumpul Bukti), Marketing (Kurator Instagram, Pelapor Analitik, Strategis Iklan Sosial Berbayar). Sembilan profil lama digabung ke profil yang paling dekat (bagian "Tugas gabungan"). Profil lama diarsipkan di `agents/arsip-23-agen/`. README agen, `semua-agen.md`, brief, `CLAUDE.md`, `gaya-video.md`, dan Zuno Studio v2 (kode peran, tampilan proses per divisi, Divisi Mutu 2 panggilan) diperbarui. Tes stub lolos (Tanpa Wajah, Mode Tampil, revisi atas permintaan). Preview diperbarui.
+- File berubah: `agents/` (14 profil baru dari arsip, README, semua-agen, folder arsip), `CLAUDE.md`, `docs/brief-gaya-konten.md`, `docs/gaya-video.md`, `prototypes/zuno-studio-v2.html`, `tests/zuno-studio-v2-stub-test.js`, `progress.md`.
+- Tertunda: prompt orkestrasi masih struktur lama (perlu ditulis ulang); uji dengan Claude asli; belum di-push.
+
+## 20. (entri berikutnya di sini)
