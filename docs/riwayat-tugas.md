@@ -115,4 +115,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `docs/prompt-orkestrasi-zuno.md`, `docs/prompt-orkestrasi-zuno.docx`, `progress.md`. Claude Doc: https://claude.ai/artifact/5B8WKpCnj4t79CwtAWAPM7
 - Tertunda: uji v2 dan prompt baru dengan Claude asli; uji render; maskot; butir [ISI].
 
-## 21. (entri berikutnya di sini)
+## 21. Divisi Engineering (2026-11-02)
+- Permintaan: tambah satu divisi Engineering yang fokus build apa yang Zulnan minta (pribadi, portofolio, atau klien jasa web app), sub-agen efisien tapi optimal. Cek repo google/artemis dan multica-ai/andrej-karpathy-skills, serta 5 skill unggahan (01-idea-to-scope-lock, 08-motion-purpose-check, webapp-builder-firebase, webapp-builder-full-gas, webapp-builder-gas-blogger). Keputusan Zulnan: catatan keamanan boleh diubah; password acak tapi contoh login tetap tampil di frontend plus menu reset; kredit "Creative @nexamind.ai" untuk proyek pribadi/portofolio, klien sesuai permintaan; fleksibel ke semua LLM; artemis di-hold; skill seri 02-07/09 tidak ada (diabaikan).
+- Hasil: 4 agen baru (T.1 Arsitek & Analis Kebutuhan, T.2 Desainer UI/UX, T.3 Pengembang Aplikasi, T.4 Penguji & Rilis). `docs/aturan-engineering.md` (prinsip Karpathy, gerbang, pilihan mesin, standar kredit/akses/hash/AI_PROVIDER, data klien). Lima skill disesuaikan di `skills/engineering/` (password bawaan admin2026/edudigital diganti akun acak, TAMPILKAN_CONTOH_LOGIN, menu Reset Akses, hash, kredit, AI fleksibel, bebas platform) + .zip. README agen, semua-agen, CLAUDE.md, prompt orkestrasi (.md, .docx, Claude Doc: "Lead + 7 Divisi, 18 Agen") diperbarui. Nama "Menu riset" dari Zulnan ditafsirkan sebagai menu Reset Akses.
+- File berubah: `agents/15-18` (baru), `agents/README.md`, `agents/semua-agen.md`, `docs/aturan-engineering.md` (baru), `skills/engineering/` (baru), `CLAUDE.md`, `docs/prompt-orkestrasi-zuno.md`, `docs/prompt-orkestrasi-zuno.docx`, `progress.md`.
+- Tertunda: proyek pertama untuk menguji alur Engineering; unggah ulang skill ke claude.ai bila Zulnan setuju; artemis di-hold.
+
+## 22. (entri berikutnya di sini)

@@ -1,8 +1,10 @@
 # Profil Agen Zuno
 
-Struktur dirampingkan 2026-11-02 atas permintaan Zulnan: dari 23 profil menjadi **14 agen dalam Lead + 6 divisi**. Profil diambil dari 23 profil lama (nama dan isi tetap); tugas profil yang mirip digabung ke satu agen supaya serah-terima lebih sedikit, tanpa membuat satu agen terlalu berat. Profil lama tersimpan utuh di `agents/arsip-23-agen/`. Nama jabatan mengikuti katalog [agency-agents-id](https://github.com/jnMetaCode/agency-agents-id) (MIT).
+Struktur dirampingkan 2026-11-02 atas permintaan Zulnan: dari 23 profil menjadi **14 agen kreatif dalam Lead + 6 divisi**, lalu ditambah **Divisi Engineering (4 agen)** sehingga total **18 agen**. Profil diambil dari 23 profil lama (nama dan isi tetap); tugas profil yang mirip digabung ke satu agen supaya serah-terima lebih sedikit, tanpa membuat satu agen terlalu berat. Profil lama tersimpan utuh di `agents/arsip-23-agen/`. Nama jabatan mengikuti katalog [agency-agents-id](https://github.com/jnMetaCode/agency-agents-id) (MIT).
 
 Tujuan tetap: Zulnan bisa ngonten pakai AI agent, dari ide sampai paket siap tayang, dengan keputusan akhir di tangan Zulnan.
+
+Anggap ini satu kantor: **Lead** memimpin dua sayap, yaitu **sayap kreatif** (6 divisi konten) dan **Divisi Engineering** (build web app untuk pribadi, portofolio, atau klien jasa). Aturan Engineering: `docs/aturan-engineering.md`.
 
 ## Lead dan divisi
 
@@ -15,6 +17,7 @@ Tujuan tetap: Zulnan bisa ngonten pakai AI agent, dari ide sampai paket siap tay
 | **4. Editing** | Rencana edit video, VO, subtitle, file jadi | Pelatih Editing Video Pendek (E.1), Perender (E.2) | + Narator & Subtitle |
 | **5. Mutu** (tambahan) | Catatan Mutu, tanpa veto | Penjaga Merek (Q.1), Pengumpul Bukti (Q.2) | + Pemeriksa Realitas, + Pemeriksa Kepatuhan Hukum |
 | **6. Marketing** | Paket posting, leads dan arsip, performa, iklan | Kurator Instagram (M.1), Pelapor Analitik (M.2), Strategis Iklan Sosial Berbayar (M.3) | + Operasional Studio, + Pelacak Eksperimen |
+| **7. Engineering** | Build web app: ruang lingkup, desain, kode, uji, rilis | Arsitek & Analis Kebutuhan (T.1), Desainer UI/UX (T.2), Pengembang Aplikasi (T.3), Penguji & Rilis (T.4) | profil baru (tidak ada padanan di 23 profil lama) |
 
 Divisi Mutu tetap ada sebagai divisi kecil karena pemeriksaan fakta, klaim, dan kepatuhan tetap perlu. Sifatnya penasihat: tidak menolak, tidak menahan, tidak ada revisi otomatis.
 
@@ -47,6 +50,14 @@ MARKETING [12 Kurator Instagram] paket posting + leads/arsip (Fase 1: belum memp
           [14 Strategis Iklan Sosial Berbayar] Fase 4 saja (standby)
 ```
 
+Alur Engineering (terpisah dari alur konten):
+
+```
+Permintaan build -> [15 Arsitek & Analis Kebutuhan] ruang lingkup + mesin -> GERBANG 1 Zulnan
+  -> [16 Desainer UI/UX] wireframe + gaya + cek animasi -> GERBANG 2 Zulnan
+  -> [17 Pengembang Aplikasi] bangun (preview dulu) -> [18 Penguji & Rilis] uji + bukti -> GERBANG 3 Zulnan -> rilis
+```
+
 Tugas paralel: antar kartu; Peneliti Tren dengan Pelapor Analitik; Penjaga Merek dengan Pengumpul Bukti.
 
 ## Aturan tim
@@ -75,5 +86,9 @@ Tugas paralel: antar kartu; Peneliti Tren dengan Pelapor Analitik; Penjaga Merek
 | 12 | [Kurator Instagram](12-kurator-instagram.md) | M.1 | Marketing | setelah Disetujui | Paket posting per platform, leads, arsip, papan kerja |
 | 13 | [Pelapor Analitik](13-pelapor-analitik.md) | M.2 | Marketing | aktif harian (Fase 1: rencana ukur) | Performa, label Menang/Kalah, uji hook, pelajaran ke Riset |
 | 14 | [Strategis Iklan Sosial Berbayar](14-strategis-iklan-sosial-berbayar.md) | M.3 | Marketing | standby (Fase 4) | Draf iklan Meta dari konten Menang, dalam batas anggaran Zulnan |
+| 15 | [Arsitek & Analis Kebutuhan](15-arsitek-analis-kebutuhan.md) | T.1 | Engineering | per proyek | Kunci ruang lingkup, pilih mesin, PRD, kredit dan akses |
+| 16 | [Desainer UI/UX](16-desainer-ui-ux.md) | T.2 | Engineering | per proyek | Wireframe, gaya visual, cek animasi |
+| 17 | [Pengembang Aplikasi](17-pengembang-aplikasi.md) | T.3 | Engineering | per proyek | Bangun web app lengkap, akses acak + Reset Akses, AI fleksibel |
+| 18 | [Penguji & Rilis](18-penguji-rilis.md) | T.4 | Engineering | per proyek | Uji dengan bukti, perbaiki bug, rilis, panduan serah terima |
 
 Versi gabungan semua profil: `agents/semua-agen.md`.
