@@ -1,9 +1,9 @@
 # Progress: Zuno
 
-Terakhir diperbarui: 2026-11-02 (tim dirampingkan jadi Lead + 6 divisi, 14 agen; Divisi Mutu penasihat tanpa veto; sumber luar sebagai bahan konten)
+Terakhir diperbarui: 2026-11-02 (prompt orkestrasi ditulis ulang ke Lead + 6 divisi; tim dirampingkan jadi Lead + 6 divisi, 14 agen; Divisi Mutu penasihat tanpa veto; sumber luar sebagai bahan konten)
 
 ## Status singkat
-- Blueprint dan prompt orkestrasi: **selesai** (`docs/prompt-orkestrasi-zuno.md`, juga Word dan Claude Doc).
+- Blueprint dan prompt orkestrasi: **selesai, struktur Lead + 6 divisi (14 agen)** (`docs/prompt-orkestrasi-zuno.md`, Word, dan Claude Doc sudah sama).
 - Preview skema (simulasi berskrip): **selesai**, tidak memanggil AI.
 - Zuno Studio v1 (tool live, tiap sub-agen memanggil Claude): **jalan, tapi terlalu rumit** menurut Zulnan. Dipakai sebagai bahan, akan diganti v2.
 - Zuno Studio v2: **dibangun dan dipublikasikan sebagai preview, lolos tes stub (Claude tiruan); belum diuji dengan Claude asli.** Carousel: PNG nyata (template A-D). Video: paket naskah + storyboard + Kartu Gaya + rencana render (.md, bisa diunduh), bukan file video; pratinjau kanvas hanya kasar.
@@ -63,8 +63,7 @@ Baca `docs/gaya-video.md`. Ringkas:
 2. **Uji render nyata** paket video: jalankan komposisi HyperFrames (`npx hyperframes preview`, lalu `render`) dan satu rencana efek `claude-video-effects` (butuh rekaman asli Zulnan, ffmpeg, Python 3.12). Format keduanya diambil dari README, belum pernah dijalankan. Catat hasilnya jujur di riwayat. Bila kualitas tampilan tidak sesuai referensi, perbaiki templat HyperFrames di `buildHF` atau pindahkan render ke Claude Code.
 3. **Pasang maskot** (`assets/maskot/`) di carousel Zuno Studio bila Zulnan minta; tunggu keputusan varian default (A kaos teal atau B kaos putih) dan apakah maskot dipakai di video.
 4. Isi butir **[ISI]** di `docs/brief-gaya-konten.md` bagian 10 bersama Zulnan (contoh suara, handle, detail 5 web Nexamind, ukuran konten menang, tayangan minimal, harga, alat video Tanpa Wajah, izin latar SMK Broadcasting). Jangan menebak.
-5. **Tulis ulang prompt orkestrasi** (`docs/prompt-orkestrasi-zuno.md`, .docx, Claude Doc) mengikuti struktur Lead + 6 divisi (14 agen). Versi .md sekarang masih memakai struktur lama 3 agen/13 sub-agen, meski sudah memuat aturan Divisi Mutu penasihat, sumber luar, dan memori.
-6. Opsional: suara dan musik, MP4 1080x1920, Peneliti Tren dengan akses pencarian, Pelapor Analitik dan Strategis Iklan di v2, lalu pindah ke web app (Vercel/Supabase): ganti `sample` dengan API backend; Bagian RENDER dan UI di `zuno-studio-v2.html` tetap.
+5. Opsional: suara dan musik, MP4 1080x1920, Peneliti Tren dengan akses pencarian, Pelapor Analitik dan Strategis Iklan di v2, lalu pindah ke web app (Vercel/Supabase): ganti `sample` dengan API backend; Bagian RENDER dan UI di `zuno-studio-v2.html` tetap.
 
 ## Video: paket + rencana render, bukan render di tool (2026-11-01)
 Keputusan Zulnan: Zuno Studio menghasilkan **paket .md** (naskah hook-problem-twist-solusi-cta, storyboard per adegan maks. 2 detik, Kartu Gaya dari referensi, rencana efek `claude-video-effects` untuk Mode Tampil, komposisi HTML HyperFrames untuk Tanpa Wajah) yang bisa diunduh dan dipratinjau; video dirender di komputer Zulnan atau lewat Claude Code. Kanvas hanya pratinjau kasar (opsional). Wajah maks. 2-3 detik lalu motion; latar selalu bergerak. Naskah memakai metode Killer Script plus uji retensi. Carousel tidak diubah. Format rencana efek dan HTML HyperFrames diambil dari README kedua repo; **belum diuji dijalankan**.

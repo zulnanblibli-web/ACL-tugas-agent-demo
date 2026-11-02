@@ -109,4 +109,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `agents/` (14 profil baru dari arsip, README, semua-agen, folder arsip), `CLAUDE.md`, `docs/brief-gaya-konten.md`, `docs/gaya-video.md`, `prototypes/zuno-studio-v2.html`, `tests/zuno-studio-v2-stub-test.js`, `progress.md`.
 - Tertunda: prompt orkestrasi masih struktur lama (perlu ditulis ulang); uji dengan Claude asli; belum di-push.
 
-## 20. (entri berikutnya di sini)
+## 20. Prompt orkestrasi ke struktur Lead + 6 divisi (2026-11-02)
+- Permintaan: lanjut tugas berikutnya: tulis ulang prompt orkestrasi pakai struktur divisi baru (uji preview dengan Claude asli dikerjakan Zulnan).
+- Hasil: prompt orkestrasi ditulis ulang: tabel struktur tim, Lead (L.0, L.1), 6 divisi dengan 14 agen (tugas sub-agen lama dipetakan ke agen gabungan), format estafet per divisi plus Ringkasan Sebelum Terbit, tugas paralel dengan kode agen baru, memori dan template laporan per divisi. Aturan lama tetap: Divisi Mutu penasihat tanpa veto, sumber luar, memori bukan bahan konten, Fase 1 default. Versi .md, .docx (dibuat ulang dengan python-docx), dan Claude Doc (judul diganti "Lead + 6 Divisi, 14 Agen") sudah sama.
+- File berubah: `docs/prompt-orkestrasi-zuno.md`, `docs/prompt-orkestrasi-zuno.docx`, `progress.md`. Claude Doc: https://claude.ai/artifact/5B8WKpCnj4t79CwtAWAPM7
+- Tertunda: uji v2 dan prompt baru dengan Claude asli; uji render; maskot; butir [ISI].
+
+## 21. (entri berikutnya di sini)
