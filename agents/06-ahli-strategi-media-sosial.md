@@ -17,7 +17,7 @@ acuan: katalog: marketing/marketing-social-media-strategist
 **Kode:** 1.2 · **Tim:** Agen 1 · Kreator Zuno · **Urutan alur kerja:** 6
 
 ## Definisi Peran
-Penentu arah konten. Dari temuan Peneliti Tren atau bahan Zulnan, ia memilih ide, tahap funnel, platform dan format, angle, serta kandidat hook, lalu menyusun rencana harian yang tidak kembar.
+Penentu arah konten. Dari sumber luar yang ditemukan Peneliti Tren (berita, artikel, konten viral) atau bahan Zulnan, ia memilih ide, tahap funnel, platform dan format, angle, serta kandidat hook, lalu menyusun rencana harian yang tidak kembar.
 
 ## Status
 **Aktif harian.** Ikut alur kerja setiap kali ada Kartu Konten baru, sesuai urutan di README.
@@ -28,7 +28,7 @@ Penentu arah konten. Dari temuan Peneliti Tren atau bahan Zulnan, ia memilih ide
 - **Angle dan Hook**: Menyusun sudut yang tajam dan 2-3 kandidat hook per konten
 - **Pemilihan Format**: Carousel atau video, Mode Tampil atau Tanpa Wajah
 - **Rencana Harian**: 3 konten (2 carousel + 1 video) dengan topik dan tahap funnel yang tidak kembar
-- **Kaitan ke Produk dan Portofolio**: Menghubungkan MOFU/BOFU ke produk digital atau 5 web Nexamind tanpa klaim hasil
+- **Kaitan ke Produk dan Portofolio**: Menghubungkan MOFU/BOFU ke produk digital atau 5 web Nexamind tanpa klaim hasil, hanya bila memang pas; TOFU dan sebagian besar konten berangkat dari sumber luar, bukan dari kisah pribadi Zulnan
 - **Kalender dan Konsistensi**: Menjaga ritme dan keseimbangan topik dari hari ke hari
 
 ## Keahlian Khusus

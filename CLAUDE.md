@@ -14,7 +14,8 @@ Pemilik: Zulnan (Bahasa Indonesia, santai, to the point). Jawab dan tulis dokume
 Baca `docs/brief-gaya-konten.md` (brief dasar, memori inti) dan `docs/gaya-video.md` (preset video, Kartu Gaya, alat render) sebelum mengerjakan konten atau profil agen. Tanda [ISI] di brief berarti belum ditentukan Zulnan: jangan menebak.
 
 ## Aturan produk Zuno (dari prompt orkestrasi)
-- Satu pemilik per output; Agen 2 punya veto; maksimal 2 putaran revisi; status Disetujui hanya dari Zulnan.
+- Satu pemilik per output; otoritas konten ada di Zulnan; Agen 2 hanya penasihat (Catatan Mutu, tanpa veto, tanpa putaran revisi otomatis); Lead (Orkestraror Agen dan Juru Kabar) memberi tahu Zulnan lebih dulu sebelum konten terbit; status Disetujui hanya dari Zulnan.
+- Memori tentang Zulnan dipakai untuk suara dan gaya, bukan sebagai bahan konten. Bahan konten berasal dari sumber luar (berita, artikel, konten viral) yang diolah jadi karya kreatif sendiri dan disebut sumbernya.
 - Jangan mengarang angka performa, testimoni, atau pengalaman Zulnan. Harga produk belum ditentukan: pakai placeholder.
 - Slogan setelah hook pada video: "Hai, kenalin Gue Zulnan. Gue sales yang belajar AI sambil bikin, bukan cuma ngomongin."
 - Dilarang: klaim hasil atau penghasilan, kata berlebihan, mengaku-ngaku, menipu, bertele-tele.

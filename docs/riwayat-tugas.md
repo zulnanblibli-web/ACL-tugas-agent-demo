@@ -96,4 +96,11 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Hasil: `progress.md` diperbarui (status, tugas berikutnya, tautan preview, cara menjalankan tes v2). Seluruh commit sesi ini didorong ke branch `claude/gifted-turing-csug5l` (tanpa PR).
 - Keadaan: v2 lolos tes dengan Claude tiruan; belum diuji dengan Claude asli; video belum dirender oleh alat mana pun.
 
-## 18. (entri berikutnya di sini)
+## 18. Penjaga Mutu jadi penasihat, sumber luar, memori bukan bahan konten (2026-11-02)
+- Permintaan: cek kenapa Penjaga Mutu menolak konten. Otoritas konten tetap di Zulnan, Agen 2 tidak boleh menghambat produksi. Semua catatan diserahkan ke Lead/Juru Bicara yang memberi tahu Zulnan dulu soal konten yang akan terbit (kualitas dan kesesuaian video/carousel). Memori tentang Zulnan jangan selalu jadi bahan konten. Tim harus bisa mencari sumber (artikel, berita, konten viral) dan mengolahnya jadi konten kreatif. Aturan hukum tetap dicek tapi jangan selalu ditolak.
+- Temuan penyebab: aturan "satu penolakan = Tidak Lolos" + revisi otomatis 2 putaran di brief, prompt orkestrasi, profil 16-19, dan kode v2 (`cardFlow`); Pemeriksa Realitas dengan "toleransi nol" dan "wajib dihapus"; fakta Zulnan ditulis sebagai satu-satunya bahan cerita, sehingga agen condong memakai memori pribadi.
+- Hasil: Agen 2 jadi penasihat tanpa veto (Catatan Mutu: Aman, Saran, Perlu keputusan Zulnan, Risiko nyata; satu putaran). Lead (Orkestraror Agen + Juru Kabar) menyusun Ringkasan Sebelum Terbit. Revisi otomatis dan status Tidak Lolos dihapus; revisi hanya atas permintaan Zulnan. Memori Zulnan dipakai untuk suara dan gaya saja. Peneliti Tren berbasis sumber luar; v2 punya kolom Sumber bahan dan Daftar sumber di paket .md. Tes stub diperbarui dan lolos (Tanpa Wajah, Mode Tampil, tombol Terapkan saran). Preview diperbarui (versi 1793590461-3592).
+- File berubah: `CLAUDE.md`, `progress.md`, `docs/brief-gaya-konten.md`, `docs/prompt-orkestrasi-zuno.md`, `agents/` (01, 02, 03, 05, 06, 07, 08, 09, 10, 13, 14, 15, 16, 17, 18, 19, 22, 23, README, semua-agen), `prototypes/zuno-studio-v2.html`, `tests/zuno-studio-v2-stub-test.js`.
+- Tertunda: uji dengan Claude asli; samakan `prompt-orkestrasi-zuno.docx` dan Claude Doc; v2 belum punya pencarian web sendiri (sumber ditempel Zulnan atau dicari lewat Claude Code); belum di-push (menunggu izin Zulnan).
+
+## 19. (entri berikutnya di sini)

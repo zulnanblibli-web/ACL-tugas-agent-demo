@@ -7,7 +7,7 @@ Tim: **Lead (Orkestraror Agen) + Juru Kabar + 21 sub-agen dalam 3 tim (Kreator, 
 | Tim | Fungsi | Anggota |
 |---|---|---|
 | **Kreator Zuno** (Agen 1) | Membuat konten sampai file jadi | Peneliti Tren, Ahli Strategi Media Sosial, Penulis Produk & Portofolio, Kreator Konten, Pencerita Visual, Insinyur Prompt Gambar, Pelatih Editing Video Pendek, Narator & Subtitle, Perender, Spesialis Optimasi Video |
-| **Penjaga Mutu Zuno** (Agen 2) | Memeriksa mutu dan memegang veto | Penjaga Merek, Pemeriksa Realitas, Pengumpul Bukti, Pemeriksa Kepatuhan Hukum |
+| **Penjaga Mutu Zuno** (Agen 2) | Penasihat mutu: memberi Catatan Mutu ke Lead, tanpa veto | Penjaga Merek, Pemeriksa Realitas, Pengumpul Bukti, Pemeriksa Kepatuhan Hukum |
 | **Operator Zuno** (Agen 3) | Menjalankan operasional setelah Zulnan setuju | Kurator Instagram, Pelapor Analitik, Operasional Studio, Strategis Iklan Sosial Berbayar, Arsitek Tata Kelola Otomasi, Pelacak Eksperimen, Penyintesis Umpan Balik |
 
 Lead: Orkestraror Agen dan Juru Kabar.
@@ -35,7 +35,9 @@ Zulnan memberi perintah
 [15 Spesialis Optimasi Video]  saran hook, retensi, cover (standby; tanpa veto)
    v
 Agen 2 paralel: [16 Penjaga Merek] [17 Pemeriksa Realitas] [18 Pengumpul Bukti] [19 Pemeriksa Kepatuhan Hukum]
-   |  satu Tidak Lolos -> Juru Kabar memberi tahu Zulnan DULU -> kembali ke pemilik tugas (maks. 2 revisi)
+   |  Catatan Mutu (Aman / Saran / Perlu keputusan Zulnan / Risiko nyata), tanpa veto, satu putaran
+   v
+[01 Orkestraror Agen + 02 Juru Kabar]  Ringkasan Sebelum Terbit: kualitas, kesesuaian dengan keinginan Zulnan, catatan penting
    v
 GERBANG: Zulnan menyetujui (status Disetujui hanya dari Zulnan)
    v
@@ -51,15 +53,15 @@ Catatan nomor: kode (1.1, 3.2, dan seterusnya) mengikuti prompt orkestrasi. Kode
 
 ## Aturan standby
 
-Semua 23 agen ada dan siaga. **Aktif harian** berarti ikut setiap kartu. **Standby** berarti tidak berbuat apa pun sampai Orkestraror Agen menugaskan lewat Kartu Konten, lalu langsung berjalan. Standby tidak melonggarkan aturan: Fase 1 tetap tidak memposting dan tidak menjalankan iklan; Agen 2 tetap memegang veto; maksimal 2 putaran revisi; status Disetujui hanya dari Zulnan.
+Semua 23 agen ada dan siaga. **Aktif harian** berarti ikut setiap kartu. **Standby** berarti tidak berbuat apa pun sampai Orkestraror Agen menugaskan lewat Kartu Konten, lalu langsung berjalan. Standby tidak melonggarkan aturan: Fase 1 tetap tidak memposting dan tidak menjalankan iklan; Agen 2 hanya penasihat (Catatan Mutu, tanpa veto); revisi hanya atas permintaan Zulnan; status Disetujui hanya dari Zulnan.
 
 ## Daftar
 
 | # | Nama | Kode | Tim | Status | Tanggung jawab |
 |---|---|---|---|---|---|
 | 1 | [Orkestraror Agen](01-orkestraror-agen.md) | Lead | Lead · Koordinator | aktif harian | Koordinator tim Zuno: menerima perintah Zulnan, merencanakan, membuat Kartu Konten, dan menunjuk siapa yang jalan. |
-| 2 | [Juru Kabar](02-juru-kabar.md) | L.1 | Lead · Koordinator | aktif harian | Mengubah aktivitas tiap agen menjadi satu baris status dan memberi kabar sebelum tugas ditandai Tidak Lolos. |
-| 3 | [Peneliti Tren](03-peneliti-tren.md) | 1.1 | Agen 1 · Kreator Zuno | aktif harian | Mencari tren dan topik yang relevan dengan niche produk digital dan AI untuk audiens pemula. |
+| 2 | [Juru Kabar](02-juru-kabar.md) | L.1 | Lead · Koordinator | aktif harian | Juru bicara tim: satu baris status per agen, dan bersama Orkestraror Agen memberi tahu Zulnan lebih dulu tentang konten yang akan terbit. |
+| 3 | [Peneliti Tren](03-peneliti-tren.md) | 1.1 | Agen 1 · Kreator Zuno | aktif harian | Mencari berita, artikel, dan konten viral yang relevan dengan niche, lalu menyiapkannya sebagai bahan untuk diolah jadi konten kreatif. |
 | 4 | [Pelapor Analitik](04-pelapor-analitik.md) | 3.2 | Agen 3 · Operator Zuno | aktif harian | Membaca performa konten dan melabeli Menang, Kalah, atau Data belum cukup; di Fase 1 menyusun rencana ukur. |
 | 5 | [Penyintesis Umpan Balik](05-penyintesis-umpan-balik.md) | 3.7 | Agen 3 · Operator Zuno | standby | Mengubah komentar, pertanyaan audiens, dan umpan balik leads menjadi ide dan prioritas konten. |
 | 6 | [Ahli Strategi Media Sosial](06-ahli-strategi-media-sosial.md) | 1.2 | Agen 1 · Kreator Zuno | aktif harian | Memilih ide, angle, tahap funnel, platform, dan hook untuk setiap Kartu Konten. |
@@ -72,10 +74,10 @@ Semua 23 agen ada dan siaga. **Aktif harian** berarti ikut setiap kartu. **Stand
 | 13 | [Narator & Subtitle](13-narator-subtitle.md) | 1.8 | Agen 1 · Kreator Zuno | standby | Menyiapkan voice-over dari naskah dan subtitle dengan waktu yang pas. |
 | 14 | [Perender](14-perender.md) | 1.9 | Agen 1 · Kreator Zuno | standby | Mengubah rancangan menjadi file nyata: slide carousel (PNG) dan video motion grafis. |
 | 15 | [Spesialis Optimasi Video](15-spesialis-optimasi-video.md) | 1.10 | Agen 1 · Kreator Zuno | standby | Memberi saran hook, retensi, pembabakan, dan cover sebelum video masuk QA. |
-| 16 | [Penjaga Merek](16-penjaga-merek.md) | 2.1 | Agen 2 · Penjaga Mutu Zuno | aktif harian | Memeriksa suara, gaya, slogan, kata terlarang, dan konsistensi brand setiap konten. |
-| 17 | [Pemeriksa Realitas](17-pemeriksa-realitas.md) | 2.2 | Agen 2 · Penjaga Mutu Zuno | aktif harian | Memeriksa setiap fakta, angka, dan klaim, termasuk teks yang tampil di gambar dan video. |
-| 18 | [Pengumpul Bukti](18-pengumpul-bukti.md) | 2.3 | Agen 2 · Penjaga Mutu Zuno | aktif harian | Memeriksa format, aturan platform, keterbacaan, dan file hasil render. |
-| 19 | [Pemeriksa Kepatuhan Hukum](19-pemeriksa-kepatuhan-hukum.md) | 2.4 | Agen 2 · Penjaga Mutu Zuno | aktif harian | Memeriksa leads, privasi, dan izin testimoni atau studi kasus. |
+| 16 | [Penjaga Merek](16-penjaga-merek.md) | 2.1 | Agen 2 · Penjaga Mutu Zuno | aktif harian | Penasihat suara dan brand: catatan tentang suara, gaya, slogan, dan konsistensi. |
+| 17 | [Pemeriksa Realitas](17-pemeriksa-realitas.md) | 2.2 | Agen 2 · Penjaga Mutu Zuno | aktif harian | Penasihat fakta dan sumber: menandai klaim yang perlu dicek, tanpa menolak. |
+| 18 | [Pengumpul Bukti](18-pengumpul-bukti.md) | 2.3 | Agen 2 · Penjaga Mutu Zuno | aktif harian | Penasihat format dan tampilan: catatan tentang aturan platform, keterbacaan, dan file render. |
+| 19 | [Pemeriksa Kepatuhan Hukum](19-pemeriksa-kepatuhan-hukum.md) | 2.4 | Agen 2 · Penjaga Mutu Zuno | aktif harian | Penasihat kepatuhan: catatan tentang leads, privasi, dan izin testimoni. Bukan nasihat hukum. |
 | 20 | [Kurator Instagram](20-kurator-instagram.md) | 3.1 | Agen 3 · Operator Zuno | aktif harian | Menyusun paket posting per platform untuk konten yang sudah Disetujui Zulnan. |
 | 21 | [Operasional Studio](21-operasional-studio.md) | 3.3 | Agen 3 · Operator Zuno | aktif harian | Mencatat leads dan arsip, serta memperbarui Papan Kerja Mingguan. |
 | 22 | [Arsitek Tata Kelola Otomasi](22-arsitek-tata-kelola-otomasi.md) | 3.5 | Agen 3 · Operator Zuno | standby | Mengaudit nilai, risiko, dan kemudahan pemeliharaan sebelum otomasi posting atau iklan dinyalakan. |

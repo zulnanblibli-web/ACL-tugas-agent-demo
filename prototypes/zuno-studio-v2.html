@@ -57,6 +57,7 @@ textarea{min-height:80px;resize:vertical}
 .tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
 .res{border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0;background:var(--bg)}
 .res h3{margin:0 0 4px;font-size:16px}
+.ringkas{background:var(--surface-2);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:10px 14px;margin:8px 0;font-size:14.5px}.ringkas p{margin:6px 0}.ringkas ul{margin:4px 0 4px 18px;padding:0}
 .slides{display:flex;gap:12px;overflow-x:auto;padding:8px 0 12px}
 .slide{flex:0 0 auto;width:210px}
 .slide img{width:210px;display:block;border-radius:8px;border:1px solid var(--line)}
@@ -75,6 +76,8 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
 <div class="panel">
   <label for="cmd" class="muted">Perintah atau bahan konten</label>
   <textarea id="cmd" placeholder="Contoh: bikin konten hari ini tentang cara pemula pakai AI untuk merapikan pekerjaan kantor"></textarea>
+  <label for="src" class="muted" style="margin-top:10px">Sumber bahan (opsional): tempel tautan, judul, atau isi berita, artikel, atau konten viral yang mau dijadikan konten</label>
+  <textarea id="src" placeholder="Contoh: judul + tautan berita tools AI baru, thread yang lagi viral, atau potongan artikel. Tim akan mengolahnya jadi konten kreatif sendiri dan menyebut sumbernya. Kosong = riset berupa hipotesis (tidak ada akses pencarian di sini)." style="min-height:70px"></textarea>
   <div class="chips" id="chips"></div>
   <div class="row2">
     <div><label for="count" class="muted">Paket</label>
@@ -132,33 +135,36 @@ function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
 var SLOGAN='Hai, kenalin Gue Zulnan. Gue sales yang belajar AI sambil bikin, bukan cuma ngomongin.';
 var SLOGAN_BEATS=['Hai, kenalin','Gue Zulnan.','Gue sales','yang belajar AI','sambil bikin,','bukan cuma ngomongin.'];
 var NOTICE_DELAY=typeof window.__ZUNO_NOTICE_DELAY==='number'?window.__ZUNO_NOTICE_DELAY:2200;
-var MAX_REV=2, MAX_BEAT=2, MAX_FACE=3;
+var MAX_BEAT=2, MAX_FACE=3;
 var BAB=['hook','problem','twist','solusi','cta'];
 var FX_LIST=['noise','lineup','locked-on','orbit','lean-in','backdrop-word','spotlight','the-bill','moody','swipe','todo','comment-box','tap','pause-point','uninstall','reel-frame','shortcut-rain','reject-stamp','countdown-flip','rabbit-hole','cover-star','scribble','glass-widgets','red-collage','split-headline','pastel-word','check-pills','timeline','headline-box','profile-wall','tier-list','broll-split','phone-fan','dot-reveal','headline-wall','checklist','liquid-glass-graph','carousel-spin','match-cut','apple-toggles','led-sign','slow-push','over-the-shoulder-zoom','messages','place-in-grid'];
 function arr(x){return Array.isArray(x)?x.map(String):[]}
 
 /* ---------------- Bagian 1: CORE ---------------- */
 var BASE=[
-'Anda adalah bagian dari tim agent AI "Zuno" milik Zulnan (nama di konten: Zulnan). Tim: Orkestraror Agen + Juru Kabar (Lead), Kreator Zuno (Agen 1), Penjaga Mutu Zuno (Agen 2, punya veto), Operator Zuno (Agen 3).',
+'Anda adalah bagian dari tim agent AI "Zuno" milik Zulnan (nama di konten: Zulnan). Tim: Orkestraror Agen + Juru Kabar (Lead), Kreator Zuno (Agen 1), Penjaga Mutu Zuno (Agen 2, penasihat TANPA veto), Operator Zuno (Agen 3).',
 'BRIEF DASAR: Niche produk digital. Topik: cuan dari AI (hanya sebagai topik dan proses, tidak boleh menjanjikan atau mengklaim hasil), tutorial, storytelling proses membangun, peluang produk digital, tools AI, AI agent. Positioning: membantu pekerjaan jadi lebih mudah dan produktif dengan AI. Audiens: pemula 25-35 tahun, karyawan swasta, mau belajar AI atau mulai ngonten. Platform: Instagram, TikTok, Threads. Topik global boleh asal tidak teknis dan mudah dipahami pemula.',
 'RUMUS: TOFU = menarik perhatian pemula (luas, ringan, mudah dibagikan); MOFU = membangun kepercayaan (cerita proses, tutorial, bukti kerja nyata); BOFU = mengajak bertindak (produk digital atau portofolio, tanpa janji hasil).',
 'SUARA: santai dan lucu, lugas di momen tertentu, empatik, friendly, tidak bertele-tele; bahasa sehari-hari, kalimat pendek, tanpa jargon teknis. Contoh tulisan khas Zulnan belum diberikan: tulis dengan suara ini dan jangan mengarang gaya lain.',
-'FAKTA ZULNAN YANG BOLEH DIPAKAI (hanya ini): sales sekitar 12 tahun (FMCG), fokus develop area; resign lalu belajar AI dari nol dan berproses; portofolio 5 web Nexamind (detail tiap web belum diberikan, jangan dibahas rinci). Latar SMK belum boleh dipakai. Hasil nyata (penjualan, pengguna, tangkapan layar) belum ada: tidak ada klaim hasil. Dilarang mengarang pengalaman, testimoni, angka, atau fakta lain.',
-'LARANGAN: klaim hasil atau penghasilan yang belum terbukti, kata berlebihan, mengaku-ngaku, menipu, menjanjikan hasil, bertele-tele. Harga selalu [HARGA BELUM DITENTUKAN]. Dilarang menyatakan sesuatu sudah tayang. Tidak menyimpan kata sandi, token, data pembayaran, identitas, atau data kesehatan.',
+'MEMORI TENTANG ZULNAN BUKAN BAHAN KONTEN: dipakai untuk suara, gaya, dan batas aman. Bahan konten utama datang dari sumber luar (berita, artikel, konten viral, tren) yang diolah jadi karya kreatif sendiri dan disebut sumbernya. Cerita pribadi Zulnan hanya bila Zulnan memintanya atau sangat pas, tidak di setiap konten.',
+'FAKTA ZULNAN (bila cerita pribadi dipakai, hanya ini yang boleh): sales sekitar 12 tahun (FMCG), fokus develop area; resign lalu belajar AI dari nol dan berproses; portofolio 5 web Nexamind (detail tiap web belum diberikan, jangan dibahas rinci). Latar SMK belum boleh dipakai. Hasil nyata (penjualan, pengguna, tangkapan layar) belum ada: tidak ada klaim hasil. Dilarang mengarang pengalaman, testimoni, angka, atau fakta lain.',
+'OTORITAS: keputusan akhir atas konten ada di Zulnan. Agen 2 hanya memberi Catatan Mutu (saran) ke Lead; tidak menolak, tidak menahan, tidak ada putaran revisi otomatis.',
+'PEDOMAN PENULIS (pelanggaran yang ditemukan pemeriksa menjadi catatan, bukan penolakan): klaim hasil atau penghasilan yang belum terbukti, kata berlebihan, mengaku-ngaku, menipu, menjanjikan hasil, bertele-tele. Harga selalu [HARGA BELUM DITENTUKAN]. Dilarang menyatakan sesuatu sudah tayang. Tidak menyimpan kata sandi, token, data pembayaran, identitas, atau data kesehatan.',
 'Tulis dalam Bahasa Indonesia. Kerjakan hanya peran Anda. Jawab langsung dengan hasil, tanpa basa-basi.'
 ].join('\n');
 var ROLES={
  lead:['Orkestraror Agen','Menggolongkan perintah Zulnan dan merencanakan Kartu Konten (ID, platform, format, tahap funnel, tujuan). Tiga kartu tidak kembar.','membuat konten, memposting, menyentuh iklan, memberi status Disetujui.'],
- '1.1':['Peneliti Tren','Menyusun bahan riset untuk topik: masalah nyata audiens pemula 25-35 tahun, sudut yang jarang dibahas, pola hook yang cocok. TIDAK ada akses pencarian: semua temuan adalah hipotesis yang perlu dicek; jangan mengarang angka, tren, atau sumber.','menulis naskah, mengarang tren/angka/sumber.'],
+ '1.1':['Peneliti Tren','Menyusun bahan riset dari SUMBER LUAR: berita, artikel, dan konten viral. Tidak ada akses pencarian di sini, jadi sumber hanya diambil dari bahan yang diberikan Zulnan (tautan, judul, atau isi); olah tiap sumber jadi sudut konten baru untuk pemula 25-35 tahun, bukan salinan. Tanpa sumber dari Zulnan, tulis masalah audiens, sudut jarang, dan pola hook sebagai HIPOTESIS yang perlu dicek. Jangan mengarang angka, tren, tautan, atau sumber.','menulis naskah, mengarang tren/angka/sumber, menjadikan cerita pribadi Zulnan sebagai bahan riset.'],
  '1.2':['Ahli Strategi Media Sosial','Memilih ide, tahap funnel, platform, angle, dan 2-3 kandidat hook per kartu; kaitan produk/portofolio untuk MOFU/BOFU tanpa klaim hasil.','menulis naskah penuh, mengubah niche, menetapkan harga.'],
- '1.3':['Kreator Konten','Menulis naskah dengan metode Killer Script (hook, foreshadow, body, ending) yang dipetakan ke babak HOOK, PROBLEM, TWIST, SOLUSI, CTA agar orang berhenti scroll dan menonton sampai habis. Tiap adegan video maksimal 2 detik; teks layar 1-5 kata; caption, hashtag, dan Daftar Fakta & Klaim untuk Pemeriksa Realitas. Cerita pribadi hanya dari fakta yang diizinkan.','riset tren, membuat visual, memposting, mengarang fakta/pengalaman/angka, klaim hasil atau penghasilan, pembukaan basa-basi, naskah datar.'],
+ '1.3':['Kreator Konten','Menulis naskah dengan metode Killer Script (hook, foreshadow, body, ending) yang dipetakan ke babak HOOK, PROBLEM, TWIST, SOLUSI, CTA agar orang berhenti scroll dan menonton sampai habis. Tiap adegan video maksimal 2 detik; teks layar 1-5 kata; caption, hashtag, dan Daftar Fakta & Klaim untuk Pemeriksa Realitas. Bahan utama dari sumber luar yang diolah jadi karya sendiri (sebut sumbernya di Daftar Fakta & Klaim); cerita pribadi Zulnan bukan bahan default, pakai hanya bila diminta atau sangat pas.','riset tren, membuat visual, memposting, mengarang fakta/pengalaman/angka, klaim hasil atau penghasilan, pembukaan basa-basi, naskah datar.'],
  '1.5':['Pencerita Visual','Pemilik paket visual. Carousel: memilih satu template (A Papan Tulis, B Neon Gelap, C Majalah, D Kartu Layar) sesuai topik dan tahap funnel (usulan: TOFU B atau A; MOFU A atau D; BOFU C). Video: mengisi Kartu Gaya dengan satu preset (Dentum, Orbit Megah, Glitch Digital, Kartu Layar, Editorial Cepat) sesuai kesan topik. Menandai satu kata kunci per slide/adegan.','mengubah isi atau makna naskah, membuat wajah atau suara tiruan Zulnan, menyatakan file sudah jadi sebelum Perender selesai.'],
  '1.7':['Pelatih Editing Video Pendek','Menyusun rencana efek untuk claude-video-effects dari daftar 45 efek: jendela 1,5-4 detik, hanya di dalam segmen wajah, tidak menutup wajah, efek kamera lebih dulu.','menulis ulang naskah, memakai efek di luar daftar.'],
  '1.10':['Spesialis Optimasi Video','Menguji naskah dengan checklist retensi Killer Script: hook selesai 3-8 detik dan bikin penasaran; clickbait tapi tidak bohong; ada visual di hook; satu foreshadow; body tidak mengulang hook dan tidak keluar dari janji; babak hook-problem-twist-solusi-cta jelas; twist benar-benar membalik sudut pandang; satu CTA; minimal 2 faktor viralitas; tidak ada bagian yang membosankan. Menulis ulang kalimat yang lemah, bukan hanya memberi saran.','mengubah niche, menambah klaim hasil. Tidak punya veto.'],
- '2.1':['Penjaga Merek','Mencocokkan suara dan gaya Zulnan, slogan tepat setelah hook pada video, kata terlarang, relevansi niche, tahap funnel dan CTA konsisten.','menulis ulang konten; menandai Tidak Lolos tanpa pelanggaran nyata.'],
- '2.2':['Pemeriksa Realitas','Memeriksa tiap item Daftar Fakta & Klaim dan semua teks yang tampil. Klaim hasil atau penghasilan tanpa bukti wajib dihapus. Cerita pribadi hanya dari fakta yang diizinkan. Hal tak terverifikasi diberi awalan "[Perlu keputusan Zulnan]". Toleransi salah fakta nol.','menulis ulang konten; meloloskan klaim yang tak bisa diverifikasi.'],
- '2.3':['Pengumpul Bukti','Memeriksa format dan file hasil render: urutan slide/adegan, hook di awal, CTA di akhir, teks terbaca, satu poin per slide, tiap adegan video maks 2 detik, wajah (Mode Tampil) maks 3 detik berurutan lalu pindah ke motion, latar tidak pernah diam, babak hook-problem-twist-solusi-cta berurutan, caption cocok dengan visual, asal aset jelas. Batas platform yang diragukan ditandai untuk dicek, jangan menebak angka.','menulis ulang konten; menebak batas platform; menyatakan lolos tanpa data file jadi.'],
- '2.4':['Pemeriksa Kepatuhan Hukum','Memastikan CTA pengumpul kontak jelas tujuannya, tidak ada kata sandi/token/data pembayaran/data pribadi orang lain, tidak ada pesan otomatis atas nama Zulnan, testimoni dan studi kasus berizin.','menulis ulang konten; memberi nasihat hukum final.'],
+ '2.1':['Penjaga Merek','Penasihat suara dan merek: beri catatan tentang kecocokan suara dan gaya Zulnan, slogan setelah hook pada video, kata berlebihan, relevansi niche, tahap funnel dan CTA. Topik dari berita atau konten viral adalah hal yang diharapkan.','menulis ulang konten; menolak atau menahan konten; mempermasalahkan konten karena tidak memuat cerita pribadi Zulnan.'],
+ '2.2':['Pemeriksa Realitas','Penasihat fakta: periksa Daftar Fakta & Klaim dan semua teks yang tampil. Klaim hasil atau penghasilan tanpa bukti ditandai dengan saran versi yang aman. Bila ada cerita pribadi, cocokkan dengan fakta yang diizinkan (konten tanpa cerita pribadi tidak perlu dicatat). Sumber berita/viral yang dipakai harus berasal dari bahan Zulnan atau ditandai perlu dicek. Hal tak terverifikasi diberi awalan "[Perlu keputusan Zulnan]" dan tidak menahan produksi.','menulis ulang konten; menolak atau menahan konten; menyatakan klaim terverifikasi padahal tidak.'],
+ '2.3':['Pengumpul Bukti','Memeriksa format dan file hasil render: urutan slide/adegan, hook di awal, CTA di akhir, teks terbaca, satu poin per slide, tiap adegan video maks 2 detik, wajah (Mode Tampil) maks 3 detik berurutan lalu pindah ke motion, latar tidak pernah diam, babak hook-problem-twist-solusi-cta berurutan, caption cocok dengan visual, asal aset jelas. Batas platform yang diragukan ditandai untuk dicek, jangan menebak angka. Cacat dicatat dengan lokasinya sebagai saran.','menulis ulang konten; menebak batas platform; menolak atau menahan konten; menyatakan aman tanpa data file jadi.'],
+ '2.4':['Pemeriksa Kepatuhan Hukum','Penasihat kepatuhan: catat bila CTA pengumpul kontak tidak jelas tujuannya, ada kata sandi/token/data pembayaran/data pribadi orang lain, pesan otomatis atas nama Zulnan, atau testimoni dan studi kasus tanpa izin. Risiko ditakar proporsional; jangan membesar-besarkan dan jangan mengulang kekhawatiran umum.','menulis ulang konten; memberi nasihat hukum final; menolak atau menahan konten.'],
+ jk:['Juru Kabar (bersama Orkestraror Agen)','Juru bicara tim. Merangkum Catatan Mutu Agen 2 menjadi Ringkasan Sebelum Terbit untuk Zulnan: kualitas naskah dan visual, kesesuaian dengan keinginan Zulnan (perintah, mode, gaya, referensi), dan catatan penting. Bahasa ringan; catatan adalah saran, bukan vonis.','menolak atau menyatakan konten gagal; mengubah isi konten; menyembunyikan catatan penting.'],
  '3.1':['Kurator Instagram','Menyusun paket posting per platform untuk konten berstatus Disetujui: caption final, hashtag, cover, saran jadwal (tandai asumsi).','memposting, mengubah isi konten, menyatakan sudah memposting.']
 };
 function P(k,kerja,data,format){
@@ -263,7 +269,7 @@ function p13(c,rev){
   '- CTA: maksimal SATU ajakan (boleh nyeleneh), atau loop yang nyambung ke hook.\n'+
   '- Pakai minimal 2 dari 7 faktor viralitas: pro/kontra, relate ke banyak orang, orang terkenal, lagi viral, emosi, fakta mengejutkan, komedi (hanya yang aman dan cocok).\n'+
   '- Dilarang: pembukaan basa-basi, definisi panjang, kalimat bertele-tele, naskah datar yang bikin ngantuk, klaim hasil/penghasilan, mengarang fakta/pengalaman/angka/tren.\n'+
-  'BAHAN RISET (hipotesis, belum diverifikasi): '+risetTxt();
+  'BAHAN RISET (berisi sumber dari Zulnan bila ada; selebihnya hipotesis): '+risetTxt()+'\nBila ada SUMBER di bahan riset, olah jadi konten kreatif sendiri (ambil inti, balik sudut, bahasa sendiri; jangan salin kalimat sumber) dan tulis di fakta: "Sumber: judul (tautan)". Jangan menjadikan cerita pribadi Zulnan sebagai isi utama.';
   var fm=vid
    ?'Balas HANYA JSON: {"big_idea":"satu kalimat","jenis_hook":"negative|proof|promise|pain|transformation","jenis_ending":"cta|loop|result","foreshadow":"satu kalimat","faktor_viral":["..."],"adegan":[{"babak":"hook|problem|twist|solusi|cta","vo":"kalimat yang diucapkan, maks 12 kata","teks":"teks layar 1-5 kata","visual":"apa yang tampil di layar","detik":0.8 sampai 2,"wajah":true atau false}],"caption":"...","hashtag":["#..."],"fakta":["tiap fakta/klaim/cerita pribadi yang dipakai"]}. 14-24 adegan berurutan hook, problem, twist, solusi, cta. TIAP adegan maksimal 2 detik dan visualnya berganti. Slogan ditambahkan otomatis setelah hook: jangan menulisnya. '+(tampil?'Mode Tampil: wajah:true hanya untuk adegan yang diucapkan Zulnan di kamera; wajah berurutan total maksimal 3 detik, lalu WAJIB pindah ke adegan motion (wajah:false).':'Mode Tanpa Wajah: semua wajah:false.')
    :'Balas HANYA JSON: {"big_idea":"satu kalimat","jenis_hook":"negative|proof|promise|pain|transformation","jenis_ending":"cta|loop|result","foreshadow":"satu kalimat","faktor_viral":["..."],"slides":[{"babak":"hook|problem|twist|solusi|cta","judul":"maks 7 kata","isi":"maks 28 kata, boleh kosong"}],"caption":"...","hashtag":["#..."],"fakta":["tiap fakta/klaim/cerita pribadi yang dipakai"]}. 6-9 slide berurutan: slide 1 hook sebagai cover, lalu problem, twist, solusi (satu poin per slide), slide terakhir CTA.';
@@ -272,7 +278,7 @@ function p13(c,rev){
   return P('1.3',(rev?'REVISI: perbaiki sesuai catatan, pertahankan bagian yang sudah kuat. ':'')+metode+'\nCaption untuk '+c.platform+'. Sertakan Daftar Fakta & Klaim.',data,fm);
 }
 function pRiset(){
-  return P('1.1','Susun bahan riset untuk perintah Zulnan dan rencana kartu. Tidak ada akses pencarian: tulis semuanya sebagai HIPOTESIS yang perlu dicek, tanpa angka, tren, atau sumber karangan.',S.cmd+'\n\nKARTU: '+S.cards.map(function(c){return c.id+' '+c.format+' '+c.funnel+' '+c.topik}).join(' | '),'Balas HANYA JSON: {"masalah_audiens":["3-5 masalah nyata pemula 25-35 tahun, bahasa mereka"],"sudut_jarang":["2-3 sudut yang jarang dibahas"],"pola_hook":["2-3 pola hook yang cocok"],"catatan":"apa yang perlu dicek Zulnan"}');
+  return P('1.1','Susun bahan riset untuk perintah Zulnan dan rencana kartu. '+(S.src?'ADA SUMBER dari Zulnan (di bagian SUMBER). Ambil sumber HANYA dari teks itu: catat judul, tautan (bila ada), jenis (berita, artikel, viral, lainnya), inti 1-2 kalimat, lalu rancang SUDUT KONTEN BARU yang kreatif untuk pemula (balik sudutnya, bahasa sehari-hari; jangan menyalin kalimat sumber). Jangan menambah sumber, tautan, atau angka di luar teks itu.':'Tidak ada sumber dari Zulnan dan tidak ada akses pencarian: isi "sumber" dengan array kosong dan tulis semua temuan sebagai HIPOTESIS yang perlu dicek, tanpa angka, tren, atau sumber karangan. Sarankan di "catatan" agar Zulnan menempel tautan berita atau konten viral.')+' Jangan memakai cerita pribadi Zulnan sebagai bahan riset.',S.cmd+(S.src?'\n\nSUMBER:\n'+S.src:'')+'\n\nKARTU: '+S.cards.map(function(c){return c.id+' '+c.format+' '+c.funnel+' '+c.topik}).join(' | '),'Balas HANYA JSON: {"sumber":[{"judul":"...","tautan":"... atau kosong","jenis":"berita|artikel|viral|lainnya","inti":"1-2 kalimat","sudut_konten":"sudut kreatif baru untuk pemula"}],"masalah_audiens":["3-5 masalah nyata pemula 25-35 tahun, bahasa mereka"],"sudut_jarang":["2-3 sudut yang jarang dibahas"],"pola_hook":["2-3 pola hook yang cocok"],"catatan":"apa yang perlu dicek Zulnan"}');
 }
 function pOpt(c){
   return P('1.10','Uji naskah ini dengan checklist retensi. Jika ada yang gagal, lolos=false dan tulis ulang kalimatnya (bukan hanya saran).',ctxCard(c,false)+'\n\nNASKAH:\n'+JSON.stringify(c.konten),'Balas HANYA JSON: {"lolos":true atau false,"skor":1 sampai 10,"gagal":["item checklist yang gagal"],"perbaikan":["tulis ulang: kalimat lama -> kalimat baru"]}');
@@ -297,14 +303,14 @@ function p15(c){
   }
   return P('1.5',info+' Lalu tandai satu kata kunci per '+(vid?'adegan':'slide')+'.',ctxCard(c,false)+'\n\n'+desc,fm);
 }
-function pQA(k,c,round){
+function pQA(k,c){
   var extra={
-   '2.1':'Periksa suara dan merek. Pada video, slogan "'+SLOGAN+'" harus muncul tepat setelah hook (sudah ditambahkan otomatis; pastikan penempatannya wajar).',
-   '2.2':'Periksa setiap item Daftar Fakta & Klaim dan semua teks yang tampil. Fakta Zulnan yang diizinkan hanya yang ada di BRIEF DASAR.',
-   '2.3':'Periksa format dan file jadi memakai DATA FILE JADI. Carousel 1080x1350, hook di slide 1, CTA di slide terakhir, satu poin per slide. Video: tiap adegan maksimal 2 detik, teks layar maks 5 kata, segmen wajah (Mode Tampil) maks 3 detik berurutan lalu motion, latar bergerak, urutan babak hook-problem-twist-solusi-cta. Video belum dirender (paket + rencana render); periksa data paket. Handle akun belum diisi Zulnan: itu bukan alasan Tidak Lolos.',
-   '2.4':'Periksa CTA, privasi, dan izin.'
+   '2.1':'Beri catatan suara dan merek. Pada video, slogan "'+SLOGAN+'" ditambahkan otomatis setelah hook; cukup catat bila penempatannya terasa janggal.',
+   '2.2':'Beri catatan atas setiap item Daftar Fakta & Klaim dan semua teks yang tampil. Fakta Zulnan yang diizinkan hanya yang ada di BRIEF DASAR, dan hanya relevan bila konten memakai cerita pribadi. Sumber yang disebut harus berasal dari bahan riset.',
+   '2.3':'Beri catatan format dan file jadi memakai DATA FILE JADI. Carousel 1080x1350, hook di slide 1, CTA di slide terakhir, satu poin per slide. Video: tiap adegan maksimal 2 detik, teks layar maks 5 kata, segmen wajah (Mode Tampil) maks 3 detik berurutan lalu motion, latar bergerak, urutan babak hook-problem-twist-solusi-cta. Video belum dirender (paket + rencana render); periksa data paket. Handle akun belum diisi Zulnan: bukan masalah.',
+   '2.4':'Beri catatan CTA, privasi, dan izin secara proporsional.'
   }[k];
-  return P(k,extra+' Anda hanya memberi keputusan dan catatan. Tidak Lolos hanya bila ada pelanggaran nyata pada tugas peran Anda; saran kecil masuk catatan dengan keputusan Lolos.'+(round?' Ini pemeriksaan ulang setelah revisi.':''),ctxCard(c,true),'Balas HANYA JSON: {"verdict":"Lolos" atau "Tidak Lolos","catatan":["maks 4 poin singkat"],"bagian":"teks" atau "visual" atau "keduanya" atau "-"}');
+  return P(k,extra+' Anda PENASIHAT tanpa veto: hanya beri Catatan Mutu, jangan menolak dan jangan meminta revisi. Tingkat: "aman" (tidak ada catatan), "saran" (boleh terbit apa adanya), "perlu_keputusan" (hal tak pasti untuk Zulnan), "risiko" (hanya untuk klaim hasil/penghasilan dinyatakan sebagai fakta, fakta jelas keliru, atau data sensitif/pribadi orang lain/testimoni dikarang). Tulis tiap catatan sebagai saran satu kalimat. Jangan mengulang kekhawatiran umum; catat hanya yang berdampak.',ctxCard(c,true),'Balas HANYA JSON: {"tingkat":"aman" atau "saran" atau "perlu_keputusan" atau "risiko","catatan":["maks 4 poin singkat, kosong bila aman"],"bagian":"teks" atau "visual" atau "keduanya" atau "-"}');
 }
 
 function normKonten(c,k){
@@ -417,10 +423,10 @@ function buildHF(c){
 var SFX={hook:'impact + whoosh pendek',problem:'glitch tipis',twist:'riser lalu impact',solusi:'pop / click',cta:'ding',slogan:'pop'};
 function buildMd(c){
   var L=[],vid=c.format==='video',K=c.konten,R=S&&S.riset,tampil=S&&S.mode==='tampil';
-  var status=c.approved?'Disetujui Zulnan':c.verdict==='Lolos'?'Lolos QA, menunggu persetujuan Zulnan':c.verdict?'Tidak Lolos, menunggu keputusan Zulnan':'Draf';
+  var status=c.approved?'Disetujui Zulnan':c.verdict?'Ditinjau Lead, menunggu keputusan Zulnan':'Draf';
   L.push('# Paket Konten '+c.id+': '+(c.topik||'-'),'','> Dibuat Zuno Studio v2 pada '+new Date().toISOString().slice(0,10)+'. Status: **'+status+'**. Draf: suara perlu dicek (contoh tulisan Zulnan belum diisi di brief); handle akun belum diisi; belum diposting.','');
-  L.push('## 1. Kartu Konten','','| Hal | Isi |','|---|---|','| ID | '+c.id+' |','| Format | '+(vid?'Video motion grafis, '+(tampil?'Mode Tampil':'Mode Tanpa Wajah'):'Carousel 1080x1350')+' |','| Platform | '+cell(c.platform)+' |','| Tahap funnel | '+c.funnel+' |','| Ide | '+cell(c.topik)+' |','| Angle | '+cell(c.angle)+' |','| Kandidat hook | '+cell((c.hooks||[]).join(' / '))+' |','| Tujuan CTA | '+cell(c.cta)+' |','| Putaran revisi | '+c.revisi+' |','');
-  if(R){L.push('## 2. Bahan riset (hipotesis, belum diverifikasi)','','Tidak ada akses pencarian saat riset ini dibuat. Semua poin perlu dicek Zulnan sebelum dipakai sebagai fakta.','','**Masalah audiens**','');arr(R.masalah_audiens).forEach(function(x){L.push('- '+x)});L.push('','**Sudut yang jarang dibahas**','');arr(R.sudut_jarang).forEach(function(x){L.push('- '+x)});L.push('','**Pola hook**','');arr(R.pola_hook).forEach(function(x){L.push('- '+x)});L.push('','Catatan: '+(R.catatan||'-'),'')}
+  L.push('## 1. Kartu Konten','','| Hal | Isi |','|---|---|','| ID | '+c.id+' |','| Format | '+(vid?'Video motion grafis, '+(tampil?'Mode Tampil':'Mode Tanpa Wajah'):'Carousel 1080x1350')+' |','| Platform | '+cell(c.platform)+' |','| Tahap funnel | '+c.funnel+' |','| Ide | '+cell(c.topik)+' |','| Angle | '+cell(c.angle)+' |','| Kandidat hook | '+cell((c.hooks||[]).join(' / '))+' |','| Tujuan CTA | '+cell(c.cta)+' |','| Revisi atas permintaan Zulnan | '+(c.revisi||0)+' |','');
+  if(R){L.push('## 2. Sumber dan bahan riset','',(R.sumber&&R.sumber.length?'Sumber di bawah berasal dari bahan yang ditempel Zulnan, diolah menjadi sudut konten baru (bukan salinan). Poin lain di bagian ini adalah hipotesis yang perlu dicek.':'Tidak ada sumber dari Zulnan dan tidak ada akses pencarian saat riset ini dibuat. Semua poin adalah hipotesis yang perlu dicek sebelum dipakai sebagai fakta. Tempel tautan berita atau konten viral di kolom Sumber untuk riset berbasis sumber.'),'');if(R.sumber&&R.sumber.length){L.push('**Daftar sumber**','','| Judul | Jenis | Tautan | Inti | Sudut konten baru |','|---|---|---|---|---|');R.sumber.forEach(function(x){L.push('| '+cell(x.judul)+' | '+cell(x.jenis)+' | '+cell(x.tautan||'-')+' | '+cell(x.inti)+' | '+cell(x.sudut)+' |')});L.push('')}L.push('**Masalah audiens**','');arr(R.masalah_audiens).forEach(function(x){L.push('- '+x)});L.push('','**Sudut yang jarang dibahas**','');arr(R.sudut_jarang).forEach(function(x){L.push('- '+x)});L.push('','**Pola hook**','');arr(R.pola_hook).forEach(function(x){L.push('- '+x)});L.push('','Catatan: '+(R.catatan||'-'),'')}
   L.push('## 3. Naskah','','- **Big idea:** '+(K.big_idea||'-'),'- **Jenis hook:** '+(K.jenis_hook||'-'),'- **Foreshadow:** '+(K.foreshadow||'-'),'- **Jenis ending:** '+(K.jenis_ending||'-'),'- **Faktor viralitas:** '+(K.faktor_viral.join(', ')||'-'),'');
   var NM={hook:'HOOK',slogan:'SLOGAN (perkenalan)',problem:'PROBLEM',twist:'TWIST',solusi:'SOLUSI',cta:'CTA'},last=null;
   if(vid){K.adegan.forEach(function(a,i){if(a.babak!==last){L.push('','### '+NM[a.babak],'');last=a.babak}L.push('- '+(a.wajah?'**[WAJAH]** ':'')+'"'+(a.vo||a.teks)+'"')})}
@@ -440,7 +446,9 @@ function buildMd(c){
   L.push('## 6. Caption dan hashtag','',K.caption||'-','',K.hashtag.join(' '),'','## 7. Daftar fakta & klaim (untuk Pemeriksa Realitas)','');
   (K.fakta.length?K.fakta:['(tidak ada)']).forEach(function(x){L.push('- '+x)});L.push('');
   if(c.opt){L.push('## 8. Uji retensi (Spesialis Optimasi Video)','','- Skor: '+(c.opt.skor||'-')+'/10, '+(c.opt.lolos?'lolos':'perlu diperkuat'+(c.opt.diperkuat?' (sudah diperkuat Kreator Konten)':'')),'');arr(c.opt.gagal).forEach(function(x){L.push('- Gagal: '+x)});arr(c.opt.perbaikan).forEach(function(x){L.push('- Perbaikan: '+x)});L.push('')}
-  if(c.qaRes){L.push('## 9. Pemeriksaan Agen 2','','| Pemeriksa | Keputusan | Catatan |','|---|---|---|');c.qaRes.items.forEach(function(x){L.push('| '+ROLES[x.k][0]+' | '+(x.ok?'Lolos':'Tidak Lolos')+' | '+cell(x.catatan.join('; '))+' |')});L.push('')}
+  if(c.qaRes){
+    if(c.ringkasan){L.push('## 9. Ringkasan Sebelum Terbit (Orkestraror Agen dan Juru Kabar)','','- **Kualitas:** '+cell(c.ringkasan.kualitas),'- **Kesesuaian dengan keinginanmu:** '+cell(c.ringkasan.kesesuaian),'- **Saran tindakan:** '+cell(c.ringkasan.saran),'','**Catatan penting (paling penting dulu)**','');(c.ringkasan.penting.length?c.ringkasan.penting:['(tidak ada catatan penting)']).forEach(function(x){L.push('- '+x)});L.push('')}
+    L.push('### Catatan Mutu Agen 2 (penasihat, tanpa veto)','','Catatan ini hanya saran. Keputusan akhir ada di Zulnan; tidak ada revisi otomatis.','','| Pemeriksa | Tingkat | Catatan |','|---|---|---|');c.qaRes.items.forEach(function(x){L.push('| '+ROLES[x.k][0]+' | '+TLAB[x.tingkat]+' | '+cell(x.catatan.join('; ')||'-')+' |')});L.push('')}
   if(vid){
     L.push('## 10. Rencana render','','Video **belum dirender**. Render di komputer Zulnan atau lewat Claude Code. Preview kanvas di Zuno Studio hanya pratinjau kasar.','');
     if(tampil&&c.segs&&c.segs.length){
@@ -476,7 +484,7 @@ function mdToHtml(md){
 }
 
 async function writeAndStyle(c,rev){
-  setCard(c,rev?'Merevisi teks (putaran '+c.revisi+')':'Menulis naskah');UI.act('a1',c.id+': Kreator Konten '+(rev?'merevisi naskah':'menulis naskah (hook, problem, twist, solusi, CTA)'));
+  setCard(c,rev?'Merevisi teks (permintaanmu)':'Menulis naskah');UI.act('a1',c.id+': Kreator Konten '+(rev?'merevisi naskah':'menulis naskah (hook, problem, twist, solusi, CTA)'));
   c.konten=normKonten(c,await ask('1.3',c.id,p13(c,rev),'default'));
   if(!rev){
     setCard(c,'Menguji retensi naskah');UI.act('a1',c.id+': Spesialis Optimasi Video menguji hook dan retensi');
@@ -506,38 +514,42 @@ async function renderCard(c){
   }
   c.md=buildMd(c);
 }
-async function qaRound(c,round){
-  setCard(c,'Diperiksa Agen 2');UI.act('a2',c.id+': memeriksa suara, fakta, format file jadi, dan kepatuhan');
+var TINGKAT=['aman','saran','perlu_keputusan','risiko'],TLAB={aman:'Aman',saran:'Saran',perlu_keputusan:'Perlu keputusanmu',risiko:'Risiko nyata'};
+async function qaRound(c){
+  setCard(c,'Diperiksa Agen 2');UI.act('a2',c.id+': memberi Catatan Mutu (suara, fakta, format, kepatuhan); tanpa veto');
   var r=await Promise.all(['2.1','2.2','2.3','2.4'].map(async function(k){
-    var j=await ask(k,c.id,pQA(k,c,round),'quick');
-    return {k:k,ok:String(j.verdict).toLowerCase()==='lolos',catatan:(Array.isArray(j.catatan)?j.catatan:[String(j.catatan||'')]).map(String),bagian:j.bagian||'-'};
+    var j=await ask(k,c.id,pQA(k,c),'quick');
+    var cat=(Array.isArray(j.catatan)?j.catatan:[String(j.catatan||'')]).map(String).filter(function(x){return x.trim()});
+    var tg=TINGKAT.indexOf(j.tingkat)>-1?j.tingkat:(cat.length?'saran':'aman');
+    if(tg==='aman'&&cat.length)tg='saran';
+    return {k:k,tingkat:tg,catatan:cat.slice(0,4),bagian:j.bagian||'-'};
   }));
-  return {items:r,pass:r.every(function(x){return x.ok})};
+  var tinggi='aman';r.forEach(function(x){if(TINGKAT.indexOf(x.tingkat)>TINGKAT.indexOf(tinggi))tinggi=x.tingkat});
+  return {items:r,tinggi:tinggi};
 }
-function bagianText(f){var b={};f.forEach(function(x){b[x.bagian==='-'||!x.bagian?'teks':x.bagian]=1});return Object.keys(b).join(' dan ')}
-function pemilik(f){var b=bagianText(f);return b==='visual'?'Pencerita Visual':b==='teks'?'Kreator Konten':'Kreator Konten dan Pencerita Visual'}
+function qaCount(res){var n={aman:0,saran:0,perlu_keputusan:0,risiko:0};res.items.forEach(function(x){n[x.tingkat]++});return n}
+function fallbackRingkas(c,res){
+  var pen=[];['risiko','perlu_keputusan','saran'].forEach(function(tg){res.items.forEach(function(x){if(x.tingkat===tg)x.catatan.forEach(function(s){pen.push('['+TLAB[tg]+'] '+ROLES[x.k][0]+': '+s)})})});
+  return {kualitas:c.opt&&c.opt.skor?'Skor uji retensi '+c.opt.skor+'/10.':'Naskah sudah melewati uji retensi.',kesesuaian:'Ringkasan otomatis (Lead tidak sempat menulis): cek sendiri kecocokan dengan arahanmu.',penting:pen.slice(0,5),saran:pen.length?'Setujui dengan memperhatikan catatan, atau revisi bagian tertentu.':'Siap kamu putuskan.'};
+}
+async function leadRingkas(c,res){
+  setCard(c,'Lead menyusun ringkasan');UI.track('lead','run');UI.act('lead',c.id+': Orkestraror Agen dan Juru Kabar menyusun Ringkasan Sebelum Terbit');
+  var base=fallbackRingkas(c,res);
+  try{
+    var data='PERINTAH ZULNAN: '+S.cmd+(S.src?'\nSUMBER DARI ZULNAN: ada':'')+'\nMODE VIDEO: '+(S.mode==='tampil'?'Mode Tampil':'Tanpa Wajah')+(S.refs&&S.refs.ada?'\nREFERENSI GAYA: ada'+(S.refs.catatan?' (kesan: "'+S.refs.catatan+'")':''):'\nREFERENSI GAYA: tidak ada')+'\nUJI RETENSI: '+JSON.stringify(c.opt||'-')+'\n\n'+ctxCard(c,true)+'\n\nCATATAN MUTU AGEN 2:\n'+JSON.stringify(res.items.map(function(x){return {pemeriksa:ROLES[x.k][0],tingkat:x.tingkat,catatan:x.catatan}}));
+    var j=await ask('jk',c.id,P('jk','Susun Ringkasan Sebelum Terbit untuk Zulnan. Nilai kualitas (kekuatan hook, daya tahan penonton, kejelasan) dan kesesuaian dengan keinginan Zulnan untuk '+(c.format==='video'?'video':'carousel')+'. Urutkan catatan penting dari yang paling penting (risiko, perlu keputusan, saran), tulis dalam bahasa ringan. Anda hanya merangkum; keputusan ada di Zulnan.',data,'Balas HANYA JSON: {"kualitas":"1-2 kalimat","kesesuaian":"1-2 kalimat: cocok atau tidak dengan perintah, mode, gaya, dan referensi Zulnan","penting":["maks 5 catatan, paling penting dulu"],"saran":"satu kalimat saran tindakan (setujui, setujui dengan perubahan kecil, atau revisi bagian tertentu)"}'),'quick');
+    return {kualitas:String(j.kualitas||base.kualitas),kesesuaian:String(j.kesesuaian||base.kesesuaian),penting:arr(j.penting).slice(0,5),saran:String(j.saran||base.saran)};
+  }catch(e){if(e&&(e.code==='cancelled'||FATAL.indexOf(e.code)>-1))throw e;return base}
+}
 async function cardFlow(c){
   try{
     if(!c.konten){await writeAndStyle(c);await renderCard(c)}
-    while(true){
-      var res=await qaRound(c,c.revisi);c.qaRes=res;
-      if(res.pass){c.verdict='Lolos';break}
-      var fails=res.items.filter(function(x){return !x.ok});
-      var notes=fails.map(function(x){return x.k+' '+ROLES[x.k][0]+': '+x.catatan.join('; ')}).join('\n');
-      var sebut=fails.map(function(x){return ROLES[x.k][0]+' ('+x.catatan[0]+')'}).join('; ');
-      if(c.revisi>=MAX_REV){
-        notice('bad','<b>'+esc(c.id)+'</b> belum lolos setelah '+MAX_REV+' kali revisi (bagian '+esc(bagianText(fails))+': '+esc(sebut)+'). Kartu akan ditandai <b>Tidak Lolos</b> dan keputusannya ada padamu.');
-        UI.act('a2',c.id+': revisi habis, menunggu keputusanmu');
-        await sleep(NOTICE_DELAY);c.verdict='Tidak Lolos';break;
-      }
-      notice('warn','<b>'+esc(c.id)+'</b> ('+esc(c.topik)+'): bagian <b>'+esc(bagianText(fails))+'</b> perlu diperbaiki. '+esc(sebut)+'. Diperbaiki oleh '+esc(pemilik(fails))+', putaran '+(c.revisi+1)+' dari '+MAX_REV+'. Belum ditandai gagal.');
-      UI.act('a2',c.id+': menemukan masalah di bagian '+bagianText(fails)+', meminta revisi');
-      await sleep(NOTICE_DELAY);
-      c.revisi++;
-      await writeAndStyle(c,notes+(c.zNote?'\nCatatan Zulnan: '+c.zNote:''));
-      await renderCard(c);
-    }
-    c.md=buildMd(c);c.stage=c.verdict==='Lolos'?'Lolos QA, menunggu persetujuanmu':'Tidak Lolos, menunggu keputusanmu';c.kind=c.verdict==='Lolos'?'ok':'fail';UI.update();UI.results();
+    var res=await qaRound(c);c.qaRes=res;
+    c.ringkasan=await leadRingkas(c,res);
+    c.verdict='Ditinjau';
+    var n=qaCount(res);
+    notice(res.tinggi==='risiko'?'warn':'info','<b>'+esc(c.id)+'</b> ('+esc(c.topik)+') siap kamu tinjau, <b>belum diterbitkan</b>. Catatan Penjaga Mutu: '+n.aman+' aman, '+n.saran+' saran, '+n.perlu_keputusan+' perlu keputusanmu, '+n.risiko+' risiko nyata. Semua hanya saran; keputusannya di kamu.');
+    c.md=buildMd(c);c.stage='Ditinjau Lead, menunggu keputusanmu';c.kind='ok';UI.update();UI.results();
   }catch(e){
     if(e&&e.code==='cancelled'){c.stage='Dihentikan';c.kind=''}
     else{c.stage='Tertahan (error)';c.kind='fail';if(!fatal&&e&&e.code)UI.error(errMsg(e))}
@@ -561,13 +573,13 @@ async function main(){
   var pk=$('count').value;
   var fm=pk==='cv'?['carousel','video']:pk==='v'?['video']:['carousel'];
   var PLAT=pk==='cv'?['Instagram','TikTok']:pk==='v'?['TikTok']:['Instagram'];
-  S={cmd:cmd,mode:$('mode').value,riset:null,notices:[],act:{},forceTpl:$('tpl').value,forcePre:$('pre').value,cards:fm.map(function(f,i){return {id:'KK-00'+(i+1),format:f,platform:PLAT[i],funnel:['TOFU','MOFU'][i]||'TOFU',topik:'',stage:'Menunggu',kind:'',revisi:0}})};
+  S={cmd:cmd,src:($('src').value||'').trim().slice(0,6000),mode:$('mode').value,riset:null,notices:[],act:{},forceTpl:$('tpl').value,forcePre:$('pre').value,cards:fm.map(function(f,i){return {id:'KK-00'+(i+1),format:f,platform:PLAT[i],funnel:['TOFU','MOFU'][i]||'TOFU',topik:'',stage:'Menunggu',kind:'',revisi:0}})};
   UI.start();
   try{
     S.refs=null;
     if(REFS.length&&fm.indexOf('video')>-1){UI.act('lead','Membaca referensi gaya dari Zulnan ('+REFS.length+' file)');try{S.refs=await readRefs()}catch(e){S.refs=null;notice('warn','Referensi gagal dibaca ('+esc(e&&e.message||'error')+'). Video memakai preset.')}}
     UI.act('lead','Orkestraror Agen membaca perintah dan merencanakan '+S.cards.length+' Kartu Konten');UI.track('lead','run');
-    var plan=await ask('lead',null,P('lead','Golongkan permintaan dan rencanakan '+S.cards.length+' Kartu Konten dengan ID dan format tetap: '+S.cards.map(function(c){return c.id+' '+c.format}).join(', ')+'. Tahap funnel dan topik tiap kartu harus berbeda.',cmd,'Balas HANYA JSON: {"golongan":"ide baru atau bahan mentah","kartu":[{"id":"KK-001","platform":"Instagram atau TikTok atau Threads","funnel":"TOFU atau MOFU atau BOFU","ide":"satu kalimat"}]}'),'quick');
+    var plan=await ask('lead',null,P('lead','Golongkan permintaan dan rencanakan '+S.cards.length+' Kartu Konten dengan ID dan format tetap: '+S.cards.map(function(c){return c.id+' '+c.format}).join(', ')+'. Tahap funnel dan topik tiap kartu harus berbeda. Bahan konten dari sumber luar (bila ada), bukan dari cerita pribadi Zulnan.',cmd+(S.src?'\n\nSUMBER DARI ZULNAN:\n'+S.src:''),'Balas HANYA JSON: {"golongan":"ide baru atau bahan mentah","kartu":[{"id":"KK-001","platform":"Instagram atau TikTok atau Threads","funnel":"TOFU atau MOFU atau BOFU","ide":"satu kalimat"}]}'),'quick');
     (plan.kartu||[]).forEach(function(k,i){
       var c=S.cards.filter(function(x){return x.id===k.id})[0]||S.cards[i];if(!c)return;
       if(['Instagram','TikTok','Threads'].indexOf(k.platform)>-1)c.platform=k.platform;
@@ -575,8 +587,8 @@ async function main(){
       c.topik=String(k.ide||'').slice(0,160);
     });
     UI.track('lead','done');UI.act('lead','Rencana selesai, diserahkan ke Kreator Zuno. Juru Kabar memantau.');
-    UI.track('a1','run');UI.act('a1','Peneliti Tren menyusun bahan riset (hipotesis, tanpa pencarian)');
-    try{var rs=await ask('1.1',null,pRiset(),'quick');S.riset={masalah_audiens:arr(rs.masalah_audiens),sudut_jarang:arr(rs.sudut_jarang),pola_hook:arr(rs.pola_hook),catatan:String(rs.catatan||'')}}catch(e){if(e&&(e.code==='cancelled'||FATAL.indexOf(e.code)>-1))throw e;S.riset=null}
+    UI.track('a1','run');UI.act('a1',S.src?'Peneliti Tren mengolah sumber dari Zulnan menjadi sudut konten':'Peneliti Tren menyusun bahan riset (hipotesis, tanpa sumber dari Zulnan)');
+    try{var rs=await ask('1.1',null,pRiset(),'quick');S.riset={sumber:(Array.isArray(rs.sumber)?rs.sumber:[]).slice(0,5).map(function(x){return {judul:String(x&&x.judul||'').slice(0,160),tautan:String(x&&x.tautan||'').slice(0,300),jenis:String(x&&x.jenis||'').slice(0,20),inti:String(x&&x.inti||'').slice(0,300),sudut:String(x&&x.sudut_konten||'').slice(0,300)}}).filter(function(x){return x.judul||x.inti}),masalah_audiens:arr(rs.masalah_audiens),sudut_jarang:arr(rs.sudut_jarang),pola_hook:arr(rs.pola_hook),catatan:String(rs.catatan||'')}}catch(e){if(e&&(e.code==='cancelled'||FATAL.indexOf(e.code)>-1))throw e;S.riset=null}
     UI.act('a1','Ahli Strategi Media Sosial menyusun angle dan hook untuk semua kartu');
     var br=await ask('1.2',null,P('1.2','Susun brief untuk setiap kartu. Tahap funnel dan angle antar kartu harus berbeda. MOFU/BOFU boleh dikaitkan ke produk digital atau portofolio tanpa klaim hasil.',S.cards.map(function(c){return ctxCard(c,false)}).join('\n---\n')+'\n\nBAHAN RISET (hipotesis): '+risetTxt(),'Balas HANYA JSON: {"briefs":[{"id":"KK-001","ide":"...","funnel":"TOFU/MOFU/BOFU","platform":"Instagram/TikTok/Threads","angle":"...","hooks":["...","...","..."],"tujuan_cta":"..."}]}'),'quick');
     (br.briefs||[]).forEach(function(b){
@@ -588,6 +600,7 @@ async function main(){
     });
     UI.update();
     await Promise.all(S.cards.map(function(c){return cardFlow(c)}));
+    UI.track('lead','done');UI.act('lead','Ringkasan Sebelum Terbit sudah dikirim ke kamu. Belum ada yang diterbitkan.');
   }catch(e){
     if(!(e&&e.code==='cancelled'))UI.error(errMsg(e));
   }
@@ -877,7 +890,7 @@ function renderRefList(){
 $('reffile').addEventListener('change',function(){REFS=Array.prototype.slice.call(this.files||[]).filter(function(f){return isImg(f)||isVid(f)}).slice(0,3);renderRefList()});
 
 /* ---------------- Bagian 3: UI ---------------- */
-var TRACKS=[['lead','Lead','Orkestraror Agen · Juru Kabar'],['a1','Agen 1','Kreator Zuno (termasuk Perender)'],['a2','Agen 2','Penjaga Mutu Zuno (veto)'],['a3','Agen 3','Operator Zuno (setelah kamu setuju)']];
+var TRACKS=[['lead','Lead','Orkestraror Agen · Juru Kabar'],['a1','Agen 1','Kreator Zuno (termasuk Perender)'],['a2','Agen 2','Penjaga Mutu Zuno (penasihat, tanpa veto)'],['a3','Agen 3','Operator Zuno (setelah kamu setuju)']];
 var tstate={};
 var UI={
   start:function(){
@@ -900,7 +913,7 @@ var UI={
     var a1=function(c){return /^(Menulis|Merevisi|Menyusun|Perender|Menguji|Memperkuat)/.test(c.stage)},qa=function(c){return /^Diperiksa/.test(c.stage)};
     if(tstate.a1!=='wait'){st.a1=any(a1)?'run':(all(function(c){return c.hasil||c.held})?'done':'run')}
     if(any(qa))st.a2='run';
-    else if(any(function(c){return c.hasil})&&all(function(c){return c.verdict||c.held}))st.a2=any(function(c){return c.verdict==='Tidak Lolos'})?'bad':'done';
+    else if(any(function(c){return c.hasil})&&all(function(c){return c.verdict||c.held}))st.a2=any(function(c){return c.qaRes&&c.qaRes.tinggi==='risiko'})?'bad':'done';
     else if(any(function(c){return c.hasil}))st.a2='run';
     return st;
   },
@@ -934,8 +947,14 @@ var UI={
   },
   resCard:function(c){
     var d=document.createElement('div');d.className='res';
-    var ok=c.verdict==='Lolos',ap=c.approved,vid=c.format==='video';
-    d.innerHTML='<h3>'+c.id+' · '+esc(c.topik||'-')+'<span class="pill '+(ap?'ok':ok?'':'bad')+'">'+(ap?'Disetujui':ok?'Lolos QA':'Tidak Lolos')+'</span></h3><div class="muted">'+esc(c.platform)+' · '+esc(c.funnel)+' · '+(vid?'gaya '+esc(c.gaya)+(S&&S.mode==='tampil'?' · Mode Tampil':' · Tanpa Wajah'):'template '+c.template+' '+TPL[c.template])+(c.revisi?' · '+c.revisi+' revisi':'')+'</div>';
+    var ap=c.approved,vid=c.format==='video';
+    d.innerHTML='<h3>'+c.id+' · '+esc(c.topik||'-')+'<span class="pill '+(ap?'ok':'')+'">'+(ap?'Disetujui':'Siap ditinjau')+'</span></h3><div class="muted">'+esc(c.platform)+' · '+esc(c.funnel)+' · '+(vid?'gaya '+esc(c.gaya)+(S&&S.mode==='tampil'?' · Mode Tampil':' · Tanpa Wajah'):'template '+c.template+' '+TPL[c.template])+(c.revisi?' · '+c.revisi+' revisi':'')+'</div>';
+    if(c.ringkasan&&c.qaRes){
+      var rb=document.createElement('div');rb.className='ringkas';
+      var li=function(a){return a.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')};
+      rb.innerHTML='<b>Ringkasan Sebelum Terbit</b> <span class="muted">(Orkestraror Agen + Juru Kabar; belum diterbitkan)</span><p><b>Kualitas:</b> '+esc(c.ringkasan.kualitas)+'</p><p><b>Kesesuaian dengan keinginanmu:</b> '+esc(c.ringkasan.kesesuaian)+'</p>'+(c.ringkasan.penting.length?'<p><b>Catatan penting:</b></p><ul>'+li(c.ringkasan.penting)+'</ul>':'<p class="muted">Tidak ada catatan penting dari Penjaga Mutu.</p>')+'<p><b>Saran:</b> '+esc(c.ringkasan.saran)+'</p><p class="muted">Penjaga Mutu hanya penasihat tanpa veto. Keputusannya di kamu.</p>';
+      d.appendChild(rb);
+    }
     if(!vid){
       var sl=document.createElement('div');sl.className='slides';
       c.hasil.png.forEach(function(u,i){
@@ -974,16 +993,18 @@ var UI={
     if(!ap){
       var bp=document.createElement('button');bp.className='btn ok';bp.textContent='Setujui';bp.disabled=running;bp.onclick=function(){approve(c)};bt.appendChild(bp);
       var nt=document.createElement('input');nt.type='text';nt.placeholder='Catatan revisi (opsional)';nt.style.maxWidth='260px';nt.setAttribute('aria-label','Catatan revisi untuk '+c.id);bt.appendChild(nt);
-      var br=document.createElement('button');br.className='btn';br.textContent='Revisi ulang';br.disabled=running;br.onclick=function(){UI.rework(c,nt.value.trim())};bt.appendChild(br);
+      var br=document.createElement('button');br.className='btn';br.textContent='Revisi sesuai catatanmu';br.disabled=running;br.onclick=function(){UI.rework(c,nt.value.trim())};bt.appendChild(br);
+      var sar=(c.ringkasan&&c.ringkasan.penting||[]);
+      if(sar.length){var bs=document.createElement('button');bs.className='btn';bs.textContent='Terapkan saran Penjaga Mutu';bs.disabled=running;bs.onclick=function(){UI.rework(c,'Terapkan saran Penjaga Mutu:\n'+sar.join('\n')+(nt.value.trim()?'\nCatatan tambahan: '+nt.value.trim():''))};bt.appendChild(bs)}
     }
     d.appendChild(bt);return d;
   },
   rework:async function(c,note){
     if(running||!sample)return;
     running=true;aborted=false;ctl=new AbortController();$('run').disabled=true;$('stop').disabled=false;
-    c.zNote=note;c.revisi=0;c.verdict=null;c.hasil=null;c.held=false;c.approved=false;c.paket=null;c.prev=null;c.opt=null;c.kind='';
+    c.zNote=note;c.revisi=(c.revisi||0)+1;c.verdict=null;c.ringkasan=null;c.qaRes=null;c.hasil=null;c.held=false;c.approved=false;c.paket=null;c.prev=null;c.opt=null;c.kind='';
     try{
-      notice('info','Revisi ulang <b>'+esc(c.id)+'</b>'+(note?' dengan catatanmu: '+esc(note):'')+'.');
+      notice('info','Revisi atas permintaanmu untuk <b>'+esc(c.id)+'</b>'+(note?': '+esc(note.split('\n')[0]):'')+'. Tidak ada putaran revisi otomatis.');
       setCard(c,'Merevisi teks (catatanmu)');
       c.konten=normKonten(c,await ask('1.3',c.id,p13(c,'Catatan Zulnan: '+(note||'tolong perbaiki secara umum')),'default'));
       c.visual=normVisual(c,await ask('1.5',c.id,p15(c),c.format==='video'&&S.refs&&S.refs.ada?'default':'quick',c.format==='video'&&S.refs?S.refs.blobs:null));
@@ -1010,7 +1031,7 @@ $('chips').innerHTML=EX.map(function(x,i){return '<button class="chip" data-i="'
 $('chips').addEventListener('click',function(e){var b=e.target.closest('.chip');if(b)$('cmd').value=EX[+b.dataset.i]});
 $('run').addEventListener('click',function(){if(!running&&sample)main()});
 $('stop').addEventListener('click',function(){aborted=true;try{ctl&&ctl.abort()}catch(e){}});
-$('reset').addEventListener('click',function(){aborted=true;try{ctl&&ctl.abort()}catch(e){}running=false;S=null;['noticep','procp','resp'].forEach(function(i){$(i).classList.add('hidden')});$('run').disabled=!sample;$('stop').disabled=true;$('errbox').classList.add('hidden')});
+$('reset').addEventListener('click',function(){aborted=true;try{ctl&&ctl.abort()}catch(e){}running=false;S=null;try{$('src').value=''}catch(e){}['noticep','procp','resp'].forEach(function(i){$(i).classList.add('hidden')});$('run').disabled=!sample;$('stop').disabled=true;$('errbox').classList.add('hidden')});
 $('dlog').addEventListener('click',function(){Save.file('zuno-log-debug.json',new Blob([JSON.stringify(LOG,null,2)],{type:'application/json'}),$('dlog'))});
 $('tabc').addEventListener('click',function(){UI.tab('c')});$('tabv').addEventListener('click',function(){UI.tab('v')});
 (async function(){

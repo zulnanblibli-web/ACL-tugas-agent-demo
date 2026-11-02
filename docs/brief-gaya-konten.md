@@ -34,7 +34,9 @@ Topik global boleh, asal tidak teknis dan mudah dipahami pemula. Hati-hati denga
 
 ## 3. Fakta Zulnan yang boleh dipakai di konten
 
-Hanya fakta di bawah yang boleh jadi cerita pribadi. Fakta lain wajib ditanyakan dulu. Agen dilarang mengarang pengalaman, testimoni, atau angka.
+**Memori tentang Zulnan bukan bahan konten utama** (keputusan Zulnan 2026-11-02). Memori dipakai untuk suara, gaya, dan batas aman. Bahan konten datang dari sumber luar (lihat bagian 7c). Cerita pribadi hanya dipakai bila Zulnan memintanya atau pas secara alami, dan jangan di setiap konten.
+
+Bila cerita pribadi dipakai, hanya fakta di bawah yang boleh. Fakta lain wajib ditanyakan dulu. Agen dilarang mengarang pengalaman, testimoni, atau angka.
 
 - Sales sekitar 12 tahun (FMCG), fokus develop area.
 - Resign, lalu belajar AI dari nol dan berproses.
@@ -43,6 +45,8 @@ Hanya fakta di bawah yang boleh jadi cerita pribadi. Fakta lain wajib ditanyakan
 - Hasil nyata (penjualan, jumlah pengguna, tangkapan layar): **[ISI]**. Sampai ada, tidak ada klaim hasil.
 
 ## 4. Larangan
+
+Daftar ini adalah pedoman penulis dan acuan catatan Agen 2. Pelanggaran yang ditemukan menjadi **catatan** untuk Zulnan, bukan alasan menolak atau menahan konten (lihat bagian 8).
 
 - Klaim hasil atau penghasilan yang belum terbukti.
 - Kata berlebihan, mengaku-ngaku, menipu, menjanjikan hasil, bertele-tele.
@@ -140,15 +144,27 @@ Naskah wajib membuat orang berhenti scroll dan menonton sampai habis. Metode: sk
 - **CTA**: maksimal satu (boleh nyeleneh) atau loop ke hook.
 - Pakai minimal 2 dari 7 faktor viralitas. Dilarang: basa-basi, definisi panjang, naskah datar, klaim hasil, mengarang fakta/angka/tren.
 - Setelah ditulis, **Spesialis Optimasi Video** menguji retensi dengan checklist Killer Script dan menulis ulang kalimat yang lemah sebelum masuk Agen 2.
-- Riset: Peneliti Tren tidak punya akses pencarian di Zuno Studio, jadi bahan riset adalah **hipotesis yang perlu dicek** dan ditandai begitu di paket .md.
+- Riset: lihat bagian 7c.
+
+## 7c. Sumber dan olah kreatif
+
+Konten harian berangkat dari **dunia luar**, bukan dari memori tentang Zulnan (keputusan Zulnan 2026-11-02).
+- **Peneliti Tren mencari sumber**: berita, artikel, thread, dan konten viral yang relevan dengan niche (produk digital, AI, tools AI, produktivitas kerja) dan audiens pemula 25-35 tahun. Tiap sumber dicatat dengan judul, tautan, tanggal, jenis, dan satu kalimat kenapa relevan.
+- **Diolah jadi konten kreatif sendiri**: ambil inti atau fakta pendukungnya, balik sudutnya, tulis ulang dengan bahasa Zulnan dan struktur hook-problem-twist-solusi-cta. Sumber hanya inspirasi dan bahan fakta; dilarang menyalin teks, visual, atau suara orang lain. Sumber disebut di Daftar Sumber pada paket.
+- **Zuno Studio v2 tidak punya akses pencarian**: Zulnan bisa menempel tautan, judul, atau isi berita/konten viral di kolom Sumber. Tanpa sumber, riset bersifat hipotesis dan ditandai "perlu dicek"; produksi tidak ditahan. Pencarian sumber sungguhan berjalan di Claude Code (alat pencarian web).
+- Tidak ada sumber, angka, atau tren karangan. Bila ragu, tandai "perlu dicek".
 
 ## 8. Cara kerja tim
 
-- Satu pemilik per output. Agen 2 (Penjaga Merek, Pemeriksa Realitas, Pengumpul Bukti, Pemeriksa Kepatuhan Hukum) punya veto.
-- Maksimal 2 putaran revisi, lalu keputusan ke Zulnan.
-- Juru Kabar memberi tahu Zulnan **sebelum** kartu ditandai Tidak Lolos.
+Keputusan Zulnan 2026-11-02: **otoritas atas konten ada di Zulnan.** Pemeriksaan mutu tetap berjalan, tetapi tidak menghambat produksi.
+
+- Satu pemilik per output.
+- **Agen 2 (Penjaga Merek, Pemeriksa Realitas, Pengumpul Bukti, Pemeriksa Kepatuhan Hukum) adalah penasihat, tanpa veto.** Satu putaran periksa, hasilnya **Catatan Mutu**: Aman, Saran, Perlu keputusan Zulnan, atau Risiko nyata. Agen 2 tidak menolak dan tidak mengembalikan kartu sendiri.
+- Pola dasar hukum dan kepatuhan (klaim hasil, data sensitif, privasi, izin testimoni) **tetap dicek**, tetapi hasilnya catatan yang proporsional dan satu baris saran, bukan penolakan. Risiko nyata ditaruh paling atas di ringkasan; keputusannya di Zulnan.
+- **Lead (Orkestraror Agen dan Juru Kabar) menerima semua Catatan Mutu** dan menyusun **Ringkasan Sebelum Terbit** untuk Zulnan: kualitas, kesesuaian dengan keinginan Zulnan untuk video dan carousel, serta catatan penting. Zulnan diberi tahu dulu sebelum konten terbit.
+- Tidak ada putaran revisi otomatis dan tidak ada status Tidak Lolos otomatis. Revisi hanya dikerjakan atas permintaan Zulnan.
 - Status **Disetujui hanya dari Zulnan.**
-- Rantai status: Ide, Draf, Teredit, Lolos QA, Disetujui, Terjadwal, Tayang, Terukur.
+- Rantai status: Ide, Draf, Teredit, Ditinjau, Disetujui, Terjadwal, Tayang, Terukur.
 - Kartu Konten berisi: ID, tujuan, platform, format, referensi suara, bahan, status, versi, batasan; untuk video ditambah Kartu Gaya.
 - Data performa: tidak ada angka karangan. Ukuran "konten menang": **[ISI]**. Tayangan minimal: **[ISI]**.
 
@@ -159,7 +175,7 @@ Cukup satu kalimat, contoh:
 - "Gue lagi buntu ide. Tim, carikan dari nol."
 - Dengan bahan: lampirkan cerita proses, tangkapan layar, atau catatan. Untuk video: sebut mode (Tampil atau Tanpa Wajah) dan lampirkan referensi gaya bila ada.
 
-Tim menyusun rencana tiga konten, Kartu Konten, dan Kartu Gaya, lalu menunggu persetujuan Zulnan sebelum maju.
+Tim menyusun rencana tiga konten, Kartu Konten, dan Kartu Gaya, lalu menunggu persetujuan Zulnan sebelum maju. Bila ada berita, artikel, atau konten viral yang ingin dijadikan bahan, tempel tautan atau isinya bersama perintah.
 
 ## 10. Yang masih perlu diisi Zulnan
 

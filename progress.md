@@ -1,6 +1,6 @@
 # Progress: Zuno
 
-Terakhir diperbarui: 2026-11-01 (Zuno Studio v2: paket naskah dan storyboard .md, input referensi, maskot di brief; semua sudah di GitHub)
+Terakhir diperbarui: 2026-11-02 (Agen 2 jadi penasihat tanpa veto, Ringkasan Sebelum Terbit dari Lead, memori Zulnan bukan bahan konten, riset berbasis sumber luar)
 
 ## Status singkat
 - Blueprint dan prompt orkestrasi: **selesai** (`docs/prompt-orkestrasi-zuno.md`, juga Word dan Claude Doc).
@@ -9,13 +9,22 @@ Terakhir diperbarui: 2026-11-01 (Zuno Studio v2: paket naskah dan storyboard .md
 - Zuno Studio v2: **dibangun dan dipublikasikan sebagai preview, lolos tes stub (Claude tiruan); belum diuji dengan Claude asli.** Carousel: PNG nyata (template A-D). Video: paket naskah + storyboard + Kartu Gaya + rencana render (.md, bisa diunduh), bukan file video; pratinjau kanvas hanya kasar.
 - Profil agen (23 peran, nama dan format dari katalog agency-agents-id): **selesai ditulis ulang lengkap di `agents/`, menunggu dicek Zulnan.**
 
+## Otoritas konten dan Penjaga Mutu (keputusan Zulnan 2026-11-02)
+- **Otoritas konten ada di Zulnan.** Agen 2 (Penjaga Merek, Pemeriksa Realitas, Pengumpul Bukti, Pemeriksa Kepatuhan Hukum) menjadi **penasihat tanpa veto**: satu putaran periksa, hasilnya **Catatan Mutu** bertingkat (Aman, Saran, Perlu keputusan Zulnan, Risiko nyata). Agen 2 tidak menolak, tidak menahan, tidak mengembalikan kartu.
+- Pola dasar hukum dan kepatuhan (klaim hasil, data sensitif, privasi, izin testimoni) tetap dicek, tetapi hasilnya catatan yang proporsional, bukan penolakan. Risiko nyata ditaruh paling atas; keputusannya di Zulnan.
+- **Lead (Orkestraror Agen + Juru Kabar)** menerima semua Catatan Mutu dan mengirim **Ringkasan Sebelum Terbit** ke Zulnan lebih dulu: kualitas, kesesuaian dengan keinginan Zulnan untuk video dan carousel, catatan penting, saran tindakan.
+- Tidak ada putaran revisi otomatis dan tidak ada status Tidak Lolos. Revisi hanya atas permintaan Zulnan (di v2: "Revisi sesuai catatanmu" atau "Terapkan saran Penjaga Mutu"). Rantai status: Ide, Draf, Teredit, **Ditinjau**, Disetujui, Terjadwal, Tayang, Terukur.
+- **Memori tentang Zulnan bukan bahan konten**: dipakai untuk suara, gaya, batas aman. Cerita pribadi hanya bila diminta atau pas, tidak di setiap konten.
+- **Bahan konten dari sumber luar**: Peneliti Tren mencari berita, artikel, dan konten viral (judul, tautan, tanggal), lalu tim mengolahnya jadi konten kreatif sendiri (tanpa menyalin, sumber disebut). Zuno Studio v2 tidak punya akses pencarian, jadi ada kolom **Sumber bahan** untuk menempel tautan atau isi; tanpa itu riset tetap hipotesis. Pencarian sungguhan bisa dilakukan lewat Claude Code.
+- Berubah: `CLAUDE.md`, `docs/brief-gaya-konten.md` (bagian 3, 4, 7c baru, 8), `docs/prompt-orkestrasi-zuno.md`, profil agen 01, 02, 03, 06, 09, 10, 15, 16-19, baris standby di 8 profil, `agents/README.md`, `agents/semua-agen.md` (dibangun ulang), `prototypes/zuno-studio-v2.html`, `tests/zuno-studio-v2-stub-test.js`. `docs/prompt-orkestrasi-zuno.docx` dan Claude Doc prompt **belum** disamakan.
+
 ## Zuno Studio v2: terhubung ke profil agen dan brief (2026-11-01)
 File: `prototypes/zuno-studio-v2.html` (artifact Claude, capability `sample` dan `downloads`). Belum diuji dengan Claude asli; baru tes stub (`tests/zuno-studio-v2-stub-test.js`).
 - Alur mengikuti `agents/README.md`: Orkestraror Agen, Ahli Strategi Media Sosial, Kreator Konten, Pencerita Visual, Perender (render sebelum QA), Agen 2 paralel (Penjaga Merek, Pemeriksa Realitas, Pengumpul Bukti, Pemeriksa Kepatuhan Hukum), gerbang Zulnan, lalu Kurator Instagram menyiapkan paket posting (belum memposting). Peneliti Tren dan agen standby lain belum dipanggil (tidak ada akses pencarian di artifact).
 - Memori inti dari `docs/brief-gaya-konten.md` masuk ke prompt: audiens 25-35, fakta yang boleh dipakai, larangan, harga [HARGA BELUM DITENTUKAN], TOFU/MOFU/BOFU. SMK Broadcasting tidak dipakai (belum dikonfirmasi).
 - Carousel: Pencerita Visual memilih satu template A Papan Tulis, B Neon Gelap, C Majalah, atau D Kartu Layar per carousel (usulan TOFU B/A, MOFU A/D, BOFU C); bisa dipaksa lewat pilihan di layar. Dirender ke PNG 1080x1350 dengan nama dan penomoran (handle belum diisi).
 - Video: Kartu Gaya dengan lima preset (Dentum, Orbit Megah, Glitch Digital, Kartu Layar, Editorial Cepat); tiap adegan maksimal 2 detik; slogan lengkap disisipkan otomatis setelah hook; WebM pratinjau 540x960 tanpa suara. Mode Tampil dan alat claude-video-effects tetap di komputer Zulnan.
-- Veto: Juru Kabar memberi pemberitahuan (kartu, bagian, siapa memperbaiki, putaran) sebelum status berubah; Tidak Lolos hanya setelah 2 revisi habis.
+- (Diganti 2026-11-02) Agen 2 tanpa veto; Lead mengirim Ringkasan Sebelum Terbit. Lihat bagian "Otoritas konten dan Penjaga Mutu".
 - **Paket per perintah: 1 carousel + 1 video.** Satu video = satu palet dan satu latar (bisa beda antar video).
 - **Referensi video (foto/video, maks. 3) diinput langsung di tool.** Tool mengukur palet dominan dan energi gerak, mengirim cuplikan gambar ke Pencerita Visual, dan Kartu Gaya diisi dari referensi (palet, font, latar, jenis masuk teks, kamera, ekstra, energi). Tanpa referensi: preset. Mesin render video kini parametrik dan ramai (latar bergerak, teks berjalan, bentuk, partikel, kamera, irisan transisi).
 - Draf diberi tanda "suara perlu dicek" dan "handle belum diisi" sampai butir [ISI] brief terisi.
@@ -25,8 +34,8 @@ File: `prototypes/zuno-studio-v2.html` (artifact Claude, capability `sample` dan
 Folder `agents/` (baca `agents/README.md` dulu; `agents/semua-agen.md` adalah versi gabungan).
 - 23 profil, nomor file = urutan alur kerja. Format mengikuti contoh katalog: Definisi Peran, Kemampuan Inti, Keahlian Khusus, Integrasi Alur Kerja, Kerangka Pengambilan Keputusan, Metrik Keberhasilan, Contoh Kasus Penggunaan, kerangka khusus peran, Gaya Komunikasi, Pembelajaran & Memori; ditambah bagian Zuno (Status, Tugas di Zuno, Dilarang, Masukan, Keluaran). Frontmatter: name, description, tools, color, emoji, vibe, kode, tim, urutan, status, acuan.
 - Metrik = metrik proses; tidak ada angka target karangan. Ambang performa menunggu Zulnan.
-- Semua agen ada; yang tidak ikut alur harian berstatus **standby** (siaga, jalan saat ditugaskan lewat Kartu Konten). Aturan fase, veto Agen 2, 2 putaran revisi, dan persetujuan Zulnan tetap berlaku.
-- Tambahan baru: Juru Kabar (kabar sebelum Tidak Lolos), Insinyur Prompt Gambar, Pelatih Editing Video Pendek, Perender (file jadi), Narator & Subtitle, Spesialis Optimasi Video, Arsitek Tata Kelola Otomasi, Pelacak Eksperimen, Penyintesis Umpan Balik.
+- Semua agen ada; yang tidak ikut alur harian berstatus **standby** (siaga, jalan saat ditugaskan lewat Kartu Konten). Aturan fase dan persetujuan Zulnan tetap berlaku; Agen 2 penasihat tanpa veto (sejak 2026-11-02).
+- Tambahan baru: Juru Kabar (juru bicara tim, Ringkasan Sebelum Terbit), Insinyur Prompt Gambar, Pelatih Editing Video Pendek, Perender (file jadi), Narator & Subtitle, Spesialis Optimasi Video, Arsitek Tata Kelola Otomasi, Pelacak Eksperimen, Penyintesis Umpan Balik.
 - Katalog tidak punya agen yang benar-benar merender gambar atau video; Perender dan Narator & Subtitle dibuat sendiri.
 
 ## Gaya visual (2026-11-01)
@@ -38,11 +47,12 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
+0. **Cek alur baru Penjaga Mutu** di preview: jalankan satu perintah dengan tautan atau isi berita di kolom Sumber; pastikan tidak ada penolakan atau revisi otomatis, Ringkasan Sebelum Terbit terbaca jelas, dan catatan Agen 2 tidak berlebihan.
 1. **Uji v2 dengan Claude asli** di preview (https://claude.ai/artifact/8B5S1yzoCDfKY2f9P5zZ2g): jalankan satu perintah, cek kualitas naskah (hook, problem, twist, solusi, CTA), cek unggah referensi (foto, MP4, WebM), dan cek tombol unduh (`downloads.save` dengan Blob belum terverifikasi). Bila error, minta Zulnan mengirim pesan error atau log debug (tombol "Unduh log debug").
 2. **Uji render nyata** paket video: jalankan komposisi HyperFrames (`npx hyperframes preview`, lalu `render`) dan satu rencana efek `claude-video-effects` (butuh rekaman asli Zulnan, ffmpeg, Python 3.12). Format keduanya diambil dari README, belum pernah dijalankan. Catat hasilnya jujur di riwayat. Bila kualitas tampilan tidak sesuai referensi, perbaiki templat HyperFrames di `buildHF` atau pindahkan render ke Claude Code.
 3. **Pasang maskot** (`assets/maskot/`) di carousel Zuno Studio bila Zulnan minta; tunggu keputusan varian default (A kaos teal atau B kaos putih) dan apakah maskot dipakai di video.
 4. Isi butir **[ISI]** di `docs/brief-gaya-konten.md` bagian 10 bersama Zulnan (contoh suara, handle, detail 5 web Nexamind, ukuran konten menang, tayangan minimal, harga, alat video Tanpa Wajah, izin latar SMK Broadcasting). Jangan menebak.
-5. Perbarui prompt orkestrasi (`docs/prompt-orkestrasi-zuno.md`, .docx, Claude Doc): 9 tambahan agen, Juru Kabar, Kartu Gaya, metode naskah Killer Script, batas adegan 2 detik, memori inti dari brief.
+5. Perbarui prompt orkestrasi: versi .md sudah memuat aturan Agen 2 penasihat, sumber luar, dan memori; masih perlu .docx dan Claude Doc disamakan, plus 9 tambahan agen, Juru Kabar, Kartu Gaya, Killer Script, batas adegan 2 detik.
 6. Opsional: suara dan musik, MP4 1080x1920, Peneliti Tren dengan akses pencarian, agen standby lain (Pelacak Eksperimen, Penyintesis Umpan Balik, Operasional Studio), lalu pindah ke web app (Vercel/Supabase): ganti `sample` dengan API backend; Bagian RENDER dan UI di `zuno-studio-v2.html` tetap.
 
 ## Video: paket + rencana render, bukan render di tool (2026-11-01)
@@ -56,7 +66,7 @@ Dua gambar maskot voxel disimpan di `assets/maskot/` dan dicatat di `docs/brief-
 - Platform: Instagram, TikTok, Threads. Target harian: 2 carousel + 1 video motion grafis (Mode Tampil / Tanpa Wajah).
 - Fase 1 default: Agen 3 hanya menyiapkan paket, belum eksekusi.
 - Tugas paralel: A antar konten; B (1.1 dengan 3.2); C (2.1-2.4); D (3.1 dengan 3.3). Tetap berurutan: rantai status, persetujuan Zulnan, alur iklan, putaran revisi.
-- Urutan konflik: brand/safety, lalu data performa, lalu ide kreatif.
+- Urutan konflik (sejak 2026-11-02): keputusan Zulnan, keamanan (data sensitif, klaim hasil), data performa, ide kreatif. Bila buntu, tanya Zulnan tanpa menahan produksi.
 
 ## Belum nyata / belum selesai
 - Posting otomatis, Meta Ads, data performa asli, generator gambar/video asli: belum ada.

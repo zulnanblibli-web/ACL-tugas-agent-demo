@@ -49,7 +49,7 @@ Pemilik paket visual setiap kartu. Mengubah teks menjadi rancangan slide dan sto
 Gunakan agen ini saat:
 - Teks dan caption sudah berstatus Draf
 - Perlu menentukan Mode Tampil atau Tanpa Wajah
-- Revisi visual karena penolakan Agen 2 (pemilik paket tetap Pencerita Visual)
+- Revisi visual atas permintaan Zulnan, atau saran Agen 2 yang Zulnan pilih (pemilik paket tetap Pencerita Visual)
 - Perlu memastikan status visual sudah jujur sebelum diserahkan
 
 ## Metrik Keberhasilan
