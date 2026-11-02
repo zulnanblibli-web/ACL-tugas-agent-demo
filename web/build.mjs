@@ -22,7 +22,7 @@ swap('<body>\n<div class="wrap">\n<h1>Zuno Studio</h1>', '<body>\n' + part('hero
 swap('</div><!-- /wsBuild -->\n</div>', '</div><!-- /wsBuild -->\n</div>\n' + part('tail.html'));
 swap('\n<script>\n', '\n<script src="/live.js"></script>\n<script src="/hud.js"></script>\n<script>\n');
 // Pesan error disesuaikan untuk versi web.
-swap("not_granted:'Izin Claude belum diberikan.'", "not_granted:'Kunci akses Zuno salah atau belum diisi. Klik KUNCI AKSES di atas.',not_configured:'Server Zuno belum disetel (ZUNO_ACCESS_KEY di Vercel).'");
+swap("not_granted:'Izin Claude belum diberikan.'", "not_granted:'Kunci akses Zuno salah atau belum diisi. Klik KUNCI AKSES di atas.',not_configured:'Server Zuno belum disetel (ZUNO_ACCESS_KEY di Vercel).',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.'");
 swap("info.textContent='Halaman ini baru bisa menjalankan agen saat dibuka di claude.ai dan diberi izin memakai Claude.'", "info.textContent='Server Zuno tidak bisa dihubungi. Muat ulang halaman.'");
 
 writeFileSync(join(here, 'index.html'), out);

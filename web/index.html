@@ -222,8 +222,8 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
   <div class="hud-stack">
     <h2>TEKNOLOGI</h2>
     <div class="stack">
-      <div><b id="hBrain">Gemini</b><span>otak utama</span></div>
-      <div><b>Claude · OpenAI · OpenRouter</b><span>bisa ganti lewat AI_PROVIDER</span></div>
+      <div><b id="hBrain">OpenRouter</b><span>otak utama</span></div>
+      <div><b>Claude · OpenAI · Gemini · 9router/Ollama</b><span>bisa ganti lewat AI_PROVIDER</span></div>
       <div><b>Vercel</b><span>web + server</span></div>
       <div><b>HyperFrames</b><span>render video</span></div>
       <div><b>Apify / Scrapelyfy</b><span>riset otomatis (segera)</span></div>
@@ -231,7 +231,7 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
   </div>
 </section>
 <section class="hud-strip">
-  <div><b>GANTI LLM</b><span>Gemini, Claude, OpenAI, OpenRouter</span></div>
+  <div><b>GANTI LLM</b><span>OpenRouter, Claude, OpenAI, Gemini, lokal</span></div>
   <div><b>3 GERBANG</b><span>Build app pakai persetujuan lu</span></div>
   <div><b>TANPA AUTO POSTING</b><span>Paket siap, lu yang posting</span></div>
   <div><b>CREATIVE @NEXAMIND.AI</b><span>Dibangun Zulnan</span></div>
@@ -309,7 +309,7 @@ function P(k,kerja,data,format){
 var sample=null,downloads=null,ctl=null,aborted=false,fatal=null,running=false;
 var S=null,LOG=[],imagesOK=false,REFS=[];
 var FATAL=['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed','session_expired','rate_limited'];
-var COPY={not_granted:'Kunci akses Zuno salah atau belum diisi. Klik KUNCI AKSES di atas.',not_configured:'Server Zuno belum disetel (ZUNO_ACCESS_KEY di Vercel).',sampling_disabled:'Claude tidak tersedia untuk akunmu di halaman ini.',not_declared:'Halaman ini belum diberi izin memanggil Claude.',capability_disabled:'Pemanggilan Claude tidak bisa dipakai di tampilan ini.',capability_removed:'Versi aplikasi belum mendukung fitur yang dibutuhkan. Perbarui lalu muat ulang.',session_expired:'Sesi berakhir. Masuk lagi lalu jalankan ulang.',rate_limited:'Batas pemakaian tercapai. Tunggu sebentar lalu jalankan lagi.',refused:'Claude menolak memproses bagian ini. Ubah bahan lalu coba lagi.',upstream_error:'Koneksi ke Claude terputus. Coba jalankan ulang.',invalid_json:'Salah satu agen menjawab dengan format yang tidak terbaca. Coba jalankan ulang.',no_recorder:'Browser ini tidak bisa merekam video. Coba buka di Chrome.'};
+var COPY={not_granted:'Kunci akses Zuno salah atau belum diisi. Klik KUNCI AKSES di atas.',not_configured:'Server Zuno belum disetel (ZUNO_ACCESS_KEY di Vercel).',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.',sampling_disabled:'Claude tidak tersedia untuk akunmu di halaman ini.',not_declared:'Halaman ini belum diberi izin memanggil Claude.',capability_disabled:'Pemanggilan Claude tidak bisa dipakai di tampilan ini.',capability_removed:'Versi aplikasi belum mendukung fitur yang dibutuhkan. Perbarui lalu muat ulang.',session_expired:'Sesi berakhir. Masuk lagi lalu jalankan ulang.',rate_limited:'Batas pemakaian tercapai. Tunggu sebentar lalu jalankan lagi.',refused:'Claude menolak memproses bagian ini. Ubah bahan lalu coba lagi.',upstream_error:'Koneksi ke Claude terputus. Coba jalankan ulang.',invalid_json:'Salah satu agen menjawab dengan format yang tidak terbaca. Coba jalankan ulang.',no_recorder:'Browser ini tidak bisa merekam video. Coba buka di Chrome.'};
 
 function errMsg(e){
   if(!e)return COPY.upstream_error;

@@ -164,4 +164,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `web/api/ai.js`, `web/api/status.js`, `web/src/hud.js`, `web/src/tail.html`, `web/index.html`, `web/hud.js`, `web/README.md`, `tests/zuno-web-gemini-test.mjs` (baru), `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: Zulnan isi `GEMINI_API_KEY` dan `ZUNO_ACCESS_KEY` di Vercel lalu Redeploy; uji dengan Gemini asli (belum bisa dicek dari sesi ini karena domain vercel.app dan dokumentasi Google diblokir jaringan sesi).
 
-## 29. (entri berikutnya di sini)
+## 29. Pindah ke OpenRouter (2026-11-02)
+- Permintaan: Gemini kena limit. Tanya API key dari Claude Pro / ChatGPT Plus (jawab: tidak termasuk, API terpisah dan berbayar), OpenRouter, Ollama, 9router (jawab: bisa lewat jalur format OpenAI; Ollama/9router lokal butuh tunnel; 9router yang memakai akun langganan berisiko melanggar aturan pemakaian). Arti layar key OpenRouter (credit limit = batas pengaman, bukan saldo; saldo prabayar). Lalu: benerin dulu, hapus Gemini.
+- Hasil: `web/api/ai.js` jalur format OpenAI ditulis ulang jadi streaming SSE untuk OpenRouter, OpenAI, dan `openai-compatible` baru (`AI_BASE_URL`, untuk 9router/Ollama/LM Studio). Coba ulang otomatis saat 429/5xx (maks. 3 kali, ikut retry-after) untuk semua jalur fetch; saldo habis (402) jadi pesan "Saldo penyedia AI habis". OpenRouter tanpa `AI_MODEL` memakai `openrouter/auto`. Kode Gemini tetap ada sebagai pilihan (aturan fleksibel ke semua LLM), tetapi tidak dipakai: env Vercel `AI_PROVIDER` diganti ke `openrouter`. `GEMINI_API_KEY` tidak bisa dihapus dari sini (tidak ada alat hapus env); Zulnan menghapusnya sendiri. Tes baru `tests/zuno-web-openrouter-test.mjs` 8/8 lolos; tes Claude, Gemini, dan halaman tetap lolos.
+- File berubah: `web/api/ai.js`, `web/api/status.js`, `web/build.mjs`, `web/src/tail.html`, `web/index.html`, `web/README.md`, `tests/zuno-web-openrouter-test.mjs` (baru), `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: Zulnan isi saldo + `OPENROUTER_API_KEY`, hapus `GEMINI_API_KEY`, Redeploy; uji dengan OpenRouter asli.
+
+## 30. (entri berikutnya di sini)

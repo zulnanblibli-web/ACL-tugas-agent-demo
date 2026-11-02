@@ -1,6 +1,6 @@
 // Zuno: perantara AI di server (Vercel Function).
 // Halaman tidak pernah memegang API key. Penyedia bisa diganti lewat env AI_PROVIDER
-// tanpa mengubah kode halaman: "claude" (bawaan) | "openai" | "gemini" | "openrouter".
+// tanpa mengubah kode halaman: "claude" (bawaan) | "openrouter" | "openai" | "gemini" | "openai-compatible" (9router, Ollama, LM Studio; isi AI_BASE_URL).
 //
 // Masuk : POST JSON {input: string | [{role, content}], images?: [{media_type, data}], tier?: "quick"|"default", effort?: "low"|"medium"|"high"}
 //         header x-zuno-key: kunci akses (env ZUNO_ACCESS_KEY)
@@ -16,7 +16,8 @@ const MODEL_DEFAULT = {
   claude: 'claude-opus-5-5',
   openai: 'ISI_NAMA_MODEL',
   gemini: 'otomatis',
-  openrouter: 'ISI_NAMA_MODEL'
+  openrouter: 'openrouter/auto', // router otomatis OpenRouter; ganti lewat AI_MODEL untuk model tetap
+  'openai-compatible': 'ISI_NAMA_MODEL'
 };
 function modelFor(tier) {
   if (tier === 'quick' && process.env.AI_MODEL_QUICK) return process.env.AI_MODEL_QUICK;
@@ -110,7 +111,7 @@ async function* streamGemini({ turns, images, tier, signal }) {
   const body = { contents };
   const limit = Number(process.env.AI_MAX_TOKENS || m.out || 0);
   if (limit) body.generationConfig = { maxOutputTokens: limit };
-  const r = await fetch(GEMINI_BASE + '/v1beta/models/' + encodeURIComponent(m.name) + ':streamGenerateContent?alt=sse', {
+  const r = await fetchRetry(GEMINI_BASE + '/v1beta/models/' + encodeURIComponent(m.name) + ':streamGenerateContent?alt=sse', {
     method: 'POST', signal, headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY || '' }, body: JSON.stringify(body)
   });
   if (!r.ok) { const j = await r.json().catch(() => ({})); throw { status: r.status, message: (j.error && j.error.message) || 'HTTP ' + r.status }; }
@@ -137,35 +138,72 @@ async function* streamGemini({ turns, images, tier, signal }) {
   yield { t: 'done', stop, model: m.name };
 }
 
-// ---------- OpenAI / OpenRouter (HTTP biasa, tanpa streaming) ----------
-async function* oneShotOther({ turns, images, tier, signal }) {
-  const model = modelFor(tier);
-  let text = '', stop = 'end_turn';
-  if (PROVIDER === 'openai' || PROVIDER === 'openrouter') {
-    const url = PROVIDER === 'openai' ? 'https://api.openai.com/v1/chat/completions' : 'https://openrouter.ai/api/v1/chat/completions';
-    const key = PROVIDER === 'openai' ? process.env.OPENAI_API_KEY : process.env.OPENROUTER_API_KEY;
-    const messages = turns.map((m, i) => {
-      if (i === 0 && m.role === 'user' && images.length) {
-        return { role: 'user', content: [...images.map((im) => ({ type: 'image_url', image_url: { url: 'data:' + im.media_type + ';base64,' + im.data } })), { type: 'text', text: m.content }] };
-      }
-      return m;
-    });
-    const r = await fetch(url, { method: 'POST', signal, headers: { 'content-type': 'application/json', authorization: 'Bearer ' + key }, body: JSON.stringify({ model, messages }) });
-    const j = await r.json().catch(() => ({}));
-    if (!r.ok) throw { status: r.status, message: (j.error && j.error.message) || 'HTTP ' + r.status };
-    const ch = (j.choices || [])[0] || {};
-    text = (ch.message && ch.message.content) || '';
-    if (ch.finish_reason === 'length') stop = 'max_tokens';
-  } else {
-    throw { status: 500, message: 'AI_PROVIDER tidak dikenal: ' + PROVIDER };
+// ---------- Coba ulang saat kena limit / server sibuk ----------
+// Hanya sebelum jawaban mulai mengalir. Maks. 3 percobaan, jeda dari header retry-after (maks. 20 detik).
+const sleep = (ms, signal) => new Promise((res, rej) => { const t = setTimeout(res, ms); if (signal) signal.addEventListener('abort', () => { clearTimeout(t); rej({ status: 499, message: 'dibatalkan' }); }, { once: true }); });
+export async function fetchRetry(url, opts, tries = 3) {
+  for (let i = 0; ; i++) {
+    const r = await fetch(url, opts);
+    if (r.ok || i >= tries - 1 || ![429, 500, 502, 503, 504].includes(r.status)) return r;
+    const ra = Number(r.headers.get('retry-after'));
+    await sleep(Math.min(20000, ra > 0 ? ra * 1000 : [2000, 6000][i] || 6000), opts.signal);
   }
-  if (text) yield { t: 'delta', text };
-  yield { t: 'done', stop, model };
+}
+
+// ---------- Format OpenAI (streaming SSE): OpenRouter, OpenAI, dan endpoint kompatibel (9router, Ollama, LM Studio) ----------
+function compatTarget() {
+  if (PROVIDER === 'openrouter') return { url: 'https://openrouter.ai/api/v1/chat/completions', key: process.env.OPENROUTER_API_KEY, extra: { 'X-Title': 'Zuno' } };
+  if (PROVIDER === 'openai') return { url: 'https://api.openai.com/v1/chat/completions', key: process.env.OPENAI_API_KEY, extra: {} };
+  if (PROVIDER === 'openai-compatible') {
+    const base = String(process.env.AI_BASE_URL || '').replace(/\/+$/, '');
+    if (!base) throw { status: 500, message: 'AI_BASE_URL belum diisi.' };
+    return { url: base + '/chat/completions', key: process.env.AI_API_KEY || '', extra: {} };
+  }
+  throw { status: 500, message: 'AI_PROVIDER tidak dikenal: ' + PROVIDER };
+}
+async function* streamCompat({ turns, images, tier, signal }) {
+  const model = modelFor(tier);
+  if (!model || model === 'ISI_NAMA_MODEL') throw { status: 500, message: 'AI_MODEL belum diisi di Vercel.' };
+  const tg = compatTarget();
+  if (process.env.COMPAT_BASE_URL_TEST) tg.url = process.env.COMPAT_BASE_URL_TEST; // khusus uji
+  const messages = turns.map((m, i) => (i === 0 && m.role === 'user' && images.length)
+    ? { role: 'user', content: [...images.map((im) => ({ type: 'image_url', image_url: { url: 'data:' + im.media_type + ';base64,' + im.data } })), { type: 'text', text: m.content }] }
+    : m);
+  const body = { model, messages, stream: true };
+  if (process.env.AI_MAX_TOKENS) body.max_tokens = Number(process.env.AI_MAX_TOKENS);
+  const headers = { 'content-type': 'application/json', ...tg.extra };
+  if (tg.key) headers.authorization = 'Bearer ' + tg.key;
+  const r = await fetchRetry(tg.url, { method: 'POST', signal, headers, body: JSON.stringify(body) });
+  if (!r.ok) { const j = await r.json().catch(() => ({})); throw { status: r.status, message: (j.error && (j.error.message || j.error)) || 'HTTP ' + r.status }; }
+  const reader = r.body.getReader(), dec = new TextDecoder();
+  let buf = '', stop = 'end_turn', used = model;
+  for (;;) {
+    const c = await reader.read();
+    if (c.done) break;
+    buf += dec.decode(c.value, { stream: true });
+    let nl;
+    while ((nl = buf.indexOf('\n')) > -1) {
+      const line = buf.slice(0, nl).trim(); buf = buf.slice(nl + 1);
+      if (!line.startsWith('data:')) continue; // baris komentar ": OPENROUTER PROCESSING" dilewati
+      const data = line.slice(5).trim();
+      if (data === '[DONE]') continue;
+      let j; try { j = JSON.parse(data); } catch { continue; }
+      if (j.error) throw { status: j.error.code || 500, message: j.error.message || 'error dari penyedia' };
+      if (j.model) used = j.model;
+      const ch = (j.choices || [])[0] || {};
+      const text = ch.delta && ch.delta.content;
+      if (text) yield { t: 'delta', text };
+      if (ch.finish_reason === 'length') stop = 'max_tokens';
+      else if (ch.finish_reason === 'content_filter') stop = 'refusal';
+    }
+  }
+  yield { t: 'done', stop, model: used };
 }
 
 function errCode(e) {
   const s = e && (e.status || (e.error && e.error.status));
   if (s === 401 || s === 403) return 'server_key';
+  if (s === 402) return 'no_credit';
   if (s === 429) return 'rate_limited';
   if (s === 413) return 'prompt_too_large';
   if (s === 400) return 'invalid_request';
@@ -186,7 +224,7 @@ export async function POST(request) {
     effort: ['low', 'medium', 'high'].includes(body.effort) ? body.effort : null,
     signal: request.signal
   };
-  const gen = PROVIDER === 'claude' ? streamClaude(args) : PROVIDER === 'gemini' ? streamGemini(args) : oneShotOther(args);
+  const gen = PROVIDER === 'claude' ? streamClaude(args) : PROVIDER === 'gemini' ? streamGemini(args) : streamCompat(args);
   const enc = new TextEncoder();
   const stream = new ReadableStream({
     async start(ctrl) {

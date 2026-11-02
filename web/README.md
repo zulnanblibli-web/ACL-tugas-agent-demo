@@ -19,10 +19,11 @@ Versi live Zuno Studio v2 dengan tampilan HUD. Logika agen tetap dari `prototype
 | Nama | Isi | Wajib |
 |---|---|---|
 | `ZUNO_ACCESS_KEY` | Kunci akses halaman (acak, min. 16 karakter). Diisi sekali di tombol KUNCI AKSES | Ya |
-| `AI_PROVIDER` | `claude` (bawaan), `openai`, `gemini`, `openrouter` | Tidak |
+| `AI_PROVIDER` | `openrouter` (dipakai sekarang), `claude` (bawaan kode), `openai`, `gemini`, `openai-compatible` (9router, Ollama, LM Studio) | Tidak |
 | `ANTHROPIC_API_KEY` | API key Claude (bila `claude`) | Ya untuk Claude |
-| `OPENAI_API_KEY` / `GEMINI_API_KEY` / `OPENROUTER_API_KEY` | Bila ganti penyedia | Sesuai penyedia |
-| `AI_MODEL` | Nama model. Bawaan Claude: `claude-opus-5-5`. Gemini: kosong = server memilih sendiri Gemini Pro stabil terbaru dari daftar model Google (Flash untuk tahap ringan) | Wajib untuk OpenAI/OpenRouter |
+| `OPENROUTER_API_KEY` / `OPENAI_API_KEY` / `GEMINI_API_KEY` | Key penyedia yang dipakai | Sesuai penyedia |
+| `AI_BASE_URL`, `AI_API_KEY` | Untuk `openai-compatible`: alamat endpoint (mis. `https://alamat-tunnel/v1`) dan key-nya bila ada | Untuk `openai-compatible` |
+| `AI_MODEL` | Nama model. Bawaan Claude: `claude-opus-5-5`. Gemini: kosong = server memilih sendiri Gemini Pro stabil terbaru dari daftar model Google (Flash untuk tahap ringan) | OpenRouter: kosong = `openrouter/auto` (OpenRouter memilih model). Wajib untuk OpenAI dan `openai-compatible` |
 | `AI_MODEL_QUICK` | Model untuk langkah ringan (opsional, mis. lebih murah) | Tidak |
 | `CLAUDE_FALLBACK` | `off` untuk mematikan fallback otomatis saat model menolak | Tidak |
 
@@ -30,9 +31,11 @@ Versi live Zuno Studio v2 dengan tampilan HUD. Logika agen tetap dari `prototype
 
 ## Catatan
 - Fallback otomatis Claude (`fallbacks: "default"`) aktif: bila model menolak sebuah permintaan, server API mencoba ulang di model lain. Matikan dengan `CLAUDE_FALLBACK=off`.
-- Gemini (AI Studio) streaming. OpenAI dan OpenRouter belum streaming (jawaban datang sekaligus) dan belum diuji dengan key asli.
+- Semua jalur streaming. Bila kena limit (429) atau server penyedia sibuk, server mencoba ulang maks. 3 kali sebelum jawaban mulai. Saldo habis (402) langsung dilaporkan.
+- OpenRouter memakai saldo prabayar (Credits). Credit limit di pengaturan key hanya batas pengaman, bukan saldo.
+- Selain Claude dan jalur tiruan, belum diuji dengan key asli.
 - Biaya pemakaian API ditanggung akun penyedia AI. Kunci akses mencegah orang lain memakai server ini.
 
 ## Uji
-- `cd web && npm install && node ../tests/zuno-web-api-test.mjs && node ../tests/zuno-web-gemini-test.mjs` (server AI dengan Claude dan Gemini tiruan)
+- `cd web && npm install && node ../tests/zuno-web-api-test.mjs && node ../tests/zuno-web-gemini-test.mjs && node ../tests/zuno-web-openrouter-test.mjs` (server AI dengan Claude, Gemini, dan OpenRouter tiruan)
 - `node tests/zuno-web-stub-test.js` (halaman web + HUD dengan AI tiruan, butuh Playwright)
