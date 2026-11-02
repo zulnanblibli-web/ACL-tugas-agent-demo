@@ -121,4 +121,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `agents/15-18` (baru), `agents/README.md`, `agents/semua-agen.md`, `docs/aturan-engineering.md` (baru), `skills/engineering/` (baru), `CLAUDE.md`, `docs/prompt-orkestrasi-zuno.md`, `docs/prompt-orkestrasi-zuno.docx`, `progress.md`.
 - Tertunda: proyek pertama untuk menguji alur Engineering; unggah ulang skill ke claude.ai bila Zulnan setuju; artemis di-hold.
 
-## 22. (entri berikutnya di sini)
+## 22. Engineering standby + tab Build App di Zuno Studio v2 (2026-11-02)
+- Permintaan: push; Divisi Engineering sifatnya standby tapi langsung kerja bila ada task; taruh di Zuno v2 dengan alur konten dan build app dibedakan, jangan disatukan. Tanya apa yang masih kurang.
+- Hasil: push commit Divisi Engineering. Zuno Studio v2 punya dua tab: Konten (tidak diubah) dan Build App (state, tracker, hasil, prompt dasar BASE_ENG sendiri). Alur Build App: T.1 ruang lingkup (MVP dipotong ke 5), gerbang 1, T.2 desain (animasi tanpa tujuan dibuang, durasi 100-300 ms), gerbang 2, T.3 index.html + backend sesuai mesin, T.4 cek otomatis 11-12 butir + tinjauan AI, gerbang 3; tiap gerbang bisa direvisi dengan catatan (hanya bagian itu). Akun awal acak dibuat halaman; pratinjau HP/desktop di iframe sandbox; unduh index.html, backend, PANDUAN.md. Status standby dicatat di profil 15-18, README agen, aturan Engineering, CLAUDE.md, prompt orkestrasi (.md, .docx, Claude Doc). Tes stub baru lolos (portofolio, klien, aplikasi buruk tertangkap 9 cek gagal); tes konten lama tetap lolos. Preview diperbarui (versi 1793596339-d897).
+- File berubah: `prototypes/zuno-studio-v2.html`, `tests/zuno-studio-v2-build-stub-test.js` (baru), `agents/15-18`, `agents/README.md`, `agents/semua-agen.md`, `docs/aturan-engineering.md`, `CLAUDE.md`, `docs/prompt-orkestrasi-zuno.md`, `.docx`, `progress.md`.
+- Tertunda: uji Build App dan Konten dengan Claude asli (panjang index.html bisa terpotong); penyimpanan permanen proyek; rilis/deploy belum dari halaman.
+
+## 23. (entri berikutnya di sini)

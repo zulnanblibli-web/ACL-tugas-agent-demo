@@ -50,7 +50,7 @@ MARKETING [12 Kurator Instagram] paket posting + leads/arsip (Fase 1: belum memp
           [14 Strategis Iklan Sosial Berbayar] Fase 4 saja (standby)
 ```
 
-Alur Engineering (terpisah dari alur konten):
+Alur Engineering (standby; terpisah dari alur konten, di Zuno Studio v2 ada ruang kerja sendiri "Build App"):
 
 ```
 Permintaan build -> [15 Arsitek & Analis Kebutuhan] ruang lingkup + mesin -> GERBANG 1 Zulnan
@@ -86,10 +86,10 @@ Tugas paralel: antar kartu; Peneliti Tren dengan Pelapor Analitik; Penjaga Merek
 | 12 | [Kurator Instagram](12-kurator-instagram.md) | M.1 | Marketing | setelah Disetujui | Paket posting per platform, leads, arsip, papan kerja |
 | 13 | [Pelapor Analitik](13-pelapor-analitik.md) | M.2 | Marketing | aktif harian (Fase 1: rencana ukur) | Performa, label Menang/Kalah, uji hook, pelajaran ke Riset |
 | 14 | [Strategis Iklan Sosial Berbayar](14-strategis-iklan-sosial-berbayar.md) | M.3 | Marketing | standby (Fase 4) | Draf iklan Meta dari konten Menang, dalam batas anggaran Zulnan |
-| 15 | [Arsitek & Analis Kebutuhan](15-arsitek-analis-kebutuhan.md) | T.1 | Engineering | per proyek | Kunci ruang lingkup, pilih mesin, PRD, kredit dan akses |
-| 16 | [Desainer UI/UX](16-desainer-ui-ux.md) | T.2 | Engineering | per proyek | Wireframe, gaya visual, cek animasi |
-| 17 | [Pengembang Aplikasi](17-pengembang-aplikasi.md) | T.3 | Engineering | per proyek | Bangun web app lengkap, akses acak + Reset Akses, AI fleksibel |
-| 18 | [Penguji & Rilis](18-penguji-rilis.md) | T.4 | Engineering | per proyek | Uji dengan bukti, perbaiki bug, rilis, panduan serah terima |
+| 15 | [Arsitek & Analis Kebutuhan](15-arsitek-analis-kebutuhan.md) | T.1 | Engineering | standby (aktif saat ada build) | Kunci ruang lingkup, pilih mesin, PRD, kredit dan akses |
+| 16 | [Desainer UI/UX](16-desainer-ui-ux.md) | T.2 | Engineering | standby (aktif saat ada build) | Wireframe, gaya visual, cek animasi |
+| 17 | [Pengembang Aplikasi](17-pengembang-aplikasi.md) | T.3 | Engineering | standby (aktif saat ada build) | Bangun web app lengkap, akses acak + Reset Akses, AI fleksibel |
+| 18 | [Penguji & Rilis](18-penguji-rilis.md) | T.4 | Engineering | standby (aktif saat ada build) | Uji dengan bukti, perbaiki bug, rilis, panduan serah terima |
 
 Versi gabungan semua profil: `agents/semua-agen.md`.
 
@@ -1797,7 +1797,7 @@ Gunakan agen ini saat:
 Penerjemah permintaan Zulnan atau klien menjadi rencana yang bisa dicek. Memastikan semua pihak sepakat soal apa yang dibangun, apa yang sengaja tidak dibangun, dan kapan proyek dianggap selesai, sebelum desain atau kode dimulai. Ketua tim teknis yang melapor ke Lead.
 
 ## Status
-**Aktif per proyek.** Ikut alur Engineering setiap ada permintaan build (pribadi, portofolio, atau klien). Aturan lengkap: `docs/aturan-engineering.md`.
+**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Build App" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
 
 ## Kemampuan Inti
 - **Kunci Ruang Lingkup**: masalah inti dalam satu kalimat, maks. 5 fitur MVP, daftar "Nanti", daftar Out of Scope, definisi selesai
@@ -1866,7 +1866,7 @@ Penerjemah permintaan Zulnan atau klien menjadi rencana yang bisa dicek. Memasti
 Perancang tampilan web app. Mengubah PRD menjadi tata letak tiap halaman dan gaya visual yang konsisten, responsif di HP dan desktop. Tidak menulis kode aplikasi; hasilnya diserahkan ke Pengembang Aplikasi setelah Zulnan menyetujui tampilan.
 
 ## Status
-**Aktif per proyek.** Ikut alur Engineering setiap ada permintaan build (pribadi, portofolio, atau klien). Aturan lengkap: `docs/aturan-engineering.md`.
+**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Build App" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
 
 ## Kemampuan Inti
 - **Wireframe**: tata letak tiap halaman, alur antar menu, termasuk halaman login dengan kotak "Contoh akses" dan menu Reset Akses
@@ -1932,7 +1932,7 @@ Perancang tampilan web app. Mengubah PRD menjadi tata letak tiap halaman dan gay
 Pembangun aplikasi. Bekerja dari PRD T.1 dan desain T.2 yang sudah disetujui, memakai builder sesuai mesin. Mengikuti empat prinsip kerja Engineering: pikir dulu, sesederhana mungkin, ubah seperlunya, kerja berbasis tujuan.
 
 ## Status
-**Aktif per proyek.** Ikut alur Engineering setiap ada permintaan build (pribadi, portofolio, atau klien). Aturan lengkap: `docs/aturan-engineering.md`.
+**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Build App" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
 
 ## Kemampuan Inti
 - **Builder per Mesin**: Apps Script + Sheets, Apps Script + Blogger, Firebase satu file, Vercel + Supabase
@@ -2003,7 +2003,7 @@ Pembangun aplikasi. Bekerja dari PRD T.1 dan desain T.2 yang sudah disetujui, me
 Penjaga mutu teknis. Bukan Divisi Mutu konten: yang diuji adalah apakah aplikasi berjalan. Memegang laporan uji, rilis, dan panduan serah terima. Laporan "selesai" ke Zulnan hanya keluar dari agen ini, dengan bukti.
 
 ## Status
-**Aktif per proyek.** Ikut alur Engineering setiap ada permintaan build (pribadi, portofolio, atau klien). Aturan lengkap: `docs/aturan-engineering.md`.
+**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Build App" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
 
 ## Kemampuan Inti
 - **Uji Definisi Selesai**: setiap butir dari T.1 dicek dan diberi status Lolos/Gagal beserta bukti

@@ -1,10 +1,10 @@
 # Progress: Zuno
 
-Terakhir diperbarui: 2026-11-02 (Divisi Engineering 4 agen ditambahkan; prompt orkestrasi ditulis ulang ke Lead + 6 divisi; tim dirampingkan jadi Lead + 6 divisi, 14 agen; Divisi Mutu penasihat tanpa veto; sumber luar sebagai bahan konten)
+Terakhir diperbarui: 2026-11-02 (Engineering standby + tab Build App di Zuno Studio v2; Divisi Engineering 4 agen ditambahkan; prompt orkestrasi ditulis ulang ke Lead + 6 divisi; tim dirampingkan jadi Lead + 6 divisi, 14 agen; Divisi Mutu penasihat tanpa veto; sumber luar sebagai bahan konten)
 
 ## Status singkat
 - Blueprint dan prompt orkestrasi: **selesai, struktur Lead + 6 divisi kreatif + Divisi Engineering (18 agen)** (`docs/prompt-orkestrasi-zuno.md`, Word, dan Claude Doc sudah sama).
-- Divisi Engineering (build web app pribadi/portofolio/klien): **profil, aturan kerja, dan skill disesuaikan selesai; belum dipakai di proyek nyata.**
+- Divisi Engineering (build web app pribadi/portofolio/klien): **standby; profil, aturan, skill, dan tab Build App di Zuno Studio v2 selesai; lolos tes stub, belum diuji dengan Claude asli dan belum dipakai di proyek nyata.**
 - Preview skema (simulasi berskrip): **selesai**, tidak memanggil AI.
 - Zuno Studio v1 (tool live, tiap sub-agen memanggil Claude): **jalan, tapi terlalu rumit** menurut Zulnan. Dipakai sebagai bahan, akan diganti v2.
 - Zuno Studio v2: **dibangun dan dipublikasikan sebagai preview, lolos tes stub (Claude tiruan); belum diuji dengan Claude asli.** Carousel: PNG nyata (template A-D). Video: paket naskah + storyboard + Kartu Gaya + rencana render (.md, bisa diunduh), bukan file video; pratinjau kanvas hanya kasar.
@@ -17,6 +17,7 @@ Terakhir diperbarui: 2026-11-02 (Divisi Engineering 4 agen ditambahkan; prompt o
 - Standar proyek (keputusan Zulnan): kredit "Creative @nexamind.ai" di proyek pribadi/portofolio, proyek klien sesuai klien; akun login acak per proyek, kotak Contoh akses tetap di frontend (setelan TAMPILKAN_CONTOH_LOGIN), menu Reset Akses; password di-hash; penyedia LLM fleksibel (AI_PROVIDER), API key di server; skill bebas platform LLM.
 - Skill disesuaikan di `skills/engineering/` (01-idea-to-scope-lock, 08-motion-purpose-check, webapp-builder-full-gas, webapp-builder-gas-blogger, webapp-builder-firebase; .zip siap unggah ulang). Skill gas-* lain dipakai apa adanya.
 - google/artemis (uji di HP Android sungguhan): **di-hold** atas keputusan Zulnan.
+- **Standby** (keputusan Zulnan): tidak ikut alur konten; aktif saat ada permintaan build. Zuno Studio v2 punya dua tab terpisah: **Konten** (state S, alur konten) dan **Build App** (state B, T.1 ruang lingkup > gerbang 1 > T.2 desain > gerbang 2 > T.3 kode > T.4 cek otomatis + tinjauan AI > gerbang 3). Akun awal acak dibuat halaman. Unduhan: index.html, file backend, PANDUAN.md. Rilis tidak dilakukan di halaman. Tes: `node tests/zuno-studio-v2-build-stub-test.js [--klien|--buruk]`.
 
 ## Struktur divisi: 23 profil jadi 14 agen (keputusan Zulnan 2026-11-02)
 - Lead tetap: Orkestraror Agen (L.0, + tata kelola otomasi) dan Juru Kabar (L.1).
@@ -71,7 +72,7 @@ Baca `docs/gaya-video.md`. Ringkas:
 1. **Uji v2 dengan Claude asli** di preview (https://claude.ai/artifact/8B5S1yzoCDfKY2f9P5zZ2g): jalankan satu perintah, cek kualitas naskah (hook, problem, twist, solusi, CTA), cek unggah referensi (foto, MP4, WebM), dan cek tombol unduh (`downloads.save` dengan Blob belum terverifikasi). Bila error, minta Zulnan mengirim pesan error atau log debug (tombol "Unduh log debug").
 2. **Uji render nyata** paket video: jalankan komposisi HyperFrames (`npx hyperframes preview`, lalu `render`) dan satu rencana efek `claude-video-effects` (butuh rekaman asli Zulnan, ffmpeg, Python 3.12). Format keduanya diambil dari README, belum pernah dijalankan. Catat hasilnya jujur di riwayat. Bila kualitas tampilan tidak sesuai referensi, perbaiki templat HyperFrames di `buildHF` atau pindahkan render ke Claude Code.
 3. **Pasang maskot** (`assets/maskot/`) di carousel Zuno Studio bila Zulnan minta; tunggu keputusan varian default (A kaos teal atau B kaos putih) dan apakah maskot dipakai di video.
-4. **Proyek pertama Divisi Engineering**: tunggu permintaan build dari Zulnan; jalankan alur T.1-T.4 dengan tiga gerbang. Bila Zulnan setuju, unggah ulang .zip di `skills/engineering/` ke claude.ai agar versi skill di akun sama.
+4. **Proyek pertama Divisi Engineering**: coba tab Build App di preview dengan Claude asli (cek apakah index.html tidak terpotong dan pratinjau jalan); jalankan alur T.1-T.4 dengan tiga gerbang. Bila Zulnan setuju, unggah ulang .zip di `skills/engineering/` ke claude.ai agar versi skill di akun sama.
 5. Isi butir **[ISI]** di `docs/brief-gaya-konten.md` bagian 10 bersama Zulnan (contoh suara, handle, detail 5 web Nexamind, ukuran konten menang, tayangan minimal, harga, alat video Tanpa Wajah, izin latar SMK Broadcasting). Jangan menebak.
 6. Opsional: suara dan musik, MP4 1080x1920, Peneliti Tren dengan akses pencarian, Pelapor Analitik dan Strategis Iklan di v2, lalu pindah ke web app (Vercel/Supabase): ganti `sample` dengan API backend; Bagian RENDER dan UI di `zuno-studio-v2.html` tetap.
 

@@ -50,7 +50,7 @@ MARKETING [12 Kurator Instagram] paket posting + leads/arsip (Fase 1: belum memp
           [14 Strategis Iklan Sosial Berbayar] Fase 4 saja (standby)
 ```
 
-Alur Engineering (terpisah dari alur konten):
+Alur Engineering (standby; terpisah dari alur konten, di Zuno Studio v2 ada ruang kerja sendiri "Build App"):
 
 ```
 Permintaan build -> [15 Arsitek & Analis Kebutuhan] ruang lingkup + mesin -> GERBANG 1 Zulnan
@@ -86,9 +86,9 @@ Tugas paralel: antar kartu; Peneliti Tren dengan Pelapor Analitik; Penjaga Merek
 | 12 | [Kurator Instagram](12-kurator-instagram.md) | M.1 | Marketing | setelah Disetujui | Paket posting per platform, leads, arsip, papan kerja |
 | 13 | [Pelapor Analitik](13-pelapor-analitik.md) | M.2 | Marketing | aktif harian (Fase 1: rencana ukur) | Performa, label Menang/Kalah, uji hook, pelajaran ke Riset |
 | 14 | [Strategis Iklan Sosial Berbayar](14-strategis-iklan-sosial-berbayar.md) | M.3 | Marketing | standby (Fase 4) | Draf iklan Meta dari konten Menang, dalam batas anggaran Zulnan |
-| 15 | [Arsitek & Analis Kebutuhan](15-arsitek-analis-kebutuhan.md) | T.1 | Engineering | per proyek | Kunci ruang lingkup, pilih mesin, PRD, kredit dan akses |
-| 16 | [Desainer UI/UX](16-desainer-ui-ux.md) | T.2 | Engineering | per proyek | Wireframe, gaya visual, cek animasi |
-| 17 | [Pengembang Aplikasi](17-pengembang-aplikasi.md) | T.3 | Engineering | per proyek | Bangun web app lengkap, akses acak + Reset Akses, AI fleksibel |
-| 18 | [Penguji & Rilis](18-penguji-rilis.md) | T.4 | Engineering | per proyek | Uji dengan bukti, perbaiki bug, rilis, panduan serah terima |
+| 15 | [Arsitek & Analis Kebutuhan](15-arsitek-analis-kebutuhan.md) | T.1 | Engineering | standby (aktif saat ada build) | Kunci ruang lingkup, pilih mesin, PRD, kredit dan akses |
+| 16 | [Desainer UI/UX](16-desainer-ui-ux.md) | T.2 | Engineering | standby (aktif saat ada build) | Wireframe, gaya visual, cek animasi |
+| 17 | [Pengembang Aplikasi](17-pengembang-aplikasi.md) | T.3 | Engineering | standby (aktif saat ada build) | Bangun web app lengkap, akses acak + Reset Akses, AI fleksibel |
+| 18 | [Penguji & Rilis](18-penguji-rilis.md) | T.4 | Engineering | standby (aktif saat ada build) | Uji dengan bukti, perbaiki bug, rilis, panduan serah terima |
 
 Versi gabungan semua profil: `agents/semua-agen.md`.

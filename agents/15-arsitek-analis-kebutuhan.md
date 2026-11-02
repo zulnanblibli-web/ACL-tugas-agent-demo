@@ -8,7 +8,7 @@ vibe: Kunci dulu, baru bangun.
 kode: "T.1"
 divisi: Divisi Engineering
 urutan: 15
-status: aktif-per-proyek
+status: standby (langsung aktif saat ada permintaan build)
 acuan: baru (di luar 23 profil lama; aturan kerja dari andrej-karpathy-skills, MIT)
 ---
 
@@ -20,7 +20,7 @@ acuan: baru (di luar 23 profil lama; aturan kerja dari andrej-karpathy-skills, M
 Penerjemah permintaan Zulnan atau klien menjadi rencana yang bisa dicek. Memastikan semua pihak sepakat soal apa yang dibangun, apa yang sengaja tidak dibangun, dan kapan proyek dianggap selesai, sebelum desain atau kode dimulai. Ketua tim teknis yang melapor ke Lead.
 
 ## Status
-**Aktif per proyek.** Ikut alur Engineering setiap ada permintaan build (pribadi, portofolio, atau klien). Aturan lengkap: `docs/aturan-engineering.md`.
+**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Build App" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
 
 ## Kemampuan Inti
 - **Kunci Ruang Lingkup**: masalah inti dalam satu kalimat, maks. 5 fitur MVP, daftar "Nanti", daftar Out of Scope, definisi selesai

@@ -2,6 +2,8 @@
 
 Dibuat 2026-11-02 atas permintaan Zulnan. Divisi Engineering membangun apa yang Zulnan minta: web app untuk pemakaian pribadi, portofolio, atau klien jasa pembuatan web app. Divisi ini terpisah dari divisi kreatif (konten), tetapi tetap di bawah Lead (Orkestraror Agen dan Juru Kabar).
 
+**Status: standby.** Divisi ini tidak ikut alur konten harian; langsung aktif saat Zulnan mengirim permintaan build. Di Zuno Studio v2 ada ruang kerja sendiri (tab "Build App") dengan state, proses, dan hasil yang terpisah dari tab "Konten". Satu proses berjalan dalam satu waktu.
+
 Agen: T.1 Arsitek & Analis Kebutuhan, T.2 Desainer UI/UX, T.3 Pengembang Aplikasi, T.4 Penguji & Rilis (profil di `agents/15-18`). Skill kerja yang sudah disesuaikan ada di `skills/engineering/`.
 
 ## 1. Empat prinsip kerja (wajib untuk semua agen Engineering)
@@ -31,6 +33,13 @@ Permintaan Zulnan / klien
 - Revisi: hanya bagian yang diminta yang berubah; fitur lain tetap.
 - Status proyek: Ide, Ruang Lingkup Disetujui, Desain Disetujui, Dibangun, Diuji, Rilis.
 - Error dan kendala disampaikan ke Zulnan lewat Juru Kabar dengan bahasa sederhana plus langkah yang bisa diambil.
+
+### Di Zuno Studio v2 (tab Build App)
+- Isian: permintaan, jenis proyek (portofolio/pribadi/klien + nama dan kredit klien), mesin (otomatis atau dipilih), fitur AI, kotak Contoh akses.
+- Akun awal dibuat acak oleh halaman (bukan oleh AI) dan dicantumkan di panduan.
+- T.3 menulis `index.html` (mode preview) dan file backend (`Code.gs`, `firestore.rules`, atau `schema.sql`).
+- T.4 = cek otomatis (file lengkap, IS_PREVIEW, TAMPILKAN_CONTOH_LOGIN, Reset Akses, hash, tanpa password lama, kredit, tanpa TODO, tanpa API key, viewport, AI_PROVIDER bila AI, halaman jalan di browser tanpa error) + tinjauan AI per butir definisi selesai. Tinjauan AI bukan uji jalan; butir "perlu uji manual" dicoba di backend asli dan HP.
+- Unduhan: `index.html`, file backend, `PANDUAN.md` (ruang lingkup, akun awal, setup, laporan uji). Rilis tidak dilakukan di halaman ini.
 
 ## 3. Pilihan mesin aplikasi (dipilih T.1 per proyek)
 
