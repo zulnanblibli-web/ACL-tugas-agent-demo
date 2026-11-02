@@ -15,7 +15,7 @@ const PROVIDER = (process.env.AI_PROVIDER || 'claude').toLowerCase();
 const MODEL_DEFAULT = {
   claude: 'claude-opus-5-5',
   openai: 'ISI_NAMA_MODEL',
-  gemini: 'ISI_NAMA_MODEL',
+  gemini: 'otomatis',
   openrouter: 'ISI_NAMA_MODEL'
 };
 function modelFor(tier) {
@@ -80,7 +80,64 @@ async function* streamClaude({ turns, images, tier, effort, signal }) {
   yield { t: 'done', stop: fin.stop_reason || 'end_turn', model: fin.model || model };
 }
 
-// ---------- Penyedia lain (HTTP biasa, tanpa streaming) ----------
+// ---------- Gemini (Google AI Studio, streaming SSE) ----------
+// Bila AI_MODEL kosong, server memilih sendiri dari daftar model Google:
+// model stabil (tanpa "preview"/"exp") versi tertinggi; "pro" untuk tahap biasa, "flash" untuk tahap ringan.
+const GEMINI_BASE = process.env.GEMINI_BASE_URL || 'https://generativelanguage.googleapis.com';
+let geminiPick = null;
+export async function pickGemini(tier) {
+  if (tier === 'quick' && process.env.AI_MODEL_QUICK) return { name: process.env.AI_MODEL_QUICK, out: null };
+  if (process.env.AI_MODEL) return { name: process.env.AI_MODEL, out: null };
+  if (!geminiPick) {
+    const r = await fetch(GEMINI_BASE + '/v1beta/models?pageSize=200', { headers: { 'x-goog-api-key': process.env.GEMINI_API_KEY || '' } });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw { status: r.status, message: (j.error && j.error.message) || 'Daftar model Gemini gagal dibaca' };
+    const ok = (j.models || []).filter((m) => (m.supportedGenerationMethods || []).includes('generateContent'))
+      .map((m) => { const id = String(m.name || '').replace(/^models\//, ''); const v = /^gemini-(\d+(?:\.\d+)?)-(pro|flash)$/.exec(id); return v ? { name: id, ver: Number(v[1]), kind: v[2], out: m.outputTokenLimit || null } : null; })
+      .filter(Boolean).sort((a, b) => b.ver - a.ver);
+    geminiPick = { pro: ok.find((m) => m.kind === 'pro') || ok[0] || null, flash: ok.find((m) => m.kind === 'flash') || ok[0] || null };
+    if (!geminiPick.pro) { geminiPick = null; throw { status: 500, message: 'Tidak ada model Gemini stabil di daftar. Isi AI_MODEL di Vercel.' }; }
+  }
+  return tier === 'quick' ? geminiPick.flash : geminiPick.pro;
+}
+
+async function* streamGemini({ turns, images, tier, signal }) {
+  const m = await pickGemini(tier);
+  const contents = turns.map((t, i) => ({
+    role: t.role === 'assistant' ? 'model' : 'user',
+    parts: [...(i === 0 && images.length ? images.map((im) => ({ inline_data: { mime_type: im.media_type, data: im.data } })) : []), { text: t.content }]
+  }));
+  const body = { contents };
+  const limit = Number(process.env.AI_MAX_TOKENS || m.out || 0);
+  if (limit) body.generationConfig = { maxOutputTokens: limit };
+  const r = await fetch(GEMINI_BASE + '/v1beta/models/' + encodeURIComponent(m.name) + ':streamGenerateContent?alt=sse', {
+    method: 'POST', signal, headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY || '' }, body: JSON.stringify(body)
+  });
+  if (!r.ok) { const j = await r.json().catch(() => ({})); throw { status: r.status, message: (j.error && j.error.message) || 'HTTP ' + r.status }; }
+  const reader = r.body.getReader(), dec = new TextDecoder();
+  let buf = '', stop = 'end_turn';
+  for (;;) {
+    const c = await reader.read();
+    if (c.done) break;
+    buf += dec.decode(c.value, { stream: true });
+    let nl;
+    while ((nl = buf.indexOf('\n')) > -1) {
+      const line = buf.slice(0, nl).trim(); buf = buf.slice(nl + 1);
+      if (!line.startsWith('data:')) continue;
+      let j; try { j = JSON.parse(line.slice(5)); } catch { continue; }
+      if (j.error) throw { status: j.error.code, message: j.error.message };
+      const cand = (j.candidates || [])[0] || {};
+      const text = ((cand.content && cand.content.parts) || []).filter((p) => !p.thought).map((p) => p.text || '').join('');
+      if (text) yield { t: 'delta', text };
+      if (cand.finishReason === 'MAX_TOKENS') stop = 'max_tokens';
+      else if (['SAFETY', 'PROHIBITED_CONTENT', 'BLOCKLIST', 'RECITATION'].includes(cand.finishReason)) stop = 'refusal';
+      if (j.promptFeedback && j.promptFeedback.blockReason) stop = 'refusal';
+    }
+  }
+  yield { t: 'done', stop, model: m.name };
+}
+
+// ---------- OpenAI / OpenRouter (HTTP biasa, tanpa streaming) ----------
 async function* oneShotOther({ turns, images, tier, signal }) {
   const model = modelFor(tier);
   let text = '', stop = 'end_turn';
@@ -99,18 +156,6 @@ async function* oneShotOther({ turns, images, tier, signal }) {
     const ch = (j.choices || [])[0] || {};
     text = (ch.message && ch.message.content) || '';
     if (ch.finish_reason === 'length') stop = 'max_tokens';
-  } else if (PROVIDER === 'gemini') {
-    const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent';
-    const contents = turns.map((m, i) => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [...(i === 0 && images.length ? images.map((im) => ({ inline_data: { mime_type: im.media_type, data: im.data } })) : []), { text: m.content }]
-    }));
-    const r = await fetch(url, { method: 'POST', signal, headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY || '' }, body: JSON.stringify({ contents }) });
-    const j = await r.json().catch(() => ({}));
-    if (!r.ok) throw { status: r.status, message: (j.error && j.error.message) || 'HTTP ' + r.status };
-    const c = (j.candidates || [])[0] || {};
-    text = ((c.content && c.content.parts) || []).map((p) => p.text || '').join('');
-    if (c.finishReason === 'MAX_TOKENS') stop = 'max_tokens';
   } else {
     throw { status: 500, message: 'AI_PROVIDER tidak dikenal: ' + PROVIDER };
   }
@@ -141,7 +186,7 @@ export async function POST(request) {
     effort: ['low', 'medium', 'high'].includes(body.effort) ? body.effort : null,
     signal: request.signal
   };
-  const gen = PROVIDER === 'claude' ? streamClaude(args) : oneShotOther(args);
+  const gen = PROVIDER === 'claude' ? streamClaude(args) : PROVIDER === 'gemini' ? streamGemini(args) : oneShotOther(args);
   const enc = new TextEncoder();
   const stream = new ReadableStream({
     async start(ctrl) {

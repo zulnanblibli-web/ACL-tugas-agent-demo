@@ -94,6 +94,8 @@
       $('hStat').textContent = ok ? 'ONLINE' : 'BELUM DISETEL';
       $('hStat').className = 'val ' + (ok ? 'ok' : 'warn');
       $('hModel').textContent = j.provider + ' · ' + j.model;
+      var NM = { claude: 'Claude', gemini: 'Gemini', openai: 'OpenAI', openrouter: 'OpenRouter' };
+      if ($('hBrain')) $('hBrain').textContent = NM[j.provider] || j.provider;
       var info = $('capinfo');
       if (info && !ok) { info.className = 'banner warn'; info.classList.remove('hidden'); info.textContent = 'Server belum lengkap: ' + (!j.ai_key_set ? 'API key penyedia AI belum diisi di Vercel. ' : '') + (!j.access_set ? 'ZUNO_ACCESS_KEY belum diisi di Vercel.' : ''); }
     }).catch(function () { $('hStat').textContent = 'OFFLINE'; $('hStat').className = 'val bad'; });
