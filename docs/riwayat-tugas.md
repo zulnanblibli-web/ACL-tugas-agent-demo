@@ -127,4 +127,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `prototypes/zuno-studio-v2.html`, `tests/zuno-studio-v2-build-stub-test.js` (baru), `agents/15-18`, `agents/README.md`, `agents/semua-agen.md`, `docs/aturan-engineering.md`, `CLAUDE.md`, `docs/prompt-orkestrasi-zuno.md`, `.docx`, `progress.md`.
 - Tertunda: uji Build App dan Konten dengan Claude asli (panjang index.html bisa terpotong); penyimpanan permanen proyek; rilis/deploy belum dari halaman.
 
-## 23. (entri berikutnya di sini)
+## 23. Laporan error tab Build App, catat dan push (2026-11-02)
+- Permintaan: Zulnan mencoba tab Build App (Divisi Engineering) di preview dan masih error. Minta commit, push, dan catat yang belum.
+- Hasil: belum ada perbaikan kode (rincian error belum diterima). Dicatat di `progress.md` sebagai tugas 00: minta teks error dan tahapnya, tambah tombol "Unduh log debug" di tab Build App (belum ada), daftar dugaan penyebab yang perlu dicek. Semua perubahan sebelumnya sudah di-push.
+- File berubah: `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: perbaikan error Build App; uji Konten dengan Claude asli; penyimpanan permanen; butir [ISI]; akses cari sumber; eksekusi Fase 2 (posting, suara, render, deploy); template penawaran dan serah terima jasa Engineering.
+
+## 24. (entri berikutnya di sini)

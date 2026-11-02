@@ -1,10 +1,10 @@
 # Progress: Zuno
 
-Terakhir diperbarui: 2026-11-02 (Engineering standby + tab Build App di Zuno Studio v2; Divisi Engineering 4 agen ditambahkan; prompt orkestrasi ditulis ulang ke Lead + 6 divisi; tim dirampingkan jadi Lead + 6 divisi, 14 agen; Divisi Mutu penasihat tanpa veto; sumber luar sebagai bahan konten)
+Terakhir diperbarui: 2026-11-02 (Build App di preview masih error saat dicoba Zulnan, belum diperbaiki; Engineering standby + tab Build App di Zuno Studio v2; Divisi Engineering 4 agen ditambahkan; prompt orkestrasi ditulis ulang ke Lead + 6 divisi; tim dirampingkan jadi Lead + 6 divisi, 14 agen; Divisi Mutu penasihat tanpa veto; sumber luar sebagai bahan konten)
 
 ## Status singkat
 - Blueprint dan prompt orkestrasi: **selesai, struktur Lead + 6 divisi kreatif + Divisi Engineering (18 agen)** (`docs/prompt-orkestrasi-zuno.md`, Word, dan Claude Doc sudah sama).
-- Divisi Engineering (build web app pribadi/portofolio/klien): **standby; profil, aturan, skill, dan tab Build App di Zuno Studio v2 selesai; lolos tes stub, belum diuji dengan Claude asli dan belum dipakai di proyek nyata.**
+- Divisi Engineering (build web app pribadi/portofolio/klien): **standby; profil, aturan, skill, dan tab Build App di Zuno Studio v2 sudah dibuat; lolos tes stub, tapi ERROR saat dicoba Zulnan di preview dengan Claude asli (2026-11-02). Penyebab belum diketahui; belum diperbaiki.**
 - Preview skema (simulasi berskrip): **selesai**, tidak memanggil AI.
 - Zuno Studio v1 (tool live, tiap sub-agen memanggil Claude): **jalan, tapi terlalu rumit** menurut Zulnan. Dipakai sebagai bahan, akan diganti v2.
 - Zuno Studio v2: **dibangun dan dipublikasikan sebagai preview, lolos tes stub (Claude tiruan); belum diuji dengan Claude asli.** Carousel: PNG nyata (template A-D). Video: paket naskah + storyboard + Kartu Gaya + rencana render (.md, bisa diunduh), bukan file video; pratinjau kanvas hanya kasar.
@@ -68,6 +68,11 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
+00. **Perbaiki error tab Build App di preview** (dilaporkan Zulnan 2026-11-02, rincian belum ada):
+    - Minta Zulnan kirim teks error (kotak merah di tab Build App) dan di tahap mana muncul (T.1, gerbang, T.3, T.4, pratinjau, unduh).
+    - Tab Build App **belum punya tombol "Unduh log debug"** (tombol itu hanya di tab Konten dan baru muncul setelah alur konten jalan). Tambahkan tombol log di tab Build App dulu supaya error bisa dilacak.
+    - Dugaan yang perlu dicek (belum terbukti): `index.html` terlalu panjang sehingga terpotong atau gagal di batas `sample`; jawaban T.3 berupa teks biasa (bukan JSON) diproses beda di Claude asli; `modelTier 'default'` tidak tersedia; iframe pratinjau (`srcdoc` + sandbox) atau `postMessage` diblokir di halaman artifact; `crypto.getRandomValues` atau `downloads.save` gagal.
+    - Setelah diperbaiki: tes stub build (`node tests/zuno-studio-v2-build-stub-test.js`, `--klien`, `--buruk`) dan tes konten harus tetap lolos, lalu minta Zulnan coba ulang.
 0. **Cek alur baru Penjaga Mutu** di preview: jalankan satu perintah dengan tautan atau isi berita di kolom Sumber; pastikan tidak ada penolakan atau revisi otomatis, Ringkasan Sebelum Terbit terbaca jelas, dan catatan Agen 2 tidak berlebihan.
 1. **Uji v2 dengan Claude asli** di preview (https://claude.ai/artifact/8B5S1yzoCDfKY2f9P5zZ2g): jalankan satu perintah, cek kualitas naskah (hook, problem, twist, solusi, CTA), cek unggah referensi (foto, MP4, WebM), dan cek tombol unduh (`downloads.save` dengan Blob belum terverifikasi). Bila error, minta Zulnan mengirim pesan error atau log debug (tombol "Unduh log debug").
 2. **Uji render nyata** paket video: jalankan komposisi HyperFrames (`npx hyperframes preview`, lalu `render`) dan satu rencana efek `claude-video-effects` (butuh rekaman asli Zulnan, ffmpeg, Python 3.12). Format keduanya diambil dari README, belum pernah dijalankan. Catat hasilnya jujur di riwayat. Bila kualitas tampilan tidak sesuai referensi, perbaiki templat HyperFrames di `buildHF` atau pindahkan render ke Claude Code.
