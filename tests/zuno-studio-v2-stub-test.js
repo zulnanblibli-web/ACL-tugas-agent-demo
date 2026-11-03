@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 // Argumen opsional: path file referensi (foto/video) yang diunggah ke tool.
-const args = process.argv.slice(2); const TIPE=(args.find(a=>a.startsWith('--tipe='))||'').slice(7); const MODE = args.includes('--tampil') ? 'tampil' : 'tanpa'; const refs = args.filter(a=>!a.startsWith('--'));
+const args = process.argv.slice(2); const TIPE=(args.find(a=>a.startsWith('--tipe='))||'').slice(7); const COVERF=(args.find(a=>a.startsWith('--cover='))||'').slice(8); const MODE = args.includes('--tampil') ? 'tampil' : 'tanpa'; const refs = args.filter(a=>!a.startsWith('--'));
 (async()=>{
   const b = await chromium.launch(); const p = await b.newPage({viewport:{width:1100,height:900}});
   const errs=[]; p.on('pageerror',e=>errs.push('PAGEERR '+e.message)); p.on('console',m=>{if(m.type()==='error')errs.push('CONSOLE '+m.text())});
@@ -32,7 +32,7 @@ const args = process.argv.slice(2); const TIPE=(args.find(a=>a.startsWith('--tip
   await p.waitForTimeout(300);
   console.log('paket default:', await p.$eval('#count',e=>e.value));
   if(refs.length){ await p.setInputFiles('#reffile',refs); await p.fill('#refnote','neon, cepat'); console.log('ref list:', await p.$eval('#reflist',e=>e.innerText.slice(0,80))); }
-  await p.selectOption('#mode',MODE); if(TIPE) await p.selectOption('#tv',TIPE); await p.fill('#cmd','tes'); await p.fill('#src','Tools AI baru untuk merangkum rapat https://contoh.test/berita'); await p.click('#run');
+  await p.selectOption('#mode',MODE); if(TIPE) await p.selectOption('#tv',TIPE); if(COVERF){ await p.setInputFiles('#coverfile',COVERF); await p.waitForSelector('#coverprev canvas',{timeout:5000}); console.log('cover dipilih:',await p.$eval('#coverprev',e=>e.innerText.slice(0,40))); } await p.fill('#cmd','tes'); await p.fill('#src','Tools AI baru untuk merangkum rapat https://contoh.test/berita'); await p.click('#run');
   await p.waitForSelector('.banner:has-text("siap kamu tinjau")',{timeout:30000});
   await p.waitForFunction(()=>!document.getElementById('run').disabled,null,{timeout:120000});
   console.log('cards:',await p.$$eval('.kc',e=>e.map(x=>x.innerText.replace(/\n/g,' | '))));
@@ -48,6 +48,9 @@ const args = process.argv.slice(2); const TIPE=(args.find(a=>a.startsWith('--tip
   console.log('pemberitahuan:',await p.$$eval('#notices .banner',e=>e.map(x=>x.innerText.slice(0,120))));
   console.log('ringkasan tampil:',await p.$$eval('.ringkas',e=>e.length),'| pill:',await p.$$eval('.res .pill',e=>e.map(x=>x.textContent)));
   await p.click('#tabc'); const mdc=await p.evaluate(()=>document.querySelector('#resc .mdprev').innerText); await p.click('#tabv');
+  { await p.click('#tabc'); const u=await p.$eval('#resc .slides img',e=>e.src); require('fs').writeFileSync('/tmp/cover-test'+(COVERF?'-user':'')+'.png',Buffer.from(u.split(',')[1],'base64'));
+    if(COVERF){ const alt=process.env.GANTI; if(alt){ await p.setInputFiles('#resc input[type=file]',alt); await p.waitForFunction(()=>/Cover diganti/.test(document.querySelector('#resc').innerText),null,{timeout:10000}); const u2=await p.$eval('#resc .slides img',e=>e.src); require('fs').writeFileSync('/tmp/cover-ganti.png',Buffer.from(u2.split(',')[1],'base64')); console.log('cover diganti dari hasil: ok'); } }
+    await p.click('#tabv'); }
   console.log('md carousel: daftar sumber',mdc.includes('Daftar sumber'),'| ringkasan',mdc.includes('Ringkasan Sebelum Terbit'),'| Tidak Lolos?',/Tidak Lolos/.test(mdc),'| kolom Tipe + tipe fakta:',mdc.includes('Tipe')&&mdc.includes('fakta'),'| catatan teks dipotong:',mdc.includes('Catatan tata letak'));
   await p.screenshot({path:'/tmp/v2-final.png',fullPage:true});
   await p.click('#resv .btn >> text=Unduh paket'); await p.click('#resv .btn >> text=Unduh komposisi'); await p.click('#resv .btn >> text=Unduh paket Claude Code'); await p.waitForFunction(()=>window.__zip,null,{timeout:15000}); require('fs').writeFileSync('/tmp/paket-claude-code.zip',Buffer.from(await p.evaluate(()=>window.__zip),'base64')); 

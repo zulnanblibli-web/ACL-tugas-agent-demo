@@ -219,4 +219,11 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `prototypes/zuno-studio-v2.html`, `web/index.html`, `web/assets/karakter/` (baru), `tests/zuno-studio-v2-stub-test.js`, `docs/referensi-video.md`, `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: coba di Claude Code asli; format `npx hyperframes` belum teruji; cara 2 dan 3 (antrean job dan `claude -p` di laptop atau VPS) belum dibangun.
 
-## 38. (entri berikutnya di sini)
+## 38. Gambar cover carousel bisa diunggah per topik (2026-11-03)
+- Permintaan: slide 1 carousel belum ada foto Zulnan di hasil; buat input gambar untuk slide 1 karena beda topik beda gambar.
+- Hasil: kolom unggah "Gambar cover carousel (slide 1)" di layar perintah (JPG/PNG/WebP, maks. 25 MB, diperkecil ke 1600 px) dengan pratinjau dan tombol Hapus; tombol "Ganti gambar cover (slide 1)" di hasil yang merender ulang slide 1 saja (unduhan PNG ikut gambar baru). Tata letak otomatis: potret di kanan bawah dengan tepi kiri dan atas memudar, lanskap atau persegi sebagai kartu bersudut membulat. Prioritas gambar: unggahan, lalu foto bawaan (versi web), lalu cover teks. Paket .md mencatat asal gambar cover. Tes v2 (default, --tampil, --tipe=B, --cover) dan web lolos; hasil render dicek dengan gambar potret dan lanskap.
+- Sebab masalah sebelumnya: foto bawaan hanya termuat di versi web (Vercel); di artifact preview tidak ada folder assets, jadi cover tampil tanpa foto.
+- File berubah: `prototypes/zuno-studio-v2.html`, `web/index.html`, `tests/zuno-studio-v2-stub-test.js`, `docs/template-carousel.md`, `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: coba dengan gambar sungguhan; bila hasil potong gambar kurang pas, bisa ditambah pilihan tata letak manual.
+
+## 39. (entri berikutnya di sini)

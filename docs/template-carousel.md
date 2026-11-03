@@ -26,7 +26,10 @@ Judul 5 kata (cover 8), subjudul 14, label 3, judul poin 6, isi poin 12, keteran
 - Handle akun belum ditentukan ([ISI]); tidak ditampilkan sampai diisi.
 - Maskot tidak dipakai di carousel.
 
-## Foto cover
+## Gambar cover per topik (input)
+Di layar perintah ada kolom **"Gambar cover carousel (slide 1)"**: unggah foto Zulnan atau gambar yang sesuai topik (JPG, PNG, WebP; maks. 25 MB; otomatis diperkecil ke sisi terpanjang 1600 px). Setelah hasil keluar, tombol **"Ganti gambar cover (slide 1)"** merender ulang hanya slide 1 dengan gambar lain. Kosong berarti memakai foto Zulnan bawaan (versi web) atau cover teks saja. Tata letak otomatis: gambar potret (tinggi minimal 1,1 kali lebar) ditaruh di kanan bawah dengan tepi kiri dan atas memudar; gambar lanskap atau persegi tampil sebagai kartu bersudut membulat di bawah judul. Gambar dengan latar polos atau sudah dipotong paling rapi.
+
+## Foto cover bawaan
 `web/assets/foto-zulnan.webp` (RGBA, tepi kiri dan atas memudar ke latar). Dimuat otomatis oleh versi web dari `/assets/foto-zulnan.webp`; di preview claude.ai (tanpa folder assets) cover tampil tanpa foto. **Resolusi masih rendah** karena diambil dari gambar referensi (sekitar 283x348 px, diperbesar 2,4 kali). Ganti dengan foto asli resolusi tinggi (latar polos atau sudah dipotong), lalu simpan sebagai file yang sama.
 
 ## Kode

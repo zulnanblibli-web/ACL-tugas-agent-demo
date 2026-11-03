@@ -153,6 +153,11 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
       <select id="pre"><option value="">Otomatis (dipilih Pencerita Visual)</option><option>Dentum</option><option>Orbit Megah</option><option>Glitch Digital</option><option>Kartu Layar</option><option>Editorial Cepat</option></select></div>
   </div>
   <div class="refbox">
+    <label for="coverfile" class="muted">Gambar cover carousel (slide 1): foto Zulnan atau gambar sesuai topik (JPG/PNG/WebP). Kosong = foto Zulnan bawaan (versi web) atau cover teks saja</label>
+    <input type="file" id="coverfile" accept="image/*">
+    <div id="coverprev" class="muted"></div>
+  </div>
+  <div class="refbox">
     <label for="reffile" class="muted">Referensi gaya video (foto JPG/PNG atau video MP4/WebM, maks. 3)</label>
     <input type="file" id="reffile" accept="image/*,video/mp4,video/quicktime,video/webm,.mp4,.m4v,.mov,.webm" multiple>
     <input type="text" id="refnote" placeholder="Kesan dalam satu kalimat, mis. neon, cepat, penuh gerak" aria-label="Kesan referensi">
@@ -632,7 +637,7 @@ function buildMd(c){
   }else{
     L.push('## 4. Storyboard per slide','','| # | Babak | Tipe | Judul | Isi | Label |','|---|---|---|---|---|---|');
     K.slides.forEach(function(sl,i){L.push('| '+(i+1)+' | '+sl.babak+' | '+sl.tipe+' | '+cell(sl.judul)+' | '+cell(sl.isi)+' | '+cell(c.visual.items[i].label)+' |')});
-    L.push.apply(L,['','## 5. Desain','','- Template: **'+c.template+'** (satu template tetap; tipe slide: cover, poin, fakta, alasan, cta)','- Ukuran 1080x1350, slide 1 hook, slide terakhir CTA, penomoran slide, handle akun belum diisi.','- Foto Zulnan dipasang di cover bila `assets/foto-zulnan.webp` ada (versi web); maskot tidak dipakai.'].concat((K.lint&&K.lint.length)?['','Catatan tata letak (teks dipotong otomatis agar tidak ramai):'].concat(K.lint.map(function(x){return '- '+x})):[]).concat(['']));
+    L.push.apply(L,['','## 5. Desain','','- Template: **'+c.template+'** (satu template tetap; tipe slide: cover, poin, fakta, alasan, cta)','- Ukuran 1080x1350, slide 1 hook, slide terakhir CTA, penomoran slide, handle akun belum diisi.','- Gambar cover: '+(c.cover?'diunggah Zulnan':(FOTO?'foto Zulnan bawaan (assets/foto-zulnan.webp)':'tidak ada (cover teks saja)'))+'; maskot tidak dipakai.'].concat((K.lint&&K.lint.length)?['','Catatan tata letak (teks dipotong otomatis agar tidak ramai):'].concat(K.lint.map(function(x){return '- '+x})):[]).concat(['']));
   }
   L.push('## 6. Caption dan hashtag','',K.caption||'-','',K.hashtag.join(' '),'','## 7. Daftar fakta & klaim (untuk Pemeriksa Realitas)','');
   (K.fakta.length?K.fakta:['(tidak ada)']).forEach(function(x){L.push('- '+x)});L.push('');
@@ -700,8 +705,9 @@ async function renderCard(c){
     c.fileInfo={bentuk:'paket naskah + storyboard + rencana render (video belum dirender; dirender di komputer Zulnan)',mode:S.mode==='tampil'?'Mode Tampil':'Mode Tanpa Wajah',rasio:'9:16',jumlah_adegan:d.length,adegan_terpanjang_detik:Math.max.apply(null,d.map(function(x){return x.detik})),durasi_total_detik:Math.round(tot),segmen_wajah_terpanjang_detik:Math.round(fmax*10)/10,latar_bergerak:true,urutan_babak:d.map(function(x){return x.babak}).filter(function(b,i,a){return a.indexOf(b)===i}),slogan_setelah_hook:true,gaya:c.gaya,efek_claude_video_effects:(c.efek||[]).length};
   }else{
     setCard(c,'Perender membuat file');UI.act('edit',c.id+': Perender merender slide ke PNG');
+    if(COVER&&!c.cover)c.cover=COVER;
     c.hasil=await limRender(function(){if(aborted)throw {code:'cancelled'};return Render.carousel(c)});
-    c.fileInfo={bentuk:'PNG per slide',ukuran:'1080x1350',jumlah_slide:c.hasil.png.length,template:c.template,teks_dipotong:(c.konten.lint||[]).length,handle_akun:'belum diisi Zulnan',penomoran:'ada'};
+    c.fileInfo={bentuk:'PNG per slide',ukuran:'1080x1350',jumlah_slide:c.hasil.png.length,template:c.template,gambar_cover:c.cover?'diunggah Zulnan':(FOTO?'foto Zulnan bawaan':'tidak ada'),teks_dipotong:(c.konten.lint||[]).length,handle_akun:'belum diisi Zulnan',penomoran:'ada'};
   }
   c.md=buildMd(c);
 }
@@ -824,6 +830,7 @@ function grad(ctx,x,y,w,h,ang,stops){var r=ang*Math.PI/180,cx=x+w/2,cy=y+h/2,l=M
 /* ---- Carousel: SATU template navy-biru (referensi Zulnan 2026-11-03), 5 tipe slide: cover, poin, fakta, alasan, cta.
    Isi menyesuaikan topik; tampilan tetap satu. Batas kata dipaksa kode (CAR_LIM), bukan hanya prompt. ---- */
 var CT={bg:'#0B0F1A',sky:'#3EA6FF',ink:'#F5F7FA',mute:'#B9C2D3',head:'Poppins,Manrope,sans-serif',body:'Inter,sans-serif'};
+var COVER=null; /* gambar cover dari Zulnan (canvas, sisi terpanjang maks. 1600 px) */
 var FOTO=null; /* foto Zulnan untuk cover (web/assets/foto-zulnan.webp); null bila tidak ada (mis. di preview claude.ai) */
 function loadFoto(){return new Promise(function(res){
   if(FOTO||!/^https?:/.test(location.protocol))return res(FOTO);
@@ -895,18 +902,41 @@ function cFoot(ctx,i,lineX){
   ctx.lineWidth=2;ctx.strokeStyle='rgba(62,166,255,.85)';rr(ctx,903,1229,110,58,29);ctx.stroke();
   ctx.font='700 32px '+CT.head;ctx.fillStyle=CT.ink;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(String(i+1).padStart(2,'0'),958,1259);ctx.textAlign='left';
 }
+function coverFromFile(f){return new Promise(function(res,rej){
+  if(!f||!/^image\//.test(f.type||'')||f.size>25*1024*1024)return rej(new Error('bukan gambar atau terlalu besar'));
+  var u=URL.createObjectURL(f),im=new Image();
+  im.onload=function(){var k=Math.min(1,1600/Math.max(im.naturalWidth,im.naturalHeight)),cv=document.createElement('canvas');cv.width=Math.max(1,Math.round(im.naturalWidth*k));cv.height=Math.max(1,Math.round(im.naturalHeight*k));cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(u);res(cv)};
+  im.onerror=function(){URL.revokeObjectURL(u);rej(new Error('gambar tidak terbaca'))};im.src=u;
+})}
+function cDrawRight(ctx,img,user,W,H){
+  var iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,fw=Math.min(660,900*iw/ih),fh=fw*ih/iw;
+  if(!user){ctx.drawImage(img,W+8-fw,H-fh,fw,fh);return}
+  var o=document.createElement('canvas');o.width=Math.round(fw);o.height=Math.round(fh);var x=o.getContext('2d');x.drawImage(img,0,0,o.width,o.height);x.globalCompositeOperation='destination-in';
+  var gh=x.createLinearGradient(0,0,o.width,0);gh.addColorStop(0,'rgba(0,0,0,0)');gh.addColorStop(.12,'rgba(0,0,0,.1)');gh.addColorStop(.24,'rgba(0,0,0,.45)');gh.addColorStop(.38,'rgba(0,0,0,1)');x.fillStyle=gh;x.fillRect(0,0,o.width,o.height);
+  var gv=x.createLinearGradient(0,0,0,o.height);gv.addColorStop(0,'rgba(0,0,0,0)');gv.addColorStop(.08,'rgba(0,0,0,1)');x.fillStyle=gv;x.fillRect(0,0,o.width,o.height);
+  ctx.drawImage(o,W+8-fw,H-fh,fw,fh);
+}
+function cDrawCard(ctx,img,x,y,w,h){
+  var iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,k=Math.max(w/iw,h/ih),sw=w/k,sh=h/k;
+  ctx.save();ctx.shadowColor='rgba(22,119,255,.35)';ctx.shadowBlur=40;ctx.fillStyle='#0B0F1A';rr(ctx,x,y,w,h,36);ctx.fill();ctx.restore();
+  ctx.save();rr(ctx,x,y,w,h,36);ctx.clip();ctx.drawImage(img,(iw-sw)/2,(ih-sh)/2,sw,sh,x,y,w,h);ctx.restore();
+  ctx.lineWidth=2;ctx.strokeStyle='rgba(62,166,255,.7)';rr(ctx,x+1,y+1,w-2,h-2,35);ctx.stroke();
+}
 var CAR_LABEL={poin:'POIN PENTING',fakta:'DATA DAN INSIGHT',alasan:'KENAPA PENTING',cta:'AJAKAN'};
 function drawSlide(c,i){
   var W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;var ctx=cv.getContext('2d');
   var sl=c.konten.slides[i],v=(c.visual&&c.visual.items&&c.visual.items[i])||{},t=sl.tipe;
   var label=v.label||(t==='cover'?(c.pilar?String(c.pilar).split(/\s+/).slice(0,3).join(' '):'ZULNAN'):CAR_LABEL[t]||'');
   cBg(ctx,W,H);
-  var foto=t==='cover'&&FOTO,fw=660,fh=foto?fw*FOTO.naturalHeight/FOTO.naturalWidth:0;
-  if(foto)ctx.drawImage(FOTO,W+8-fw,H-fh,fw,fh);
+  var CI=t==='cover'?(c.cover||COVER||FOTO):null,usr=!!(t==='cover'&&(c.cover||COVER)),lay='none';
+  if(CI)lay=(CI.naturalHeight||CI.height)/(CI.naturalWidth||CI.width)>=1.1?'right':'card';
+  if(lay==='right')cDrawRight(ctx,CI,usr,W,H);
   var y;
   if(t==='cover'){
-    y=cHead(ctx,sl,label,sl.sub,foto?430:820,foto?36:38,140);
-    if(foto)cPill(ctx,100,H-96-84,'Swipe untuk lanjut');else cPill(ctx,1014-cPillW(ctx,'Swipe untuk lanjut'),H-150-84,'Swipe untuk lanjut');
+    var nar=lay==='right';
+    y=cHead(ctx,sl,label,sl.sub,nar?430:820,nar?36:38,140);
+    if(lay==='card'){var ct=y+44,chh=Math.min(560,1140-ct);if(chh>=200)cDrawCard(ctx,CI,100,ct,880,chh)}
+    if(lay!=='none')cPill(ctx,100,H-96-84,'Swipe untuk lanjut');else cPill(ctx,1014-cPillW(ctx,'Swipe untuk lanjut'),H-150-84,'Swipe untuk lanjut');
     return cv;
   }
   y=cHead(ctx,sl,label,t==='cta'?sl.sub:t==='poin'?sl.sub:'',820,38,112);
@@ -1152,6 +1182,8 @@ function renderRefList(){
   REFS.forEach(function(f){if(isImg(f)&&!isVid(f)){var im=document.createElement('img');im.alt='Referensi '+f.name;im.src=URL.createObjectURL(f);th.appendChild(im)}else{var sp=document.createElement('span');sp.className='pill';sp.textContent='video: '+f.name;th.appendChild(sp)}});
   $('refclear').onclick=function(){REFS=[];$('reffile').value='';renderRefList()};
 }
+function renderCoverPrev(){var b=$('coverprev');if(!COVER){b.textContent='';return}b.innerHTML='<div class="thumbs"></div><div>Gambar cover dipakai di slide 1. <button class="btn" id="coverclear" style="padding:2px 10px;font-size:12px">Hapus</button></div>';var im=document.createElement('canvas');im.width=64;im.height=64;var x=im.getContext('2d'),k=Math.max(64/COVER.width,64/COVER.height);x.drawImage(COVER,(64-COVER.width*k)/2,(64-COVER.height*k)/2,COVER.width*k,COVER.height*k);b.querySelector('.thumbs').appendChild(im);$('coverclear').onclick=function(){COVER=null;$('coverfile').value='';renderCoverPrev()}}
+$('coverfile').addEventListener('change',function(){var f=(this.files||[])[0];if(!f){COVER=null;renderCoverPrev();return}coverFromFile(f).then(function(cv){COVER=cv;renderCoverPrev()},function(){COVER=null;$('coverprev').textContent='Gambar tidak bisa dipakai (pilih JPG, PNG, atau WebP, maks. 25 MB).'})});
 $('reffile').addEventListener('change',function(){REFS=Array.prototype.slice.call(this.files||[]).filter(function(f){return isImg(f)||isVid(f)}).slice(0,3);renderRefList()});
 
 /* ---------------- Bagian 3: UI ---------------- */
@@ -1228,11 +1260,16 @@ var UI={
       c.hasil.png.forEach(function(u,i){
         var s=document.createElement('div');s.className='slide';
         s.innerHTML='<img alt="Slide '+(i+1)+' dari '+c.hasil.png.length+': '+esc(c.konten.slides[i].judul)+'" src="'+u+'"><button class="btn">Unduh PNG '+(i+1)+'</button>';
-        s.querySelector('button').onclick=function(){Save.file(c.id+'-slide-'+(i+1)+'.png',dataToBlob(u),this)};sl.appendChild(s);
+        s.querySelector('button').onclick=function(){Save.file(c.id+'-slide-'+(i+1)+'.png',dataToBlob(c.hasil.png[i]),this)};sl.appendChild(s);
       });
       d.appendChild(sl);
       var ba=document.createElement('button');ba.className='btn';ba.textContent='Unduh semua slide';
       ba.onclick=async function(){for(var i=0;i<c.hasil.png.length;i++){await Save.file(c.id+'-slide-'+(i+1)+'.png',dataToBlob(c.hasil.png[i]),ba)}};d.appendChild(ba);
+      var bg=document.createElement('button');bg.className='btn';bg.textContent='Ganti gambar cover (slide 1)';bg.title='Pilih gambar lain untuk slide 1; hanya slide 1 yang dirender ulang';
+      var gf=document.createElement('input');gf.type='file';gf.accept='image/*';gf.style.display='none';gf.setAttribute('aria-label','Gambar cover baru untuk '+c.id);
+      bg.onclick=function(){gf.click()};
+      gf.onchange=function(){var f=(gf.files||[])[0];if(!f)return;bg.textContent='Memproses gambar...';coverFromFile(f).then(async function(cv){c.cover=cv;await loadFonts();await loadFoto();c.hasil.png[0]=drawSlide(c,0).toDataURL('image/png');var im0=sl.querySelector('img');if(im0)im0.src=c.hasil.png[0];bg.textContent='Cover diganti ✓'},function(){bg.textContent='Gambar tidak bisa dipakai (JPG, PNG, WebP, maks. 25 MB)'});gf.value=''};
+      d.appendChild(bg);d.appendChild(gf);
     }
     /* pratinjau paket .md */
     var det=document.createElement('details');det.open=true;det.innerHTML='<summary class="muted">Pratinjau paket naskah dan storyboard (.md)</summary><div class="mdprev"></div>';
