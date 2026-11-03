@@ -226,4 +226,11 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `prototypes/zuno-studio-v2.html`, `web/index.html`, `tests/zuno-studio-v2-stub-test.js`, `docs/template-carousel.md`, `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: coba dengan gambar sungguhan; bila hasil potong gambar kurang pas, bisa ditambah pilihan tata letak manual.
 
-## 39. (entri berikutnya di sini)
+## 39. Server lokal untuk preview di laptop (2026-11-03)
+- Permintaan: push, lalu bikin server lokal untuk preview di laptop Zulnan (bukan artifact).
+- Hasil: push `84fdca9` (carousel gambar cover) ke `claude/gifted-turing-csug5l`, deploy production READY. Dibuat `web/dev-server.mjs` (server lokal tanpa dependensi tambahan; sajikan halaman dan aset dari allowlist, teruskan `/api/ai` dan `/api/status` ke handler Vercel yang sama, bind 127.0.0.1, baca `web/.env.local`), `web/.env.local.example`, `jalankan-lokal.bat` (Windows, klik dua kali: pasang paket, buat `.env.local`, buka browser), `.gitattributes` (bat berakhiran baris CRLF), `.env.local` masuk `.gitignore`, `web/.vercelignore`, panduan di `web/README.md`, dan `tests/zuno-web-dev-server-test.mjs` (18 pemeriksaan lolos: halaman, aset, status tanpa membocorkan kunci, 401 tanpa kunci, streaming dengan penyedia tiruan, berkas rahasia dan jalur `..` ditolak). Sandbox sesi ini tidak bisa `npm install`, jadi tes memakai SDK tiruan sementara (dihapus).
+- Catatan: artifact tidak dipakai untuk preview ini; browser bawaan aplikasi juga tidak bisa membuka server yang dijalankan dari sesi cloud, jadi server dijalankan di laptop Zulnan sendiri.
+- File berubah: `web/dev-server.mjs`, `web/.env.local.example`, `web/.gitignore`, `web/.vercelignore`, `web/README.md`, `jalankan-lokal.bat`, `.gitattributes`, `tests/zuno-web-dev-server-test.mjs`, `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: Zulnan mencoba di laptop (Windows); key penyedia AI diisi sendiri di `web/.env.local`.
+
+## 40. (entri berikutnya di sini)

@@ -10,6 +10,8 @@ Versi live Zuno Studio v2 dengan tampilan HUD. Logika agen tetap dari `prototype
 | `src/live.js` | Jembatan: `window.claude.use('sample')` diarahkan ke `/api/ai` (streaming) |
 | `api/ai.js` | Server AI. Penyedia bisa diganti lewat `AI_PROVIDER` |
 | `api/status.js` | Status untuk panel HUD (tanpa membocorkan kunci) |
+| `dev-server.mjs` | Server lokal untuk uji di komputer sendiri (lihat bagian "Jalankan di komputer sendiri") |
+| `.env.local.example` | Contoh pengaturan lokal; salin jadi `.env.local` |
 | `build.mjs` | Membangun ulang `index.html` setelah `zuno-studio-v2.html` berubah: `node web/build.mjs` |
 
 ## Setelan Vercel
@@ -36,6 +38,26 @@ Versi live Zuno Studio v2 dengan tampilan HUD. Logika agen tetap dari `prototype
 - Selain Claude dan jalur tiruan, belum diuji dengan key asli.
 - Biaya pemakaian API ditanggung akun penyedia AI. Kunci akses mencegah orang lain memakai server ini.
 
+## Jalankan di komputer sendiri (tanpa Vercel)
+Untuk mencoba perubahan di laptop sebelum atau tanpa deploy. Server lokal memakai handler yang sama dengan Vercel (`api/ai.js`, `api/status.js`) dan hanya bisa dibuka dari komputer itu sendiri (`127.0.0.1`).
+
+**Windows (paling mudah):** klik dua kali `jalankan-lokal.bat` di akar repo. Pertama kali: memasang paket, membuat `web/.env.local` dari contoh, dan membukanya di Notepad. Isi `ZUNO_ACCESS_KEY` dan key penyedia AI, simpan, lalu klik dua kali lagi. Browser terbuka ke http://localhost:3000.
+
+**Manual (Windows, Mac, Linux):**
+```
+cd web
+npm install                      # sekali saja
+copy .env.local.example .env.local   # Mac/Linux: cp .env.local.example .env.local
+# isi web/.env.local, lalu:
+node dev-server.mjs
+```
+Buka http://localhost:3000, klik KUNCI AKSES dan masukkan isi `ZUNO_ACCESS_KEY` dari `.env.local`. Panel STATUS SISTEM harus ONLINE. Butuh Node 20 ke atas.
+
+- API key hanya ditaruh di `web/.env.local` (tidak ikut ke GitHub). Jangan tempel ke chat.
+- Setelah `prototypes/zuno-studio-v2.html` berubah: `node build.mjs` (di folder `web`), lalu muat ulang halaman. Server tidak perlu dimulai ulang untuk perubahan halaman; perubahan di `.env.local` atau `api/` butuh mulai ulang (Ctrl+C lalu jalankan lagi).
+- Port lain: isi `PORT` di `.env.local`.
+
 ## Uji
+- `node tests/zuno-web-dev-server-test.mjs` (server lokal: halaman, aset, status, kunci akses, streaming, berkas yang tidak boleh disajikan; butuh `npm install` di folder `web`)
 - `cd web && npm install && node ../tests/zuno-web-api-test.mjs && node ../tests/zuno-web-gemini-test.mjs && node ../tests/zuno-web-openrouter-test.mjs` (server AI dengan Claude, Gemini, dan OpenRouter tiruan)
 - `node tests/zuno-web-stub-test.js` (halaman web + HUD dengan AI tiruan, butuh Playwright)
