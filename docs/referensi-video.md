@@ -28,6 +28,9 @@ Yang diambil adalah **struktur, ritme, dan jenis efek**. Tidak ditiru: badge dan
 - **Tipe C melonggarkan aturan wajah**: wajah boleh tampil sampai 12 detik berurutan selama overlay berganti tiap 2-3 detik (referensi 3 memang begitu). Tipe lain tetap maksimal 3 detik. Tiap adegan tetap maksimal 2 detik.
 - Hanya video tipe A dan B memakai karakter (Zulnan, Zuno, agen divisi). Carousel tidak memakai maskot.
 
+## Serah-terima ke Claude Code di komputer Zulnan (cara 1, sudah ada)
+Tombol **"Unduh paket Claude Code (.zip)"** di hasil video. Isi ZIP: `INSTRUKSI.md` (tugas urut, tipe video, karakter, batas yang tidak boleh dilanggar), `CLAUDE.md` (aturan kerja di folder itu), `paket.md`, `komposisi-hyperframes.html`, `kartu-gaya.json`, `naskah-adegan.json`, `rencana-efek.json` (tipe C), gambar karakter acuan di `karakter/` (tipe A dan B, hanya dari versi web), serta folder `hasil/` dan `footage/` (tipe C). Cara pakai: ekstrak ke folder kosong, jalankan `claude` di folder itu, ketik `Kerjakan sesuai INSTRUKSI.md`. Claude Code berhenti setelah menulis `hasil/<nama>.mp4` dan `hasil/catatan-render.md`; tidak upload dan tidak posting, Zulnan meninjau dulu. Format perintah HyperFrames belum pernah diuji. Cara berikutnya (dipicu otomatis lewat antrean job, `claude -p`, laptop atau VPS) belum dibangun.
+
 ## Syarat supaya video benar-benar jadi (jawaban atas pertanyaan VPS)
 VPS menyediakan **mesin render dan orkestrasi** (ffmpeg, HyperFrames atau Remotion, transkrip kata per kata, mixing audio, unggah). VPS **tidak otomatis membuat footage 3D** seperti dua gambar acuan: itu butuh generator gambar atau video (API berkredit, atau model sendiri di server ber-GPU). Jadi:
 - Tipe C dan semua overlay, kartu UI, caption, dan komposisi: bisa penuh otomatis di VPS.

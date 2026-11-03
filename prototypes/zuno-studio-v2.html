@@ -1137,6 +1137,7 @@ var UI={
     var bm=document.createElement('button');bm.className='btn primary';bm.textContent='Unduh paket (.md)';bm.onclick=function(){Save.file(fn(c)+'.md',new Blob([c.md||buildMd(c)],{type:'text/markdown'}),bm)};bt.appendChild(bm);
     if(vid){
       var bh=document.createElement('button');bh.className='btn';bh.textContent='Unduh komposisi HyperFrames (.html)';bh.onclick=function(){Save.file(fn(c)+'_hyperframes.html',new Blob([c.hf],{type:'text/html'}),bh)};bt.appendChild(bh);
+      var bz=document.createElement('button');bz.className='btn';bz.textContent='Unduh paket Claude Code (.zip)';bz.title='Folder siap pakai untuk dirender di komputer sendiri lewat Claude Code';bz.onclick=async function(){bz.disabled=true;bz.textContent='Menyusun paket...';try{var zb=await claudeCodeZip(c);bz.disabled=false;await Save.file(fn(c)+'_claude-code.zip',zb,bz)}catch(e){bz.disabled=false;bz.textContent='Gagal menyusun paket'}};bt.appendChild(bz);
       if(S&&S.mode==='tampil'&&c.segs&&c.segs.length){var be=document.createElement('button');be.className='btn';be.textContent='Unduh rencana efek (.json)';be.onclick=function(){Save.file(fn(c)+'_effects.json',new Blob([JSON.stringify(efekPlans(c),null,2)],{type:'application/json'}),be)};bt.appendChild(be)}
       var pv=document.createElement('button');pv.className='btn';pv.textContent='Lihat pratinjau kasar (kanvas, ±'+Math.round(c.hasil.duration)+' detik)';
       var pbox=document.createElement('div');
@@ -1180,6 +1181,57 @@ var UI={
   tab:function(w){var v=w==='v';$('tabc').setAttribute('aria-selected',!v);$('tabv').setAttribute('aria-selected',v);$('resc').classList.toggle('hidden',v);$('resv').classList.toggle('hidden',!v)}
 };
 function dataToBlob(u){var p=u.split(','),b=atob(p[1]),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return new Blob([a],{type:'image/png'})}
+/* ---- Paket serah-terima Claude Code: ZIP (tanpa kompresi) berisi paket, komposisi, kartu gaya, instruksi, dan gambar karakter ---- */
+var CRCT=null;
+function crc32(u8){if(!CRCT){CRCT=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;CRCT[n]=c>>>0}}var r=0xFFFFFFFF;for(var i=0;i<u8.length;i++)r=CRCT[(r^u8[i])&255]^(r>>>8);return (r^0xFFFFFFFF)>>>0}
+function zipStore(files){
+  var enc=new TextEncoder(),parts=[],central=[],off=0;
+  files.forEach(function(f){
+    var nm=enc.encode(f.name),crc=crc32(f.data),sz=f.data.length;
+    var h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(12,0x21,true);h.setUint32(14,crc,true);h.setUint32(18,sz,true);h.setUint32(22,sz,true);h.setUint16(26,nm.length,true);
+    parts.push(new Uint8Array(h.buffer),nm,f.data);
+    var d=new DataView(new ArrayBuffer(46));d.setUint32(0,0x02014b50,true);d.setUint16(4,20,true);d.setUint16(6,20,true);d.setUint16(8,0x0800,true);d.setUint16(14,0x21,true);d.setUint32(16,crc,true);d.setUint32(20,sz,true);d.setUint32(24,sz,true);d.setUint16(28,nm.length,true);d.setUint32(42,off,true);
+    central.push(new Uint8Array(d.buffer),nm);off+=30+nm.length+sz;
+  });
+  var cs=0;central.forEach(function(x){cs+=x.length});
+  var e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+  return new Blob(parts.concat(central,[new Uint8Array(e.buffer)]),{type:'application/zip'});
+}
+var TV_IMG={A:['zuno-zulnan-percakapan.webp'],B:['zuno-tim-orkestrasi.webp']};
+function handoffInstruksi(c,gambar){
+  var tv=TV[S&&S.tipeVideo],tampil=S&&S.mode==='tampil',base=fn(c),L=[];
+  L.push('# Paket render Claude Code: '+c.id+' '+c.topik,'','Dibuat oleh Zuno Studio. Isi paket ini adalah **bahan**, bukan video jadi: video belum dirender.','');
+  L.push('- Tipe video: '+(tv?tv.nama:'otomatis (tidak dipilih)'),'- Mode: '+(tampil?'Mode Tampil (Zulnan di kamera)':'Tanpa Wajah (motion penuh)'),'- Karakter: '+(tv?tv.karakter:'-'),'- Gambar karakter di paket: '+(gambar.length?gambar.map(function(g){return '`karakter/'+g+'`'}).join(', '):'tidak ada (ambil dari repo: `assets/karakter/`)'),'');
+  L.push('## Cara pakai','','1. Ekstrak ZIP ini ke satu folder kosong, buka terminal di folder itu, jalankan `claude`.','2. Ketik: `Kerjakan sesuai INSTRUKSI.md`','3. '+(tampil?'Taruh rekaman Zulnan di folder `footage/` (vertikal, nama `wajah-01.mp4`, `wajah-02.mp4`, dst sesuai tabel di `paket.md`) sebelum atau saat diminta.':'Tanpa footage wajah. Bila Zulnan punya klip karakter hasil generator, taruh di folder `footage/`; bila tidak, karakter dipasang dari gambar di `karakter/`.'),'');
+  L.push('## Tugas untuk Claude Code (urut)','','1. Baca `CLAUDE.md`, `paket.md`, `kartu-gaya.json`, `naskah-adegan.json`'+(tampil?', `rencana-efek.json`':'')+' dan lihat gambar di `karakter/` bila ada.','2. Cek alat: Node 22+ dan ffmpeg'+(tampil?', Python 3.12 (untuk claude-video-effects)':'')+'. Bila ada yang kurang, sebutkan apa yang kurang dan tanya Zulnan sebelum memasang apa pun.','3. Bangun video dari `komposisi-hyperframes.html` (HyperFrames: `npx hyperframes preview`, lalu `npx hyperframes render`). Format ini diambil dari README HyperFrames dan **belum pernah diuji**; bila gagal, laporkan pesan error aslinya, jangan mengarang hasil.','4. Ikuti `naskah-adegan.json`: urutan, teks layar, dan durasi tiap adegan (maksimal 2 detik per adegan). Jangan mengubah isi, makna, atau klaim naskah.');
+  if(tv&&tv.mode==='tanpa')L.push('5. Karakter: pakai gambar di `karakter/` sebagai acuan. Boleh dipotong (cutout), diskalakan, dan digerakkan lewat kode. **Dilarang** mengubah wajah, proporsi, rambut, atau pakaian karakter, atau menggambar ulang dengan AI tanpa izin Zulnan. Isi papan, label, dan kartu mengikuti naskah; tulisan di gambar acuan hanya contoh.');
+  else if(tampil)L.push('5. Rekaman Zulnan di `footage/` jadi dasar. Pasang overlay sesuai `rencana-efek.json` dan `paket.md` (efek hanya di dalam segmen wajah, wajah tidak boleh tertutup).');
+  else L.push('5. Ikuti Kartu Gaya di `kartu-gaya.json`.');
+  L.push('6. Suara: jangan mengarang suara Zulnan. Pakai suara yang Zulnan sediakan (rekaman sendiri) atau suara AI generik bila Zulnan memintanya, dan catat itu.','7. Keluaran: `hasil/'+base+'.mp4` (1080x1920, 30 fps, H.264, AAC), plus `hasil/catatan-render.md` berisi perintah yang dijalankan, versi alat, apa yang berhasil, dan apa yang gagal.','8. **Berhenti di situ.** Jangan upload, jangan posting. Zulnan meninjau hasilnya dulu; hanya Zulnan yang bisa menyetujui.','');
+  L.push('## Laporan akhir (maksimal 5 baris)','','Durasi, tinggi file, apa yang belum sesuai naskah atau Kartu Gaya, dan butir yang perlu keputusan Zulnan.','');
+  return L.join('\n');
+}
+function handoffRules(c){
+  return ['# Aturan kerja di folder ini','','Pemilik: Zulnan. Bahasa Indonesia santai, to the point.','','- Folder ini paket render dari Zuno Studio untuk satu video. Kerjakan hanya yang ada di `INSTRUKSI.md`.','- Isi naskah, makna, fakta, dan klaim tidak boleh diubah. Jangan mengarang angka, testimoni, atau pengalaman Zulnan. Dilarang klaim hasil atau penghasilan.','- Slogan setelah hook sudah ada di naskah; jangan diubah. Harga produk belum ditentukan: pakai placeholder.','- Jangan upload, posting, atau mengirim apa pun ke platform. Status Disetujui hanya dari Zulnan.','- Jangan menyatakan video selesai bila belum ada file MP4 yang benar-benar terbuka dan dicek (durasi, audio, tidak ada frame kosong). Laporkan kegagalan apa adanya.','- Jangan memasang paket atau mengubah pengaturan komputer tanpa bilang dulu; tulis dulu apa dan kenapa.','- Karakter Zulnan, Zuno, dan agen divisi tidak boleh diubah wajah, proporsi, atau pakaiannya.','- Jangan menyalin merek, logo, atau karakter pihak lain dari video referensi.',''].join('\n');
+}
+async function claudeCodeZip(c){
+  var enc=new TextEncoder(),files=[],tampil=S&&S.mode==='tampil',gambar=[];
+  if(S&&TV_IMG[S.tipeVideo]&&/^https?:/.test(location.protocol)){
+    for(var i=0;i<TV_IMG[S.tipeVideo].length;i++){var f=TV_IMG[S.tipeVideo][i];try{var r=await fetch('/assets/karakter/'+f);if(r.ok){files.push({name:'karakter/'+f,data:new Uint8Array(await r.arrayBuffer())});gambar.push(f)}}catch(e){}}
+  }
+  function add(name,text){files.unshift({name:name,data:enc.encode(text)})}
+  if(tampil&&c.segs&&c.segs.length)add('rencana-efek.json',JSON.stringify(efekPlans(c),null,2));
+  add('naskah-adegan.json',JSON.stringify(c.konten,null,2));
+  add('kartu-gaya.json',JSON.stringify(c.kartuGaya||{},null,2));
+  add('komposisi-hyperframes.html',c.hf||'');
+  add('paket.md',c.md||buildMd(c));
+  add('CLAUDE.md',handoffRules(c));
+  add('INSTRUKSI.md',handoffInstruksi(c,gambar));
+  files.push({name:'hasil/README.txt',data:enc.encode('Taruh hasil render (MP4) dan catatan-render.md di folder ini.\n')});
+  if(tampil)files.push({name:'footage/README.txt',data:enc.encode('Taruh rekaman Zulnan di sini: wajah-01.mp4, wajah-02.mp4, dst (lihat tabel di paket.md).\n')});
+  return zipStore(files);
+}
+
 var Save={
   file:async function(name,blob,btn){
     var old=btn&&btn.textContent;

@@ -26,7 +26,7 @@ const args = process.argv.slice(2); const TIPE=(args.find(a=>a.startsWith('--tip
       return {};
     };
     const sample=async(i,o)=>({text:JSON.stringify(await gen(i,o))}); sample.json=async(i,o)=>gen(i,o); sample.limits=async()=>({images:true});
-    window.claude={use:async n=>n==='sample'?sample:n==='downloads'?{save:async(o)=>{window.__saved=(window.__saved||[]).concat([o.filename+':'+(o.data&&o.data.size)])}}:null};
+    window.claude={use:async n=>n==='sample'?sample:n==='downloads'?{save:async(o)=>{window.__saved=(window.__saved||[]).concat([o.filename+':'+(o.data&&o.data.size)]); if(/\.zip$/.test(o.filename)){const buf=new Uint8Array(await o.data.arrayBuffer()); let bin=''; for(let i=0;i<buf.length;i++)bin+=String.fromCharCode(buf[i]); window.__zip=btoa(bin)}}}:null};
   });
   await p.goto('file://'+process.cwd()+'/prototypes/zuno-studio-v2.html');
   await p.waitForTimeout(300);
@@ -50,7 +50,7 @@ const args = process.argv.slice(2); const TIPE=(args.find(a=>a.startsWith('--tip
   await p.click('#tabc'); const mdc=await p.evaluate(()=>document.querySelector('#resc .mdprev').innerText); await p.click('#tabv');
   console.log('md carousel: daftar sumber',mdc.includes('Daftar sumber'),'| ringkasan',mdc.includes('Ringkasan Sebelum Terbit'),'| Tidak Lolos?',/Tidak Lolos/.test(mdc),'| kolom Tipe + tipe fakta:',mdc.includes('Tipe')&&mdc.includes('fakta'),'| catatan teks dipotong:',mdc.includes('Catatan tata letak'));
   await p.screenshot({path:'/tmp/v2-final.png',fullPage:true});
-  await p.click('#resv .btn >> text=Unduh paket'); await p.click('#resv .btn >> text=Unduh komposisi'); 
+  await p.click('#resv .btn >> text=Unduh paket'); await p.click('#resv .btn >> text=Unduh komposisi'); await p.click('#resv .btn >> text=Unduh paket Claude Code'); await p.waitForFunction(()=>window.__zip,null,{timeout:15000}); require('fs').writeFileSync('/tmp/paket-claude-code.zip',Buffer.from(await p.evaluate(()=>window.__zip),'base64')); 
   await p.click('#resv .btn.ok'); await p.waitForSelector('#resv .pill.ok',{timeout:15000}); await p.waitForTimeout(500);
   console.log('setelah setuju paket posting di md:', await p.evaluate(()=>document.querySelector('#resv .mdprev').innerText.includes('Paket posting')));
   console.log('unduhan:',await p.evaluate(()=>window.__saved));

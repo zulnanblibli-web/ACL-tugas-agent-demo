@@ -213,4 +213,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `prototypes/zuno-studio-v2.html`, `web/index.html`, `assets/karakter/` (dua gambar acuan, baru), `docs/referensi-video.md` (baru), `docs/gaya-video.md`, `docs/brief-gaya-konten.md`, `docs/desain-zulnan-motion.md`, `tests/zuno-studio-v2-stub-test.js`, `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`.
 - Tertunda: belum diuji dengan Claude asli; belum ada render MP4; keputusan cara membuat footage karakter (gambar acuan dengan gerak kode atau generator video) dan VPS render; file MP4 referensi tidak disimpan di repo.
 
-## 37. (entri berikutnya di sini)
+## 37. Paket serah-terima Claude Code (2026-11-03)
+- Permintaan: video tipe A dan B diarahkan agar bisa diedit di Claude Code di komputer Zulnan; mulai dari cara 1 (paket folder).
+- Hasil: tombol "Unduh paket Claude Code (.zip)" di hasil video Zuno Studio. ZIP dibuat di browser (penulis ZIP tanpa kompresi + CRC32, tanpa dependensi) berisi `INSTRUKSI.md`, `CLAUDE.md`, `paket.md`, `komposisi-hyperframes.html`, `kartu-gaya.json`, `naskah-adegan.json`, `rencana-efek.json` (tipe C), gambar karakter acuan (tipe A/B, versi web), folder `hasil/` dan `footage/`. Instruksi: Claude Code berhenti di `hasil/*.mp4`, tidak upload, tidak mengubah naskah, tidak mengarang hasil. Gambar karakter disalin ke `web/assets/karakter/` supaya terlayani di Vercel. Tes stub (default, --tampil, --tipe A/B/C, web) lolos; ZIP dicek valid (Python zipfile).
+- File berubah: `prototypes/zuno-studio-v2.html`, `web/index.html`, `web/assets/karakter/` (baru), `tests/zuno-studio-v2-stub-test.js`, `docs/referensi-video.md`, `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: coba di Claude Code asli; format `npx hyperframes` belum teruji; cara 2 dan 3 (antrean job dan `claude -p` di laptop atau VPS) belum dibangun.
+
+## 38. (entri berikutnya di sini)
