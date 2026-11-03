@@ -1,5 +1,5 @@
 # Gambar hero Zuno
 
-Taruh gambar hero dengan nama `zuno-hero.webp`, `zuno-hero.jpg`, atau `zuno-hero.png` di folder ini, lalu jalankan `node web/build.mjs`. Bila ada, gambar ini menggantikan ilustrasi SVG bawaan (`web/src/figure.html`).
+`zuno-hero.webp`: robot hero (dari gambar yang dipilih Zulnan, 2026-11-03). Sudah dirapikan: teks acak hasil AI di helm dihapus, lampu neon latar diredupkan, latar digelapkan supaya menyatu dengan halaman, dan dibalik supaya robot menghadap ke kiri (ke inti ZUNO).
 
-Pakai hanya gambar milik sendiri atau yang berlisensi untuk dipakai (bukan gambar bertanda watermark kreator lain, bukan desain karakter milik pihak lain). Rasio yang pas: potret, kira-kira 400 x 520, latar gelap.
+Mengganti gambar: taruh `zuno-hero.webp` (atau .jpg/.png) baru di folder ini dengan robot menghadap ke kiri, lalu jalankan `node web/build.mjs`. Posisi titik cahaya mata diatur di `web/src/hud.css` (`.hero-eye`, `left` dan `top` dalam persen gambar). Pakai gambar milik sendiri atau yang boleh dipakai (tanpa watermark kreator lain, bukan karakter milik pihak lain).

@@ -8,7 +8,7 @@
   var fine = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   // 1. Bagian masuk layar: muncul naik bertahap (sekali saja).
-  var SEL = '.hud-grid>*, .hud-feat>div, .ws-title, .ws .tab, .ws-layout>.wrap>div>.panel:first-child, .hud-flow, .hud-quote2, .hud-stack, .stack>div, .hud-strip>div, .hud-foot';
+  var SEL = '.hud-feat>div, .ws-title, .ws .tab, .ws-layout>.wrap>div>.panel:first-child, .hud-flow, .hud-quote2, .hud-stack, .stack>div, .hud-strip>div, .hud-foot';
   var els = Array.prototype.slice.call(document.querySelectorAll(SEL));
   if (!reduce && 'IntersectionObserver' in window) {
     root.classList.add('mv-on');

@@ -10,10 +10,11 @@ const src = readFileSync(join(here, '..', 'prototypes', 'zuno-studio-v2.html'), 
 const part = (f) => readFileSync(join(here, 'src', f), 'utf8');
 
 let out = src;
-// Gambar hero: bila web/assets/zuno-hero.(webp|jpg|png) ada (gambar milik/berlisensi Zulnan), dipakai; bila tidak, ilustrasi SVG orisinal.
+// Gambar hero: web/assets/zuno-hero.(webp|jpg|png), robot menghadap ke kiri (ke inti ZUNO).
 function heroHtml() {
   const img = ['webp', 'jpg', 'png'].map((e) => 'zuno-hero.' + e).find((f) => existsSync(join(here, 'assets', f)));
-  const fig = img ? '<img src="/assets/' + img + '" alt="Agent Zuno" width="400" height="520" decoding="async" fetchpriority="high">' : part('figure.html');
+  if (!img) throw new Error('Gambar hero tidak ada: taruh web/assets/zuno-hero.webp (lihat web/assets/README.md)');
+  const fig = '<img src="/assets/' + img + '" alt="" width="736" height="910" decoding="async" fetchpriority="high">';
   return part('hero.html').replace('<!--FIGURE-->', () => fig);
 }
 function swap(oldStr, newStr) {

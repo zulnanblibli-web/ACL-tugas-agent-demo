@@ -182,4 +182,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `web/src/hero.html`, `web/src/figure.html` (baru), `web/src/motion.js` (baru), `web/src/hud.css`, `web/src/hud.js`, `web/build.mjs`, `web/assets/README.md` (baru), `web/index.html`, `web/hud.css`, `web/hud.js`, `web/motion.js` (baru), `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: izin push + deploy (bersama entri 30); gambar hero milik/berlisensi Zulnan bila ingin mengganti ilustrasi.
 
-## 32. (entri berikutnya di sini)
+## 32. Hero robot dari Zulnan + UI lebih natural (2026-11-03)
+- Permintaan: ilustrasi SVG tidak disukai. Pakai gambar robot baru (helm hitam, aksen ungu), diperhalus; robot jadi hero di atas, menghadap ke tulisan ZUNO STANDBY, di belakang panel KUNCI AKSES, besar. Tambah animasi dan perbaiki UI/UX supaya lebih natural.
+- Hasil: gambar dirapikan dengan skrip (teks acak hasil AI di helm "CNGO", "Lrcaxx", "Sparth Cear", tulisan di modul telinga dihapus; lampu neon latar diredupkan; latar digelapkan; dibalik supaya menghadap ke kiri) jadi `web/assets/zuno-hero.webp` (51 KB). Bagian hero layar penuh dari entri 31 dan ilustrasi SVG dihapus; robot sekarang di dalam panel atas, besar di kanan, di belakang kartu STATUS, DIVISI AKTIF, dan KUNCI AKSES, menghadap inti ZUNO; tepi gambar dipudarkan ke latar. Di HP inti ZUNO dikecilkan ke kiri dan robot di kanan menghadapnya. Animasi robot: masuk dari kanan, melayang, kilau mata berdenyut/berkedip, garis pindai, aura ungu-biru, parallax kursor; saat Zuno bekerja mata, pindai, dan aura lebih cepat dan gambar lebih terang. UI: kartu kaca (blur di belakang) supaya robot terlihat di balik panel, sudut lebih bulat, sudut braket lebih halus, hover lebih lembut, fokus keyboard jelas, scroll halus, aksen ungu kedua. Semua gerak tetap mati di mode kurangi gerak. Tes: stub web, stub build (PRD) lolos tanpa error; dicek di 1440px dan 390px tanpa scroll samping.
+- File berubah: `web/assets/zuno-hero.webp` (baru), `web/assets/README.md`, `web/src/hero.html`, `web/src/figure.html` (dihapus), `web/src/hud.css`, `web/src/motion.js`, `web/build.mjs`, `web/index.html`, `web/hud.css`, `web/motion.js`, `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: izin push + deploy (bersama entri 30 dan 31).
+
+## 33. (entri berikutnya di sini)
