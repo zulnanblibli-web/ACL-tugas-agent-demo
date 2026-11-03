@@ -63,21 +63,32 @@ body{color:var(--ink);overflow-x:hidden}
 .hud-feat svg,.node .ic svg{width:30px;height:30px;fill:none;stroke:var(--glow);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 5px rgba(63,182,255,.7))}
 .hud-feat b{font:700 12px/1.2 var(--hud);letter-spacing:.12em;color:#e3f1ff}
 .hud-feat span{font-size:13px;color:var(--muted)}
-/* alur */
-.hud-flow{margin:22px 0 6px;padding:16px 14px 12px;border:1px solid rgba(63,182,255,.3);border-radius:8px;background:rgba(6,16,30,.6)}
+/* alur: menurun, berdampingan dengan ruang kerja */
+.ws-layout{max-width:1180px;margin:0 auto;padding:0 18px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+.ws-layout .wrap{max-width:none;margin:0;padding:0 0 48px;min-width:0}
+.hud-flow{position:sticky;top:12px;margin:14px 0;display:flex;flex-direction:column;max-height:calc(100vh - 24px);border:1px solid rgba(63,182,255,.35);border-radius:8px;
+  background:linear-gradient(180deg,rgba(11,28,52,.9),rgba(6,15,28,.9));box-shadow:inset 0 0 22px rgba(47,155,255,.08),0 0 18px rgba(47,155,255,.08);text-align:left}
+.flow-head{all:unset;box-sizing:border-box;display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;padding:12px 14px 10px;border-bottom:1px solid rgba(63,182,255,.18);pointer-events:none}
+.flow-head h2{margin:0;grid-column:1/-1}
+.flow-now{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.flow-pct{font:700 12px/1 var(--hud);letter-spacing:.08em;color:var(--glow)}
+.flow-body{overflow-y:auto;padding:6px 14px 12px;min-height:0}
 .hud-flow h2,.hud-stack h2,.wrap h2{font:700 15px/1.2 var(--hud);letter-spacing:.16em;color:var(--glow);text-transform:uppercase}
-.flow{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:6px 4px}
-.node{width:118px;display:grid;justify-items:center;gap:4px;text-align:center}
-.node .ic{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;border:1.5px solid #1f5a96;background:radial-gradient(circle,#0f2f55,#071427);transition:box-shadow .3s,border-color .3s}
+.flow{list-style:none;margin:0;padding:0}
+.node{position:relative;display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0}
+.node:not(:last-child):after{content:"";position:absolute;left:19px;top:calc(50% + 21px);bottom:calc(21px - 50%);width:2px;background:#1b4a7c}
+.node[data-s=done]:not(:last-child):after{background:#2fae80}
+.node .ic{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:1.5px solid #1f5a96;background:radial-gradient(circle,#0f2f55,#071427);transition:box-shadow .3s,border-color .3s}
+.node .ic svg{width:21px;height:21px}
+.node .tx{display:grid;gap:2px;min-width:0}
 .node b{font:700 11px/1.2 var(--hud);letter-spacing:.06em;color:#dbeaff}
-.node span{font-size:11.5px;line-height:1.3;color:var(--muted);min-height:2.6em}
-.node em{font:700 9.5px/1 var(--hud);letter-spacing:.14em;font-style:normal;color:#5d7ea5}
-.node[data-s=run] .ic{border-color:var(--glow);box-shadow:0 0 0 4px rgba(63,182,255,.15),0 0 22px rgba(63,182,255,.8);animation:breathe 1.2s ease-in-out infinite}
+.node .tx span{font-size:12px;line-height:1.3;color:var(--muted);overflow-wrap:anywhere}
+.node em{font:700 9px/1 var(--hud);letter-spacing:.12em;font-style:normal;color:#5d7ea5}
+.node[data-s=run] .ic{border-color:var(--glow);box-shadow:0 0 0 4px rgba(63,182,255,.15),0 0 18px rgba(63,182,255,.8);animation:breathe 1.2s ease-in-out infinite}
 .node[data-s=run] em{color:var(--glow)}
-.node[data-s=done] .ic{border-color:#3fe0a0;box-shadow:0 0 14px rgba(63,224,160,.45)}.node[data-s=done] .ic svg{stroke:#5ef0b0}.node[data-s=done] em{color:#5ef0b0}
+.node[data-s=done] .ic{border-color:#3fe0a0;box-shadow:0 0 12px rgba(63,224,160,.4)}.node[data-s=done] .ic svg{stroke:#5ef0b0}.node[data-s=done] em{color:#5ef0b0}
 .node[data-s=bad] .ic{border-color:var(--bad)}.node[data-s=bad] .ic svg{stroke:var(--bad)}.node[data-s=bad] em{color:var(--bad)}
-.arr{align-self:flex-start;margin-top:16px;font:700 22px/1 var(--hud);color:#2f6fb0}
-.flow-note{margin:8px 0 0;font-size:13.5px;color:var(--muted)}
+.flow-note{margin:8px 0 0;font-size:12.5px;line-height:1.45;color:var(--muted)}
 /* ruang kerja (gaya bawaan Zuno Studio, dibuat HUD) */
 .panel{border:1px solid rgba(63,182,255,.32);border-radius:8px;background:linear-gradient(180deg,rgba(11,28,52,.82),rgba(6,15,28,.82));box-shadow:inset 0 0 22px rgba(47,155,255,.08)}
 textarea,select,input[type=text],input[type=password]{background:#061325;border-color:#1f456f;color:var(--ink)}
@@ -89,7 +100,7 @@ textarea:focus,select:focus,input:focus{border-color:var(--glow);box-shadow:0 0 
 .chip{background:#0b1f38;border-color:#24548a}
 .track[data-s=run] .dot{box-shadow:0 0 12px var(--glow)}
 .res,.kc{background:rgba(5,13,25,.7)}
-.ws-title{font:700 13px/1 var(--hud);letter-spacing:.3em;color:#8fb6de;text-align:center;margin:26px 0 12px}
+.ws-title{font:700 13px/1 var(--hud);letter-spacing:.3em;color:#8fb6de;text-align:center;margin:26px 0 0}
 /* bawah */
 .hud-bottom{max-width:1120px;margin:20px auto 0;padding:0 18px;display:grid;grid-template-columns:1fr 1.4fr;gap:18px;align-items:center}
 .hud-quote2{font:600 17px/1.4 var(--hud);color:#e6f2ff;padding:16px 18px;border:1px solid rgba(63,182,255,.3);border-radius:8px;background:rgba(6,16,30,.6)}
@@ -98,7 +109,7 @@ textarea:focus,select:focus,input:focus{border-color:var(--glow);box-shadow:0 0 
 .stack{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
 .stack div{padding:10px;border:1px solid #1d4370;border-radius:6px;background:#071629;display:grid;gap:3px}
 .stack b{font:700 12.5px/1.25 var(--hud);letter-spacing:.04em;color:#e3f1ff}.stack span{font-size:12px;color:var(--muted)}
-.hud-strip{max-width:1120px;margin:18px auto 0;padding:0 18px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;text-align:center}
+.hud-strip{max-width:1120px;margin:18px auto 0;padding:0 18px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;text-align:center}
 .hud-strip div{padding:14px 8px;border-left:1px solid rgba(63,182,255,.18);display:grid;gap:4px}.hud-strip div:first-child{border-left:0}
 .hud-strip b{font:700 11.5px/1.2 var(--hud);letter-spacing:.12em;color:#cfe6ff}.hud-strip span{font-size:12px;color:var(--muted)}
 .hud-foot{text-align:center;font:600 12px/1 var(--hud);letter-spacing:.42em;color:#6f93bb;padding:26px 16px 34px}
@@ -108,11 +119,20 @@ textarea:focus,select:focus,input:focus{border-color:var(--glow);box-shadow:0 0 
 @media(max-width:860px){
   .hud-grid{grid-template-columns:1fr 1fr}.hud-core{grid-column:1/-1;grid-row:1;max-width:300px;margin:0 auto;width:100%}
   .hud-feat{grid-template-columns:repeat(2,1fr)}.hud-feat>div{border-left:0;border-top:1px solid rgba(63,182,255,.18)}
-  .hud-bottom{grid-template-columns:1fr}.hud-strip{grid-template-columns:1fr 1fr}
+  .hud-bottom{grid-template-columns:1fr}.hud-strip{grid-template-columns:1fr}.hud-strip div{border-left:0;border-top:1px solid rgba(63,182,255,.18)}.hud-strip div:first-child{border-top:0}
+  .ws-layout{grid-template-columns:minmax(0,1fr);gap:0;padding:0 16px}
+  .ws-layout .wrap{padding-bottom:20px}
+  /* HP: Cara kerja jadi bilah lengket di bawah layar; ketuk untuk buka daftar langkah */
+  .hud-flow{position:sticky;top:auto;bottom:0;z-index:30;margin:0 -16px;max-height:none;background:#06101e;border-radius:12px 12px 0 0;border-bottom:0;box-shadow:0 -8px 24px rgba(0,0,0,.55),0 0 16px rgba(47,155,255,.18)}
+  .flow-head{pointer-events:auto;cursor:pointer;grid-template-columns:auto minmax(0,1fr) auto;padding:11px 16px;border-bottom:0}
+  .flow-head h2{grid-column:auto;font-size:12px}
+  .flow-head:focus-visible{outline:2px solid var(--glow);outline-offset:-2px}
+  .flow-pct:after{content:" \25B4";color:var(--muted)}
+  .hud-flow.open .flow-pct:after{content:" \25BE"}
+  .flow-body{display:none;max-height:55vh;padding:0 16px 12px}
+  .hud-flow.open .flow-body{display:block;border-top:1px solid rgba(63,182,255,.18)}
 }
 @media(max-width:560px){
   .hud{padding:16px 16px 4px}.hud-grid{grid-template-columns:1fr}.hud-tag,.hud-foot{letter-spacing:.2em}
-  .node{width:96px}.arr{display:none}
-  .hud-strip div{border-left:0}
 }
 @media(prefers-reduced-motion:reduce){.hud-core g,.hud-core .ring.glow,.node[data-s=run] .ic{animation:none!important}.bar i{transition:none}}

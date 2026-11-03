@@ -18,8 +18,8 @@
     gate: '<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/>'
   };
   var DEF = {
-    k: [['lead', 'Lead', 'Orkestraror · Juru Kabar'], ['riset', 'Riset', 'Bahan & brief'], ['prod', 'Produksi', 'Naskah & uji retensi'], ['desain', 'Desain', 'Visual & Kartu Gaya'], ['edit', 'Editing', 'Render & paket'], ['mutu', 'Mutu', 'Catatan, tanpa veto'], ['mkt', 'Marketing', 'Setelah lu setuju']],
-    b: [['lead', 'Lead', 'Terima permintaan'], ['t1', 'T.1 Arsitek', 'Ruang lingkup'], ['gate', 'Gerbang 1', 'Persetujuan lu'], ['t2', 'T.2 Desainer', 'UI/UX'], ['gate', 'Gerbang 2', 'Persetujuan lu'], ['t3', 'T.3 Pengembang', 'Kode'], ['t4', 'T.4 Penguji', 'Uji & panduan'], ['gate', 'Gerbang 3', 'Persetujuan lu']]
+    k: [['lead', 'Lead', 'Orkestraror · Juru Kabar'], ['riset', 'Riset', 'Bahan & brief'], ['prod', 'Produksi', 'Naskah & uji retensi'], ['desain', 'Desain', 'Visual & Kartu Gaya'], ['edit', 'Editing', 'Render & paket'], ['mutu', 'Mutu', 'Catatan, tanpa veto'], ['mkt', 'Marketing', 'Setelah disetujui']],
+    b: [['lead', 'Lead', 'Terima permintaan'], ['t1', 'T.1 Arsitek', 'Ruang lingkup'], ['gate', 'Gerbang 1', 'Persetujuan'], ['t2', 'T.2 Desainer', 'UI/UX'], ['gate', 'Gerbang 2', 'Persetujuan'], ['t3', 'T.3 Pengembang', 'Kode'], ['t4', 'T.4 Penguji', 'Uji & panduan'], ['gate', 'Gerbang 3', 'Persetujuan']]
   };
   var LBL = { wait: 'MENUNGGU', run: 'JALAN', done: 'SELESAI', bad: 'TERTAHAN' };
 
@@ -66,16 +66,18 @@
     if ($('hAktif')) $('hAktif').textContent = String(run);
     var f = $('hFlow');
     if (f) {
-      f.innerHTML = steps.map(function (s, i) {
-        return (i ? '<span class="arr" aria-hidden="true">›</span>' : '') +
-          '<div class="node" data-s="' + s.s + '"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">' + iconFor(s.key, s.name) + '</svg></div>' +
-          '<b>' + esc(s.name) + '</b><span>' + esc(s.sub).slice(0, 70) + '</span><em>' + LBL[s.s] + '</em></div>';
+      f.innerHTML = steps.map(function (s) {
+        return '<li class="node" data-s="' + s.s + '"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">' + iconFor(s.key, s.name) + '</svg></div>' +
+          '<div class="tx"><b>' + esc(s.name) + '</b><span>' + esc(s.sub.length > 90 ? s.sub.slice(0, 88) + '…' : s.sub) + '</span></div><em>' + LBL[s.s] + '</em></li>';
       }).join('');
     }
+    var now = steps.filter(function (s) { return s.s === 'run' || s.s === 'bad'; })[0];
+    if ($('hFlowNow')) $('hFlowNow').textContent = now ? now.name + ' · ' + LBL[now.s] : (done && done === steps.length ? 'Semua selesai' : done ? done + '/' + steps.length + ' selesai' : 'Siaga');
+    if ($('hFlowPct')) $('hFlowPct').textContent = pct + '%';
     var note = $('hFlowNote');
     if (note) note.textContent = isBuild()
-      ? 'Alur Build App (Divisi Engineering): terpisah dari alur konten. Tiap gerbang nunggu persetujuan lu.'
-      : 'Alur Konten (divisi kreatif): Lead bagi tugas, divisi kerja berurutan, Mutu cuma kasih catatan, lu yang approve.';
+      ? 'Alur Build App (Divisi Engineering): terpisah dari alur konten. Tiap gerbang menunggu persetujuan.'
+      : 'Alur Konten (divisi kreatif): Lead bagi tugas, divisi kerja berurutan, Mutu memberi catatan, persetujuan akhir di pemilik.';
   }
 
   function askKey() {
@@ -94,7 +96,7 @@
       $('hStat').textContent = ok ? 'ONLINE' : 'BELUM DISETEL';
       $('hStat').className = 'val ' + (ok ? 'ok' : 'warn');
       $('hModel').textContent = j.provider + ' · ' + j.model;
-      var NM = { claude: 'Claude', gemini: 'Gemini', openai: 'OpenAI', openrouter: 'OpenRouter' };
+      var NM = { claude: 'Claude', gemini: 'Gemini', openai: 'OpenAI', openrouter: 'OpenRouter', 'openai-compatible': '9router / lokal' };
       if ($('hBrain')) $('hBrain').textContent = NM[j.provider] || j.provider;
       var info = $('capinfo');
       if (info && !ok) { info.className = 'banner warn'; info.classList.remove('hidden'); info.textContent = 'Server belum lengkap: ' + (!j.ai_key_set ? 'API key penyedia AI belum diisi di Vercel. ' : '') + (!j.access_set ? 'ZUNO_ACCESS_KEY belum diisi di Vercel.' : ''); }
@@ -110,6 +112,12 @@
     });
     if ($('keyClear')) $('keyClear').addEventListener('click', function () { window.ZunoKey.set(''); $('keyDlg').close(); });
     if ($('hKey')) $('hKey').addEventListener('click', askKey);
+    var tog = $('hFlowTog');
+    if (tog) tog.addEventListener('click', function () {
+      var open = tog.getAttribute('aria-expanded') !== 'true';
+      tog.setAttribute('aria-expanded', String(open));
+      $('hFlowBox').classList.toggle('open', open);
+    });
     var mo = new MutationObserver(render);
     ['tracks', 'btracks', 'wsBuild', 'stop', 'bstop'].forEach(function (id) { var el = $(id); if (el) mo.observe(el, { childList: true, subtree: true, attributes: true, characterData: true }); });
     render();

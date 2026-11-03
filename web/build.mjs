@@ -18,8 +18,9 @@ function swap(oldStr, newStr) {
 
 swap('<title>Zuno Studio v2</title>', '<title>ZUNO · Tim Agent AI</title>\n<meta name="description" content="Zuno: tim agent AI pribadi untuk riset, naskah, desain, dan build web app.">\n<meta name="author" content="Creative @nexamind.ai">\n<meta name="theme-color" content="#03060b">');
 swap('</style>\n</head>', '</style>\n<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">\n<link rel="stylesheet" href="/hud.css">\n</head>');
-swap('<body>\n<div class="wrap">\n<h1>Zuno Studio</h1>', '<body>\n' + part('hero.html') + '\n<div class="wrap">\n<div class="ws-title">RUANG KERJA</div>');
-swap('</div><!-- /wsBuild -->\n</div>', '</div><!-- /wsBuild -->\n</div>\n' + part('tail.html'));
+// Ruang kerja dan diagram "Cara kerja" (menurun) berdampingan, supaya proses terlihat tanpa scroll.
+swap('<body>\n<div class="wrap">\n<h1>Zuno Studio</h1>', '<body>\n' + part('hero.html') + '\n<div class="ws-title">RUANG KERJA</div>\n<div class="ws-layout">\n<div class="wrap">');
+swap('</div><!-- /wsBuild -->\n</div>', '</div><!-- /wsBuild -->\n</div>\n' + part('flow.html') + '</div><!-- /ws-layout -->\n' + part('tail.html'));
 swap('\n<script>\n', '\n<script src="/live.js"></script>\n<script src="/hud.js"></script>\n<script>\n');
 // Pesan error disesuaikan untuk versi web.
 swap("not_granted:'Izin Claude belum diberikan.'", "not_granted:'Kunci akses Zuno salah atau belum diisi. Klik KUNCI AKSES di atas.',not_configured:'Server Zuno belum disetel (ZUNO_ACCESS_KEY di Vercel).',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.'");

@@ -4,7 +4,7 @@ Salinan skill milik Zulnan yang sudah disesuaikan untuk Divisi Engineering (2026
 
 | Skill | Dipakai | Perubahan dari versi asli |
 |---|---|---|
-| `01-idea-to-scope-lock` | T.1 Arsitek & Analis Kebutuhan | Catatan Nexamind: bebas LLM, prinsip kerja, kredit dan contoh login dicatat di ruang lingkup |
+| `01-idea-to-scope-lock` | T.1 Arsitek & Analis Kebutuhan | Catatan Nexamind: bebas LLM, prinsip kerja, kredit dan contoh login dicatat di ruang lingkup; tanpa batas fitur MVP (semua fitur dikunci); PRD .md jadi referensi utama |
 | `08-motion-purpose-check` | T.2 Desainer UI/UX | Catatan Nexamind: bebas LLM, prinsip kerja |
 | `webapp-builder-full-gas` | T.3 Pengembang Aplikasi | Password bawaan (`admin2026`, `edudigital`) diganti akun acak per proyek; hash password; `TAMPILKAN_CONTOH_LOGIN`; menu Reset Akses; kredit "Creative @nexamind.ai"; AI_PROVIDER fleksibel; "Canvas" bebas platform |
 | `webapp-builder-gas-blogger` | T.3 Pengembang Aplikasi | Sama seperti di atas |

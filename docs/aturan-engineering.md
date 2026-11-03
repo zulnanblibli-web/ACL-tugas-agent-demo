@@ -19,7 +19,7 @@ Diadaptasi dari [andrej-karpathy-skills](https://github.com/multica-ai/andrej-ka
 
 ```
 Permintaan Zulnan / klien
-  -> T.1 Kunci ruang lingkup (masalah, maks. 5 fitur MVP, out of scope, definisi selesai) + pilih mesin
+  -> T.1 Kunci ruang lingkup (masalah, semua fitur tanpa batas jumlah, PRD .md bila ada, out of scope, definisi selesai) + pilih mesin
   -> GERBANG 1: Zulnan setujui ruang lingkup
   -> T.2 Wireframe + UI/UX + cek animasi
   -> GERBANG 2: Zulnan setujui tampilan
