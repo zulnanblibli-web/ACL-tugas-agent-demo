@@ -188,4 +188,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `web/assets/zuno-hero.webp` (baru), `web/assets/README.md`, `web/src/hero.html`, `web/src/figure.html` (dihapus), `web/src/hud.css`, `web/src/motion.js`, `web/build.mjs`, `web/index.html`, `web/hud.css`, `web/motion.js`, `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: izin push + deploy (bersama entri 30 dan 31).
 
-## 33. (entri berikutnya di sini)
+## 33. Push dan deploy revisi tampilan, PRD, motion, hero robot (2026-11-03)
+- Permintaan: push dan deploy.
+- Hasil: 3 commit (fff0e00, 93675b8, 0da93d7) di-push ke `claude/gifted-turing-csug5l`. Deploy production `dpl_6HaFH1DkYtsowqG5h5ArfGxB7Pta` READY (build 4 detik, tanpa error), alias https://zuno-studio-dusky.vercel.app. Env Vercel saat dicek: `AI_PROVIDER=gemini` dan `GEMINI_API_KEY` (diperbarui sendiri oleh Zulnan), tanpa `OPENROUTER_API_KEY`; jadi otak AI live tetap Gemini. Env tidak diubah dari sesi ini.
+- File berubah: `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: Zulnan cek tampilan live (hero robot, Cara Kerja, menu PRD) di laptop dan HP; pilih tetap Gemini atau pindah OpenRouter.
+
+## 34. (entri berikutnya di sini)
