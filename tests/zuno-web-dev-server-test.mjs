@@ -16,13 +16,21 @@ const fake = http.createServer((req, res) => {
 });
 await new Promise((r) => fake.listen(0, r));
 const PORT = 3917;
+// Port 3917 sengaja dipakai dulu: server lokal harus pindah sendiri ke port berikutnya.
+const blocker = http.createServer(() => {}); await new Promise((r) => blocker.listen(PORT, '127.0.0.1', r));
+import fs from 'node:fs';
+const LOGF = path.join(root, 'web', 'server-lokal.log'); try { fs.unlinkSync(LOGF); } catch {}
 const child = spawn(process.execPath, ['dev-server.mjs'], { cwd: path.join(root, 'web'), env: { ...process.env, PORT: String(PORT), AI_PROVIDER: 'openrouter', OPENROUTER_API_KEY: 'kunci-tiruan', AI_MODEL: 'm-x', ZUNO_ACCESS_KEY: 'rahasia-lokal-1234567', COMPAT_BASE_URL_TEST: 'http://127.0.0.1:' + fake.address().port + '/v1/chat/completions' } });
 let log = ''; child.stdout.on('data', (d) => (log += d)); child.stderr.on('data', (d) => (log += d));
 for (let i = 0; i < 50 && !/Zuno Web lokal jalan/.test(log); i++) await new Promise((r) => setTimeout(r, 100));
-const U = 'http://127.0.0.1:' + PORT;
+const m = log.match(/jalan di\s+(http:\/\/127\.0\.0\.1:(\d+))/);
+const U = m ? m[1] : 'http://127.0.0.1:' + (PORT + 1);
 const out = [];
 const ok = (n, c) => out.push([n, !!c]);
 try {
+  ok('port sibuk: pindah otomatis ke ' + (PORT + 1), m && Number(m[2]) === PORT + 1 && /sedang dipakai aplikasi lain/.test(log));
+  const lg = fs.existsSync(LOGF) ? fs.readFileSync(LOGF, 'utf8') : '';
+  ok('log diagnosa ditulis tanpa isi key', /jalan di http:\/\/127\.0\.0\.1:/.test(lg) && /key terisi/.test(lg) && !lg.includes('kunci-tiruan') && !lg.includes('rahasia-lokal'));
   let r = await fetch(U + '/'); let t = await r.text();
   ok('halaman utama 200 dan memuat ZUNO + input gambar cover', r.status === 200 && /ZUNO/.test(t) && t.includes('id="coverfile"'));
   r = await fetch(U + '/assets/foto-zulnan.webp'); ok('foto cover webp 200', r.status === 200 && r.headers.get('content-type') === 'image/webp' && (await r.arrayBuffer()).byteLength > 10000);
@@ -34,9 +42,9 @@ try {
   r = await fetch(U + '/api/ai', { method: 'POST', headers: { 'content-type': 'application/json', 'x-zuno-key': 'rahasia-lokal-1234567' }, body: JSON.stringify({ input: 'tes' }) });
   const L = (await r.text()).trim().split('\n').map((l) => JSON.parse(l));
   ok('streaming /api/ai lewat server lokal: teks utuh + done', r.status === 200 && L.filter((l) => l.t === 'delta').map((l) => l.text).join('') === '{"halo":"lokal"}' && L.at(-1).t === 'done');
-  for (const p of ['/.env.local', '/.env.local.example', '/api/ai.js', '/dev-server.mjs', '/package.json', '/src/hud.css', '/node_modules/x', '/%2e%2e/package.json', '/assets/../package.json']) { r = await fetch(U + p); ok('tidak disajikan: ' + p, r.status === 404); }
+  for (const p of ['/.env.local', '/.env.local.example', '/api/ai.js', '/dev-server.mjs', '/package.json', '/src/hud.css', '/node_modules/x', '/%2e%2e/package.json', '/assets/../package.json', '/server-lokal.log']) { r = await fetch(U + p); ok('tidak disajikan: ' + p, r.status === 404); }
   r = await fetch(U + '/', { method: 'DELETE' }); ok('metode DELETE ditolak (405)', r.status === 405);
-} finally { child.kill(); fake.close(); }
+} finally { child.kill(); fake.close(); blocker.close(); try { fs.unlinkSync(LOGF); } catch {} }
 let bad = 0; for (const [n, c] of out) { console.log((c ? 'OK   ' : 'GAGAL') + ' ' + n); if (!c) bad++; }
 console.log(bad ? bad + ' GAGAL\n' + log : 'semua lolos');
 process.exit(bad ? 1 : 0);

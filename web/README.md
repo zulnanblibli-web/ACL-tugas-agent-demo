@@ -41,7 +41,7 @@ Versi live Zuno Studio v2 dengan tampilan HUD. Logika agen tetap dari `prototype
 ## Jalankan di komputer sendiri (tanpa Vercel)
 Untuk mencoba perubahan di laptop sebelum atau tanpa deploy. Server lokal memakai handler yang sama dengan Vercel (`api/ai.js`, `api/status.js`) dan hanya bisa dibuka dari komputer itu sendiri (`127.0.0.1`).
 
-**Windows (paling mudah):** klik dua kali `jalankan-lokal.bat` di akar repo. Pertama kali: memasang paket, membuat `web/.env.local` dari contoh, dan membukanya di Notepad. Isi `ZUNO_ACCESS_KEY` dan key penyedia AI, simpan, lalu klik dua kali lagi. Browser terbuka ke http://localhost:3000.
+**Windows (paling mudah):** klik dua kali `jalankan-lokal.bat` di akar repo. Pertama kali: memasang paket, membuat `web/.env.local` dari contoh, dan membukanya di Notepad. Isi `ZUNO_ACCESS_KEY` dan key penyedia AI, simpan, tutup Notepad; server langsung jalan dan browser terbuka sendiri setelah server siap (http://127.0.0.1:3000, atau port berikutnya bila 3000 dipakai). Jendela hitam jangan ditutup selama dipakai. Berkas .bat juga mengecek: dijalankan dari dalam ZIP (harus diekstrak dulu), folder `web` ada, Node 20+, npm ada.
 
 **Manual (Windows, Mac, Linux):**
 ```
@@ -49,13 +49,15 @@ cd web
 npm install                      # sekali saja
 copy .env.local.example .env.local   # Mac/Linux: cp .env.local.example .env.local
 # isi web/.env.local, lalu:
-node dev-server.mjs
+node dev-server.mjs --buka      # --buka = buka browser otomatis
 ```
-Buka http://localhost:3000, klik KUNCI AKSES dan masukkan isi `ZUNO_ACCESS_KEY` dari `.env.local`. Panel STATUS SISTEM harus ONLINE. Butuh Node 20 ke atas.
+Buka alamat yang tertulis di layar (biasanya http://127.0.0.1:3000), klik KUNCI AKSES dan masukkan isi `ZUNO_ACCESS_KEY` dari `.env.local`. Panel STATUS SISTEM harus ONLINE. Butuh Node 20 ke atas.
 
 - API key hanya ditaruh di `web/.env.local` (tidak ikut ke GitHub). Jangan tempel ke chat.
 - Setelah `prototypes/zuno-studio-v2.html` berubah: `node build.mjs` (di folder `web`), lalu muat ulang halaman. Server tidak perlu dimulai ulang untuk perubahan halaman; perubahan di `.env.local` atau `api/` butuh mulai ulang (Ctrl+C lalu jalankan lagi).
-- Port lain: isi `PORT` di `.env.local`.
+- Port lain: isi `PORT` di `.env.local`. Bila port sedang dipakai aplikasi lain, server mencoba port berikutnya sendiri (maks. 10).
+
+**Bila gagal:** server menulis pesan `[GAGAL]` + saran di layar, dan log diagnosa di `web/server-lokal.log` (versi Node, folder, port, penyedia, key terisi atau kosong; tanpa isi key). Kirim isi log itu ke Claude Code. Penyebab umum: belum `git pull` / folder salah; Node belum terpasang atau versi lama; `npm install` gagal karena VPN; port dipakai aplikasi lain (sudah otomatis); membuka `localhost` yang diarahkan ke IPv6 (pakai alamat `127.0.0.1` yang tertulis).
 
 ## Uji
 - `node tests/zuno-web-dev-server-test.mjs` (server lokal: halaman, aset, status, kunci akses, streaming, berkas yang tidak boleh disajikan; butuh `npm install` di folder `web`)

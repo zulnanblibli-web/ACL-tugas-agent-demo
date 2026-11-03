@@ -6,8 +6,27 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { exec } from 'node:child_process';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
+const BUKA = process.argv.includes('--buka'); // buka browser otomatis setelah server siap
+
+// Log diagnosa (tanpa isi key): web/server-lokal.log. Kirim berkas ini bila server lokal gagal.
+const LOG = path.join(here, 'server-lokal.log');
+function log(msg) {
+  try { fs.appendFileSync(LOG, new Date().toISOString() + '  ' + msg + '\n'); } catch {}
+}
+function gagal(judul, saran, e) {
+  console.error('\n[GAGAL] ' + judul + '\n  ' + saran + (e ? '\n  Detail: ' + String((e && e.message) || e).split('\n')[0].slice(0, 300) : '') + '\n  Log: web\\server-lokal.log\n');
+  log('GAGAL ' + judul + ' | ' + (e ? String((e && e.stack) || e).slice(0, 1500) : ''));
+  process.exitCode = 1;
+}
+process.on('uncaughtException', (e) => { gagal('Galat tak terduga', 'Kirim isi web\\server-lokal.log ke Claude Code.', e); process.exit(1); });
+log('--- mulai | node ' + process.version + ' | ' + process.platform + ' ' + process.arch + ' | folder ' + here);
+if (Number(process.versions.node.split('.')[0]) < 20) {
+  gagal('Node.js terlalu lama (' + process.version + ')', 'Pasang Node.js 20 atau lebih baru dari https://nodejs.org, lalu jalankan lagi.');
+  process.exit(1);
+}
 
 function loadEnv(file) {
   if (!fs.existsSync(file)) return false;
@@ -25,10 +44,18 @@ function loadEnv(file) {
 const hasEnvFile = loadEnv(path.join(here, '.env.local'));
 
 // Handler dimuat setelah env terisi (api/ai.js membaca env saat dimuat).
-const { POST } = await import('./api/ai.js');
-const { GET } = await import('./api/status.js');
+let POST, GET;
+try {
+  ({ POST } = await import('./api/ai.js'));
+  ({ GET } = await import('./api/status.js'));
+} catch (e) {
+  if (e && e.code === 'ERR_MODULE_NOT_FOUND') gagal('Paket belum terpasang', 'Jalankan "npm install" di folder web (atau hapus folder web\\node_modules lalu klik jalankan-lokal.bat lagi). Bila gagal, matikan VPN sebentar.', e);
+  else gagal('Server AI tidak bisa dimuat', 'Kirim isi web\\server-lokal.log ke Claude Code.', e);
+  process.exit(1);
+}
 
-const PORT = Number(process.env.PORT || 3000);
+let PORT = Number(process.env.PORT || 3000);
+if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) PORT = 3000;
 const MIME = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.json': 'application/json'
@@ -77,12 +104,35 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, '127.0.0.1', () => {
+function bukaBrowser(url) {
+  const cmd = process.platform === 'win32' ? 'start "" "' + url + '"' : process.platform === 'darwin' ? 'open "' + url + '"' : 'xdg-open "' + url + '"';
+  exec(cmd, (e) => { if (e) { console.log('  (Browser tidak terbuka otomatis. Buka sendiri: ' + url + ')'); log('buka browser gagal: ' + e.message); } });
+}
+
+// Port sibuk (EADDRINUSE): coba port berikutnya, maksimal 10 kali.
+let percobaan = 0;
+server.on('error', (e) => {
+  if (e && e.code === 'EADDRINUSE' && percobaan < 9) {
+    log('port ' + PORT + ' dipakai aplikasi lain, coba ' + (PORT + 1));
+    console.log('  Port ' + PORT + ' sedang dipakai aplikasi lain, mencoba ' + (PORT + 1) + '...');
+    percobaan++; PORT++; return server.listen(PORT, '127.0.0.1');
+  }
+  if (e && e.code === 'EADDRINUSE') gagal('Port ' + (PORT - 9) + '-' + PORT + ' semua dipakai', 'Tutup aplikasi lain atau isi PORT=4000 di web\\.env.local.', e);
+  else if (e && e.code === 'EACCES') gagal('Port ' + PORT + ' diblokir Windows/antivirus', 'Isi PORT=4000 di web\\.env.local lalu jalankan lagi.', e);
+  else gagal('Server tidak bisa jalan', 'Kirim isi web\\server-lokal.log ke Claude Code.', e);
+  process.exit(1);
+});
+
+server.listen(PORT, '127.0.0.1');
+server.on('listening', () => {
+  const url = 'http://127.0.0.1:' + PORT;
   const provider = (process.env.AI_PROVIDER || 'claude').toLowerCase();
   const keyEnv = { claude: 'ANTHROPIC_API_KEY', openai: 'OPENAI_API_KEY', gemini: 'GEMINI_API_KEY', openrouter: 'OPENROUTER_API_KEY', 'openai-compatible': 'AI_BASE_URL' }[provider];
-  console.log('\nZuno Web lokal jalan di  http://localhost:' + PORT + '  (hanya bisa dibuka dari komputer ini)');
+  console.log('\nZuno Web lokal jalan di  ' + url + '  (hanya bisa dibuka dari komputer ini)');
   console.log('  Berkas pengaturan : ' + (hasEnvFile ? 'web/.env.local terbaca' : 'TIDAK ADA. Salin web/.env.local.example menjadi web/.env.local lalu isi'));
   console.log('  Penyedia AI       : ' + provider + (keyEnv && process.env[keyEnv] ? ' (key terisi)' : ' (key BELUM terisi: ' + (keyEnv || '?') + ')'));
   console.log('  Kunci akses       : ' + (process.env.ZUNO_ACCESS_KEY ? 'terisi (masukkan lewat tombol KUNCI AKSES di halaman)' : 'BELUM terisi (ZUNO_ACCESS_KEY, acak, minimal 16 karakter)'));
-  console.log('  Berhenti          : tekan Ctrl+C\n');
+  console.log('  Berhenti          : tekan Ctrl+C (jendela ini jangan ditutup selama dipakai)\n');
+  log('jalan di ' + url + ' | env ' + (hasEnvFile ? 'ada' : 'tidak ada') + ' | penyedia ' + provider + ' | key ' + (keyEnv && process.env[keyEnv] ? 'terisi' : 'kosong') + ' | akses ' + (process.env.ZUNO_ACCESS_KEY ? 'terisi' : 'kosong'));
+  if (BUKA) bukaBrowser(url);
 });

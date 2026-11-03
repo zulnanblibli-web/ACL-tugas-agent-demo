@@ -241,4 +241,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`.
 - Catatan kerja: aturan `CLAUDE.md` tetap berlaku (baca `docs/memori-zuno.md`, `progress.md`, dan bagian bawah riwayat di awal sesi; push hanya bila Zulnan bilang; API key tidak pernah ditempel di chat).
 
-## 41. (entri berikutnya di sini)
+## 41. Server lokal diperkuat untuk Windows (2026-11-03)
+- Permintaan: lanjutkan `progress.md` (tugas 000006: server lokal belum bisa dibuka di laptop Zulnan, penyebab belum diketahui).
+- Hasil: sesi ini cloud dan tidak tersambung ke laptop Zulnan (daftar folder Remote Control kosong), jadi error aslinya belum terlihat. Kandidat penyebab diperbaiki di kode: (1) browser dibuka ke `localhost` setelah 3 detik tetap, padahal server hanya mendengar `127.0.0.1`; di Windows `localhost` bisa diarahkan ke IPv6 dan browser bisa terbuka sebelum server siap. Sekarang server membuka browser sendiri ke `http://127.0.0.1:PORT` setelah benar-benar siap (`--buka`). (2) Port sibuk tidak lagi membuat crash: mencoba port berikutnya (maks. 10). (3) Pesan `[GAGAL]` + saran untuk paket belum terpasang, Node lama, port diblokir, galat lain. (4) Log diagnosa `web/server-lokal.log` (tanpa isi key, tidak disajikan, masuk .gitignore). `jalankan-lokal.bat`: cek dijalankan dari dalam ZIP, folder `web` ada, Node 20+, npm ada; npm install tanpa audit/fund; setelah Notepad ditutup server langsung jalan; pesan VPN saat npm gagal. Tes server lokal 21 pemeriksaan lolos (tambahan: pindah port otomatis, log tanpa key, log tidak disajikan); pesan paket belum terpasang dicek manual; tes API Claude/Gemini/OpenRouter lolos.
+- File berubah: `web/dev-server.mjs`, `jalankan-lokal.bat`, `web/.gitignore`, `web/README.md`, `tests/zuno-web-dev-server-test.mjs`, `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`.
+- Tertunda: izin push; Zulnan `git pull` lalu klik `jalankan-lokal.bat`; bila masih gagal kirim isi `web/server-lokal.log` atau tulisan [GAGAL] (atau sambungkan Remote Control supaya Claude Code bisa mengecek langsung).
+
+## 42. (entri berikutnya di sini)

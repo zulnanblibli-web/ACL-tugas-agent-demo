@@ -37,11 +37,11 @@ Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status
 - Tampilan (`web/src/`): HUD gelap biru; hero robot (`web/assets/zuno-hero.webp`, gambar pilihan Zulnan yang dirapikan, menghadap kiri ke inti ZUNO, di belakang kartu STATUS/DIVISI/KUNCI AKSES); kartu kaca; motion di `motion.js` (mati di mode kurangi gerak); "Cara Kerja Zuno" menurun di samping ruang kerja, di HP jadi bilah lengket bawah. Teks tampilan tanpa banyak "lu"; tanpa keterangan "auto posting"; render video "sesuai kebutuhan" (HyperFrames, Remotion, manual).
 - Server AI: `web/api/ai.js`, penyedia lewat `AI_PROVIDER` (claude, gemini, openrouter, openai, openai-compatible untuk 9router/Ollama). Akses dikunci `ZUNO_ACCESS_KEY`.
 - Env live saat ini: `AI_PROVIDER=gemini`, `GEMINI_API_KEY`, `ZUNO_ACCESS_KEY` (diatur Zulnan). Belum ada `OPENROUTER_API_KEY`.
-- Preview lokal di laptop: `jalankan-lokal.bat` (Windows) atau `cd web && npm install && node dev-server.mjs`, buka http://localhost:3000, pengaturan di `web/.env.local` (dari `.env.local.example`; key diisi Zulnan sendiri). Status: ditulis dan lolos tes sandbox, **belum berhasil dibuka di laptop Zulnan, penyebab belum diketahui** (lihat `progress.md` tugas 000006).
+- Preview lokal di laptop: `jalankan-lokal.bat` (Windows) atau `cd web && npm install && node dev-server.mjs`, buka http://localhost:3000, pengaturan di `web/.env.local` (dari `.env.local.example`; key diisi Zulnan sendiri). Status: diperkuat 2026-11-03 (browser dibuka otomatis ke `127.0.0.1` setelah server siap, pindah port otomatis, pesan `[GAGAL]`, log `web/server-lokal.log` tanpa key); belum dicoba ulang di laptop Zulnan (lihat `progress.md` tugas 000007). Sesi cloud tidak bisa menjalankan apa pun di laptop kecuali Remote Control disambungkan.
 - Tes: `cd web && node ../tests/zuno-web-api-test.mjs` (juga `-gemini-`, `-openrouter-`); `node tests/zuno-web-stub-test.js`; `node tests/zuno-studio-v2-build-stub-test.js [--prd|--klien]`; `node tests/zuno-studio-v2-stub-test.js`.
 
 ## Yang masih terbuka
-- **Pertama: server lokal belum bisa dibuka di laptop Zulnan** (perintah terakhir: "belum bisa dibuka local nya"); diagnosa lewat Claude Code di laptop (`progress.md` 000006).
+- **Pertama: Zulnan coba ulang server lokal** setelah perbaikan (`git pull`, klik `jalankan-lokal.bat`); bila gagal kirim isi `web/server-lokal.log` (`progress.md` 000007).
 - Zulnan cek tampilan live di laptop dan HP, termasuk carousel navy-biru, input gambar cover, tipe video A/B/C, dan paket Claude Code.
 - Pilih tetap Gemini atau pindah OpenRouter (isi saldo, `OPENROUTER_API_KEY`, `AI_PROVIDER=openrouter`, Redeploy).
 - Unggah ulang `skills/engineering/01-idea-to-scope-lock.zip` ke claude.ai (versi akun masih batas 5 fitur).
