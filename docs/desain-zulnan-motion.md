@@ -1,5 +1,7 @@
 # DESAIN_ZULNAN.md — Brief Master Video Motion Graphic (Versi Zulnan)
 
+> **Catatan 2026-11-03:** karakter dan struktur video kini mengikuti `docs/referensi-video.md` (tipe A, B, C): avatar voxel Zulnan, robot Zuno, dan agen divisi dipakai pada tipe A dan B; larangan "karakter robot dari foto referensi" di bawah berlaku untuk robot lama, bukan Zuno. Bila ada yang bertentangan, `docs/referensi-video.md` dan `docs/brief-gaya-konten.md` yang berlaku.
+
 > Cara pakai: upload file ini + foto referensi karakter (`Maskot.png`) + knowledge/konten (file, link web, folder, PDF, screenshot, naskah, dll), lalu tambahkan 1 baris instruksi singkat (opsional), misal: *"Bikin video buat TikTok soal X."*
 > Kalau tidak ada instruksi tambahan, pakai **DEFAULT** di bagian 2 dan **STYLE VISUAL** di bagian 3.
 > **Penting soal foto referensi:Pakai **hanya karakter pria (avatar Zulnan)** sebagai anchor. 

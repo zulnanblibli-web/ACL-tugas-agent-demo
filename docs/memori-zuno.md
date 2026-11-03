@@ -22,6 +22,7 @@ Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status
 - BOFU = bukti tentang Zulnan, arah ke follow dan komentar. Ukuran konten menang: komentar (lalu retensi, view).
 - Bahan dari sumber luar, diolah sendiri dan disebut sumbernya. Riset otomatis via Apify/Scrapelyfy nanti.
 - **Carousel: SATU template saja** (navy-biru dari referensi Zulnan, 2026-11-03), 5 tipe slide (cover, poin, fakta, alasan, cta), isi menyesuaikan topik, foto Zulnan di cover, tanpa maskot. Template A-D dihentikan. Batas kata dipaksa kode; angka wajib bersumber. Spesifikasi: `docs/template-carousel.md`. Keluhan "rame" hanya untuk carousel, bukan video.
+- **Video: tiga tipe** (2026-11-03, `docs/referensi-video.md`): A Percakapan (avatar voxel Zulnan ngobrol dengan Zuno), B Proses tim (Zuno dan agen divisi, papan Task Orchestration; tulisan "Design" benar, isi papan hanya contoh), C Zulnan di frame (ikuti referensi). Karakter hanya di video A dan B, bukan carousel. Referensi dipakai untuk struktur dan ritme, tanpa meniru merek lain. Footage 3D tidak otomatis dari VPS; butuh generator.
 
 ## Engineering (keputusan Zulnan)
 - Alur terpisah dari konten. 3 gerbang persetujuan: ruang lingkup, tampilan, hasil uji.

@@ -107,3 +107,6 @@ Sudah diputuskan Zulnan (2026-11-01):
 Masih terbuka:
 - Video pertama untuk uji claude-video-effects: butuh rekaman asli Zulnan (video vertikal dari ponsel paling cocok) dan pilihan satu preset. Zulnan akan mengirimnya di Claude Code.
 - Alat untuk video Tanpa Wajah (HyperFrames atau Remotion) belum dipilih.
+
+## 8. Tipe video A, B, C (keputusan Zulnan 2026-11-03)
+Tiga tipe video dari tiga video referensi: **A Percakapan** (Zulnan dan Zuno), **B Proses tim** (Zuno dan agen divisi), **C Zulnan di frame**. Tipe A dan B memakai karakter (acuan gambar di `assets/karakter/`); tipe C melonggarkan batas wajah (maks. 12 detik berurutan selama overlay berganti tiap 2-3 detik). Resep, hasil bedah referensi, dan syarat render: `docs/referensi-video.md`. Pilihan tipe ada di layar perintah Zuno Studio; Kartu Gaya mencatat `tipe_video` dan `karakter`.

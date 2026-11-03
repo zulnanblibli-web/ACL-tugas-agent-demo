@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 // Argumen opsional: path file referensi (foto/video) yang diunggah ke tool.
-const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'tampil' : 'tanpa'; const refs = args.filter(a=>!a.startsWith('--'));
+const args = process.argv.slice(2); const TIPE=(args.find(a=>a.startsWith('--tipe='))||'').slice(7); const MODE = args.includes('--tampil') ? 'tampil' : 'tanpa'; const refs = args.filter(a=>!a.startsWith('--'));
 (async()=>{
   const b = await chromium.launch(); const p = await b.newPage({viewport:{width:1100,height:900}});
   const errs=[]; p.on('pageerror',e=>errs.push('PAGEERR '+e.message)); p.on('console',m=>{if(m.type()==='error')errs.push('CONSOLE '+m.text())});
@@ -32,7 +32,7 @@ const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'ta
   await p.waitForTimeout(300);
   console.log('paket default:', await p.$eval('#count',e=>e.value));
   if(refs.length){ await p.setInputFiles('#reffile',refs); await p.fill('#refnote','neon, cepat'); console.log('ref list:', await p.$eval('#reflist',e=>e.innerText.slice(0,80))); }
-  await p.selectOption('#mode',MODE); await p.fill('#cmd','tes'); await p.fill('#src','Tools AI baru untuk merangkum rapat https://contoh.test/berita'); await p.click('#run');
+  await p.selectOption('#mode',MODE); if(TIPE) await p.selectOption('#tv',TIPE); await p.fill('#cmd','tes'); await p.fill('#src','Tools AI baru untuk merangkum rapat https://contoh.test/berita'); await p.click('#run');
   await p.waitForSelector('.banner:has-text("siap kamu tinjau")',{timeout:30000});
   await p.waitForFunction(()=>!document.getElementById('run').disabled,null,{timeout:120000});
   console.log('cards:',await p.$$eval('.kc',e=>e.map(x=>x.innerText.replace(/\n/g,' | '))));
@@ -41,6 +41,7 @@ const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'ta
   await p.click('#tabv');
   const md=await p.evaluate(()=>document.querySelector('#resv .mdprev').innerText);
   console.log('md preview panjang:',md.length,'| ada babak:',['HOOK','PROBLEM','TWIST','SOLUSI','CTA'].every(k=>md.includes(k)),'| ada storyboard:',md.includes('Storyboard per adegan'),'| HyperFrames:',md.includes('hyperframes'),'| rencana efek:',md.includes('_effects.json'),'| skrip rekam:',md.includes('Skrip rekam'));
+  console.log('tipe video:',TIPE||'otomatis','| md memuat tipe:',md.includes('Tipe video')||md.includes('tipe_video'),'| karakter:',md.includes('Gambar acuan'),'| segmen wajah terpanjang:',(md.match(/Segmen wajah terpanjang[^\n]*|segmen_wajah_terpanjang[^\n]*/i)||['-'])[0].slice(0,60));
   console.log('tombol:',await p.$$eval('#resv .btns .btn',e=>e.map(x=>x.textContent.trim())));
   console.log('peran dipanggil:',[...new Set((await p.evaluate(()=>window.__calls)).map(c=>c.role))].join(','));
   console.log('jumlah P.1 (tanpa revisi otomatis):',(await p.evaluate(()=>window.__calls)).filter(c=>c.role==='P.1').length);

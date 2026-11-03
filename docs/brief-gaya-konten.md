@@ -99,7 +99,7 @@ Aturan carousel:
 
 ### Maskot di carousel
 
-Dua gambar maskot voxel (diterima 2026-11-01) tersimpan di `assets/maskot/`, tetapi **tidak dipakai di carousel** sejak keputusan template tunggal 2026-11-03. Aturan maskot untuk video belum ditetapkan; jangan dipakai di video sebelum Zulnan menegaskan.
+Dua gambar maskot voxel (diterima 2026-11-01) tersimpan di `assets/maskot/`, tetapi **tidak dipakai di carousel** sejak keputusan template tunggal 2026-11-03. Di video, karakter dipakai pada **tipe A dan B** saja (avatar voxel Zulnan, robot Zuno, agen divisi; acuan di `assets/karakter/`, aturan di `docs/referensi-video.md`); tipe C memakai Zulnan sendiri di kamera.
 
 ## 7. Gaya video
 
@@ -187,4 +187,4 @@ Sudah dijawab 2026-11-02: contoh suara (tidak diperlukan), detail web (6 web akt
 4. Harga produk (selama kosong tetap placeholder).
 5. Satu rekaman asli plus satu preset untuk uji pertama claude-video-effects.
 6. Alat render video Tanpa Wajah.
-7. Apakah maskot dipakai di video (carousel tidak memakai maskot sejak 2026-11-03).
+7. (Selesai 2026-11-03) Maskot: video tipe A dan B memakai karakter, carousel tidak; lihat `docs/referensi-video.md`.

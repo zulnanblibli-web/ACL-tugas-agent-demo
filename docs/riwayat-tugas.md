@@ -207,4 +207,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `prototypes/zuno-studio-v2.html`, `prototypes/arsip/zuno-carousel-opsi.html` (dipindah), `prototypes/carousel-template/` (baru), `web/index.html`, `web/assets/foto-zulnan.webp` (baru), `web/assets/README.md`, `docs/template-carousel.md` (baru), `docs/brief-gaya-konten.md`, `docs/gaya-video.md`, `docs/prompt-orkestrasi-zuno.md`, `tests/zuno-studio-v2-stub-test.js`, `tests/zuno-web-stub-test.js`, `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`.
 - Tertunda: uji dengan Claude asli di live; foto asli resolusi tinggi; `docs/prompt-orkestrasi-zuno.docx` dan Claude Doc belum disamakan dengan perubahan template; unggah ulang skill 01 ke claude.ai (entri lama).
 
-## 36. (entri berikutnya di sini)
+## 36. Tipe video A, B, C dari tiga referensi (2026-11-03)
+- Permintaan: video referensi 1 memakai karakter dari gambar 1 (percakapan Zulnan dan Zuno), referensi 2 memakai footage gambar 2 (Zuno dan agen divisi; tulisan "Design" benar, isi papan hanya contoh), konten dengan Zulnan di frame mengikuti referensi 3. Set semuanya.
+- Hasil: tiga video dibedah (struktur, ritme, loudness) dan ditulis ke `docs/referensi-video.md` beserta pemetaan tipe A/B/C dan jawaban soal VPS (VPS = render dan orkestrasi, bukan generator footage 3D). Zuno Studio v2: pilihan "Tipe video" (A, B, C, otomatis); tipe memaksa mode (A/B Tanpa Wajah, C Mode Tampil), resep dan karakter masuk konteks semua agen dan Kartu Gaya; batas wajah tipe C dilonggarkan (maks. 12 detik berurutan, `faceMax()`), tipe lain tetap 3 detik. Tes stub v2 (default, --tampil, --tipe=A/B/C) dan web lolos.
+- File berubah: `prototypes/zuno-studio-v2.html`, `web/index.html`, `assets/karakter/` (dua gambar acuan, baru), `docs/referensi-video.md` (baru), `docs/gaya-video.md`, `docs/brief-gaya-konten.md`, `docs/desain-zulnan-motion.md`, `tests/zuno-studio-v2-stub-test.js`, `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`.
+- Tertunda: belum diuji dengan Claude asli; belum ada render MP4; keputusan cara membuat footage karakter (gambar acuan dengan gerak kode atau generator video) dan VPS render; file MP4 referensi tidak disimpan di repo.
+
+## 37. (entri berikutnya di sini)
