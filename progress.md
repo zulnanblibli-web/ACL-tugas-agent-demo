@@ -115,7 +115,8 @@ Dua gambar maskot voxel disimpan di `assets/maskot/` dan dicatat di `docs/brief-
 - Dokumen 1 (125 pertanyaan) masih punya bagian "Langkah berikutnya" yang usang dan belum memuat jawaban Word. Perbarui hanya bila diminta.
 
 ## Artifact dan dokumen (claude.ai)
-- Zuno Studio v2 (preview, hanya terlihat pemilik): https://claude.ai/artifact/8B5S1yzoCDfKY2f9P5zZ2g
+- Zuno Studio v2 preview TERBARU (2026-11-03, carousel navy-biru, tipe video A/B/C, paket Claude Code; hanya terlihat pemilik; versi artifact tanpa foto cover dan tanpa gambar karakter di ZIP karena tidak ada folder assets): https://claude.ai/artifact/Hhp1jjUmZNmi2TFjr9qCBX
+- Zuno Studio v2 preview LAMA (usang, belum berisi perubahan 2026-11-03): https://claude.ai/artifact/8B5S1yzoCDfKY2f9P5zZ2g
 - Skema Simulasi Zuno (preview): https://claude.ai/artifact/Te8QVoUJPGZp6bZSiiE12p
 - Zuno Studio v1 (tool live): https://claude.ai/artifact/P59ifFpbatkQKxDEn6Z5tc
 - Prompt Orkestrasi Zuno (Claude Doc): https://claude.ai/artifact/5B8WKpCnj4t79CwtAWAPM7
