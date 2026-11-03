@@ -233,4 +233,12 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `web/dev-server.mjs`, `web/.env.local.example`, `web/.gitignore`, `web/.vercelignore`, `web/README.md`, `jalankan-lokal.bat`, `.gitattributes`, `tests/zuno-web-dev-server-test.mjs`, `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: Zulnan mencoba di laptop (Windows); key penyedia AI diisi sendiri di `web/.env.local`.
 
-## 40. (entri berikutnya di sini)
+## 40. Serah-terima ke Claude Code (2026-11-03 malam)
+- Permintaan: "commit dan simpan perintah terakhir di riwayat github saya mau pindah ke claude code".
+- Perintah terakhir sebelum pindah (verbatim): "belum bisa dibuka local nya." (setelah: "push aja. terus bikin local server nya buat priview di local gua jangan artifact."). Gua sempat bertanya apa tepatnya yang terjadi; jawaban Zulnan belum ada, jadi penyebabnya belum diketahui.
+- Yang sudah selesai di sesi claude.ai ini (semua sudah di-push dan live; deploy `dpl_J8pTt8ay8ECJ2vCA1pMgcBAcJs6D`, commit `80cc1ab`): carousel satu template navy-biru dengan 5 tipe slide (entri 35); tipe video A, B, C dan dua gambar karakter (entri 36); tombol "Unduh paket Claude Code (.zip)" dengan alat render bebas (entri 37); gambar cover carousel bisa diunggah per topik (entri 38); server lokal `web/dev-server.mjs` + `jalankan-lokal.bat` (entri 39).
+- Yang tertunda dan jadi pekerjaan pertama di Claude Code: tugas 000006 di `progress.md` (diagnosa dan perbaiki server lokal di laptop Zulnan). Lalu: uji semua perubahan dengan Claude asli di live; foto cover asli resolusi tinggi; coba paket Claude Code (format HyperFrames belum teruji); putuskan cara membuat footage karakter video A/B dan sambungkan VPS render; arah live otomatis (antrean review, penyimpanan, upload via Metricool, tanyakan apakah Threads masih dipakai).
+- File berubah: `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`.
+- Catatan kerja: aturan `CLAUDE.md` tetap berlaku (baca `docs/memori-zuno.md`, `progress.md`, dan bagian bawah riwayat di awal sesi; push hanya bila Zulnan bilang; API key tidak pernah ditempel di chat).
+
+## 41. (entri berikutnya di sini)
