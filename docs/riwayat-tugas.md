@@ -194,4 +194,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: Zulnan cek tampilan live (hero robot, Cara Kerja, menu PRD) di laptop dan HP; pilih tetap Gemini atau pindah OpenRouter.
 
-## 34. (entri berikutnya di sini)
+## 34. Memori jangka panjang (2026-11-03)
+- Permintaan: simpan jadi memori jangka panjang sebelum Zulnan pindah ke chat.
+- Hasil: `docs/memori-zuno.md` (ringkasan padat: aturan kerja Zulnan, struktur Zuno, keputusan konten dan Engineering, Zuno Web live + env + tes, yang masih terbuka). `CLAUDE.md` mewajibkan membacanya di awal sesi dan memperbaruinya di akhir sesi bila ada keputusan baru.
+- File berubah: `docs/memori-zuno.md` (baru), `CLAUDE.md`, `docs/riwayat-tugas.md`.
+- Tertunda: lihat bagian "Yang masih terbuka" di `docs/memori-zuno.md`.
+
+## 35. (entri berikutnya di sini)

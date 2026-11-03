@@ -3,11 +3,11 @@
 Pemilik: Zulnan (Bahasa Indonesia, santai, to the point). Jawab dan tulis dokumen dalam Bahasa Indonesia.
 
 ## Mulai sesi
-1. Baca `progress.md` lalu bagian paling bawah `docs/riwayat-tugas.md`.
+1. Baca `docs/memori-zuno.md` (memori jangka panjang, ringkas), lalu `progress.md`, lalu bagian paling bawah `docs/riwayat-tugas.md`.
 2. Kerjakan "Tugas berikutnya" di `progress.md` kecuali Zulnan menyebut lain.
 
 ## Selesai sesi
-1. Perbarui `progress.md` (status, keputusan baru, tugas berikutnya).
+1. Perbarui `progress.md` (status, keputusan baru, tugas berikutnya) dan `docs/memori-zuno.md` bila ada keputusan atau fakta baru yang perlu diingat lama.
 2. Tambah satu entri baru di bawah `docs/riwayat-tugas.md` (tanggal, permintaan, hasil, file yang berubah, yang tertunda). Jangan menghapus entri lama.
 
 ## Gaya konten
