@@ -54,6 +54,7 @@
     var sig = (isBuild() ? 'b' : 'k') + steps.map(function (s) { return s.name + s.s + s.sub; }).join('|');
     var running = ['stop', 'bstop'].some(function (id) { var b = $(id); return b && !b.disabled; });
     var core = $('hCore'); if (core) core.setAttribute('data-run', running ? '1' : '0');
+    document.documentElement.setAttribute('data-zuno', running ? 'kerja' : 'siaga');
     if ($('hCoreTxt')) $('hCoreTxt').textContent = running ? 'BEKERJA' : 'STANDBY';
     if ($('hMode')) $('hMode').textContent = running ? 'BEKERJA' : 'SIAGA';
     if (sig === lastSig) return;
