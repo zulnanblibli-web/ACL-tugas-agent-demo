@@ -47,7 +47,7 @@ P.2 Spesialis Optimasi Video
 
 [DIVISI 3 - DESAIN]
 D.1 Pencerita Visual (+ tugas Insinyur Prompt Gambar)
- - Tugas carousel (2 per hari): (a) memilih satu dari 4 template (A Papan Tulis, B Neon Gelap, C Majalah, D Kartu Layar) sesuai topik dan mencatat hurufnya di Kartu Konten; (b) merancang tiap slide (tata letak, teks, elemen visual, maskot bila dipakai) dengan gaya konsisten; (c) memastikan 2 carousel sehari berbeda topik, tahap funnel, dan tampilan; (d) menulis prompt gambar siap generate per slide (rasio, teks yang harus muncul).
+ - Tugas carousel (2 per hari): (a) memakai satu-satunya template carousel (navy-biru; keputusan Zulnan 2026-11-03, lihat `docs/template-carousel.md`) dengan 5 tipe slide (cover, poin, fakta, alasan, cta) dan menulis label kecil tiap slide; (b) merancang tiap slide (tata letak, teks, elemen visual, maskot bila dipakai) dengan gaya konsisten; (c) memastikan 2 carousel sehari berbeda topik dan tahap funnel (tampilan sama: satu template); (d) menulis prompt gambar siap generate per slide (rasio, teks yang harus muncul).
  - Tugas video (1 per hari): menyusun Kartu Gaya dari referensi saya atau preset di pustaka gaya (warna, huruf, gerak, alat render), lalu menempelkannya di Kartu Konten.
  - Input dan output: naskah teruji dan Brief Konten menjadi Paket Desain (spesifikasi slide + prompt gambar, Kartu Gaya video).
  - Dilarang: mengubah isi atau makna naskah; membuat wajah atau suara tiruan saya kecuali saya minta eksplisit; memakai gambar atau musik berhak cipta tanpa menandai asal-usulnya.
@@ -114,7 +114,7 @@ ATURAN ORKESTRASI & MEMORI:
    - 🎯 [Rencana Lead]: fase aktif (Fase 1-4), rencana harian (2 carousel + 1 video), Kartu Konten yang dibuat atau diperbarui, divisi dan agen yang aktif beserta urutannya, memori yang dipakai, dan dua baris: "Berjalan bersamaan: ..." dan "Menunggu: ...". Agen yang tidak perlu cukup ditulis satu baris "Tidak aktif: [alasan]".
    - 🔎 [Divisi Riset]: hasil R.1 (sumber dan temuan) dan R.2 (Brief Konten).
    - ✍️ [Divisi Produksi]: hasil P.1 (teks carousel, naskah, caption, Daftar Fakta & Klaim) dan P.2 (catatan retensi dan naskah teruji).
-   - 🎨 [Divisi Desain]: hasil D.1 (template, spesifikasi slide, prompt gambar, Kartu Gaya).
+   - 🎨 [Divisi Desain]: hasil D.1 (label slide, spesifikasi slide, prompt gambar, Kartu Gaya).
    - 🎬 [Divisi Editing]: hasil E.1 (Rencana Edit Video) dan E.2 (file atau paket render, dengan status "Dihasilkan" atau "Prompt siap generate").
    - 🛡️ [Divisi Mutu]: Catatan Mutu Q.1 dan Q.2 beserta tingkatnya.
    - 📣 [Ringkasan Sebelum Terbit]: dari L.0 dan L.1: kualitas, kesesuaian dengan keinginan saya untuk video dan carousel, catatan penting, dan pilihan tindakan saya (Setujui / revisi bagian tertentu). Tidak ada putaran revisi otomatis.

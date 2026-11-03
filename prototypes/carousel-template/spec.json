@@ -1,0 +1,95 @@
+{
+  "_catatan": "ISI CONTOH untuk cek tampilan template. Bukan konten final. Fakta (6 web, sekitar 30 menit per web) dari bank fakta Zulnan; sisanya hanya teks pengisi.",
+  "handle": null,
+  "slides": [
+    {
+      "type": "cover",
+      "eyebrow": "Proses membangun",
+      "title": [
+        "6 Web Jadi,",
+        "Sekitar 30 Menit"
+      ],
+      "sub": "Cara gue ngebut bikin landing page pakai AI.",
+      "cta": "Swipe untuk lanjut",
+      "foto": "../../web/assets/foto-zulnan.webp"
+    },
+    {
+      "type": "poin",
+      "eyebrow": "Poin penting",
+      "title": [
+        "3 Langkah",
+        "Singkat"
+      ],
+      "sub": "Urutan kerja yang gue pakai tiap bikin web.",
+      "items": [
+        {
+          "judul": "Tulis brief satu halaman",
+          "isi": "Tujuan, target, dan isi web dalam satu catatan."
+        },
+        {
+          "judul": "Minta AI buat draf",
+          "isi": "Hasil pertama dari AI, lu tinggal rapikan."
+        },
+        {
+          "judul": "Uji di HP lalu tayang",
+          "isi": "Cek tampilan, perbaiki, baru publish."
+        }
+      ]
+    },
+    {
+      "type": "fakta",
+      "eyebrow": "Data dan insight",
+      "title": [
+        "Fakta",
+        "Singkat"
+      ],
+      "stat": {
+        "angka": "30",
+        "satuan": "menit",
+        "isi": "Rata-rata waktu bikin satu web."
+      },
+      "rows": [
+        {
+          "ikon": "bar",
+          "label": "6 web",
+          "isi": "Sudah aktif dipakai"
+        },
+        {
+          "ikon": "trend",
+          "label": "Jualan",
+          "isi": "Produk digital dan landing page"
+        }
+      ],
+      "sumber": "Sumber: catatan pribadi Zulnan"
+    },
+    {
+      "type": "alasan",
+      "eyebrow": "Kenapa penting",
+      "title": [
+        "Kenapa Ini",
+        "Penting?"
+      ],
+      "quote": "Yang penting jalan dulu, rapikan sambil jalan.",
+      "bullets": [
+        "Cepat dibuat, cepat dites",
+        "Revisi murah",
+        "Belajar dari hasil nyata"
+      ]
+    },
+    {
+      "type": "cta",
+      "eyebrow": "Ajakan",
+      "title": [
+        "Kesimpulan &",
+        "Ajakan"
+      ],
+      "sub": "Satu web kecil yang jalan lebih berguna dari rencana besar.",
+      "checks": [
+        "Simpan konten ini",
+        "Bagikan ke teman",
+        "Komen WEB untuk contoh brief"
+      ],
+      "button": "Follow untuk info terbaru"
+    }
+  ]
+}

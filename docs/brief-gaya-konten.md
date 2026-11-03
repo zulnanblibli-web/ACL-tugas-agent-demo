@@ -86,43 +86,20 @@ Rencana harian menjaga tiga konten tidak kembar (topik atau tahap funnel berbeda
 
 ## 6. Gaya carousel
 
-**Keputusan Zulnan (2026-11-01): campuran sesuai topik.** Tidak satu template tetap. Pencerita Visual memilih satu template per carousel dari empat pilihan di bawah, sesuai topik dan tahap funnel. Satu carousel memakai satu template dari slide pertama sampai terakhir. Zulnan boleh mengganti pilihan dengan menyebut hurufnya.
-
-Contoh tampilan: artifact "Pilihan Template Carousel" (https://claude.ai/artifact/PHNp692VhrsaWiqzwhusP4), salinan di `prototypes/zuno-carousel-opsi.html`.
-
-| Template | Font | Warna | Cocok untuk |
-|---|---|---|---|
-| **A Papan Tulis** | Archivo Black, Permanent Marker, Inter | Putih dingin, hitam, stabilo kuning | Tutorial dan cerita proses; terbaca cepat |
-| **B Neon Gelap** | Anton, Space Mono, Inter | Hitam, magenta, cyan | TOFU yang perlu menahan scroll; paling mirip gaya video |
-| **C Majalah** | Playfair Display, Inter | Krem abu, hitam, merah tua | MOFU dan BOFU: cerita proses, portofolio, studi kasus |
-| **D Kartu Layar** | Montserrat, Inter | Gradasi lavender-biru, ungu, kaca | Tutorial langkah demi langkah dan topik tools AI |
-
-Usulan pemilihan awal (boleh diganti Zulnan): TOFU memakai B atau A; MOFU memakai A atau D; BOFU memakai C. Warna akhir tiap template: **[ISI bila ingin diubah]**.
+**Keputusan Zulnan (2026-11-03): SATU template saja** (navy-biru, dari referensi yang Zulnan kirim). Template A sampai D (keputusan 2026-11-01) dihentikan; opsinya diarsipkan di `prototypes/arsip/zuno-carousel-opsi.html`. Hasil keluaran hanya satu bentuk; yang menyesuaikan topik adalah isinya. Spesifikasi lengkap (token, 5 tipe slide, batas kata, foto cover): `docs/template-carousel.md`.
 
 Aturan carousel:
 - Ukuran akhir 1080 x 1350 piksel (rasio 4:5).
-- Slide 1 adalah hook atau cover; slide terakhir CTA. **Jumlah slide mengikuti topik.**
-- Satu poin per slide, kalimat pendek.
-- Elemen tetap di semua template: handle akun (**[ISI handle]**) dan penomoran slide.
+- Slide 1 adalah hook atau cover (dengan foto Zulnan); slide terakhir CTA. **Jumlah slide mengikuti topik** (6-9).
+- Satu ide per slide, kalimat pendek; batas kata dipaksa kode.
+- Penomoran slide selalu ada. Handle akun (**[ISI handle]**) tidak ditampilkan sampai diisi.
+- Angka dan sumber: slide fakta hanya bila ada angka nyata dan wajib memuat baris Sumber.
 - Slogan tidak wajib di carousel (aturan slogan berlaku untuk video).
-- Render: HTML atau canvas ke PNG per slide. Status "Prompt siap generate" sampai file PNG benar-benar ada.
+- Render: canvas di Zuno Studio ke PNG per slide. Status "Prompt siap generate" sampai file PNG benar-benar ada.
 
 ### Maskot di carousel
 
-Zulnan memberi dua gambar maskot voxel (diterima 2026-11-01) agar carousel lebih estetik. File: `assets/maskot/` (PNG, latar transparan).
-
-| Varian | File | Ciri |
-|---|---|---|
-| **A** | `assets/maskot/maskot-a-kaos-teal-cargo.png` | Rambut hitam tebal bergelombang, kaos teal, celana cargo abu gelap, sneakers putih, jam tangan hitam di tangan kiri; berdiri tegak, tersenyum lebar |
-| **B** | `assets/maskot/maskot-b-kaos-putih-jeans.png` | Rambut hitam pendek bertekstur, kaos putih, jeans biru dengan lipatan, sneakers putih, jam tangan hitam di tangan kiri; tangan kanan terbuka seperti menjelaskan |
-
-Aturan pakai (keputusan Zulnan: desain disesuaikan oleh agen saat mengerjakan):
-- Pencerita Visual yang menyesuaikan penempatan, ukuran, dan kecocokan dengan template A sampai D di tiap carousel (misalnya cover dan slide CTA lebih besar, slide isi kecil atau di sudut). Satu varian per carousel; jangan campur A dan B dalam satu carousel.
-- Boleh diskalakan, dipotong sebagian dari tepi slide, atau diberi bayangan lembut. **Dilarang** mengubah wajah, proporsi, gaya rambut, atau pakaian, menggambar ulang dengan AI, atau membuat varian baru tanpa persetujuan Zulnan.
-- Teks tidak boleh menutup wajah maskot. Maskot tidak boleh mengambil ruang yang membuat teks slide sulit dibaca.
-- Pilihan varian default per template atau topik: **[ISI Zulnan]**. Sampai terisi, Pencerita Visual memilih dan mencatat alasannya di Kartu Konten.
-- Video: aturan maskot untuk video belum ditetapkan (brief motion lama menyebut avatar berkaos putih dan berjeans biru, mirip varian B). Jangan dipakai di video sebelum Zulnan menegaskan.
-- Pengecek: Pengumpul Bukti memastikan maskot tidak terpotong sehingga wajahnya hilang, tidak memudar, dan konsisten dengan file asli; Penjaga Merek memastikan penampilannya sama dengan file asli.
+Dua gambar maskot voxel (diterima 2026-11-01) tersimpan di `assets/maskot/`, tetapi **tidak dipakai di carousel** sejak keputusan template tunggal 2026-11-03. Aturan maskot untuk video belum ditetapkan; jangan dipakai di video sebelum Zulnan menegaskan.
 
 ## 7. Gaya video
 
@@ -210,4 +187,4 @@ Sudah dijawab 2026-11-02: contoh suara (tidak diperlukan), detail web (6 web akt
 4. Harga produk (selama kosong tetap placeholder).
 5. Satu rekaman asli plus satu preset untuk uji pertama claude-video-effects.
 6. Alat render video Tanpa Wajah.
-7. Varian maskot default per template atau topik (A kaos teal atau B kaos putih), dan apakah maskot dipakai juga di video.
+7. Apakah maskot dipakai di video (carousel tidak memakai maskot sejak 2026-11-03).

@@ -200,4 +200,11 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `docs/memori-zuno.md` (baru), `CLAUDE.md`, `docs/riwayat-tugas.md`.
 - Tertunda: lihat bagian "Yang masih terbuka" di `docs/memori-zuno.md`.
 
-## 35. (entri berikutnya di sini)
+## 35. Template carousel tunggal navy-biru (2026-11-03)
+- Permintaan: pakai referensi navy-biru yang Zulnan kirim sebagai satu-satunya template carousel (hanya satu hasil keluaran, isi menyesuaikan topik), foto Zulnan dari referensi dipakai di cover, lalu push agar live di Vercel. Konteks: template lama terasa terlalu rame (hanya carousel, bukan video).
+- Hasil: renderer carousel di `prototypes/zuno-studio-v2.html` ditulis ulang (canvas): 5 tipe slide (cover, poin, fakta, alasan, cta), token dari referensi (Poppins + Inter, `#0B0F1A` dan biru `#3EA6FF`), batas kata dipaksa kode (`CAR_LIM`, teks dipotong dan dicatat di paket .md), foto cover dimuat dari `/assets/foto-zulnan.webp` (hanya di versi web). Pilihan template A-D dihapus dari layar dan prompt: P.1 memilih tipe slide dan mengisi kolomnya (fakta wajib bersumber, dilarang angka karangan), D.1 hanya menulis label slide. Tes stub v2 dan web lolos; tampilan dicek lewat render browser headless (versi web menampilkan foto). Sebelum perubahan: prototipe HTML ke PNG di `prototypes/carousel-template/` sebagai dasar renderer sisi server nanti.
+- Catatan: foto cover diambil dari gambar referensi (sekitar 283x348 px, diperbesar), teks bawaan gambar dihapus lewat inpaint; perlu diganti foto asli resolusi tinggi. Font Manrope tidak tersedia di sesi ini, dipakai Poppins (opsi di referensi). Contoh angka "78%" di referensi tidak dipakai.
+- File berubah: `prototypes/zuno-studio-v2.html`, `prototypes/arsip/zuno-carousel-opsi.html` (dipindah), `prototypes/carousel-template/` (baru), `web/index.html`, `web/assets/foto-zulnan.webp` (baru), `web/assets/README.md`, `docs/template-carousel.md` (baru), `docs/brief-gaya-konten.md`, `docs/gaya-video.md`, `docs/prompt-orkestrasi-zuno.md`, `tests/zuno-studio-v2-stub-test.js`, `tests/zuno-web-stub-test.js`, `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`.
+- Tertunda: uji dengan Claude asli di live; foto asli resolusi tinggi; `docs/prompt-orkestrasi-zuno.docx` dan Claude Doc belum disamakan dengan perubahan template; unggah ulang skill 01 ke claude.ai (entri lama).
+
+## 36. (entri berikutnya di sini)

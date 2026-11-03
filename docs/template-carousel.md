@@ -1,0 +1,34 @@
+# Template carousel Zuno (satu-satunya)
+
+Keputusan Zulnan 2026-11-03: carousel Zuno memakai **satu template saja**, dari referensi navy-biru yang Zulnan kirim. Template lama A Papan Tulis, B Neon Gelap, C Majalah, dan D Kartu Layar dihentikan (arsip: `prototypes/arsip/zuno-carousel-opsi.html`). Hasil keluaran selalu satu bentuk ini; yang menyesuaikan topik hanya isinya.
+
+## Token tampilan
+- Warna: latar `#0B0F1A` ke `#0A1226`, panel `#111827`, biru `#1677FF`, aksen teks `#3EA6FF`, teks `#F5F7FA`, teks redup `#B9C2D3`.
+- Font: **Poppins** ExtraBold untuk judul dan label, **Inter** untuk isi (opsi di referensi: Poppins atau Manrope untuk judul; Inter atau DM Sans untuk isi).
+- Ukuran 1080 x 1350. Judul huruf kapital dua baris (putih lalu biru), garis pendek di bawah judul. Label kecil beraksen di atas judul. Kartu kaca bersudut membulat. Dua lengkung biru bercahaya di pojok kanan atas dan kiri bawah. Footer: garis tipis dan nomor slide dalam pill.
+
+## Lima tipe slide
+| Tipe | Isi | Kapan dipakai |
+|---|---|---|
+| cover | judul, subjudul, tombol "Swipe untuk lanjut", foto Zulnan | slide 1 (hook), selalu |
+| poin | 2-3 kartu bernomor (judul + 1 kalimat) | langkah, daftar, tips |
+| fakta | angka besar + keterangan, 0-2 baris, **baris Sumber wajib** | hanya bila ada angka nyata (bank fakta Zulnan atau sumber riset) |
+| alasan | kutipan/kalimat kunci + 2-3 butir | penjelasan, twist, kenapa penting |
+| cta | 3 centang + tombol | slide terakhir, selalu |
+
+Kreator Konten (P.1) memilih tipe tiap slide sesuai isi dan mengisi hanya kolom tipenya. Pencerita Visual (D.1) hanya menulis label kecil di atas judul. Jumlah slide mengikuti topik (6-9).
+
+## Batas kata (dipaksa kode, `CAR_LIM` di `prototypes/zuno-studio-v2.html`)
+Judul 5 kata (cover 8), subjudul 14, label 3, judul poin 6, isi poin 12, keterangan angka 8, label baris 3, isi baris 7, kutipan 14, butir 6, centang 6, tombol 5. Teks lebih panjang dipotong otomatis dan dicatat di bagian "Catatan tata letak" paket .md, supaya slide tidak ramai.
+
+## Aturan isi
+- Satu ide per slide. Tidak ada angka, statistik, atau testimoni karangan: contoh "78%" di gambar referensi hanya pengisi dan tidak dipakai.
+- Handle akun belum ditentukan ([ISI]); tidak ditampilkan sampai diisi.
+- Maskot tidak dipakai di carousel.
+
+## Foto cover
+`web/assets/foto-zulnan.webp` (RGBA, tepi kiri dan atas memudar ke latar). Dimuat otomatis oleh versi web dari `/assets/foto-zulnan.webp`; di preview claude.ai (tanpa folder assets) cover tampil tanpa foto. **Resolusi masih rendah** karena diambil dari gambar referensi (sekitar 283x348 px, diperbesar 2,4 kali). Ganti dengan foto asli resolusi tinggi (latar polos atau sudah dipotong), lalu simpan sebagai file yang sama.
+
+## Kode
+- Renderer di app: `drawSlide` dan `normSlide` di `prototypes/zuno-studio-v2.html` (canvas, tanpa dependensi). Setelah berubah jalankan `node web/build.mjs`.
+- Prototipe renderer sisi server (HTML ke PNG lewat Playwright, untuk worker render nanti): `prototypes/carousel-template/` (`render.cjs`, `spec.json`). Butuh font Poppins dan Inter terpasang.

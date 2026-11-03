@@ -16,8 +16,7 @@ Dibuat 2026-11-01 dari permintaan Zulnan: gaya motion video berubah-ubah sesuai 
 - Slogan setelah hook tetap berlaku untuk semua video: "Hai, kenalin Gue Zulnan. Gue sales yang belajar AI sambil bikin, bukan cuma ngomongin."
 
 **Carousel**
-- **Campuran sesuai topik** (keputusan Zulnan 2026-11-01): Pencerita Visual memilih satu dari empat template per carousel. Satu carousel memakai satu template penuh.
-- Pilihan template: halaman "Pilihan Template Carousel" (A Papan Tulis, B Neon Gelap, C Majalah, D Kartu Layar). Detail dan usulan pemilihan: `docs/brief-gaya-konten.md` bagian 6.
+- **Satu template saja** (keputusan Zulnan 2026-11-03): navy-biru dari referensi Zulnan, isi menyesuaikan topik. Template A sampai D (2026-11-01) dihentikan. Detail: `docs/template-carousel.md` dan `docs/brief-gaya-konten.md` bagian 6.
 
 ## 2. Sumber referensi
 
@@ -92,7 +91,7 @@ Alat render   : HyperFrames | Remotion | claude-video-effects | manual
 Status        : Gaya siap | Prompt siap generate | File jadi
 ```
 
-Carousel cukup mencatat huruf template (A, B, C, atau D) di Kartu Konten; Kartu Gaya lengkap hanya untuk video.
+Carousel tidak memakai Kartu Gaya (satu template tetap, lihat `docs/template-carousel.md`); Kartu Gaya lengkap hanya untuk video.
 
 Bila Zulnan tidak memberi referensi, tim memakai gaya terakhir yang disetujui, atau bertanya satu kali. Tim tidak menebak gaya baru. Referensi dipakai sebagai arah, bukan untuk meniru persis karya orang lain.
 
@@ -103,9 +102,8 @@ Sudah diputuskan Zulnan (2026-11-01):
 - Batas adegan: tiap adegan maksimal 2 detik (diubah Zulnan dari 1,5 detik pada 2026-11-01).
 - Alat render video pertama yang dicoba: claude-video-effects (Mode Tampil, jalan di komputer Zulnan; butuh ffmpeg dan Python 3.12).
 - Panjang video dan jumlah slide mengikuti topik.
-- Carousel: campuran sesuai topik (template A sampai D dipilih per carousel).
+- Carousel: satu template tetap (keputusan 2026-11-03).
 
 Masih terbuka:
-- Warna akhir template carousel bila ingin diubah.
 - Video pertama untuk uji claude-video-effects: butuh rekaman asli Zulnan (video vertikal dari ponsel paling cocok) dan pilihan satu preset. Zulnan akan mengirimnya di Claude Code.
 - Alat untuk video Tanpa Wajah (HyperFrames atau Remotion) belum dipilih.

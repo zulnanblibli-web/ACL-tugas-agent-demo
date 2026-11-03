@@ -1,6 +1,6 @@
 # Memori jangka panjang Zuno
 
-Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status dan tugas berikutnya) dan `docs/riwayat-tugas.md` (riwayat per sesi). Terakhir diperbarui: 2026-11-03.
+Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status dan tugas berikutnya) dan `docs/riwayat-tugas.md` (riwayat per sesi). Terakhir diperbarui: 2026-11-03 (template carousel tunggal).
 
 ## Tentang Zulnan dan cara kerja
 - Pemilik proyek. Bahasa Indonesia santai (lu/gua), to the point, memanggil "bro".
@@ -21,6 +21,7 @@ Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status
 - Bank fakta: 6 web aktif (produk digital + landing page, sekitar 30 menit per web), sedang membangun Zuno. Latar SMK tidak dipakai.
 - BOFU = bukti tentang Zulnan, arah ke follow dan komentar. Ukuran konten menang: komentar (lalu retensi, view).
 - Bahan dari sumber luar, diolah sendiri dan disebut sumbernya. Riset otomatis via Apify/Scrapelyfy nanti.
+- **Carousel: SATU template saja** (navy-biru dari referensi Zulnan, 2026-11-03), 5 tipe slide (cover, poin, fakta, alasan, cta), isi menyesuaikan topik, foto Zulnan di cover, tanpa maskot. Template A-D dihentikan. Batas kata dipaksa kode; angka wajib bersumber. Spesifikasi: `docs/template-carousel.md`. Keluhan "rame" hanya untuk carousel, bukan video.
 
 ## Engineering (keputusan Zulnan)
 - Alur terpisah dari konten. 3 gerbang persetujuan: ruang lingkup, tampilan, hasil uji.
