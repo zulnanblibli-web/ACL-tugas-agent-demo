@@ -356,4 +356,27 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah (repo Zuno): `docs/jasa-zuno.md`, `CLAUDE.md`, `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`. Repo jasa: semua file awal.
 - Tertunda: uji sebagai pembeli dengan Vercel dan key asli; P10 (kontak, masa dukungan, harga).
 
-## 46. (entri berikutnya di sini)
+## 46. 2026-11-04: Build App, kode T.3 terpotong
+- Permintaan: Zulnan mencoba Build App di artifact (absensi siswa dengan foto muka, 31 fitur, Apps Script). T.3 tertahan `upstream_error`, dan 4 cek otomatis gagal: HTML tanpa `</html>`, IS_PREVIEW, TAMPILKAN_CONTOH_LOGIN, Reset Akses.
+- Akar masalah:
+  - Koneksi putus saat Pengembang menulis `index.html` yang panjang.
+  - `askText` hanya mencoba 2 kali. Teks yang sudah mengalir dibuang, lalu kode terpotong diteruskan ke Penguji.
+  - Script konfigurasi ada di akhir file, jadi ikut hilang.
+- Hasil (`prototypes/zuno-studio-v2.html`):
+  - `askText`:
+    - teks yang sudah mengalir disimpan walau koneksi putus;
+    - lanjut sampai 16 bagian, dan sampai 4 gagal berturut-turut dengan jeda;
+    - bila file belum ditutup `</html>`, Pengembang diminta melanjutkan;
+    - sambungan dicek agar tidak ada bagian yang terulang.
+  - T.3:
+    - kode yang masih terpotong tidak diteruskan ke Penguji. Muncul pesan "Kode aplikasi belum lengkap", dan "Coba lagi" melanjutkan dari bagian terakhir, tidak dari nol;
+    - prompt T.3 sekarang meminta script konfigurasi (IS_PREVIEW, TAMPILKAN_CONTOH_LOGIN) di `<head>` paling atas.
+- Tes (`tests/zuno-studio-v2-build-stub-test.js`):
+  - mode baru `--putus` (koneksi putus 3 kali, pulih sendiri);
+  - mode baru `--putus-parah` (gagal terus, lalu Coba lagi melanjutkan);
+  - `--gagal` kini memakai 6 kegagalan;
+  - semua mode lolos, termasuk tes konten, web, dan edisi jasa (SEMUA LOLOS).
+- Artifact Zuno Studio v2 dipublikasi ulang (versi 4).
+- Belum di-push. Menunggu Zulnan: repo Zuno dan repo jasa (sudah diekspor ulang dan diuji, belum di-commit di sana).
+
+## 47. (entri berikutnya di sini)

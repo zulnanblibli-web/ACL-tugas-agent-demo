@@ -349,7 +349,7 @@ function P(k,kerja,data,format){
 var sample=null,downloads=null,ctl=null,aborted=false,fatal=null,running=false;
 var S=null,LOG=[],imagesOK=false,REFS=[];
 var FATAL=['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed','session_expired','rate_limited'];
-var COPY={not_granted:'Kunci akses Zuno salah atau belum diisi. Klik KUNCI AKSES di atas.',not_configured:'Server Zuno belum disetel (ZUNO_ACCESS_KEY di Vercel).',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.',sampling_disabled:'Claude tidak tersedia untuk akunmu di halaman ini.',not_declared:'Halaman ini belum diberi izin memanggil Claude.',capability_disabled:'Pemanggilan Claude tidak bisa dipakai di tampilan ini.',capability_removed:'Versi aplikasi belum mendukung fitur yang dibutuhkan. Perbarui lalu muat ulang.',session_expired:'Sesi berakhir. Masuk lagi lalu jalankan ulang.',rate_limited:'Batas pemakaian tercapai. Tunggu sebentar lalu jalankan lagi.',refused:'Claude menolak memproses bagian ini. Ubah bahan lalu coba lagi.',upstream_error:'Koneksi ke Claude terputus. Coba jalankan ulang.',invalid_json:'Salah satu agen menjawab dengan format yang tidak terbaca. Coba jalankan ulang.',no_recorder:'Browser ini tidak bisa merekam video. Coba buka di Chrome.'};
+var COPY={not_granted:'Kunci akses Zuno salah atau belum diisi. Klik KUNCI AKSES di atas.',not_configured:'Server Zuno belum disetel (ZUNO_ACCESS_KEY di Vercel).',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.',sampling_disabled:'Claude tidak tersedia untuk akunmu di halaman ini.',not_declared:'Halaman ini belum diberi izin memanggil Claude.',capability_disabled:'Pemanggilan Claude tidak bisa dipakai di tampilan ini.',capability_removed:'Versi aplikasi belum mendukung fitur yang dibutuhkan. Perbarui lalu muat ulang.',session_expired:'Sesi berakhir. Masuk lagi lalu jalankan ulang.',rate_limited:'Batas pemakaian tercapai. Tunggu sebentar lalu jalankan lagi.',refused:'Claude menolak memproses bagian ini. Ubah bahan lalu coba lagi.',upstream_error:'Koneksi ke Claude terputus. Coba jalankan ulang.',invalid_json:'Salah satu agen menjawab dengan format yang tidak terbaca. Coba jalankan ulang.',no_recorder:'Browser ini tidak bisa merekam video. Coba buka di Chrome.',kode_terpotong:'Kode aplikasi belum lengkap (koneksi putus saat menulis). Klik "Coba lagi": Pengembang melanjutkan dari bagian terakhir, tidak mulai dari nol.'};
 
 function errMsg(e){
   if(!e)return COPY.upstream_error;
@@ -1448,24 +1448,31 @@ var ROLES_ENG={
 function PE(k,kerja,data,format){var r=ROLES_ENG[k];return BASE_ENG+'\n\nPERAN ANDA: '+k+' '+r[0]+'\nTUGAS PERAN: '+r[1]+'\nDILARANG: '+r[2]+'\n\nPEKERJAAN SEKARANG:\n'+kerja+'\n\nDATA:\n'+data+'\n\nFORMAT KELUARAN:\n'+format}
 function acak(n){var ch='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789',a=new Uint32Array(n),s='';try{crypto.getRandomValues(a)}catch(e){for(var i=0;i<n;i++)a[i]=Math.floor(Math.random()*1e9)}for(var j=0;j<n;j++)s+=ch[a[j]%ch.length];if(!/[0-9]/.test(s))s=s.slice(0,-1)+'7';if(!/[a-zA-Z]/.test(s))s='a'+s.slice(1);return s}
 function stripFence(t){t=String(t||'').replace(/^\s*```[a-zA-Z0-9]*[ \t]*\n/,'');return t.replace(/\n?```\s*$/,'').trim()}
-/* Kode panjang ditulis bertahap: bila jawaban terpotong (batas panjang/waktu) atau putus di tengah, lanjutkan dari bagian terakhir. */
-async function askText(who,id,prompt,tier,onProg){
-  var parts='',last=null,fails=0;
-  for(var round=0;round<5;round++){
+/* Kode panjang ditulis bertahap: bila jawaban terpotong (batas panjang/waktu) atau koneksi putus di tengah, lanjutkan dari bagian terakhir.
+   opt.done(teks) = file sudah lengkap; opt.resume = lanjutkan dari kode yang sudah ada; opt.save(teks) = simpan sebagian agar "Coba lagi" tidak mulai dari nol. */
+async function askText(who,id,prompt,tier,onProg,opt){
+  opt=opt||{};
+  var parts=opt.resume||'',last=null,fails=0,lanjut=0;
+  var dedup=function(chunk){chunk=String(chunk||'');if(!parts)return chunk;chunk=chunk.replace(/^\s*```[a-zA-Z0-9]*[ \t]*\n/,'');var max=Math.min(400,parts.length,chunk.length);for(var k=max;k>=20;k--){if(parts.slice(-k)===chunk.slice(0,k))return chunk.slice(k)}return chunk};
+  var keep=function(chunk){var c=dedup(chunk);parts+=c;if(c&&opt.save)opt.save(parts);return c};
+  for(var round=0;round<16;round++){
     if(aborted)throw {code:'cancelled'};
-    var input=parts?[{role:'user',content:prompt},{role:'assistant',content:parts},{role:'user',content:'Jawaban di atas terpotong. Lanjutkan PERSIS dari karakter terakhir, tanpa mengulang bagian yang sudah ada, tanpa penjelasan, tanpa blok kode markdown.'}]:prompt;
+    if(parts&&opt.done&&opt.done(stripFence(parts)))return stripFence(parts);
+    var input=parts?[{role:'user',content:prompt},{role:'assistant',content:parts},{role:'user',content:'Jawaban di atas terpotong'+(opt.done?' (file belum selesai)':'')+'. Lanjutkan PERSIS dari karakter terakhir, tanpa mengulang bagian yang sudah ada, tanpa penjelasan, tanpa blok kode markdown.'}]:prompt;
+    var base=parts.length,cur='';
     try{
-      var r=await lim(function(){return sample(input,{cache:false,signal:ctl.signal,modelTier:tier||'default',effort:'low',onText:function(u){if(onProg)onProg(parts.length+u.text.length)}})});
-      parts+=r.text;
+      var r=await lim(function(){return sample(input,{cache:false,signal:ctl.signal,modelTier:tier||'default',effort:'low',onText:function(u){cur=u.text;if(onProg)onProg(base+u.text.length)}})});
+      keep(r.text);fails=0;
       LOG.push({t:new Date().toISOString(),who:who,proyek:id,bagian:round+1,panjang:parts.length,terpotong:!!r.truncated,tier:r.modelTierApplied||null});
-      if(!r.truncated)return stripFence(parts);
+      if(!r.truncated){if(!opt.done||opt.done(stripFence(parts)))return stripFence(parts);if(++lanjut>3)break}
     }catch(e){
       last=e;LOG.push({t:new Date().toISOString(),who:who,proyek:id,bagian:round+1,error:(e&&(e.code||e.message))||String(e),pesan:e&&e.message||null,sebagian:e&&e.text?e.text.length:0});
       if(aborted||(e&&e.code==='cancelled'))throw {code:'cancelled'};
       if(e&&FATAL.indexOf(e.code)>-1){fatal=e.code;throw e}
       if(e&&(e.code==='refused'||e.code==='prompt_too_large'||e.code==='invalid_request'))throw e;
-      if(e&&e.text)parts+=e.text;
-      else if(++fails>=2)break;
+      /* teks yang sudah sempat mengalir tetap disimpan walau koneksi putus */
+      if(keep(e&&e.text||cur))fails=0;
+      else{if(++fails>=4)break;await sleep(1500*fails)}
     }
   }
   if(parts)return stripFence(parts);
@@ -1531,7 +1538,11 @@ var BEng={
     var rev=note?'REVISI atas permintaan Zulnan: "'+note+'". Ubah HANYA bagian yang diminta; semua fitur lain dan struktur tetap persis.\nKODE SEBELUMNYA:\n':'';
     B.code=B.code||{};
     var prog=function(lbl){var lt=0;return function(n){var now=Date.now();if(now-lt<800)return;lt=now;B.act.t3=lbl+' ('+Math.round(n/1000)+' KB tertulis)';BEng.update()}};
-    var html=await askText('T.3',B.id,PE('T.3',rev+(note?B.code.html+'\n\n':'')+'Tulis SATU file index.html lengkap (HTML+CSS+JS) untuk mesin '+s.mesin+'. Wajib: const IS_PREVIEW = true; di baris konfigurasi paling atas (true = jalan sendiri di browser tanpa backend memakai 1-2 data contoh per koleksi di memori; false = terhubung ke backend '+(s.mesin==='Firebase'?'Firebase (firebaseConfig placeholder)':s.mesin==='Vercel + Supabase'?'Supabase (URL dan anon key placeholder)':'Apps Script')+'); const TAMPILKAN_CONTOH_LOGIN = '+B.contoh+'; halaman login dengan kotak "Contoh akses" berisi akun contoh dari DATA bila setelan true; login membandingkan hash SHA-256 + salt (crypto.subtle); menu "Reset Akses" untuk Admin; semua fitur di ruang lingkup berfungsi; responsif (sidebar desktop, navigasi bawah HP); <meta name="viewport">; kredit sesuai DATA di footer dan halaman login serta <meta name="author">'+(B.ai?'; blok AI_PROVIDER/AI_MODEL dan fungsi tanyaAI yang memanggil backend (bukan langsung ke penyedia), di mode preview jawab dengan teks contoh':'')+'. Kode padat (CSS dan JS ringkas, tanpa komentar panjang), panjang mengikuti jumlah fitur, tanpa // TODO, tanpa library yang tidak perlu.',bCtx(true),'Balas HANYA isi file index.html, tanpa penjelasan dan tanpa blok kode markdown.'),'default',prog('Pengembang menulis index.html'));
+    var lengkap=function(t){return /<\/html>\s*$/i.test(String(t||'').trim())};
+    var resume=!note&&B.code.html&&!lengkap(B.code.html)?B.code.html:'';
+    if(resume)BEng.set('t3','run','Pengembang melanjutkan kode yang terpotong ('+Math.round(resume.length/1000)+' KB sudah ada)');
+    var html=await askText('T.3',B.id,resume&&B.code.prompt?B.code.prompt:(B.code.prompt=PE('T.3',rev+(note?B.code.html+'\n\n':'')+'Tulis SATU file index.html lengkap (HTML+CSS+JS) untuk mesin '+s.mesin+'. Urutan file WAJIB: di <head> paling atas taruh <meta name="viewport">, <meta name="author">, dan <script> konfigurasi kecil berisi const IS_PREVIEW dan const TAMPILKAN_CONTOH_LOGIN; setelah itu CSS, lalu HTML, lalu <script> utama; file diakhiri </html>. Wajib: const IS_PREVIEW = true; (true = jalan sendiri di browser tanpa backend memakai 1-2 data contoh per koleksi di memori; false = terhubung ke backend '+(s.mesin==='Firebase'?'Firebase (firebaseConfig placeholder)':s.mesin==='Vercel + Supabase'?'Supabase (URL dan anon key placeholder)':'Apps Script')+'); const TAMPILKAN_CONTOH_LOGIN = '+B.contoh+'; halaman login dengan kotak "Contoh akses" berisi akun contoh dari DATA bila setelan true; login membandingkan hash SHA-256 + salt (crypto.subtle); menu "Reset Akses" untuk Admin; semua fitur di ruang lingkup berfungsi; responsif (sidebar desktop, navigasi bawah HP); <meta name="viewport">; kredit sesuai DATA di footer dan halaman login serta <meta name="author">'+(B.ai?'; blok AI_PROVIDER/AI_MODEL dan fungsi tanyaAI yang memanggil backend (bukan langsung ke penyedia), di mode preview jawab dengan teks contoh':'')+'. Kode padat (CSS dan JS ringkas, tanpa komentar panjang), panjang mengikuti jumlah fitur, tanpa // TODO, tanpa library yang tidak perlu.',bCtx(true),'Balas HANYA isi file index.html, tanpa penjelasan dan tanpa blok kode markdown.')),'default',prog(resume?'Pengembang melanjutkan index.html':'Pengembang menulis index.html'),{done:lengkap,resume:resume,save:function(t){B.code.html=t}});
+    if(!lengkap(html))throw {code:'kode_terpotong'};
     B.code.html=html;
     BEng.set('t3','run','Pengembang menulis backend ('+be+')');
     B.code.backend=await askText('T.3',B.id,PE('T.3',rev+(note&&B.code.backend?B.code.backend+'\n\n':'')+'Tulis file '+be+' yang cocok dengan index.html berikut untuk mesin '+s.mesin+'. '+(be==='Code.gs'?'Wajib doGet, setupDatabase() yang membuat sheet+header dan sheet "Pengaturan", akun awal dari DATA disimpan sebagai hash SHA-256 + salt (Utilities.computeDigest), fungsi untuk menu Reset Akses'+(B.ai?', fungsi tanyaAI di server dengan API key dari PropertiesService (Script Properties) dan adaptor AI_PROVIDER':'')+'.':be==='firestore.rules'?'Aturan keamanan Firestore: Admin (Firebase Auth) baca/tulis semua; pengguna lain hanya koleksi sesuai haknya; koleksi pengaturan hanya Admin. Tambahkan komentar singkat cara mendaftarkan Admin pertama.':'Skema tabel Postgres + Row Level Security untuk Supabase, tabel pengaturan untuk Reset Akses, kolom password_hash dan salt.'),bCtx(true)+'\n\nINDEX.HTML:\n'+html.slice(0,60000),'Balas HANYA isi file '+be+', tanpa penjelasan dan tanpa blok kode markdown.'),'default',prog('Pengembang menulis '+be));

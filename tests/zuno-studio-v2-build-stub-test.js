@@ -1,13 +1,13 @@
 const { chromium } = require('playwright');
 // Tes alur Build App (Divisi Engineering) dengan Claude tiruan. Argumen: --klien untuk proyek klien.
-const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.includes('--buruk'); const POTONG = process.argv.includes('--potong'); const GAGAL = process.argv.includes('--gagal');
+const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.includes('--buruk'); const POTONG = process.argv.includes('--potong'); const GAGAL = process.argv.includes('--gagal'); const PUTUS = process.argv.includes('--putus'); const PARAH = process.argv.includes('--putus-parah');
 (async()=>{
   const b = await chromium.launch(); const p = await b.newPage({viewport:{width:1100,height:900}});
   const errs=[]; p.on('pageerror',e=>errs.push('PAGEERR '+e.message)); p.on('console',m=>{if(m.type()==='error')errs.push('CONSOLE '+m.text())});
-  await p.addInitScript(([BURUK,POTONG,GAGAL])=>{
+  await p.addInitScript(([BURUK,POTONG,GAGAL,PUTUS,PARAH])=>{
     window.__calls=[];
     const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-    const APP=(kredit,contoh)=>BURUK?'<html><body><script>var pw="admin2026"; // TODO login\nundefinedFn();<\/script><h1>App</h1>':'<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="'+kredit+'"><title>Absensi</title></head><body><script>const IS_PREVIEW = true; const TAMPILKAN_CONTOH_LOGIN = '+contoh+';async function h(p){const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(p));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,"0")).join("")}<\/script><h1>Login</h1><div id="contoh">Contoh akses</div><nav>Dashboard · Absensi · Reset Akses</nav><footer>'+kredit+'</footer></body></html>';
+    const APP=(kredit,contoh)=>BURUK?'<html><body><script>var pw="admin2026"; // TODO login\nundefinedFn();<\/script><h1>App</h1></body></html>':'<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="'+kredit+'"><title>Absensi</title></head><body><script>const IS_PREVIEW = true; const TAMPILKAN_CONTOH_LOGIN = '+contoh+';async function h(p){const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(p));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,"0")).join("")}<\/script><h1>Login</h1><div id="contoh">Contoh akses</div><nav>Dashboard · Absensi · Reset Akses</nav><footer>'+kredit+'</footer></body></html>';
     const gen=async(input)=>{
       await sleep(20);
       const role=(input.match(/PERAN ANDA: (\S+)/)||[])[1]; window.__calls.push({role,rev:/REVISI/.test(input),prd:/PRD DARI ZULNAN[\s\S]*Fitur ketujuh dari PRD/.test(input)});
@@ -24,15 +24,17 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
     const sample=async(i,o)=>{
       const first=Array.isArray(i)?i[0].content:i; window.__opts.push({effort:o&&o.effort,lanjut:Array.isArray(i)});
       if(!/Balas HANYA isi file/.test(first)) return {text:JSON.stringify(await gen(i))};
-      if(Array.isArray(i)){ const full=window.__full[first]; const sofar=i[1].content; window.__calls.push({role:'T.3',file:'lanjutan'}); if(o&&o.onText)o.onText({text:full.slice(sofar.length),delta:full.slice(sofar.length)}); return {text:full.slice(sofar.length),truncated:false}; }
-      if(GAGAL&&(window.__gagal=(window.__gagal||0)+1)<=2) throw {code:'upstream_error',message:'koneksi putus'};
+      if(Array.isArray(i)&&(PUTUS||PARAH)&&/index\.html lengkap/.test(first)){ window.__lanjutHtml=(window.__lanjutHtml||0)+1; if(PARAH?!window.__pulih:window.__lanjutHtml<=2){ await sleep(10); throw {code:'upstream_error',message:'putus lagi'}; } }
+      if(Array.isArray(i)){ const full=window.__full[first]; const sofar=i[1].content; if(full.slice(0,sofar.length)!==sofar) window.__salahSambung=true; window.__calls.push({role:'T.3',file:'lanjutan'}); if(o&&o.onText)o.onText({text:full.slice(sofar.length),delta:full.slice(sofar.length)}); return {text:full.slice(sofar.length),truncated:false}; }
+      if(GAGAL&&(window.__gagal=(window.__gagal||0)+1)<=6) throw {code:'upstream_error',message:'koneksi putus'};
       const full=await txt(i); window.__full=window.__full||{}; window.__full[first]=full;
+      if((PUTUS||PARAH)&&/index\.html lengkap/.test(first)){ const part=full.slice(0,Math.floor(full.length/3)); if(o&&o.onText)o.onText({text:part,delta:part}); throw {code:'upstream_error',message:'aliran putus tanpa teks'}; }
       if(POTONG){ const half=full.slice(0,Math.floor(full.length/2)); if(/index\.html lengkap/.test(first)) return {text:half,truncated:true}; throw {code:'upstream_error',message:'putus',text:half}; }
       if(o&&o.onText)o.onText({text:full,delta:full}); return {text:full,truncated:false};
     };
     sample.json=async(i)=>gen(i);
     window.claude={use:async n=>n==='sample'?sample:n==='downloads'?{save:async(o)=>{window.__saved=(window.__saved||[]).concat([o.filename+':'+(o.data&&o.data.size)])}}:null};
-  },[BURUK,POTONG,GAGAL]);
+  },[BURUK,POTONG,GAGAL,PUTUS,PARAH]);
   await p.goto('file://'+process.cwd()+'/prototypes/zuno-studio-v2.html'); await p.waitForTimeout(300);
   console.log('konten terlihat awal:', await p.isVisible('#wsKonten'), '| build tersembunyi:', !(await p.isVisible('#wsBuild')));
   await p.click('#wsB'); console.log('setelah klik Build: konten tersembunyi', !(await p.isVisible('#wsKonten')), '| build terlihat', await p.isVisible('#wsBuild'));
@@ -53,6 +55,8 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   await p.click('#bres button:has-text("Setujui tampilan")');
   if(GAGAL){ await p.waitForSelector('#bres button:has-text("Coba lagi")',{timeout:30000}); console.log('error tampil:', (await p.$eval('#berr',e=>e.innerText)).slice(0,120), '| log tampil:', await p.isVisible('#bdlog'));
     await p.click('#bdlog'); await p.click('#bres button:has-text("Coba lagi")'); }
+  if(PARAH){ await p.waitForSelector('#bres button:has-text("Coba lagi")',{timeout:60000}); console.log('kode terpotong, pesan:', (await p.$eval('#berr',e=>e.innerText)).slice(0,140),'| panggilan lanjutan yang gagal:', await p.evaluate(()=>window.__lanjutHtml));
+    await p.evaluate(()=>{window.__pulih=true}); await p.click('#bres button:has-text("Coba lagi")'); }
   await p.waitForSelector('text=Lanjut rilis',{timeout:30000});
   const rows=await p.$$eval('#bres table.uji:first-of-type tr',r=>r.slice(1).map(x=>x.children[0].innerText+'='+x.children[1].innerText));
   console.log('cek otomatis:', rows.join(' | '));
@@ -66,6 +70,7 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   console.log('urutan peran:', (await p.evaluate(()=>window.__calls)).map(c=>c.role+(c.file?':'+c.file:'')+(c.rev?'(rev)':'')).join(','));
   console.log('unduhan:', await p.evaluate(()=>window.__saved));
   console.log('lanjutan dipakai:', (await p.evaluate(()=>window.__opts)).filter(o=>o.lanjut).length, '| effort T.3:', [...new Set((await p.evaluate(()=>window.__opts)).filter(o=>o.effort).map(o=>o.effort))].join(','));
+  if(PUTUS||PARAH) console.log('sambungan kode tanpa celah/ulang:', !(await p.evaluate(()=>window.__salahSambung)), '| panggilan html awal:', (await p.evaluate(()=>window.__calls)).filter(c=>c.file==='html').length);
   console.log('tombol log tampil:', await p.isVisible('#bdlog'), '| keterangan standby dihapus:', !(await p.$eval('#wsBuild',e=>e.innerText.includes('standby'))));
   // alur konten tidak tersentuh
   await p.click('#wsK'); console.log('kembali ke konten, kartu konten kosong:', await p.$$eval('.kc',e=>e.filter(x=>x.closest('#wsKonten')).length)===0);
