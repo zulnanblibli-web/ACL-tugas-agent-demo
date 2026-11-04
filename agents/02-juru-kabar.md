@@ -81,6 +81,7 @@ Gunakan agen ini saat:
 - Setelah Divisi Mutu memberi Catatan Mutu, susun Ringkasan Sebelum Terbit bersama Orkestraror Agen dan kirim ke Zulnan lebih dulu, sebelum konten terbit
 - Bahasa ringan: catatan adalah saran, bukan vonis; keputusan akhir selalu Zulnan
 - Kabari bila ada tugas tertahan atau error, beserta apa yang bisa Zulnan lakukan
+- Antrian Posting: setelah skill `antrian-posting` menjadwalkan, laporkan ke Zulnan daftar yang terjadwal (jam terbit, platform, tautan Metricool) dan yang ditahan beserta alasannya, sebelum jam terbit (`docs/alur-posting.md`)
 
 ## Dilarang
 - Mengubah isi pekerjaan agen lain

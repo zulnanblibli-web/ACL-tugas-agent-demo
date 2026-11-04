@@ -56,6 +56,12 @@ const args = process.argv.slice(2); const TIPE=(args.find(a=>a.startsWith('--tip
   await p.click('#resv .btn >> text=Unduh paket'); await p.click('#resv .btn >> text=Unduh komposisi'); await p.click('#resv .btn >> text=Unduh paket Claude Code'); await p.waitForFunction(()=>window.__zip,null,{timeout:15000}); require('fs').writeFileSync('/tmp/paket-claude-code.zip',Buffer.from(await p.evaluate(()=>window.__zip),'base64')); 
   await p.click('#resv .btn.ok'); await p.waitForSelector('#resv .pill.ok',{timeout:15000}); await p.waitForTimeout(500);
   console.log('setelah setuju paket posting di md:', await p.evaluate(()=>document.querySelector('#resv .mdprev').innerText.includes('Paket posting')));
+  await p.waitForFunction(()=>!document.getElementById('antrianp').classList.contains('hidden'),null,{timeout:15000});
+  console.log('antrian posting:',await p.$$eval('#antrianl .res',e=>e.map(x=>x.innerText.replace(/\n/g,' | '))));
+  await p.evaluate(()=>{window.__zip=null}); await p.click('#antrianzip'); await p.waitForFunction(()=>window.__zip,null,{timeout:15000});
+  { const zp='/tmp/antrian-posting-test.zip'; require('fs').writeFileSync(zp,Buffer.from(await p.evaluate(()=>window.__zip),'base64'));
+    const ls=require('child_process').execFileSync('python3',['-I','-c','import zipfile,sys,json;z=zipfile.ZipFile(sys.argv[1]);n=z.namelist();print(n);it=[json.loads(z.read(x)) for x in n if x.endswith("item.json")];print([(i["id"],i["status_antrian"],i["status_konten"],i["caption"]) for i in it])',zp]).toString();
+    console.log('isi zip antrian:',ls.trim()); }
   console.log('unduhan:',await p.evaluate(()=>window.__saved));
   console.log('ERRORS',errs); await b.close();
 })().catch(e=>{console.error('FAIL',e);process.exit(1)});

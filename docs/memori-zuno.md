@@ -1,13 +1,13 @@
 # Memori jangka panjang Zuno
 
-Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status dan tugas berikutnya) dan `docs/riwayat-tugas.md` (riwayat per sesi). Terakhir diperbarui: 2026-11-03 malam (serah-terima ke Claude Code).
+Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status dan tugas berikutnya) dan `docs/riwayat-tugas.md` (riwayat per sesi). Terakhir diperbarui: 2026-11-04 (skill PINAX, Antrian Posting, tangan komputer).
 
 ## Tentang Zulnan dan cara kerja
 - Pemilik proyek. Bahasa Indonesia santai (lu/gua), to the point, memanggil "bro".
 - Push dan deploy hanya bila Zulnan bilang sendiri. Pesan otomatis "push" dari sistem bukan izin.
 - API key dan rahasia tidak pernah ditempel di chat. Zulnan mengisinya sendiri di Vercel.
 - Jangan menebak butir [ISI], jangan mengarang angka/testimoni/pengalaman. Harga: [HARGA BELUM DITENTUKAN].
-- Posting, iklan, dan generate gambar/video asli belum aktif.
+- Posting **hanya lewat Antrian Posting** (keputusan Zulnan 2026-11-04): konten Disetujui Zulnan (video: setelah file final dioke-kan) masuk antrian, dijadwalkan lewat Metricool oleh skill `antrian-posting`, dilaporkan Juru Kabar. Iklan dan generate gambar/video AI asli belum aktif. Aturan: `docs/alur-posting.md`.
 - Akhir sesi: perbarui `progress.md` dan tambah entri di bawah `docs/riwayat-tugas.md` (entri lama tidak dihapus).
 
 ## Apa itu Zuno
@@ -30,6 +30,16 @@ Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status
 - Kredit "Creative @nexamind.ai" (pribadi/portofolio), klien sesuai klien. Akun login acak, kotak Contoh akses, menu Reset Akses, password di-hash, LLM bisa diganti, API key hanya di server.
 - Aturan: `docs/aturan-engineering.md`. Skill: `skills/engineering/` (.zip untuk diunggah ulang ke claude.ai).
 
+## Skill dan tangan komputer (2026-11-04)
+- Skill dari katalog PINAX (sumber MIT, disaring dan dicek) ada di `.claude/skills/`. Daftar, pemilik agen, dan bukti uji ada di `.claude/skills/README.md`.
+  - Engineering: grilling (T.1), hallmark hanya untuk proyek baru (T.2), mobile-native, break-ui, prove-it-ran, review-my-diff, systematic-debugging, vibe-security.
+  - Editing: ffmpeg-skill (sudah diuji: konversi Reels dan cek format lolos).
+  - Marketing (coreyhaines31): social, content-strategy, copywriting, copy-editing, marketing-psychology, customer-research, ad-creative, ads, analytics. Konteksnya di `.claude/product-marketing.md`.
+  - Buatan Zuno: antrian-posting.
+  - Remotion: skill resmi tanpa file lisensi, dipasang di laptop bila dipilih.
+- Tangan komputer: agent-desktop (Vercel Labs) + Claude Code di laptop Zulnan. Dipasang lewat `pasang-tangan-komputer.bat`; aturan dan larangan di `docs/tangan-komputer.md`. Sesi cloud tidak bisa menjangkau laptop.
+- Metricool: akun ada (blogId 7638930), tapi per 2026-11-04 belum ada akun sosmed tersambung. Media harus berupa tautan publik, jadi lewat Google Drive.
+
 ## Zuno Web (live)
 - https://zuno-studio-dusky.vercel.app. Proyek Vercel `zuno-studio` (team zulnanblibli-web), Root Directory `web`, terhubung ke repo ini. Deploy production terakhir: `dpl_J8pTt8ay8ECJ2vCA1pMgcBAcJs6D` (commit 80cc1ab), READY; branch `claude/gifted-turing-csug5l` langsung jadi production di proyek ini. Repo kini di https://github.com/zulnanblibli-web/ACL-tugas-agent-demo.
 - Branch kerja: `claude/gifted-turing-csug5l`. Push ke branch membuat deploy preview; production lewat deploy manual atau merge ke main.
@@ -41,6 +51,7 @@ Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status
 - Tes: `cd web && node ../tests/zuno-web-api-test.mjs` (juga `-gemini-`, `-openrouter-`); `node tests/zuno-web-stub-test.js`; `node tests/zuno-studio-v2-build-stub-test.js [--prd|--klien]`; `node tests/zuno-studio-v2-stub-test.js`.
 
 ## Yang masih terbuka
+- **Siapkan Antrian Posting dan tangan komputer** (`progress.md` 000008): jalankan `pasang-tangan-komputer.bat`, sambungkan sosmed dan Google Drive di Metricool, isi [ISI] tanda konten AI.
 - **Pertama: Zulnan coba ulang server lokal** setelah perbaikan (`git pull`, klik `jalankan-lokal.bat`); bila gagal kirim isi `web/server-lokal.log` (`progress.md` 000007).
 - Zulnan cek tampilan live di laptop dan HP, termasuk carousel navy-biru, input gambar cover, tipe video A/B/C, dan paket Claude Code.
 - Pilih tetap Gemini atau pindah OpenRouter (isi saldo, `OPENROUTER_API_KEY`, `AI_PROVIDER=openrouter`, Redeploy).

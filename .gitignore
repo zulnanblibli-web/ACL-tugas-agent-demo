@@ -1,0 +1,6 @@
+# Pengaturan Claude Code pribadi di laptop (izin tangan komputer)
+.claude/settings.local.json
+
+# Isi Antrian Posting hanya di laptop (media besar); README tetap ikut
+antrian-posting/*
+!antrian-posting/README.md

@@ -45,7 +45,7 @@ LEAD      [01 + 02] Ringkasan Sebelum Terbit: kualitas, kesesuaian dengan keingi
    v
 GERBANG   Zulnan: Setujui / revisi bagian tertentu (status Disetujui hanya dari Zulnan)
    v
-MARKETING [12 Kurator Instagram] paket posting + leads/arsip (Fase 1: belum memposting)
+MARKETING [12 Kurator Instagram] paket posting -> Antrian Posting + leads/arsip
           [13 Pelapor Analitik] baca performa setelah tayang -> pelajaran ke Riset
           [14 Strategis Iklan Sosial Berbayar] Fase 4 saja (standby)
 ```
@@ -65,7 +65,7 @@ Tugas paralel: antar kartu; Peneliti Tren dengan Pelapor Analitik; Penjaga Merek
 - Otoritas konten ada di Zulnan; status Disetujui hanya dari Zulnan. Satu pemilik per output.
 - Divisi Mutu hanya memberi Catatan Mutu (Aman, Saran, Perlu keputusan Zulnan, Risiko nyata). Lead merangkumnya dan memberi tahu Zulnan sebelum konten terbit. Revisi hanya atas permintaan Zulnan.
 - Memori tentang Zulnan dipakai untuk suara dan gaya, bukan bahan konten. Bahan utama dari sumber luar yang diolah jadi karya sendiri dan disebut sumbernya.
-- Fase 1 (default): tidak memposting, tidak menjalankan iklan. Strategis Iklan Sosial Berbayar standby sampai Fase 4.
+- Posting hanya lewat Antrian Posting (keputusan Zulnan 2026-11-04): konten yang Disetujui Zulnan masuk antrian dan dijadwalkan lewat Metricool (`docs/alur-posting.md`). Iklan belum aktif; Strategis Iklan Sosial Berbayar standby sampai Fase 4.
 - Tidak ada angka, testimoni, sumber, atau pengalaman Zulnan yang dikarang. Harga: [HARGA BELUM DITENTUKAN].
 
 ## Daftar

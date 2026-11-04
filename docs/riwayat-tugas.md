@@ -247,4 +247,35 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `web/dev-server.mjs`, `jalankan-lokal.bat`, `web/.gitignore`, `web/README.md`, `tests/zuno-web-dev-server-test.mjs`, `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`.
 - Tertunda: izin push; Zulnan `git pull` lalu klik `jalankan-lokal.bat`; bila masih gagal kirim isi `web/server-lokal.log` atau tulisan [GAGAL] (atau sambungkan Remote Control supaya Claude Code bisa mengecek langsung).
 
-## 42. (entri berikutnya di sini)
+## 42. Skill PINAX, Antrian Posting, dan tangan komputer (2026-11-04)
+- Permintaan: cek agent-desktop (Vercel Labs) dan katalog skill pinax-skills.vercel.app untuk agen Zuno; pasang skill Editing dan Engineering yang belum ada bila benar-benar membantu; pakai skill marketing dari katalog bila bekerja; tambah auto posting dengan alur "Zulnan cek dan approve semua hasil, lalu masuk antrian"; pakai agent-desktop sebagai tangan di komputer Zulnan.
+- Hasil:
+  - **Katalog.** Situs PINAX diblokir jaringan sesi; data dibaca dari repo sumbernya `akhmadilham/pinax-registry` (310 skill).
+  - **Skill dipasang ke `.claude/skills/`.** Kandidat di-clone dan isinya dicek: skrip, pemanggilan jaringan, telemetri, lisensi.
+    - Engineering: grilling, hallmark, mobile-native, break-ui, prove-it-ran, review-my-diff, systematic-debugging, vibe-security.
+    - Editing: ffmpeg-skill.
+    - Marketing: 9 skill coreyhaines31/marketingskills, dengan konteks `.claude/product-marketing.md`.
+    - Daftar, sumber, dan commit ada di `.claude/skills/README.md`.
+  - **Skill yang tidak dipasang.** video-spec-builder (bahasa Mandarin, tumpang tindih), video-captions (dicakup ffmpeg-skill), remotion-superpowers (API berbayar), skill Remotion resmi (tanpa file lisensi; dipasang di laptop bila dipilih), skill auto posting Xiaohongshu.
+  - **Bukti uji.** ffmpeg-skill: video uji 16:9 diubah ke Reels 1080x1920, `check.py --platform reels` 0 gagal. hallmark `sloplint.mjs` jalan pada `web/index.html` (laporan kontras dan lain-lain; Zuno Web sengaja tidak diubah).
+  - **Antrian Posting.**
+    - Di Zuno Studio, Setujui menambah kartu ke antrian. Carousel langsung "Siap dikirim"; video "Menunggu file video final".
+    - Panel Antrian Posting dan tombol unduh zip (`item.json`, `caption.txt`, PNG). Revisi mengeluarkan kartu dari antrian.
+    - Skill `antrian-posting` hanya mengirim item yang Disetujui dan Siap dikirim, lewat Metricool `createScheduledPost` dengan caption persis, media lewat Google Drive. Hasilnya dicatat dan dilaporkan Juru Kabar.
+    - Aturan di `docs/alur-posting.md`. Metricool dicek: akun ada, belum ada akun sosmed tersambung.
+  - **Tangan komputer.** `pasang-tangan-komputer.bat` memasang agent-desktop 1.1.0, Claude Code bila perlu, sambungan MCP lokal ke folder repo, dan izin tanpa tanya (Y/N, di `.claude/settings.local.json`). Ia juga menawarkan ffmpeg dan Python (winget) serta Context7. Panduan dan larangan di `docs/tangan-komputer.md` dan `CLAUDE.md`.
+  - **Aturan diperbarui.** CLAUDE.md, brief (fase aktif), profil Kurator Instagram dan Juru Kabar, `agents/README.md`, dan `semua-agen.md`: posting hanya lewat antrian.
+  - **Tes.** Tes v2 (baru: antrian dan isi zip) lolos, web stub dan build stub lolos, `node web/build.mjs` jalan.
+- File berubah:
+  - skill dan konteks: `.claude/skills/**`, `.claude/product-marketing.md`;
+  - antrian dan tangan komputer: `.gitignore`, `antrian-posting/README.md`, `pasang-tangan-komputer.bat`, `docs/alur-posting.md`, `docs/tangan-komputer.md`;
+  - aturan dan agen: `CLAUDE.md`, `docs/aturan-engineering.md`, `docs/gaya-video.md`, `docs/brief-gaya-konten.md`, `agents/02-juru-kabar.md`, `agents/12-kurator-instagram.md`, `agents/README.md`, `agents/semua-agen.md`;
+  - web dan tes: `prototypes/zuno-studio-v2.html`, `web/index.html`, `tests/zuno-studio-v2-stub-test.js`;
+  - catatan: `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`.
+- Tertunda:
+  - izin push dan deploy;
+  - Zulnan menjalankan bat di laptop, menyambungkan sosmed dan Google Drive di Metricool, dan mengisi [ISI] tanda konten AI;
+  - uji alur antrian dengan akun asli;
+  - .bat belum diuji di Windows (sesi ini Linux).
+
+## 43. (entri berikutnya di sini)

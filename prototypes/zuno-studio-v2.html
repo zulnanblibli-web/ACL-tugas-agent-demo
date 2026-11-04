@@ -125,6 +125,12 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
   <h2>Hasil</h2>
   <div class="tabs" role="tablist"><button class="tab" role="tab" id="tabc" aria-selected="true">Carousel</button><button class="tab" role="tab" id="tabv" aria-selected="false">Video</button></div>
   <div id="resc"></div><div id="resv" class="hidden"></div>
+  <div id="antrianp" class="hidden">
+    <h2>Antrian Posting</h2>
+    <p class="muted">Hanya konten yang kamu setujui masuk sini. Juru Kabar mengirimnya lewat Claude Code di komputermu sesuai jadwal di tiap paket, lalu melapor balik. Belum ada yang terkirim dari halaman ini.</p>
+    <div id="antrianl"></div>
+    <div class="btns"><button class="btn primary" id="antrianzip">Unduh antrian posting (.zip)</button></div>
+  </div>
 </div>
 </div><!-- /wsKonten -->
 
@@ -229,7 +235,7 @@ var ROLES={
  'Q.1':['Penjaga Merek (Divisi Mutu: merek dan fakta)','Penasihat suara, merek, fakta, dan sumber. Catat kecocokan suara dan gaya Zulnan, slogan setelah hook pada video, kata berlebihan, relevansi niche, tahap funnel dan CTA. Periksa Daftar Fakta & Klaim dan semua teks yang tampil: klaim hasil atau penghasilan tanpa bukti ditandai dengan saran versi yang aman; bila ada cerita pribadi, cocokkan dengan fakta yang diizinkan (konten tanpa cerita pribadi tidak perlu dicatat); sumber harus berasal dari bahan riset; hal tak terverifikasi diberi awalan "[Perlu keputusan Zulnan]". Topik dari berita atau konten viral adalah hal yang diharapkan.','menulis ulang konten; menolak atau menahan konten; menyatakan klaim terverifikasi padahal tidak; mempermasalahkan konten karena tidak memuat cerita pribadi Zulnan.'],
  'Q.2':['Pengumpul Bukti (Divisi Mutu: format dan kepatuhan)','Penasihat format file dan kepatuhan. Format: urutan slide/adegan, hook di awal, CTA di akhir, teks terbaca, satu poin per slide, tiap adegan video maks 2 detik, wajah (Mode Tampil) mengikuti batas tipe video (maks 3 detik berurutan; tipe C boleh lebih lama selama overlay berganti) lalu motion, latar tidak pernah diam, babak hook-problem-twist-solusi-cta berurutan, caption cocok dengan visual, asal aset jelas; batas platform yang diragukan ditandai, jangan menebak angka. Kepatuhan: CTA pengumpul kontak jelas tujuannya, tidak ada kata sandi/token/data pembayaran/data pribadi orang lain, tidak ada pesan otomatis atas nama Zulnan, testimoni dan studi kasus berizin. Risiko ditakar proporsional; bukan nasihat hukum.','menulis ulang konten; menolak atau menahan konten; menebak batas platform; menyatakan aman tanpa data file jadi; memberi nasihat hukum final.'],
  'L.1':['Juru Kabar (bersama Orkestraror Agen)','Juru bicara tim. Merangkum Catatan Mutu Divisi Mutu menjadi Ringkasan Sebelum Terbit untuk Zulnan: kualitas naskah dan visual, kesesuaian dengan keinginan Zulnan (perintah, mode, gaya, referensi), dan catatan penting. Bahasa ringan; catatan adalah saran, bukan vonis.','menolak atau menyatakan konten gagal; mengubah isi konten; menyembunyikan catatan penting.'],
- 'M.1':['Kurator Instagram','Menyusun paket posting per platform untuk konten berstatus Disetujui: caption final, hashtag, cover, saran jadwal (tandai asumsi).','memposting, mengubah isi konten, menyatakan sudah memposting.']
+ 'M.1':['Kurator Instagram','Menyusun paket posting per platform untuk konten berstatus Disetujui (caption final, hashtag, cover, saran jadwal bertanda asumsi); paket itu masuk Antrian Posting.','mengirim posting sendiri, mengubah isi konten, memasukkan konten yang belum Disetujui ke antrian, menyatakan sudah tayang tanpa bukti.']
 };
 function P(k,kerja,data,format){
   var r=ROLES[k];
@@ -553,7 +559,7 @@ function buildMd(c){
     L.push('### Komposisi HyperFrames (draf, belum diuji)','','Dipakai untuk segmen motion'+(tampil?' (dan menyatukan segmen wajah)':'')+'. Simpan sebagai `index.html`, jalankan `npx hyperframes preview`, lalu `npx hyperframes render`.','','```html',c.hf,'```','');
   }
   if(c.paket){L.push('## '+(vid?'11':'10')+'. Paket posting (draf dari Kurator Instagram, belum diposting)','');Object.keys(c.paket).forEach(function(k){var x=c.paket[k];L.push('- **'+k+':** '+(Array.isArray(x)?x.join(' | '):x))});L.push('')}
-  L.push('## Status jujur','','- '+(vid?'Naskah, storyboard, Kartu Gaya, dan rencana render siap. File video belum dirender.':'Naskah dan desain siap; slide PNG dirender di Zuno Studio.'),'- Tidak ada angka performa, testimoni, atau hasil yang dikarang. Bahan riset adalah hipotesis.','- Posting dan iklan belum aktif.','');
+  L.push('## Status jujur','','- '+(vid?'Naskah, storyboard, Kartu Gaya, dan rencana render siap. File video belum dirender.':'Naskah dan desain siap; slide PNG dirender di Zuno Studio.'),'- Tidak ada angka performa, testimoni, atau hasil yang dikarang. Bahan riset adalah hipotesis.',(c.antri?'- Status antrian: **'+c.antri.status+'**. Dikirim hanya lewat alur Antrian Posting (`docs/alur-posting.md`). Iklan belum aktif.':'- Belum masuk Antrian Posting (belum disetujui Zulnan). Iklan belum aktif.'),'');
   return L.join('\n');
 }
 function mdInline(t){return esc(t).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>')}
@@ -649,15 +655,16 @@ async function cardFlow(c){
     c.held=true;UI.update();
   }
 }
-/* gerbang persetujuan lalu Operator (Fase 1: hanya menyiapkan paket) */
+/* gerbang persetujuan, lalu Kurator menyiapkan paket dan kartu masuk Antrian Posting */
 async function approve(c){
   c.approved=true;c.stage='Disetujui, Kurator menyiapkan paket';c.kind='ok';UI.track('mkt','run');UI.act('mkt',c.id+': Kurator Instagram menyusun paket posting (belum memposting)');UI.update();UI.results();
   try{
     running=true;aborted=false;ctl=new AbortController();
-    c.paket=await ask('M.1',c.id,P('M.1','Susun paket posting untuk kartu ini. Fase 1: hanya menyiapkan paket, bukan memposting atau menjadwalkan. Saran jadwal tanpa data adalah asumsi dan harus ditandai.',ctxCard(c,false)+'\n\nCAPTION DRAF: '+c.konten.caption+'\nHASHTAG: '+c.konten.hashtag.join(' '),'Balas HANYA JSON: {"platform":"...","caption_final":"...","hashtag":["#..."],"cover":"slide/adegan mana sebagai cover dan alasannya","saran_jadwal":"saran + tulis (asumsi)","catatan":["maks 3 poin"]}'),'quick');
-    c.stage='Disetujui, paket posting siap (belum diposting)';c.md=buildMd(c);
+    c.paket=await ask('M.1',c.id,P('M.1','Susun paket posting untuk kartu ini. Zulnan sudah menyetujui; paket ini masuk Antrian Posting dan dikirim terpisah oleh Juru Kabar. Kamu hanya menyiapkan paket, tidak mengirim. Saran jadwal tanpa data adalah asumsi dan harus ditandai.',ctxCard(c,false)+'\n\nCAPTION DRAF: '+c.konten.caption+'\nHASHTAG: '+c.konten.hashtag.join(' '),'Balas HANYA JSON: {"platform":"...","caption_final":"...","hashtag":["#..."],"cover":"slide/adegan mana sebagai cover dan alasannya","saran_jadwal":"saran + tulis (asumsi)","catatan":["maks 3 poin"]}'),'quick');
+    c.antri={status:c.format==='video'?'Menunggu file video final':'Siap dikirim',masuk:new Date().toISOString()};
+    c.stage='Disetujui, masuk Antrian Posting (belum terkirim)';c.md=buildMd(c);
   }catch(e){c.stage='Disetujui (paket gagal dibuat)';if(!(e&&e.code==='cancelled'))UI.error(errMsg(e))}
-  running=false;UI.track('mkt','done');UI.act('mkt','Paket posting siap. Zuno belum memposting apa pun (Fase 1).');UI.update();UI.results();$('run').disabled=!sample;
+  running=false;UI.track('mkt','done');UI.act('mkt',c.antri?'Paket posting siap dan masuk Antrian Posting. Belum terkirim.':'Paket posting belum siap; tidak masuk antrian.');UI.update();UI.results();$('run').disabled=!sample;
 }
 
 async function main(){
@@ -1140,6 +1147,7 @@ var UI={
       list.forEach(function(c){box.appendChild(UI.resCard(c))});
     });
     if(!done.some(function(c){return c.format==='carousel'})&&done.some(function(c){return c.format==='video'}))UI.tab('v');
+    UI.antrian();
   },
   resCard:function(c){
     var d=document.createElement('div');d.className='res';
@@ -1204,7 +1212,7 @@ var UI={
   rework:async function(c,note){
     if(running||!sample)return;
     running=true;aborted=false;ctl=new AbortController();$('run').disabled=true;$('stop').disabled=false;
-    c.zNote=note;c.revisi=(c.revisi||0)+1;c.verdict=null;c.ringkasan=null;c.qaRes=null;c.hasil=null;c.held=false;c.approved=false;c.paket=null;c.prev=null;c.opt=null;c.kind='';
+    c.zNote=note;c.revisi=(c.revisi||0)+1;c.verdict=null;c.ringkasan=null;c.qaRes=null;c.hasil=null;c.held=false;c.approved=false;c.paket=null;c.antri=null;c.prev=null;c.opt=null;c.kind='';
     try{
       notice('info','Revisi atas permintaanmu untuk <b>'+esc(c.id)+'</b>'+(note?': '+esc(note.split('\n')[0]):'')+'. Tidak ada putaran revisi otomatis.');
       setCard(c,'Merevisi teks (catatanmu)');
@@ -1214,6 +1222,12 @@ var UI={
       await renderCard(c);await cardFlow(c);
     }catch(e){c.held=true;c.stage=(e&&e.code==='cancelled')?'Dihentikan':'Tertahan (error)';c.kind='fail';if(!(e&&e.code==='cancelled'))UI.error(errMsg(e))}
     running=false;UI.end();
+  },
+  antrian:function(){
+    var q=S.cards.filter(function(c){return c.approved&&c.antri});
+    $('antrianp').classList.toggle('hidden',!q.length);
+    $('antrianl').innerHTML=q.map(function(c){var pk=c.paket||{};return '<div class="res"><h3>'+esc(c.id)+' · '+esc(c.topik||'-')+'<span class="pill '+(c.antri.status==='Siap dikirim'?'ok':'')+'">'+esc(c.antri.status)+'</span></h3><div class="muted">'+esc(pk.platform||c.platform)+' · jadwal: '+esc(pk.saran_jadwal||'belum ada')+'</div></div>'}).join('');
+    $('antrianzip').onclick=async function(){var b=this;b.disabled=true;try{await Save.file('antrian-posting_'+new Date().toISOString().slice(0,10)+'.zip',antrianZip(q),b)}finally{b.disabled=false}};
   },
   tab:function(w){var v=w==='v';$('tabc').setAttribute('aria-selected',!v);$('tabv').setAttribute('aria-selected',v);$('resc').classList.toggle('hidden',v);$('resv').classList.toggle('hidden',!v)}
 };
@@ -1250,6 +1264,24 @@ function handoffInstruksi(c,gambar){
 }
 function handoffRules(c){
   return ['# Aturan kerja di folder ini','','Pemilik: Zulnan. Bahasa Indonesia santai, to the point.','','- Folder ini paket render dari Zuno Studio untuk satu video. Kerjakan hanya yang ada di `INSTRUKSI.md`.','- Isi naskah, makna, fakta, dan klaim tidak boleh diubah. Jangan mengarang angka, testimoni, atau pengalaman Zulnan. Dilarang klaim hasil atau penghasilan.','- Slogan setelah hook sudah ada di naskah; jangan diubah. Harga produk belum ditentukan: pakai placeholder.','- Jangan upload, posting, atau mengirim apa pun ke platform. Status Disetujui hanya dari Zulnan.','- Jangan menyatakan video selesai bila belum ada file MP4 yang benar-benar terbuka dan dicek (durasi, audio, tidak ada frame kosong). Laporkan kegagalan apa adanya.','- Jangan memasang paket atau mengubah pengaturan komputer tanpa bilang dulu; tulis dulu apa dan kenapa.','- Karakter Zulnan, Zuno, dan agen divisi tidak boleh diubah wajah, proporsi, atau pakaiannya.','- Jangan menyalin merek, logo, atau karakter pihak lain dari video referensi.','- Alat render bebas (HyperFrames, Remotion, claude-video-effects, ffmpeg, atau skill yang terpasang) asal alurnya dan keluaran sesuai `INSTRUKSI.md`.',''].join('\n');
+}
+function antrianItem(c){
+  var pk=c.paket||{},vid=c.format==='video',n=vid?0:((c.hasil&&c.hasil.png)||[]).length,media=[];
+  for(var i=0;i<n;i++)media.push('slide-'+(i+1)+'.png');
+  return {id:c.id,topik:c.topik||'',format:c.format,platform:pk.platform||c.platform,status_konten:'Disetujui Zulnan',status_antrian:c.antri.status,masuk_antrian:c.antri.masuk,
+    caption:pk.caption_final||(c.konten&&c.konten.caption)||'',hashtag:pk.hashtag||(c.konten&&c.konten.hashtag)||[],cover:pk.cover||'',saran_jadwal:pk.saran_jadwal||'',catatan:pk.catatan||[],
+    media:vid?['video-final.mp4 (taruh di folder ini setelah dirender dan kamu cek)']:media,terkirim:null,bukti_tayang:null};
+}
+function antrianZip(q){
+  var enc=new TextEncoder(),files=[];
+  q.forEach(function(c){
+    var dir='antrian-posting/'+fn(c)+'/',it=antrianItem(c);
+    files.push({name:dir+'item.json',data:enc.encode(JSON.stringify(it,null,2))});
+    files.push({name:dir+'caption.txt',data:enc.encode(it.caption+'\n\n'+(it.hashtag||[]).join(' '))});
+    if(c.format!=='video')((c.hasil&&c.hasil.png)||[]).forEach(function(u,i){var p=u.split(','),b=atob(p[1]),a=new Uint8Array(b.length);for(var k=0;k<b.length;k++)a[k]=b.charCodeAt(k);files.push({name:dir+'slide-'+(i+1)+'.png',data:a})});
+  });
+  files.unshift({name:'antrian-posting/BACA-DULU.md',data:enc.encode('# Antrian Posting dari Zuno Studio\n\nIsi folder ini hanya konten berstatus Disetujui Zulnan. Ekstrak ke folder repo Zuno (menimpa folder `antrian-posting/`), lalu minta Claude Code: "jalankan antrian posting". Aturannya di `docs/alur-posting.md`.\n\nVideo baru dikirim setelah `video-final.mp4` ada di foldernya dan statusnya diubah jadi "Siap dikirim".\n')});
+  return zipStore(files);
 }
 async function claudeCodeZip(c){
   var enc=new TextEncoder(),files=[],tampil=S&&S.mode==='tampil',gambar=[];

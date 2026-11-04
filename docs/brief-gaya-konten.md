@@ -20,7 +20,7 @@ Dokumen ini adalah **brief dasar** (memori inti Zuno) untuk semua agen. Isinya s
 | Platform | Instagram, TikTok, Threads |
 | Target harian | 2 carousel gambar + 1 video motion grafis (Mode Tampil atau Tanpa Wajah) |
 | Rumus konten | Semua konten TOFU, MOFU, atau BOFU |
-| Fase aktif | Fase 1 (ide sampai naskah dan edit). Tidak memposting, tidak menjalankan iklan. |
+| Fase aktif | Fase 1 (ide sampai naskah dan edit) + posting lewat Antrian Posting: hanya konten yang Disetujui Zulnan, dijadwalkan lewat Metricool (`docs/alur-posting.md`, keputusan Zulnan 2026-11-04). Tidak menjalankan iklan. |
 
 ### Pilar konten (fondasi, keputusan Zulnan 2026-11-02)
 

@@ -30,6 +30,11 @@ Permintaan Zulnan / klien
 
 - Tidak ada coding sebelum Gerbang 1. Tidak ada rilis sebelum Gerbang 3.
 - Laporan "selesai" wajib membawa bukti uji dari T.4 (screenshot, daftar cek lolos). Bila belum diuji, tulis "belum diuji".
+- Skill pendukung (Claude Code, `.claude/skills/`):
+  - T.1: `grilling` untuk menguji PRD dan ruang lingkup tanpa memangkas fitur.
+  - T.2: `hallmark` hanya untuk proyek baru atau bila Zulnan menyebutnya, plus `mobile-native`.
+  - T.3: `systematic-debugging`, `review-my-diff`, dan Context7 bila terpasang.
+  - T.4: `prove-it-ran` (bukti uji), `break-ui` (data terburuk), `vibe-security` (audit keamanan), `mobile-native`.
 - Revisi: hanya bagian yang diminta yang berubah; fitur lain tetap.
 - Status proyek: Ide, Ruang Lingkup Disetujui, Desain Disetujui, Dibangun, Diuji, Rilis.
 - Error dan kendala disampaikan ke Zulnan lewat Juru Kabar dengan bahasa sederhana plus langkah yang bisa diambil.
