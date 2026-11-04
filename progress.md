@@ -82,7 +82,8 @@ Baca `docs/gaya-video.md`. Ringkas:
 - agent-desktop hanya untuk Divisi Engineering di laptop, dari bangun sampai live; divisi kreatif tidak memakainya.
 - Antrian Posting sepenuhnya di web: setelah Setujui, Zulnan memilih tanggal dan jam per konten (video: unggah file final). Tombol "Kirim ke Metricool" mengunggah media ke Google Drive Zulnan (OAuth Client ID), lalu memanggil API Metricool (`POST /api/v2/scheduler/posts`, header `X-Mc-Auth`, token di env Vercel) di jam pilihan Zulnan.
 - Hapus skill `antrian-posting` versi laptop dan tombol zip.
-- Menunggu Zulnan: (1) menu API ada di akun Metricool atau tidak; (2) usul gerbang Engineering: gerbang 1-2 tetap, gerbang 3 jadi cek link live.
+- Keputusan Zulnan 2026-11-04: gerbang Engineering **disetujui** (gerbang 1-2 tetap, gerbang 3 = Zulnan cek link live lalu oke). Bagian Metricool/Google Drive **di-hold (pending)** sampai Zulnan bilang lanjut; skill `antrian-posting` versi laptop dan tombol zip dibiarkan dulu.
+- Yang bisa dikerjakan tanpa menunggu: agent-desktop khusus Engineering + alur build sampai live + gerbang 3 baru.
 
 000008. **Skill, Antrian Posting, dan tangan komputer (2026-11-04, entri 42). Sudah di-push dan live; bagian antrian dan tangan komputer akan dirombak (000009).**
 - Langkah Zulnan:

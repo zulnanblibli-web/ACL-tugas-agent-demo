@@ -40,6 +40,11 @@ Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status
 - Tangan komputer: agent-desktop (Vercel Labs) + Claude Code di laptop Zulnan. Dipasang lewat `pasang-tangan-komputer.bat`; aturan dan larangan di `docs/tangan-komputer.md`. Sesi cloud tidak bisa menjangkau laptop.
 - Metricool: akun ada (blogId 7638930), tapi per 2026-11-04 belum ada akun sosmed tersambung. Media harus berupa tautan publik, jadi lewat Google Drive.
 
+- Arahan Zulnan 2026-11-04 (belum dikerjakan):
+  - agent-desktop khusus Divisi Engineering di laptop, dari bangun sampai live; divisi kreatif sepenuhnya di web.
+  - Gerbang Engineering: gerbang 1-2 tetap, gerbang 3 = cek link live (disetujui).
+  - Antrian Posting via web, Google Drive, dan API Metricool dengan jadwal dipilih Zulnan: **pending**, ditahan Zulnan.
+
 ## Zuno Web (live)
 - https://zuno-studio-dusky.vercel.app. Proyek Vercel `zuno-studio` (team zulnanblibli-web), Root Directory `web`, terhubung ke repo ini. Deploy production terakhir: `dpl_J8pTt8ay8ECJ2vCA1pMgcBAcJs6D` (commit 80cc1ab), READY; branch `claude/gifted-turing-csug5l` langsung jadi production di proyek ini. Repo kini di https://github.com/zulnanblibli-web/ACL-tugas-agent-demo.
 - Branch kerja: `claude/gifted-turing-csug5l`. Push ke branch membuat deploy preview; production lewat deploy manual atau merge ke main.
