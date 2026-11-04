@@ -17,7 +17,7 @@ Folder ini dibaca otomatis oleh Claude Code saat bekerja di repo ini, baik di cl
 | `systematic-debugging` | T.3 Pengembang | Cari akar masalah dulu sebelum memperbaiki bug | obra/superpowers (22f0b46) |
 | `vibe-security` | T.4 Penguji | Audit keamanan aplikasi buatan AI: API key bocor, aturan database, login, rate limit, integrasi LLM | raroque/vibe-security-skill (850938f) |
 
-Alat tambahan untuk T.3 (dipasang di laptop lewat `pasang-tangan-komputer.bat`, opsional): **Context7**, dokumentasi library sesuai versi supaya agen tidak mengarang API (`npx ctx7 setup --claude`, login dilakukan Zulnan sendiri).
+Alat tambahan untuk T.3 (dipasang di laptop lewat `pasang-tangan-komputer.bat` bersama CLI deploy Vercel/clasp/Firebase, opsional): **Context7**, dokumentasi library sesuai versi supaya agen tidak mengarang API (`npx ctx7 setup --claude`, login dilakukan Zulnan sendiri).
 
 ## Divisi Editing (Pelatih Editing, Perender)
 
@@ -47,7 +47,8 @@ Konteks bisnis untuk semua skill ini ada di `.claude/product-marketing.md` (menu
 
 | Skill | Gunanya |
 |---|---|
-| `antrian-posting` | Menjalankan Antrian Posting: hanya konten berstatus Disetujui Zulnan yang dikirim, lewat Metricool; lihat `docs/alur-posting.md` |
+| `rilis-engineering` | Di laptop Zulnan: paket rilis Build App, uji laptop + HP, deploy ke link live, cek pakai agent-desktop, gerbang 3 (Zulnan cek link live) |
+| `antrian-posting` | **Pending, jangan dipakai.** Versi laptop lama. Akan diganti pengiriman dari web (Google Drive + API Metricool) setelah Zulnan membuka lagi bagian Metricool |
 
 ## Yang sengaja tidak dipasang
 - `video-spec-builder` (ditulis dalam bahasa Mandarin dan tumpang tindih dengan Kartu Gaya dan tipe video A/B/C Zuno).

@@ -4,3 +4,6 @@
 # Isi Antrian Posting hanya di laptop (media besar); README tetap ikut
 antrian-posting/*
 !antrian-posting/README.md
+
+# Proyek Engineering yang sedang dirilis di laptop (paket rilis Build App)
+proyek/

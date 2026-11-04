@@ -284,4 +284,34 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - uji alur antrian dengan akun asli;
   - .bat belum diuji di Windows (sesi ini Linux).
 
-## 43. (entri berikutnya di sini)
+## 43. Tangan komputer khusus Engineering, gerbang 3 baru, artifact, sinkron prompt (2026-11-04)
+- Permintaan:
+  - agent-desktop khusus Divisi Engineering (bangun sampai live), divisi kreatif di web;
+  - gerbang 1-2 tetap, gerbang 3 = cek link live (disetujui);
+  - Metricool di-hold;
+  - rapikan bagian Claude, beri daftar yang belum dikerjakan;
+  - cek hasil lewat artifact, bukan server lokal;
+  - pertanyaan cara menjual Zuno dengan API pembeli sendiri.
+- Hasil:
+  - **Build App.** Gerbang 3 diganti tombol "Lanjut rilis: unduh paket untuk Claude Code (.zip)". Isinya `proyek/<nama>/`: index.html, backend, PANDUAN, ruang-lingkup.json, desain.json, PRD, INSTRUKSI-RILIS. Status "gerbang 3 menunggu link live". PANDUAN dan tracker diperbarui.
+  - **Skill dan pemasang.** Skill baru `rilis-engineering`: uji laptop + HP, deploy ke link live per mesin (Vercel, clasp, Firebase), cek link pakai agent-desktop, gerbang 3, lalu final. `pasang-tangan-komputer.bat` kini menawarkan CLI deploy, bukan ffmpeg/Python.
+  - **Dokumen dan profil.** `docs/tangan-komputer.md` ditulis ulang untuk Engineering saja. `.gitignore` `proyek/`. Diperbarui juga CLAUDE.md, aturan Engineering, profil T.4 (`agents/18`, `semua-agen.md`), dan README skill (`antrian-posting` ditandai pending). `docs/alur-posting.md` diberi status pending.
+  - **Artifact.** Zuno Studio v2 dipublikasikan ulang ke https://claude.ai/artifact/Hhp1jjUmZNmi2TFjr9qCBX (versi 3: antrian posting, paket rilis, input cover, Engineering tanpa batas MVP).
+  - **Sinkron prompt orkestrasi.** Versi repo, .docx (pandoc), dan Claude Doc (7 kalimat usang: template carousel, batas MVP, Marketing, Output/Dilarang T.4, Divisi Desain, Fase 2) sekarang sama.
+  - **Skill scope-lock.** Zip `skills/engineering/01-idea-to-scope-lock.zip` dicek: sama dengan foldernya, tanpa batas 5 fitur, siap diunggah ulang Zulnan.
+  - **Tes.** v2, web, dan build stub lolos.
+- File berubah:
+  - prototipe, web, dan tes: `prototypes/zuno-studio-v2.html`, `web/index.html`, `tests/zuno-studio-v2-build-stub-test.js`;
+  - skill dan pemasang: `.claude/skills/rilis-engineering/SKILL.md`, `.claude/skills/README.md`, `pasang-tangan-komputer.bat`, `.gitignore`;
+  - aturan dan agen: `docs/tangan-komputer.md`, `docs/aturan-engineering.md`, `docs/alur-posting.md`, `CLAUDE.md`, `agents/18-penguji-rilis.md`, `agents/semua-agen.md`;
+  - prompt orkestrasi: `docs/prompt-orkestrasi-zuno.md`, `docs/prompt-orkestrasi-zuno.docx`;
+  - catatan: `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`.
+- Tertunda:
+  - push;
+  - Zulnan unggah ulang zip scope-lock;
+  - uji `.bat` dan `rilis-engineering` di Windows;
+  - Metricool (pending);
+  - versi jual white-label (000010);
+  - VPS.
+
+## 44. (entri berikutnya di sini)

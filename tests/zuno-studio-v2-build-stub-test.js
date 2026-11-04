@@ -53,14 +53,14 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   await p.click('#bres button:has-text("Setujui tampilan")');
   if(GAGAL){ await p.waitForSelector('#bres button:has-text("Coba lagi")',{timeout:30000}); console.log('error tampil:', (await p.$eval('#berr',e=>e.innerText)).slice(0,120), '| log tampil:', await p.isVisible('#bdlog'));
     await p.click('#bdlog'); await p.click('#bres button:has-text("Coba lagi")'); }
-  await p.waitForSelector('text=Setujui hasil uji',{timeout:30000});
+  await p.waitForSelector('text=Lanjut rilis',{timeout:30000});
   const rows=await p.$$eval('#bres table.uji:first-of-type tr',r=>r.slice(1).map(x=>x.children[0].innerText+'='+x.children[1].innerText));
   console.log('cek otomatis:', rows.join(' | '));
   console.log('akun acak (bukan admin2026):', await p.evaluate(()=>window.__akun));
   await p.click('#bres >> text=Pratinjau HP'); await p.waitForSelector('iframe.bframe.hp');
   await p.click('#bres >> text=Unduh index.html'); await p.click('#bres >> text=Unduh PANDUAN.md');
-  await p.click('#bres button:has-text("Setujui hasil uji")');
-  await p.waitForSelector('text=Gerbang 3 disetujui');
+  await p.click('#bres button:has-text("Lanjut rilis")');
+  await p.waitForSelector('text=gerbang 3 menunggu link live');
   console.log('status:', await p.$eval('#bcard .st',e=>e.innerText));
   console.log('tracks:', await p.$$eval('#btracks .track',e=>e.map(x=>x.querySelector('.tname').textContent+'='+x.dataset.s).join(', ')));
   console.log('urutan peran:', (await p.evaluate(()=>window.__calls)).map(c=>c.role+(c.file?':'+c.file:'')+(c.rev?'(rev)':'')).join(','));

@@ -1,7 +1,7 @@
 @echo off
-rem Pasang "tangan komputer" Zuno di Windows: klik dua kali berkas ini, cukup sekali.
+rem Pasang "tangan komputer" Zuno (khusus Divisi Engineering) di Windows: klik dua kali, cukup sekali.
 rem Yang dipasang: agent-desktop (Vercel Labs, Apache-2.0), Claude Code bila belum ada,
-rem ffmpeg dan Python untuk skill editing (opsional), Context7 (opsional).
+rem CLI deploy Vercel / clasp / Firebase (opsional), Context7 (opsional).
 rem Panduan lengkap: docs\tangan-komputer.md
 chcp 65001 >nul
 title Pasang tangan komputer Zuno
@@ -12,13 +12,13 @@ if not errorlevel 1 goto darizip
 if not exist "%~dp0CLAUDE.md" goto bukanrepo
 
 echo ============================================================
-echo  Pasang tangan komputer Zuno
+echo  Pasang tangan komputer Zuno (Divisi Engineering)
 echo ============================================================
 echo  Yang akan dipasang di laptop ini:
 echo   1. agent-desktop  : Claude bisa melihat dan mengklik aplikasi
 echo   2. Claude Code    : bila belum terpasang
 echo   3. Sambungan agent-desktop ke Claude Code, khusus folder ini
-echo   4. ffmpeg + Python: untuk skill editing video (ditanya dulu)
+echo   4. CLI deploy     : Vercel, clasp (Apps Script), Firebase (ditanya dulu)
 echo   5. Context7       : dokumentasi library untuk Engineering (ditanya dulu)
 echo.
 echo  Tidak ada key atau password yang diminta di sini.
@@ -70,24 +70,20 @@ echo .claude\settings.local.json sudah ada, tidak ditimpa. Tambahkan sendiri "mc
 :lewatizin
 
 echo.
-echo [4/5] ffmpeg dan Python untuk skill editing video.
-where ffmpeg >nul 2>nul
-if errorlevel 1 goto tanyaffmpeg
-echo ffmpeg sudah ada.
-goto cekpython
-:tanyaffmpeg
-choice /c YN /n /m "ffmpeg belum ada. Pasang lewat winget sekarang? (Y/N): "
-if errorlevel 2 goto cekpython
-winget install --id Gyan.FFmpeg -e --accept-source-agreements --accept-package-agreements
-:cekpython
-where python >nul 2>nul
-if errorlevel 1 goto tanyapython
-echo Python sudah ada.
-goto ctx7
-:tanyapython
-choice /c YN /n /m "Python belum ada. Pasang Python 3.12 lewat winget sekarang? (Y/N): "
-if errorlevel 2 goto ctx7
-winget install --id Python.Python.3.12 -e --accept-source-agreements --accept-package-agreements
+echo [4/5] CLI deploy untuk membawa web app sampai live.
+choice /c YN /n /m "Pasang Vercel CLI (mesin Vercel + Supabase)? (Y/N): "
+if errorlevel 2 goto lewatvercel
+call npm install -g vercel --no-audit --no-fund
+:lewatvercel
+choice /c YN /n /m "Pasang clasp (mesin Apps Script)? (Y/N): "
+if errorlevel 2 goto lewatclasp
+call npm install -g @google/clasp --no-audit --no-fund
+:lewatclasp
+choice /c YN /n /m "Pasang Firebase CLI (mesin Firebase)? (Y/N): "
+if errorlevel 2 goto lewatfirebase
+call npm install -g firebase-tools --no-audit --no-fund
+:lewatfirebase
+echo Login CLI dilakukan sendiri sekali saja: vercel login / clasp login / firebase login
 
 :ctx7
 echo.
@@ -102,10 +98,11 @@ echo.
 echo ============================================================
 echo  Selesai. Cara pakai:
 echo   1. Buka Command Prompt di folder ini, ketik: claude
-echo   2. Minta pekerjaannya, misalnya: "jalankan antrian posting"
-echo      atau "render video KK-002 dari paket Claude Code".
+echo   2. Unduh paket rilis dari tab Build App, lalu bilang:
+echo      "rilis proyek nama-aplikasi"
+echo   Claude membangun sampai live, lalu memberi link untuk kamu cek.
 echo  Laptop harus menyala dan tidak terkunci selama Claude bekerja.
-echo  ffmpeg atau Python yang baru dipasang terbaca setelah jendela ini ditutup.
+echo  CLI yang baru dipasang terbaca setelah jendela ini ditutup.
 echo ============================================================
 choice /c YN /n /m "Buka Claude Code sekarang? (Y/N): "
 if errorlevel 2 goto akhir

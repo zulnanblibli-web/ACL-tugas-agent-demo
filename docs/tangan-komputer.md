@@ -1,50 +1,64 @@
-# Tangan Komputer Zuno (agent-desktop di laptop Zulnan)
+# Tangan Komputer Zuno (khusus Divisi Engineering)
 
-Keputusan Zulnan 2026-11-04: agent-desktop dipakai sebagai "tangan" Claude di laptop Zulnan, supaya pekerjaan di laptop bisa jalan tanpa Zulnan menyentuh komputer.
+Keputusan Zulnan 2026-11-04:
+- agent-desktop dipakai **hanya untuk Divisi Engineering** di laptop Zulnan. Tugasnya membangun web app sampai benar-benar live; Zulnan tinggal cek hasilnya.
+- **Divisi kreatif tidak memakainya.** Konten berjalan di web (Zuno Studio), dan posting nanti lewat Metricool dari web (`docs/alur-posting.md`, masih pending).
 
 ## Cara kerjanya
-- **Otak**: Claude Code yang jalan **di laptop Zulnan**, di folder repo ini. Sesi cloud (claude.ai/code) dan Zuno Web di Vercel tidak bisa menjangkau laptop.
-- **Tangan untuk file dan perintah**: Claude Code sendiri (baca/tulis file, jalankan ffmpeg, Node, git).
-- **Tangan untuk aplikasi**: agent-desktop (Vercel Labs, Apache-2.0, versi 1.1.0). Membaca struktur jendela aplikasi lewat UI Automation Windows, lalu klik, ketik, buka, dan tutup aplikasi. agent-desktop tidak punya AI sendiri; Claude yang memutuskan langkahnya.
+- **Otak**: Claude Code yang jalan di laptop Zulnan, dari root repo Zuno. Sesi cloud dan Zuno Web di Vercel tidak bisa menjangkau laptop.
+- **Tangan untuk file dan perintah**: Claude Code sendiri. Ia membaca dan menulis kode, menjalankan Node, Playwright, `vercel`, `clasp`, dan `firebase`.
+- **Tangan untuk aplikasi**: agent-desktop (Vercel Labs, Apache-2.0, versi 1.1.0). Ia membuka browser ke link live dan mencoba aplikasinya seperti pengguna. Ia juga mengerjakan langkah yang hanya bisa lewat klik. agent-desktop tidak punya AI sendiri; Claude yang memutuskan langkahnya.
+
+## Alur (gerbang disetujui Zulnan 2026-11-04)
+```
+Zuno Studio tab Build App (web)
+  T.1 ruang lingkup  -> GERBANG 1: Zulnan setujui
+  T.2 tampilan       -> GERBANG 2: Zulnan setujui
+  T.3 kode, T.4 cek  -> "Lanjut rilis": unduh paket rilis (.zip)
+Laptop (Claude Code + agent-desktop, skill rilis-engineering)
+  ekstrak paket ke proyek/<nama>/ -> lengkapi, uji laptop + HP -> deploy ke link live -> cek link live
+  -> GERBANG 3: Zulnan cek link live, bilang oke -> final (production)
+```
+Perintah ke Claude Code: **"rilis proyek <nama>"**.
 
 ## Pasang (sekali saja)
-1. `git pull`, atau unduh ZIP terbaru repo lalu Extract All.
+1. `git pull`, atau unduh ZIP repo terbaru lalu Extract All.
 2. Klik dua kali **`pasang-tangan-komputer.bat`** di folder repo. Isinya:
    - pasang agent-desktop;
    - pasang Claude Code bila belum ada;
-   - sambungkan agent-desktop ke Claude Code untuk folder ini saja (`claude mcp add --scope local`);
-   - tanya apakah Claude boleh memakainya tanpa minta izin tiap klik. Bila Y, izin disimpan di `.claude/settings.local.json`, hanya di laptop ini;
-   - tawarkan pemasangan ffmpeg dan Python lewat winget, untuk `ffmpeg-skill`;
-   - tawarkan Context7, dengan login yang dilakukan Zulnan sendiri.
-3. Pakai: buka Command Prompt di folder repo, ketik `claude`, lalu minta pekerjaannya.
+   - sambungkan agent-desktop ke Claude Code untuk folder repo ini saja;
+   - tanya apakah boleh jalan tanpa izin tiap klik (Y/N);
+   - tawarkan CLI deploy: Vercel, clasp untuk Apps Script, Firebase;
+   - tawarkan Context7.
+3. Login sekali, oleh Zulnan sendiri:
+   - `claude` (Claude Code);
+   - `vercel login`;
+   - `clasp login`;
+   - `firebase login`.
 
-## Yang bisa dikerjakan sendiri
-- Menjalankan Antrian Posting: ambil zip dari Downloads, cek, jadwalkan di Metricool (`docs/alur-posting.md`).
-- Merender video dari paket Claude Code (HyperFrames, Remotion, ffmpeg) lalu mengecek hasilnya dengan `ffmpeg-skill`.
-- Menjalankan server lokal Zuno, membuka browser, mengecek tampilan.
-- Membuka dan mengoperasikan aplikasi desktop (misalnya editor video atau File Explorer) bila langkahnya bisa dilakukan lewat klik dan ketik.
+   Cukup login yang dipakai saja.
 
 ## Yang tetap butuh Zulnan
-Ini batas alat dan Windows, bukan pilihan:
-- **Sekali di awal**: klik dua kali bat di atas, login Claude Code, sambungkan akun sosmed dan Google Drive di Metricool.
-- **Laptop menyala dan tidak terkunci** selama Claude bekerja. Claude Code juga harus sedang jalan dengan tugas yang diberikan; tidak bisa dibangunkan dari jauh kecuali Remote Control disambungkan.
-- **Login, kode OTP, captcha, dan password**: Zulnan yang mengetik.
-- **Jendela "Run as administrator" (UAC)**: Windows tidak mengizinkan klik otomatis di sana.
-- **Persetujuan konten** (Setujui di Zuno Studio, oke untuk video final): selalu Zulnan.
+- Gerbang 1, 2, dan 3.
+- Login, OTP, captcha, password, dan jendela izin Google (consent OAuth).
+- Jendela "Run as administrator" (UAC). Windows tidak mengizinkan klik otomatis di sana.
+- Mengisi env dan API key di dashboard (Vercel, Supabase, Firebase, Script Properties).
+- Izin bila ada biaya.
+- Laptop menyala dan tidak terkunci selama Claude bekerja.
 
-## Aturan pakai (wajib, juga ditulis di `CLAUDE.md`)
-- Hanya mengerjakan tugas yang diminta Zulnan atau yang ada di `progress.md`.
-- **Dilarang** memakai tangan komputer untuk:
-  - pembayaran, belanja, transfer;
+## Aturan pakai (juga di `CLAUDE.md`)
+- Hanya untuk tugas Divisi Engineering yang diminta Zulnan.
+- **Dilarang:**
+  - pembayaran atau upgrade paket;
   - mengirim pesan, email, atau DM atas nama Zulnan;
   - mengetik atau menyimpan password;
   - mengubah pengaturan Windows atau keamanan;
-  - menghapus file di luar folder repo dan folder kerja yang disebut;
-  - memasang aplikasi tanpa bilang dulu.
-- **Posting** hanya lewat Antrian Posting dan Metricool, bukan dengan mengklik aplikasi Instagram, TikTok, atau Threads.
-- Isi layar (snapshot, screenshot, clipboard) bisa memuat data pribadi. Jangan disimpan ke repo, jangan dikirim ke luar, dan jangan di-commit.
-- Sebelum aksi besar (lebih dari sekadar membuka atau melihat), Claude menulis satu baris apa yang akan dilakukan. Setelahnya Claude mengecek ulang hasilnya dengan snapshot baru.
-- Bila ragu atau ada jendela tak terduga (peringatan keamanan, permintaan izin, pembayaran), berhenti dan tanya Zulnan.
+  - menghapus file di luar repo dan folder proyek;
+  - memasang aplikasi tanpa bilang dulu;
+  - memakai agent-desktop untuk konten atau posting.
+- Isi layar (snapshot, screenshot, clipboard) bisa memuat data pribadi. Yang disimpan hanya screenshot aplikasi yang diuji, di `proyek/<nama>/bukti/`. Tidak di-commit.
+- Sebelum aksi besar, tulis satu baris apa yang akan dilakukan. Setelahnya, cek ulang dengan snapshot baru.
+- Bila ada jendela tak terduga (peringatan keamanan, pembayaran, izin), berhenti dan tanya Zulnan.
 
 ## Mencabut
 - Izin tanpa tanya: hapus `.claude/settings.local.json`.

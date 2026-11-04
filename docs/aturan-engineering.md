@@ -24,11 +24,12 @@ Permintaan Zulnan / klien
   -> T.2 Wireframe + UI/UX + cek animasi
   -> GERBANG 2: Zulnan setujui tampilan
   -> T.3 Bangun aplikasi (mode preview dulu)
-  -> T.4 Uji (laptop + layar HP), perbaiki bug, siapkan rilis dan panduan
-  -> GERBANG 3: Zulnan setujui hasil uji -> rilis (deploy)
+  -> T.4 Uji (laptop + layar HP), perbaiki bug, siapkan paket rilis dan panduan
+  -> Laptop Zulnan: Claude Code + agent-desktop (skill rilis-engineering) deploy ke link live dan cek
+  -> GERBANG 3: Zulnan cek link live, bilang oke -> final (production)
 ```
 
-- Tidak ada coding sebelum Gerbang 1. Tidak ada rilis sebelum Gerbang 3.
+- Tidak ada coding sebelum Gerbang 1. Link live untuk dicek boleh dibuat sebelum Gerbang 3; versi final (production, domain, dibagikan ke klien) hanya setelah Zulnan oke di Gerbang 3 (keputusan Zulnan 2026-11-04). Jalur laptop: `docs/tangan-komputer.md`.
 - Laporan "selesai" wajib membawa bukti uji dari T.4 (screenshot, daftar cek lolos). Bila belum diuji, tulis "belum diuji".
 - Skill pendukung (Claude Code, `.claude/skills/`):
   - T.1: `grilling` untuk menguji PRD dan ruang lingkup tanpa memangkas fitur.

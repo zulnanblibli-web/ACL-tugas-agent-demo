@@ -55,13 +55,13 @@ Penjaga mutu teknis. Bukan Divisi Mutu konten: yang diuji adalah apakah aplikasi
 - Menyusun daftar uji dari definisi selesai
 - Menjalankan uji dan mengumpulkan bukti (screenshot, catatan)
 - Mengirim laporan bug ke T.3 dan menguji ulang setelah diperbaiki
-- Mengajukan laporan uji ke Zulnan (Gerbang 3)
-- Setelah disetujui: rilis, lalu menyusun panduan serah terima dan daftar akun awal
+- Di laptop Zulnan (skill `rilis-engineering`, Claude Code + agent-desktop): uji, deploy ke link live, cek link itu, lalu ajukan link live + laporan uji ke Zulnan (Gerbang 3)
+- Setelah Zulnan oke: final (production), lalu menyusun panduan serah terima dan daftar akun awal
 
 ## Dilarang
 - Menyatakan lolos tanpa bukti
 - Mengubah fitur atau tampilan saat memperbaiki bug di luar bug itu
-- Rilis sebelum Gerbang 3
+- Final (production, domain, serah ke klien) sebelum Gerbang 3; link live untuk dicek boleh
 - Memakai layanan berbayar tanpa izin Zulnan
 
 ## Masukan

@@ -1369,6 +1369,15 @@ function handoffInstruksi(c,gambar){
 function handoffRules(c){
   return ['# Aturan kerja di folder ini','','Pemilik: Zulnan. Bahasa Indonesia santai, to the point.','','- Folder ini paket render dari Zuno Studio untuk satu video. Kerjakan hanya yang ada di `INSTRUKSI.md`.','- Isi naskah, makna, fakta, dan klaim tidak boleh diubah. Jangan mengarang angka, testimoni, atau pengalaman Zulnan. Dilarang klaim hasil atau penghasilan.','- Slogan setelah hook sudah ada di naskah; jangan diubah. Harga produk belum ditentukan: pakai placeholder.','- Jangan upload, posting, atau mengirim apa pun ke platform. Status Disetujui hanya dari Zulnan.','- Jangan menyatakan video selesai bila belum ada file MP4 yang benar-benar terbuka dan dicek (durasi, audio, tidak ada frame kosong). Laporkan kegagalan apa adanya.','- Jangan memasang paket atau mengubah pengaturan komputer tanpa bilang dulu; tulis dulu apa dan kenapa.','- Karakter Zulnan, Zuno, dan agen divisi tidak boleh diubah wajah, proporsi, atau pakaiannya.','- Jangan menyalin merek, logo, atau karakter pihak lain dari video referensi.','- Alat render bebas (HyperFrames, Remotion, claude-video-effects, ffmpeg, atau skill yang terpasang) asal alurnya dan keluaran sesuai `INSTRUKSI.md`.',''].join('\n');
 }
+function rilisZip(B){
+  var enc=new TextEncoder(),s=B.scope||{},nm=slug(s.nama_aplikasi||B.id),files=[],dir='proyek/'+nm+'/';
+  function add(n,t){files.push({name:dir+n,data:enc.encode(t||'')})}
+  add('index.html',B.code&&B.code.html);if(B.code&&B.code.beName)add(B.code.beName,B.code.backend);add('PANDUAN.md',B.code&&B.code.panduan);
+  add('ruang-lingkup.json',JSON.stringify(s,null,2));add('desain.json',JSON.stringify(B.design||{},null,2));
+  if(B.prd)add('PRD.md',B.prd);
+  add('INSTRUKSI-RILIS.md',['# Rilis '+(s.nama_aplikasi||nm),'','Proyek '+B.id+' · '+(B.jenis||'')+(B.klien?' · klien '+B.klien:'')+' · mesin: '+(s.mesin||'-')+' · kredit: '+(s.kredit||'-'),'','Gerbang 1 (ruang lingkup) dan gerbang 2 (tampilan) sudah disetujui Zulnan di Zuno Studio. Kode di folder ini dari T.3, laporan cek dari T.4.','','Untuk Claude Code di laptop Zulnan (jalankan dari root repo Zuno): pakai skill `rilis-engineering`.','1. Baca ruang-lingkup.json, desain.json, PANDUAN.md'+(B.prd?', PRD.md':'')+'. Fitur dan tampilan tidak boleh diubah di luar yang disetujui.','2. Lengkapi dan uji: jalankan lokal, uji di ukuran laptop dan HP, perbaiki bug (T.3/T.4).','3. Deploy ke link live sesuai mesin, lalu cek link itu di browser.','4. Laporkan link live + bukti uji ke Zulnan dan tunggu oke (gerbang 3). Belum ada oke = belum final.',''].join('\n'));
+  return zipStore(files);
+}
 function antrianItem(c){
   var pk=c.paket||{},vid=c.format==='video',n=vid?0:((c.hasil&&c.hasil.png)||[]).length,media=[];
   for(var i=0;i<n;i++)media.push('slide-'+(i+1)+'.png');
@@ -1463,7 +1472,7 @@ async function askText(who,id,prompt,tier,onProg){
   throw last||{code:'upstream_error'};
 }
 var B=null;
-var BTRACKS=[['lead','Lead','Orkestraror Agen · Juru Kabar'],['t1','T.1 Arsitek','Ruang lingkup, mesin, PRD'],['g1','Gerbang 1','Persetujuanmu: ruang lingkup'],['t2','T.2 Desainer UI/UX','Wireframe, gaya, animasi'],['g2','Gerbang 2','Persetujuanmu: tampilan'],['t3','T.3 Pengembang','Kode aplikasi'],['t4','T.4 Penguji & Rilis','Uji, laporan, panduan'],['g3','Gerbang 3','Persetujuanmu: hasil uji']];
+var BTRACKS=[['lead','Lead','Orkestraror Agen · Juru Kabar'],['t1','T.1 Arsitek','Ruang lingkup, mesin, PRD'],['g1','Gerbang 1','Persetujuanmu: ruang lingkup'],['t2','T.2 Desainer UI/UX','Wireframe, gaya, animasi'],['g2','Gerbang 2','Persetujuanmu: tampilan'],['t3','T.3 Pengembang','Kode aplikasi'],['t4','T.4 Penguji & Rilis','Uji, laporan, panduan'],['g3','Gerbang 3','Persetujuanmu: cek link live']];
 function bKredit(){return B.jenis==='klien'?(B.kredit?'Kredit klien: "'+B.kredit+'"':'Kredit klien belum disebut: tulis sebagai pertanyaan, jangan pasang kredit Nexamind'):'Kredit wajib: "Creative @nexamind.ai"'}
 function bCtx(withDesign){
   var a=B.akun,s=B.scope;
@@ -1572,7 +1581,7 @@ var BEng={
   },
   panduan:function(){
     var s=B.scope,a=B.akun,t=B.test,L=[];
-    L.push('# '+s.nama_aplikasi+' · panduan serah terima','','Proyek '+B.id+' · '+B.jenis+(B.klien?' · klien '+B.klien:'')+' · mesin '+s.mesin+' · kredit: '+s.kredit,'','> Dibuat Divisi Engineering Zuno. Status: **belum dirilis** (rilis setelah gerbang 3 dan dilakukan manual atau lewat Claude Code).','');
+    L.push('# '+s.nama_aplikasi+' · panduan serah terima','','Proyek '+B.id+' · '+B.jenis+(B.klien?' · klien '+B.klien:'')+' · mesin '+s.mesin+' · kredit: '+s.kredit,'','> Dibuat Divisi Engineering Zuno. Status: **belum dirilis**. Rilis dikerjakan Claude Code di laptop Zulnan (paket rilis dari Build App, skill `rilis-engineering`); gerbang 3 = Zulnan cek link live lalu oke.','');
     L.push('## Ruang lingkup','- **Masalah:** '+s.masalah,'- **Fitur ('+s.fitur.length+'):** '+s.fitur.join('; '),'- **Nanti:** '+(s.nanti.join('; ')||'-'),'- **Out of scope:** '+s.out_of_scope.join('; '),'- **Biaya:** '+s.biaya,'');
     L.push('## Akun awal (acak, khusus proyek ini)','| Akun | Username | Password |','|---|---|---|','| Admin | `'+a.adminU+'` | `'+a.adminP+'` |','| Contoh | `'+a.demoU+'` | `'+a.demoP+'` |','','Ganti setelah login pertama lewat menu **Reset Akses** (Admin). Kotak "Contoh akses" di halaman login diatur `TAMPILKAN_CONTOH_LOGIN` (sekarang `'+B.contoh+'`) dan bisa dimatikan dari menu yang sama.','');
     L.push('## File','- `index.html`: aplikasi (frontend). `IS_PREVIEW = true` untuk coba tanpa backend; ubah ke `false` saat deploy.','- `'+B.code.beName+'`: '+(B.code.beName==='Code.gs'?'backend Apps Script.':B.code.beName==='firestore.rules'?'aturan keamanan Firestore.':'skema database Supabase.'),'');
@@ -1604,8 +1613,9 @@ var BEng={
       [['Pratinjau HP','hp'],['Pratinjau desktop','']].forEach(function(o){var b=document.createElement('button');b.className='btn';b.textContent=o[0];b.onclick=function(){pb.innerHTML='';var f=document.createElement('iframe');f.className='bframe '+o[1];f.title='Pratinjau '+s.nama_aplikasi;f.setAttribute('sandbox','allow-scripts allow-forms allow-modals');f.srcdoc=B.code.html;pb.appendChild(f)};bt.appendChild(b)});
       [['index.html',B.code.html,'text/html'],[B.code.beName,B.code.backend,'text/plain'],['PANDUAN.md',B.code.panduan,'text/markdown']].forEach(function(o){var b=document.createElement('button');b.className='btn'+(o[0]==='index.html'?' primary':'');b.textContent='Unduh '+o[0];b.onclick=function(){Save.file(slug(s.nama_aplikasi)+'_'+o[0],new Blob([o[1]||''],{type:o[2]}),b)};bt.appendChild(b)});
       e3.appendChild(bt);e3.appendChild(pb);
-      if(B.done)e3.appendChild(gate(3,true));
-      else e3.appendChild(gate(3,false,'Setujui hasil uji (siap rilis)',function(){B.g3=true;B.done=true;B.stage='Disetujui, siap rilis (belum dirilis)';BEng.set('g3','done','Disetujui Zulnan. Rilis dilakukan manual atau lewat Claude Code.');BEng.set('lead','done','Juru Kabar: proyek siap rilis, belum online');BEng.busy(false)},function(n){B.revisi++;BEng.run('t3',function(){return BEng.build(n)})}));
+      var rl=document.createElement('p');rl.className='muted';rl.textContent='Rilis: unduh paket rilis, ekstrak ke folder proyek/ di repo Zuno, lalu di laptop jalankan claude dan bilang "rilis proyek '+slug(s.nama_aplikasi)+'". Claude Code membangun sampai live, lalu memberi link. Gerbang 3: kamu cek link live itu dan bilang oke.';e3.appendChild(rl);
+      if(B.done){var dn=document.createElement('div');dn.className='btns';dn.innerHTML='<span class="pill ok">Paket rilis diunduh · gerbang 3 menunggu link live</span>';var ru=document.createElement('button');ru.className='btn';ru.textContent='Unduh ulang paket rilis (.zip)';ru.onclick=function(){Save.file(slug(s.nama_aplikasi)+'_rilis.zip',rilisZip(B),ru)};dn.appendChild(ru);e3.appendChild(dn)}
+      else e3.appendChild(gate(3,false,'Lanjut rilis: unduh paket untuk Claude Code (.zip)',function(){var me=this;B.done=true;B.stage='Siap dirilis lewat Claude Code (gerbang 3 setelah live)';BEng.set('g3','gate','Menunggu link live dari Claude Code di laptop');BEng.set('lead','done','Juru Kabar: paket rilis siap, belum online');Save.file(slug(s.nama_aplikasi)+'_rilis.zip',rilisZip(B),me);BEng.busy(false)},function(n){B.revisi++;BEng.run('t3',function(){return BEng.build(n)})}));
       box.appendChild(e3)}
   }
 };

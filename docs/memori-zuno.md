@@ -40,8 +40,8 @@ Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status
 - Tangan komputer: agent-desktop (Vercel Labs) + Claude Code di laptop Zulnan. Dipasang lewat `pasang-tangan-komputer.bat`; aturan dan larangan di `docs/tangan-komputer.md`. Sesi cloud tidak bisa menjangkau laptop.
 - Metricool: akun ada (blogId 7638930), tapi per 2026-11-04 belum ada akun sosmed tersambung. Media harus berupa tautan publik, jadi lewat Google Drive.
 
-- Arahan Zulnan 2026-11-04 (belum dikerjakan):
-  - agent-desktop khusus Divisi Engineering di laptop, dari bangun sampai live; divisi kreatif sepenuhnya di web.
+- Arahan Zulnan 2026-11-04:
+  - **Sudah dikerjakan**: agent-desktop khusus Divisi Engineering di laptop, dari bangun sampai live (skill `rilis-engineering`, paket rilis dari tab Build App, `pasang-tangan-komputer.bat` + CLI deploy). Divisi kreatif tidak memakainya; konten di web.
   - Gerbang Engineering: gerbang 1-2 tetap, gerbang 3 = cek link live (disetujui).
   - Antrian Posting via web, Google Drive, dan API Metricool dengan jadwal dipilih Zulnan: **pending**, ditahan Zulnan.
 
@@ -56,6 +56,10 @@ Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status
 - Tes: `cd web && node ../tests/zuno-web-api-test.mjs` (juga `-gemini-`, `-openrouter-`); `node tests/zuno-web-stub-test.js`; `node tests/zuno-studio-v2-build-stub-test.js [--prd|--klien]`; `node tests/zuno-studio-v2-stub-test.js`.
 
 ## Yang masih terbuka
+- Cara cek hasil pilihan Zulnan: **artifact** Zuno Studio v2 (https://claude.ai/artifact/Hhp1jjUmZNmi2TFjr9qCBX), bukan server lokal. Web live kena limit API gratis.
+- Rencana jangka panjang:
+  - Zuno dijual sebagai jasa (white-label): pembeli memakai API key sendiri, terpisah dari Zulnan (`progress.md` 000010);
+  - VPS dan versi agent di web + desktop dengan desain kantor; ditunda.
 - **Siapkan Antrian Posting dan tangan komputer** (`progress.md` 000008): jalankan `pasang-tangan-komputer.bat`, sambungkan sosmed dan Google Drive di Metricool, isi [ISI] tanda konten AI.
 - **Pertama: Zulnan coba ulang server lokal** setelah perbaikan (`git pull`, klik `jalankan-lokal.bat`); bila gagal kirim isi `web/server-lokal.log` (`progress.md` 000007).
 - Zulnan cek tampilan live di laptop dan HP, termasuk carousel navy-biru, input gambar cover, tipe video A/B/C, dan paket Claude Code.

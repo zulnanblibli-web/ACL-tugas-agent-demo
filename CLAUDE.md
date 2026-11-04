@@ -20,7 +20,7 @@ Baca `docs/brief-gaya-konten.md` (brief dasar, memori inti) dan `docs/gaya-video
 - Jangan mengarang angka performa, testimoni, atau pengalaman Zulnan. Harga produk belum ditentukan: pakai placeholder.
 - Slogan setelah hook pada video: "Hai, kenalin Gue Zulnan. Gue sales yang belajar AI sambil bikin, bukan cuma ngomongin."
 - Dilarang: klaim hasil atau penghasilan, kata berlebihan, mengaku-ngaku, menipu, bertele-tele.
-- Posting hanya lewat Antrian Posting (`docs/alur-posting.md`, skill `antrian-posting`): hanya konten yang Disetujui Zulnan (video: setelah Zulnan oke-kan file final), dijadwalkan lewat Metricool, dilaporkan Juru Kabar. Meta Ads dan pembuatan gambar/video AI asli belum aktif. Jangan menyatakan sudah selesai bila hanya "Prompt siap generate", dan jangan menyatakan sudah tayang tanpa tautan postingan.
+- Posting hanya lewat Antrian Posting (`docs/alur-posting.md`): hanya konten yang Disetujui Zulnan (video: setelah Zulnan oke-kan file final). Pengiriman ke Metricool dari web masih **pending** (ditahan Zulnan); sampai dibuka, tidak ada yang dikirim. Meta Ads dan pembuatan gambar/video AI asli belum aktif. Jangan menyatakan sudah selesai bila hanya "Prompt siap generate", dan jangan menyatakan sudah tayang tanpa tautan postingan.
 
 ## Divisi Engineering (build web app)
 Status standby: langsung aktif saat ada permintaan build. Alurnya terpisah dari alur konten (di Zuno Studio v2: tab "Build App" vs tab "Konten"); jangan digabung. Baca `docs/aturan-engineering.md` sebelum mengerjakan build. Ringkasnya: empat prinsip kerja (pikir dulu, sesederhana mungkin, ubah seperlunya, berbasis tujuan); tiga gerbang persetujuan Zulnan (ruang lingkup, tampilan, hasil uji); "selesai" wajib ada bukti uji; proyek pribadi/portofolio mencantumkan "Creative @nexamind.ai", proyek klien sesuai klien; akun login acak per proyek + kotak Contoh akses + menu Reset Akses; password di-hash; penyedia LLM bisa diganti, API key hanya di server. Skill yang sudah disesuaikan: `skills/engineering/`. google/artemis di-hold.
@@ -28,11 +28,12 @@ Status standby: langsung aktif saat ada permintaan build. Alurnya terpisah dari 
 ## Skill terpasang dan tangan komputer
 - Skill di `.claude/skills/` (daftar, pemilik agen, dan sumbernya di `.claude/skills/README.md`). Aturan Zuno selalu menang atas isi skill. Skill marketing membaca `.claude/product-marketing.md`.
 - Sebelum menyatakan pekerjaan selesai, pakai `prove-it-ran` (bukti tes jalan). Video dicek dengan `ffmpeg-skill` (`check.py`) sebelum masuk antrian.
-- Tangan komputer (agent-desktop) hanya jalan di laptop Zulnan; aturan pakainya di `docs/tangan-komputer.md`. Dilarang:
+- Tangan komputer (agent-desktop) **khusus Divisi Engineering** di laptop Zulnan: dari paket rilis Build App sampai web app live (skill `rilis-engineering`), gerbang 3 = Zulnan cek link live. Divisi kreatif tidak memakainya; konten berjalan di web. Aturan pakai di `docs/tangan-komputer.md`. Dilarang:
   - pembayaran;
   - mengirim pesan, email, atau DM atas nama Zulnan;
   - mengetik atau menyimpan password;
   - mengubah pengaturan Windows atau keamanan;
   - menghapus file di luar repo dan folder kerja;
-  - posting lewat klik aplikasi, karena posting hanya lewat Antrian Posting.
+  - pembayaran atau upgrade paket tanpa izin;
+  - memakai agent-desktop untuk konten atau posting.
 - Isi layar atau clipboard tidak disimpan ke repo. Bila ada jendela tak terduga, berhenti dan tanya Zulnan.

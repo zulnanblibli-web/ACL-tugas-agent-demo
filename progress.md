@@ -78,7 +78,28 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
-000009. **Rombak Antrian Posting dan tangan komputer sesuai arahan Zulnan 2026-11-04 (belum dikerjakan).**
+000010. **Versi jual Zuno (white-label, pembeli pakai API sendiri): belum dikerjakan, menunggu Zulnan lanjut.**
+- Rencana yang diusulkan: satu pembeli = satu deploy sendiri, di Vercel milik pembeli atau dikelola Zulnan, dengan env dan API key pembeli sendiri. Key pembeli tidak pernah lewat server Zulnan.
+- Yang perlu dibuat:
+  - pisahkan identitas Zulnan (bank fakta, slogan, foto, brief, kredit) ke file pengaturan atau halaman Pengaturan;
+  - panduan pasang dan tombol Deploy;
+  - lisensi pemakaian.
+- Satu jalur dengan rencana VPS dan versi "kantor" (web + desktop) nanti.
+
+Catatan Zulnan 2026-11-04:
+- Server lokal sudah berhasil, tapi tidak dipakai lagi; cek hasil lewat artifact (https://claude.ai/artifact/Hhp1jjUmZNmi2TFjr9qCBX, versi 3, jalan dengan Claude dari akun Zulnan sehingga tidak kena limit API gratis).
+- Web live kena limit karena paket gratis.
+- VPS kemungkinan dibeli, ditunda; nanti satu jalur dengan versi agent yang live di web dan desktop berdesain kantor.
+- Build App boleh diuji di artifact; nanti tersambung ke agent-desktop di laptop.
+- Keputusan VPS 9router + Hermes nanti, setelah fondasi sesuai workflow.
+
+000009. **Antrian Posting dan tangan komputer (arahan Zulnan 2026-11-04).**
+- Bagian tangan komputer **SELESAI 2026-11-04 (entri 43)**:
+  - agent-desktop khusus Engineering, alur paket rilis ke laptop sampai live;
+  - gerbang 3 = cek link live;
+  - skill `rilis-engineering`;
+  - `.bat` dengan CLI deploy.
+- Bagian Metricool masih pending.
 - agent-desktop hanya untuk Divisi Engineering di laptop, dari bangun sampai live; divisi kreatif tidak memakainya.
 - Antrian Posting sepenuhnya di web: setelah Setujui, Zulnan memilih tanggal dan jam per konten (video: unggah file final). Tombol "Kirim ke Metricool" mengunggah media ke Google Drive Zulnan (OAuth Client ID), lalu memanggil API Metricool (`POST /api/v2/scheduler/posts`, header `X-Mc-Auth`, token di env Vercel) di jam pilihan Zulnan.
 - Hapus skill `antrian-posting` versi laptop dan tombol zip.
