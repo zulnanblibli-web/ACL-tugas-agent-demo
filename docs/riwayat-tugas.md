@@ -344,4 +344,16 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - uji sebagai pembeli di Vercel dengan key asli;
   - [ISI kontak penjual], [ISI masa dukungan], harga (P10).
 
-## 45. (entri berikutnya di sini)
+## 45. Repo edisi jasa diisi (2026-11-04)
+- Permintaan: repo kosong https://github.com/zulnanblibli-web/zuno-studio-app dari Zulnan; isi, commit, dan push.
+- Hasil:
+  - Repo disambungkan ke sesi.
+  - Edisi jasa diekspor dari Zuno `bc4c645`.
+  - `tests/zuno-jasa-test.js` lolos 15 dari 15 cek terhadap isi repo.
+  - Isi repo dipindai: tidak ada key atau fakta pribadi. Temuan pemindai hanya CSS `mask-image` dan pola pendeteksi key.
+  - Commit `076c84f` di-push ke `main`.
+  - Catatan: nama "Zulnan" masih ada di kode sumber halaman (77 kali, di prompt). Di layar, prompt, dan unduhan semuanya diganti nama brand pembeli; hanya terlihat bila kode dibuka.
+- File berubah (repo Zuno): `docs/jasa-zuno.md`, `CLAUDE.md`, `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`. Repo jasa: semua file awal.
+- Tertunda: uji sebagai pembeli dengan Vercel dan key asli; P10 (kontak, masa dukungan, harga).
+
+## 46. (entri berikutnya di sini)

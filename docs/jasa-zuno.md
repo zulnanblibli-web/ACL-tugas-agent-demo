@@ -32,7 +32,7 @@ Keputusan Zulnan 2026-11-04: Zuno Studio dijual sebagai jasa. Tiap pembeli menda
 - Bagian yang belum selesai di Zuno, misalnya posting Metricool yang masih pending, tidak dinyatakan berfungsi di panduan pembeli.
 
 ## Menjual ke pembeli
-1. Repo jasa dibuat **private** di GitHub Zulnan, misalnya `zuno-studio-jasa`.
+1. Repo jasa dibuat **private** di GitHub Zulnan, `zulnanblibli-web/zuno-studio-app` (https://github.com/zulnanblibli-web/zuno-studio-app).
 2. Undang pembeli: GitHub → repo jasa → **Settings → Collaborators → Add people** (akses Read).
 3. Pembeli mengikuti `README.md` / `PANDUAN.md` di repo itu: Fork, impor ke Vercel, isi `GEMINI_API_KEY` + `ZUNO_ACCESS_KEY`, lalu Deploy.
 4. Pembaruan sampai ke pembeli lewat **Sync fork**.

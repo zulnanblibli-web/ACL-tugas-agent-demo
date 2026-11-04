@@ -58,7 +58,7 @@ Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status
 ## Yang masih terbuka
 - Cara cek hasil pilihan Zulnan: **artifact** Zuno Studio v2 (https://claude.ai/artifact/Hhp1jjUmZNmi2TFjr9qCBX), bukan server lokal. Web live kena limit API gratis.
 - **Edisi jasa** (keputusan Zulnan 2026-11-04):
-  - Zuno dijual sebagai salinan white-label di repo terpisah. Pembeli melakukan fork, impor ke Vercel, dan memakai API key sendiri.
+  - Zuno dijual sebagai salinan white-label di repo terpisah https://github.com/zulnanblibli-web/zuno-studio-app (rilis pertama 076c84f). Pembeli melakukan fork, impor ke Vercel, dan memakai API key sendiri.
   - Identitas Zulnan diganti PENGATURAN BRAND.
   - Alat dan aturan di `docs/jasa-zuno.md`.
   - Aturan: salinan jasa harus selalu bisa jalan; setiap update Zuno diekspor dan dites ulang.

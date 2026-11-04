@@ -78,12 +78,14 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
-000011. **Edisi jasa: dibuat dan lolos tes (2026-11-04, entri 44), menunggu repo baru dari Zulnan.**
+000012. **Edisi jasa sudah di repo https://github.com/zulnanblibli-web/zuno-studio-app (branch main, commit 076c84f, 15 cek lolos; entri 45).** Berikutnya: Zulnan coba sebagai pembeli (fork, impor ke Vercel, isi `GEMINI_API_KEY` + `ZUNO_ACCESS_KEY`, Deploy), lalu laporkan hasilnya; isi P10.
+
+000011. **Edisi jasa: dibuat dan lolos tes (2026-11-04, entri 44). Repo dibuat Zulnan: zuno-studio-app.**
 - Alat ekspor `tools/jasa/ekspor-jasa.mjs`.
 - Tes `tests/zuno-jasa-test.js`: 15 cek, semua lolos.
 - Panduan penjual: `docs/jasa-zuno.md`.
 - Langkah berikut:
-  1. Zulnan membuat repo GitHub kosong, private, misalnya `zuno-studio-jasa`. Sesi Claude tidak bisa membuat repo.
+  1. Zulnan membuat repo GitHub kosong, private, `zulnanblibli-web/zuno-studio-app` (https://github.com/zulnanblibli-web/zuno-studio-app). Sesi Claude tidak bisa membuat repo.
   2. Claude menyambungkan repo itu, ekspor, tes, lalu push.
   3. Zulnan coba sekali sebagai pembeli: fork, impor ke Vercel, isi key.
 
