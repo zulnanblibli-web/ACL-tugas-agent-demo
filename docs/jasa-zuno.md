@@ -1,0 +1,45 @@
+# Zuno Studio edisi jasa (dijual ke pembeli)
+
+Keputusan Zulnan 2026-11-04: Zuno Studio dijual sebagai jasa. Tiap pembeli mendapat **salinan sendiri** (fork) yang dipasang di Vercel miliknya, dengan **API key miliknya sendiri**. Key pembeli tidak pernah lewat akun Zulnan. Produk jasa ada di **repo terpisah**; repo ini hanya menyimpan alat ekspor dan tesnya.
+
+## Isi
+- `tools/jasa/ekspor-jasa.mjs`: membuat edisi jasa dari `web/` (sumber tetap satu, `prototypes/zuno-studio-v2.html`).
+- `tools/jasa/files/`:
+  - `brand.js`: halaman Pengaturan Brand dan pengganti identitas;
+  - `README.md`, `PANDUAN.md` (panduan pembeli), `LISENSI.md`;
+  - `.gitignore`.
+- `tests/zuno-jasa-test.js`: tes edisi jasa. Yang dicek:
+  - prompt, halaman, dan unduhan tanpa nama atau fakta Zulnan;
+  - memakai data brand pembeli;
+  - Pengaturan Brand muncul di pemakaian pertama dan bisa disimpan;
+  - alur konten jalan sampai Setujui.
+
+## Bedanya dengan Zuno milik Zulnan
+- Identitas Zulnan (nama, bank fakta, slogan, audiens, pilar, kredit Nexamind, foto, avatar) diganti data dari **PENGATURAN BRAND**. Data itu disimpan di browser pembeli, dengan ekspor/impor `.json`.
+- Penyedia AI otomatis mengikuti key yang diisi: Gemini, OpenRouter, OpenAI, lalu Claude. `AI_PROVIDER` tidak wajib.
+- Foto Zulnan dan gambar avatar percakapan tidak ikut. Gambar tim Zuno dan hero robot ikut.
+- Logika agen tetap sama dengan Zuno. Pembaruan Zuno cukup diekspor ulang.
+
+## Membuat atau memperbarui repo jasa
+1. `node web/build.mjs`
+2. `node tools/jasa/ekspor-jasa.mjs <folder-clone-repo-jasa>`
+3. `node tests/zuno-jasa-test.js <folder-clone-repo-jasa>`. Wajib berakhir **HASIL: SEMUA LOLOS**.
+4. Commit dan push repo jasa, hanya bila langkah 3 lolos.
+
+**Aturan Zulnan: salinan jasa harus selalu bisa jalan.**
+- Setiap ada perubahan di Zuno Web atau `prototypes/zuno-studio-v2.html`, jalankan langkah 1-3.
+- Bila ekspor berhenti ("penanda ditemukan 0 kali") atau tes gagal, perbaiki sampai lolos sebelum push.
+- Bagian yang belum selesai di Zuno, misalnya posting Metricool yang masih pending, tidak dinyatakan berfungsi di panduan pembeli.
+
+## Menjual ke pembeli
+1. Repo jasa dibuat **private** di GitHub Zulnan, misalnya `zuno-studio-jasa`.
+2. Undang pembeli: GitHub → repo jasa → **Settings → Collaborators → Add people** (akses Read).
+3. Pembeli mengikuti `README.md` / `PANDUAN.md` di repo itu: Fork, impor ke Vercel, isi `GEMINI_API_KEY` + `ZUNO_ACCESS_KEY`, lalu Deploy.
+4. Pembaruan sampai ke pembeli lewat **Sync fork**.
+5. Mencabut akses (lisensi berakhir): hapus pembeli dari Collaborators.
+
+Belum diisi Zulnan:
+- [ISI kontak penjual] dan [ISI masa dukungan] di `LISENSI.md`;
+- harga jasa: [HARGA BELUM DITENTUKAN].
+
+Draf lisensi bukan nasihat hukum. Cek ke ahli bila perlu.

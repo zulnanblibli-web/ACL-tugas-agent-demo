@@ -314,4 +314,34 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - versi jual white-label (000010);
   - VPS.
 
-## 44. (entri berikutnya di sini)
+## 44. Edisi jasa Zuno, daftar pending, skill scope (2026-11-04)
+- Permintaan:
+  - push dan commit;
+  - di mana mengetik `claude`;
+  - masukkan skill scope ke repo bila perlu;
+  - catat pending tugas dan jawab saat ditanya;
+  - buat Zuno versi jasa: salinan untuk pembeli, API pembeli sendiri, semudah mungkin;
+  - repo baru terpisah, halaman Pengaturan, lisensi, dan panduan pemakaian;
+  - salinan jasa harus selalu bisa jalan dan ikut diperbarui.
+- Hasil:
+  - **Push dan skill.** Push `a92aeb6`. Skill `01-idea-to-scope-lock` (tanpa batas fitur) dipasang di `.claude/skills/`.
+  - **Daftar pending.** `pending.md` berisi P1-P10, aturan di CLAUDE.md.
+  - **Edisi jasa.**
+    - `tools/jasa/ekspor-jasa.mjs` membuat repo jasa dari `web/`, dengan penanda yang wajib ketemu.
+    - `brand.js` berisi halaman PENGATURAN BRAND: nama, niche, positioning, audiens, platform, pilar, gaya bahasa, fakta, slogan, kredit, plus ekspor/impor `.json`. Halaman ini terbuka sendiri di pemakaian pertama.
+    - Pengganti identitas berlaku di prompt, halaman, `.md`, dan isi ZIP.
+    - Penyedia AI otomatis mengikuti key yang diisi.
+    - Foto dan avatar Zulnan tidak ikut.
+    - README (pasang 4 langkah lewat Fork + Vercel), PANDUAN pembeli, LISENSI (draf), `.gitignore`.
+    - Tes `tests/zuno-jasa-test.js` lolos 15 cek tanpa error halaman.
+    - Status API jasa dicek: penyedia `openrouter` otomatis saat hanya `OPENROUTER_API_KEY` diisi.
+- File berubah:
+  - edisi jasa: `tools/jasa/**`, `tests/zuno-jasa-test.js`, `docs/jasa-zuno.md`;
+  - skill dan pending: `.claude/skills/01-idea-to-scope-lock/`, `.claude/skills/README.md`, `pending.md`;
+  - catatan: `CLAUDE.md`, `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`.
+- Tertunda:
+  - Zulnan membuat repo kosong untuk jasa, lalu Claude ekspor dan push;
+  - uji sebagai pembeli di Vercel dengan key asli;
+  - [ISI kontak penjual], [ISI masa dukungan], harga (P10).
+
+## 45. (entri berikutnya di sini)

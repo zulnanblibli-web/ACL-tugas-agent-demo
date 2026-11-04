@@ -6,6 +6,12 @@ Pemilik: Zulnan (Bahasa Indonesia, santai, to the point). Jawab dan tulis dokume
 1. Baca `docs/memori-zuno.md` (memori jangka panjang, ringkas), lalu `progress.md`, lalu bagian paling bawah `docs/riwayat-tugas.md`.
 2. Kerjakan "Tugas berikutnya" di `progress.md` kecuali Zulnan menyebut lain.
 
+## Edisi jasa (dijual)
+Zuno juga dijual sebagai salinan white-label di repo terpisah (`docs/jasa-zuno.md`). Setiap perubahan Zuno Web atau `prototypes/zuno-studio-v2.html`: jalankan `node web/build.mjs`, `node tools/jasa/ekspor-jasa.mjs <repo-jasa>`, `node tests/zuno-jasa-test.js <repo-jasa>`; perbaiki sampai lolos sebelum push repo jasa. Salinan jasa harus selalu bisa jalan.
+
+## Pending tugas
+Bila Zulnan bilang sesuatu "pending", catat di `pending.md`. Bila Zulnan bertanya "pending tugas", jawab dari `pending.md` (aturan di file itu).
+
 ## Selesai sesi
 1. Perbarui `progress.md` (status, keputusan baru, tugas berikutnya) dan `docs/memori-zuno.md` bila ada keputusan atau fakta baru yang perlu diingat lama.
 2. Tambah satu entri baru di bawah `docs/riwayat-tugas.md` (tanggal, permintaan, hasil, file yang berubah, yang tertunda). Jangan menghapus entri lama.

@@ -57,8 +57,13 @@ Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status
 
 ## Yang masih terbuka
 - Cara cek hasil pilihan Zulnan: **artifact** Zuno Studio v2 (https://claude.ai/artifact/Hhp1jjUmZNmi2TFjr9qCBX), bukan server lokal. Web live kena limit API gratis.
+- **Edisi jasa** (keputusan Zulnan 2026-11-04):
+  - Zuno dijual sebagai salinan white-label di repo terpisah. Pembeli melakukan fork, impor ke Vercel, dan memakai API key sendiri.
+  - Identitas Zulnan diganti PENGATURAN BRAND.
+  - Alat dan aturan di `docs/jasa-zuno.md`.
+  - Aturan: salinan jasa harus selalu bisa jalan; setiap update Zuno diekspor dan dites ulang.
+- Pending tugas: dicatat di `pending.md`; jawab dari situ bila Zulnan bertanya "pending tugas".
 - Rencana jangka panjang:
-  - Zuno dijual sebagai jasa (white-label): pembeli memakai API key sendiri, terpisah dari Zulnan (`progress.md` 000010);
   - VPS dan versi agent di web + desktop dengan desain kantor; ditunda.
 - **Siapkan Antrian Posting dan tangan komputer** (`progress.md` 000008): jalankan `pasang-tangan-komputer.bat`, sambungkan sosmed dan Google Drive di Metricool, isi [ISI] tanda konten AI.
 - **Pertama: Zulnan coba ulang server lokal** setelah perbaikan (`git pull`, klik `jalankan-lokal.bat`); bila gagal kirim isi `web/server-lokal.log` (`progress.md` 000007).

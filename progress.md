@@ -78,7 +78,16 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
-000010. **Versi jual Zuno (white-label, pembeli pakai API sendiri): belum dikerjakan, menunggu Zulnan lanjut.**
+000011. **Edisi jasa: dibuat dan lolos tes (2026-11-04, entri 44), menunggu repo baru dari Zulnan.**
+- Alat ekspor `tools/jasa/ekspor-jasa.mjs`.
+- Tes `tests/zuno-jasa-test.js`: 15 cek, semua lolos.
+- Panduan penjual: `docs/jasa-zuno.md`.
+- Langkah berikut:
+  1. Zulnan membuat repo GitHub kosong, private, misalnya `zuno-studio-jasa`. Sesi Claude tidak bisa membuat repo.
+  2. Claude menyambungkan repo itu, ekspor, tes, lalu push.
+  3. Zulnan coba sekali sebagai pembeli: fork, impor ke Vercel, isi key.
+
+000010. **Versi jual Zuno (white-label). Dikerjakan jadi 000011.**
 - Rencana yang diusulkan: satu pembeli = satu deploy sendiri, di Vercel milik pembeli atau dikelola Zulnan, dengan env dan API key pembeli sendiri. Key pembeli tidak pernah lewat server Zulnan.
 - Yang perlu dibuat:
   - pisahkan identitas Zulnan (bank fakta, slogan, foto, brief, kredit) ke file pengaturan atau halaman Pengaturan;

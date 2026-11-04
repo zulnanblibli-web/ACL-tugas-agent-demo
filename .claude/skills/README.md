@@ -8,6 +8,7 @@ Folder ini dibaca otomatis oleh Claude Code saat bekerja di repo ini, baik di cl
 
 | Skill | Agen | Gunanya | Sumber (commit) |
 |---|---|---|---|
+| `01-idea-to-scope-lock` | T.1 Arsitek | Kunci ruang lingkup dari ide atau PRD .md, **tanpa batas jumlah fitur** (salinan `skills/engineering/01-idea-to-scope-lock`, versi Zuno) | milik Zulnan (disesuaikan 2026-11-03) |
 | `grilling` | T.1 Arsitek | Menguji PRD .md dan ruang lingkup dengan pertanyaan bertahap (tiap pertanyaan disertai saran jawaban) sebelum gerbang 1. Pelengkap `01-idea-to-scope-lock`, bukan pengganti; tidak memangkas fitur | mattpocock/skills (4ae2317) |
 | `hallmark` | T.2 Desainer | Desain halaman baru yang tidak terlihat "buatan AI", plus alat cek `scripts/sloplint.mjs`. Hanya untuk proyek baru atau bila Zulnan menyebut "hallmark"; jangan dipakai mengubah Zuno Web. Pembuatan gambar AI di dalamnya (`imagegen.mjs`, butuh `TOGETHER_API_KEY`) **tidak dipakai** | nutlope/hallmark (52328cb) |
 | `mobile-native` | T.2, T.4 | Perbaikan kecil supaya web terasa native di HP: 100vh, input nge-zoom, notch, tap highlight | emilkowalski/skills (f1090be) |
