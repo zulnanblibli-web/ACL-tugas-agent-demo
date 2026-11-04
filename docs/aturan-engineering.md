@@ -21,7 +21,7 @@ Diadaptasi dari [andrej-karpathy-skills](https://github.com/multica-ai/andrej-ka
 Permintaan Zulnan / klien
   -> T.1 Kunci ruang lingkup (masalah, semua fitur tanpa batas jumlah, PRD .md bila ada, out of scope, definisi selesai) + pilih mesin
   -> GERBANG 1: Zulnan setujui ruang lingkup
-  -> T.2 Wireframe + UI/UX + cek animasi
+  -> T.2 Wireframe + UI/UX + cek animasi (acuan: referensi desain UI/UX dari Zulnan bila diunggah)
   -> GERBANG 2: Zulnan setujui tampilan
   -> T.3 Bangun aplikasi (mode preview dulu)
   -> T.4 Uji (laptop + layar HP), perbaiki bug, siapkan paket rilis dan panduan

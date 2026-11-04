@@ -13,7 +13,8 @@ Aturan induk: `docs/aturan-engineering.md` dan `docs/tangan-komputer.md`. Skill 
    - `INSTRUKSI-RILIS.md`;
    - `ruang-lingkup.json` dan `desain.json` (gerbang 1 dan 2, sudah disetujui Zulnan);
    - `PANDUAN.md`;
-   - `PRD.md` bila ada.
+   - `PRD.md` bila ada;
+   - gambar di `referensi-desain/` bila ada: acuan tampilan dari Zulnan (lihat `acuan_referensi` di `desain.json`). Ikuti arahnya, jangan menyalin logo, merek, atau teks milik orang lain.
 3. Fitur, tampilan, kredit, dan aturan akun tidak boleh diubah di luar yang disetujui. Bila ada yang tidak mungkin dikerjakan, tanya Zulnan dulu. Jangan diam-diam memangkas fitur.
 
 ## 1. Lengkapi dan uji (T.3, T.4)

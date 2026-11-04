@@ -379,4 +379,22 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Artifact Zuno Studio v2 dipublikasi ulang (versi 4).
 - Belum di-push. Menunggu Zulnan: repo Zuno dan repo jasa (sudah diekspor ulang dan diuji, belum di-commit di sana).
 
-## 47. (entri berikutnya di sini)
+## 47. 2026-11-04: Build App, upload referensi desain UI/UX
+- Permintaan: menu upload referensi desain UI/UX sebagai acuan desain.
+- Hasil (`prototypes/zuno-studio-v2.html`, tab Build App):
+  - Kolom baru "Referensi desain UI/UX":
+    - gambar JPG/PNG/WebP, maks. 4 file, maks. 12 MB per file;
+    - ada thumbnail dan tombol Hapus;
+    - catatan "yang mau diambil".
+  - T.2 Desainer:
+    - melihat gambarnya (diperkecil 640 px), dengan palet dominan yang terukur;
+    - diminta mengambil arah tata letak, komponen, warna, tipografi, dan nuansa tanpa menyalin logo, merek, atau teks;
+    - mengisi `acuan_referensi`, yang tampil di gerbang 2.
+  - Bila tampilan tidak menerima gambar, referensi dipakai lewat palet dan catatan saja.
+  - T.3 dan T.4 menerima keterangan referensi lewat konteks proyek.
+  - Paket rilis berisi `referensi-desain/ref-N.jpg`. INSTRUKSI-RILIS dan skill `rilis-engineering` menyebutnya.
+- Tes: mode `--desref` baru di `tests/zuno-studio-v2-build-stub-test.js`. Semua mode build, tes konten, web, dan edisi jasa lolos.
+- Artifact versi 5.
+- Belum di-push.
+
+## 48. (entri berikutnya di sini)

@@ -80,6 +80,7 @@ Baca `docs/gaya-video.md`. Ringkas:
 ## Tugas berikutnya
 000012. **Edisi jasa sudah di repo https://github.com/zulnanblibli-web/zuno-studio-app (branch main, commit 076c84f, 15 cek lolos; entri 45).** Berikutnya: Zulnan coba sebagai pembeli (fork, impor ke Vercel, isi `GEMINI_API_KEY` + `ZUNO_ACCESS_KEY`, Deploy), lalu laporkan hasilnya; isi P10.
 000013. **Build App: kode T.3 yang terpotong sekarang dilanjutkan otomatis (entri 46). Artifact versi 4.** Berikutnya: Zulnan ulangi build absensi di artifact; bila masih tertahan, klik Coba lagi lalu unduh log debug. Push repo Zuno dan repo jasa menunggu kata Zulnan.
+000014. **Build App bisa menerima referensi desain UI/UX (maks. 4 gambar) sebagai acuan T.2; ikut di paket rilis (entri 47). Artifact versi 5.** Berikutnya: Zulnan coba build dengan referensi; push menunggu kata Zulnan.
 
 000011. **Edisi jasa: dibuat dan lolos tes (2026-11-04, entri 44). Repo dibuat Zulnan: zuno-studio-app.**
 - Alat ekspor `tools/jasa/ekspor-jasa.mjs`.
