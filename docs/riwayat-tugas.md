@@ -272,8 +272,14 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - aturan dan agen: `CLAUDE.md`, `docs/aturan-engineering.md`, `docs/gaya-video.md`, `docs/brief-gaya-konten.md`, `agents/02-juru-kabar.md`, `agents/12-kurator-instagram.md`, `agents/README.md`, `agents/semua-agen.md`;
   - web dan tes: `prototypes/zuno-studio-v2.html`, `web/index.html`, `tests/zuno-studio-v2-stub-test.js`;
   - catatan: `progress.md`, `docs/memori-zuno.md`, `docs/riwayat-tugas.md`.
+- Push `43faa4b` (izin Zulnan); deploy production otomatis `dpl_HQFpSZ89FqjwwAXm8MJsYU3SB1Dd` READY, alias zuno-studio-dusky.vercel.app.
+- Arah baru dari Zulnan setelah commit ini (belum dikerjakan):
+  - agent-desktop khusus Divisi Engineering (bangun sampai live di laptop);
+  - divisi kreatif sepenuhnya di web;
+  - Antrian Posting: Zulnan pilih tanggal dan jam per konten, web unggah media ke Google Drive lalu jadwalkan lewat API Metricool;
+  - skill `antrian-posting` versi laptop dan tombol zip akan diganti.
+  - Menunggu jawaban Zulnan: menu API Metricool ada atau tidak; gerbang Engineering.
 - Tertunda:
-  - izin push dan deploy;
   - Zulnan menjalankan bat di laptop, menyambungkan sosmed dan Google Drive di Metricool, dan mengisi [ISI] tanda konten AI;
   - uji alur antrian dengan akun asli;
   - .bat belum diuji di Windows (sesi ini Linux).
