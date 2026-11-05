@@ -403,4 +403,15 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `docs/serah-terima-chat-baru.md` (baru), `docs/riwayat-tugas.md`, `progress.md`, `docs/memori-zuno.md`.
 - Tertunda: lihat file serah-terima. Commit ini belum di-push.
 
-## 49. (entri berikutnya di sini)
+## 49. 2026-11-05: jalur rilis Antigravity, tangan komputer tidak berfungsi
+- Permintaan: Zulnan ingin rilis web app berjalan di Antigravity supaya bisa menonton sampai live; melaporkan tangan komputer tidak berfungsi.
+- Diagnosa (screenshot Zulnan): `agent-desktop version` jalan (1.1.0, Windows x64); `claude mcp list` gagal karena `claude.exe` tidak kompatibel dengan Windows (10.0.26200). Claude Code tidak bisa start di laptop Zulnan. Dugaan kedua: `agent-desktop mcp` di `.bat` tidak ada (agent-desktop tidak punya mode MCP). Keduanya belum diperbaiki.
+- Hasil:
+  - `.agents/rules/zuno-engineering.md` (aturan dan larangan Engineering untuk agent Antigravity);
+  - `.agents/workflows/rilis-engineering.md` (perintah `/rilis-engineering`, salinan alur skill tanpa alat Claude Code);
+  - `docs/rilis-antigravity.md` (pasang sekali, tiap rilis, batas dan risiko, catatan teknis);
+  - catatan di atas `docs/tangan-komputer.md`.
+- Belum diuji: Antigravity dengan paket rilis asli; format aturan dan workflow diambil dari dokumentasi Antigravity, bukan dijalankan.
+- Tertunda: paket rilis Build App belum membawa `.agents` (Zulnan harus menyalinnya); perbaiki `pasang-tangan-komputer.bat`; perbaiki Claude Code di laptop. Belum di-push.
+
+## 50. (entri berikutnya di sini)

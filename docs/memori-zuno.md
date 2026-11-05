@@ -38,6 +38,7 @@ Ringkasan padat untuk sesi atau chat baru. Tugas yang belum selesai per 2026-11-
   - Buatan Zuno: antrian-posting.
   - Remotion: skill resmi tanpa file lisensi, dipasang di laptop bila dipilih.
 - Tangan komputer: agent-desktop (Vercel Labs) + Claude Code di laptop Zulnan. Dipasang lewat `pasang-tangan-komputer.bat`; aturan dan larangan di `docs/tangan-komputer.md`. Sesi cloud tidak bisa menjangkau laptop.
+- Rilis Engineering pindah ke **Antigravity** (keputusan Zulnan 2026-11-05): Claude Code gagal start di laptopnya (`claude.exe` tidak kompatibel Windows), tangan komputer agent-desktop tidak berfungsi. Panduan: `docs/rilis-antigravity.md`; aturan di `.agents/`. Belum diuji dengan paket rilis asli.
 - Metricool: akun ada (blogId 7638930), tapi per 2026-11-04 belum ada akun sosmed tersambung. Media harus berupa tautan publik, jadi lewat Google Drive.
 
 - Arahan Zulnan 2026-11-04:

@@ -1,5 +1,7 @@
 # Tangan Komputer Zuno (khusus Divisi Engineering)
 
+> **Update 2026-11-05:** jalur rilis utama pindah ke Antigravity (`docs/rilis-antigravity.md`). Di laptop Zulnan Claude Code gagal start (`claude.exe` tidak kompatibel), dan sambungan `agent-desktop mcp` di `pasang-tangan-komputer.bat` kemungkinan salah (agent-desktop tidak punya mode MCP). Dokumen di bawah tetap berlaku bila Claude Code dan agent-desktop dipakai lagi.
+
 Keputusan Zulnan 2026-11-04:
 - agent-desktop dipakai **hanya untuk Divisi Engineering** di laptop Zulnan. Tugasnya membangun web app sampai benar-benar live; Zulnan tinggal cek hasilnya.
 - **Divisi kreatif tidak memakainya.** Konten berjalan di web (Zuno Studio), dan posting nanti lewat Metricool dari web (`docs/alur-posting.md`, masih pending).

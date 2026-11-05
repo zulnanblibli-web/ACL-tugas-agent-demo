@@ -78,6 +78,7 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
+000015. **Rilis lewat Antigravity (keputusan Zulnan 2026-11-05, entri 49).** Claude Code tidak bisa start di laptop Zulnan (`claude.exe` tidak kompatibel) dan tangan komputer tidak berfungsi, jadi rilis Engineering dijalankan di Antigravity: `docs/rilis-antigravity.md`, `.agents/rules/zuno-engineering.md`, `.agents/workflows/rilis-engineering.md`. Berikutnya: Zulnan `git pull` (setelah push), pasang Antigravity, coba rilis pertama dari paket Build App dengan `/rilis-engineering`, lalu laporkan yang gagal. Opsional: paket rilis membawa `.agents` otomatis; perbaiki `pasang-tangan-komputer.bat` (hapus `agent-desktop mcp`); perbaiki Claude Code di laptop. Push menunggu kata Zulnan.
 **Chat baru: baca `docs/serah-terima-chat-baru.md` dulu (2026-11-05).**
 
 000012. **Edisi jasa sudah di repo https://github.com/zulnanblibli-web/zuno-studio-app (branch main, commit 076c84f, 15 cek lolos; entri 45).** Berikutnya: Zulnan coba sebagai pembeli (fork, impor ke Vercel, isi `GEMINI_API_KEY` + `ZUNO_ACCESS_KEY`, Deploy), lalu laporkan hasilnya; isi P10.
