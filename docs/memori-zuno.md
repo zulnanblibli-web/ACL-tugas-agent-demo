@@ -1,6 +1,6 @@
 # Memori jangka panjang Zuno
 
-Ringkasan padat untuk sesi atau chat baru. Detail lengkap: `progress.md` (status dan tugas berikutnya) dan `docs/riwayat-tugas.md` (riwayat per sesi). Terakhir diperbarui: 2026-11-04 (skill PINAX, Antrian Posting, tangan komputer).
+Ringkasan padat untuk sesi atau chat baru. Tugas yang belum selesai per 2026-11-05: `docs/serah-terima-chat-baru.md`. Detail lengkap: `progress.md` (status dan tugas berikutnya) dan `docs/riwayat-tugas.md` (riwayat per sesi). Terakhir diperbarui: 2026-11-04 (skill PINAX, Antrian Posting, tangan komputer).
 
 ## Tentang Zulnan dan cara kerja
 - Pemilik proyek. Bahasa Indonesia santai (lu/gua), to the point, memanggil "bro".

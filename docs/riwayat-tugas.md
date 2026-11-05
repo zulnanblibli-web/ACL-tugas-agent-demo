@@ -377,7 +377,7 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - `--gagal` kini memakai 6 kegagalan;
   - semua mode lolos, termasuk tes konten, web, dan edisi jasa (SEMUA LOLOS).
 - Artifact Zuno Studio v2 dipublikasi ulang (versi 4).
-- Belum di-push. Menunggu Zulnan: repo Zuno dan repo jasa (sudah diekspor ulang dan diuji, belum di-commit di sana).
+- Di-push 2026-11-04 atas kata Zulnan (repo Zuno `70585e4`, repo jasa `1d9f990`).
 
 ## 47. 2026-11-04: Build App, upload referensi desain UI/UX
 - Permintaan: menu upload referensi desain UI/UX sebagai acuan desain.
@@ -395,6 +395,12 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - Paket rilis berisi `referensi-desain/ref-N.jpg`. INSTRUKSI-RILIS dan skill `rilis-engineering` menyebutnya.
 - Tes: mode `--desref` baru di `tests/zuno-studio-v2-build-stub-test.js`. Semua mode build, tes konten, web, dan edisi jasa lolos.
 - Artifact versi 5.
-- Belum di-push.
+- Di-push 2026-11-04 atas kata Zulnan (repo Zuno `70585e4`, repo jasa `1d9f990`).
 
-## 48. (entri berikutnya di sini)
+## 48. 2026-11-05: serah-terima ke chat baru
+- Permintaan: commit dan buat memori .md untuk tugas yang belum selesai, karena Zulnan pindah chat.
+- Hasil: `docs/serah-terima-chat-baru.md` (posisi terakhir, tugas belum selesai urut prioritas, pending, aturan wajib). Catatan "Belum di-push" di entri 46-47 diperbarui.
+- File berubah: `docs/serah-terima-chat-baru.md` (baru), `docs/riwayat-tugas.md`, `progress.md`, `docs/memori-zuno.md`.
+- Tertunda: lihat file serah-terima. Commit ini belum di-push.
+
+## 49. (entri berikutnya di sini)
