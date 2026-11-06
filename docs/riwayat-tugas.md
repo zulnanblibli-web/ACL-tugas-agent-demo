@@ -470,4 +470,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Tes: `tests/zuno-web-riset-test.mjs` 18 cek lolos, termasuk setelan pembeli (MY/ms, hanya news, kata kunci niche, off). Dicoba langsung dengan negara MY dari sesi ini.
 - Di-push atas kata Zulnan: repo Zuno dan repo jasa.
 
-## 52. (entri berikutnya di sini)
+## 52. 2026-11-06: kolom referensi gaya video dikembalikan
+- Permintaan: menu masukan referensi di Zuno Studio v2 hilang; tambahkan lagi dan langsung push.
+- Hasil: kolom "Referensi gaya video" (foto/video maks. 3 + kesan satu kalimat) dikembalikan persis seperti sebelumnya, termasuk pembacaan referensi dan gambar untuk Pencerita Visual. Chip ide tetap dihapus. Gerbang cek naskah .docx tetap ada.
+- Tes: v2 stub (referensi terunggah, D.1 menerima gambar), web stub, build, jasa lolos. Artifact dipublikasi ulang.
+- Di-push atas kata Zulnan.
+
+## 53. (entri berikutnya di sini)

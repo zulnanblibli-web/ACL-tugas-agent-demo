@@ -55,7 +55,7 @@ const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'ta
   console.log('alur awal:',await p.$$eval('#hFlow .node b',e=>e.map(x=>x.textContent).join(' > ')));
   await p.waitForTimeout(300);
   console.log('paket default:', await p.$eval('#count',e=>e.value));
-  assert(!(await p.$('#reffile'))&&!(await p.$('#chips')),'Zuno Web: kolom referensi gaya dan chip ide hilang');
+  assert(!!(await p.$('#reffile'))&&!(await p.$('#chips')),'kolom referensi gaya ada lagi (permintaan Zulnan 2026-11-06), chip ide tetap hilang');
   await p.selectOption('#mode',MODE); await p.fill('#cmd','tes'); await p.fill('#src','Tools AI baru untuk merangkum rapat https://contoh.test/berita'); await p.click('#run');
   await p.waitForFunction(()=>document.querySelectorAll('.res .btn.ok').length===2&&!document.getElementById('run').disabled,null,{timeout:60000});
   { const r=await p.evaluate(()=>window.__risetReq); assert(r.length===1&&/q=AI%20agent/.test(r[0].url)&&r[0].key==='kunci-uji','live.js memanggil /api/riset dengan kata kunci + kunci akses'); assert(await p.evaluate(()=>/HASIL RISET WEB/.test(window.__r1)&&/news\.test\/a/.test(window.__r1)),'hasil riset web sampai ke Peneliti Tren'); }

@@ -156,6 +156,12 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
     <input type="file" id="coverfile" accept="image/*">
     <div id="coverprev" class="muted"></div>
   </div>
+  <div class="refbox">
+    <label for="reffile" class="muted">Referensi gaya video (foto JPG/PNG atau video MP4/WebM, maks. 3)</label>
+    <input type="file" id="reffile" accept="image/*,video/mp4,video/quicktime,video/webm,.mp4,.m4v,.mov,.webm" multiple>
+    <input type="text" id="refnote" placeholder="Kesan dalam satu kalimat, mis. neon, cepat, penuh gerak" aria-label="Kesan referensi">
+    <div id="reflist" class="muted"></div>
+  </div>
   <div class="btns">
     <button class="btn primary" id="run" disabled>Jalankan</button>
     <button class="btn" id="stop" disabled>Berhenti</button>
@@ -880,6 +886,7 @@ async function main(){
   UI.start();
   try{
     S.refs=null;
+    if(REFS.length&&fm.indexOf('video')>-1){UI.act('lead','Membaca referensi gaya dari Zulnan ('+REFS.length+' file)');try{S.refs=await readRefs()}catch(e){S.refs=null;notice('warn','Referensi gagal dibaca ('+esc(e&&e.message||'error')+'). Video memakai preset.')}}
     UI.act('lead','Orkestraror Agen membaca perintah dan merencanakan '+S.cards.length+' Kartu Konten');UI.track('lead','run');
     var plan=await ask('L.0',null,P('L.0','Golongkan permintaan dan rencanakan '+S.cards.length+' Kartu Konten dengan ID dan format tetap: '+S.cards.map(function(c){return c.id+' '+c.format}).join(', ')+'. Tahap funnel, pilar, dan topik tiap kartu harus berbeda. Tiap kartu berdiri di SATU pilar konten dan punya ARAH yang jelas (untuk siapa, masalah apa, dapat apa); hindari ide umum yang basi. Bahan TOFU/MOFU dari sumber luar (bila ada); BOFU adalah bukti tentang Zulnan dari bank fakta.',cmd+(S.src?'\n\nSUMBER DARI ZULNAN:\n'+S.src:''),'Balas HANYA JSON: {"golongan":"ide baru atau bahan mentah","kartu":[{"id":"KK-001","platform":"Instagram atau TikTok atau Threads","funnel":"TOFU atau MOFU atau BOFU","pilar":"salah satu dari 6 pilar","ide":"satu kalimat spesifik","arah":"untuk siapa + masalah apa + dapat apa setelah nonton"}],"kata_kunci_riset":["2-4 kata kunci pencarian berita/tren (pendek, bahasa Indonesia atau Inggris) untuk mencari bahan terbaru tiap kartu"]}'),'quick');
     (plan.kartu||[]).forEach(function(k,i){
@@ -1240,6 +1247,58 @@ var VID_EXT=/\.(mp4|m4v|mov|webm|mkv)$/i,IMG_EXT=/\.(jpe?g|png|webp|gif|bmp|avif
 function isVid(f){return /^video\//.test(f.type)||VID_EXT.test(f.name)}
 function isImg(f){return /^image\//.test(f.type)||IMG_EXT.test(f.name)}
 function seek(v,t){return new Promise(function(res){var done=false,f=function(){if(!done){done=true;v.onseeked=null;res()}};if(Math.abs(v.currentTime-t)<.02)return res();v.onseeked=f;setTimeout(f,1500);try{v.currentTime=t}catch(e){f()}})}
+function loadVideo(f){
+  return new Promise(function(res,rej){
+    var v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='auto';v.setAttribute('playsinline','');
+    var url=URL.createObjectURL(f),fin=false;
+    function ok(){if(fin)return;if(!(v.videoWidth>0&&v.videoHeight>0))return;fin=true;res({v:v,url:url})}
+    function bad(m){if(fin)return;fin=true;URL.revokeObjectURL(url);rej(new Error(m))}
+    v.onloadeddata=ok;v.onloadedmetadata=function(){setTimeout(ok,300)};
+    v.onerror=function(){bad('browser tidak bisa memutar file ini (codec tidak didukung, mis. HEVC/H.265). Ekspor ulang sebagai MP4 H.264')};
+    setTimeout(function(){bad('video terlalu lama dimuat')},15000);
+    v.src=url;try{v.load()}catch(e){}
+  });
+}
+async function readRefs(){
+  var bins={},blobs=[],nama=[],motion=[],cuts=0,spanTotal=0,durasi=[],masalah=[],terbaca=0;
+  for(var fi=0;fi<REFS.length;fi++){
+    var f=REFS[fi],ket=f.name;
+    try{
+      if(isImg(f)&&!isVid(f)){
+        if(f.size>MAX_IMG)throw new Error('foto lebih dari 12 MB');
+        var bmp=await createImageBitmap(f),sc=Math.min(1,640/Math.max(bmp.width,bmp.height)),cv=document.createElement('canvas');cv.width=Math.max(1,Math.round(bmp.width*sc));cv.height=Math.max(1,Math.round(bmp.height*sc));cv.getContext('2d').drawImage(bmp,0,0,cv.width,cv.height);
+        blobs.push(await toBlob(cv));addBins(bins,sampleCanvas(cv,48,48));nama.push(f.name);terbaca++;
+      }else if(isVid(f)){
+        if(f.size>MAX_VID)throw new Error('video lebih dari 300 MB, potong dulu menjadi beberapa detik');
+        var L=await loadVideo(f),v=L.v,d=isFinite(v.duration)&&v.duration>0?v.duration:3;durasi.push(Math.round(d*10)/10);
+        var keys=d<2?[.2,.8]:[.1,.35,.6,.85];
+        for(var ki=0;ki<keys.length;ki++){await seek(v,d*keys[ki]);var sc2=Math.min(1,640/Math.max(v.videoWidth,v.videoHeight)),cv2=document.createElement('canvas');cv2.width=Math.max(1,Math.round(v.videoWidth*sc2));cv2.height=Math.max(1,Math.round(v.videoHeight*sc2));cv2.getContext('2d').drawImage(v,0,0,cv2.width,cv2.height);blobs.push(await toBlob(cv2));addBins(bins,sampleCanvas(cv2,48,48))}
+        var span=Math.min(d,4),step=Math.max(.2,span/12),prev=null;
+        for(var t=0;t<span;t+=step){await seek(v,t);var g=sampleCanvas(v,32,32),gray=[];for(var q=0;q<g.length;q+=4)gray.push((g[q]+g[q+1]+g[q+2])/3);
+          if(prev){var df=0;for(var z=0;z<gray.length;z++)df+=Math.abs(gray[z]-prev[z]);df/=gray.length;motion.push(df);if(df>35)cuts++}prev=gray}
+        spanTotal+=span;URL.revokeObjectURL(L.url);nama.push(f.name);terbaca++;
+      }else throw new Error('format tidak dikenal. Pakai MP4, WebM, JPG, atau PNG');
+    }catch(e){masalah.push(ket+': '+(e&&e.message||e));LOG.push({t:new Date().toISOString(),who:'referensi',file:f.name,tipe:f.type,ukuran:f.size,error:String(e&&e.message||e)})}
+  }
+  if(masalah.length)notice('warn','Sebagian referensi tidak bisa dibaca: '+esc(masalah.join(' | '))+'. Format yang aman: MP4 (H.264), WebM, JPG, PNG.');
+  if(!terbaca){notice('warn','Tidak ada referensi yang terbaca, jadi video memakai preset.');return null}
+  blobs=blobs.length>8?blobs.filter(function(_,i){return i%Math.ceil(blobs.length/8)===0}).slice(0,8):blobs;
+  var avg=motion.length?motion.reduce(function(a,b){return a+b},0)/motion.length:null;
+  var medido={palet_dominan:topColors(bins,5)};
+  if(avg!=null){medido.energi_gerak=avg<6?'rendah':avg<16?'sedang':'tinggi';medido.perkiraan_potongan_per_detik=Math.round(cuts/Math.max(1,spanTotal)*10)/10;medido.durasi_video_detik=durasi}
+  var lim0=null;try{lim0=sample&&typeof sample.limits==='function'?await sample.limits():null}catch(e){}
+  imagesOK=!!(lim0&&lim0.images);
+  if(!imagesOK)notice('info','Tampilan ini belum menerima gambar untuk Claude, jadi referensimu dipakai lewat data terukur saja (palet dan energi gerak), bukan dilihat langsung.');
+  return {ada:true,nama:nama,catatan:($('refnote').value||'').trim().slice(0,200),blobs:blobs,medido:medido};
+}
+function renderRefList(){
+  var box=$('reflist');if(!REFS.length){box.textContent='';return}
+  box.innerHTML='<div class="thumbs"></div><div>'+REFS.map(function(f){return esc(f.name)}).join(', ')+' <button class="btn" id="refclear" style="padding:2px 10px;font-size:13px">Hapus referensi</button></div>';
+  var th=box.querySelector('.thumbs');
+  REFS.forEach(function(f){if(isImg(f)&&!isVid(f)){var im=document.createElement('img');im.alt='Referensi '+f.name;im.src=URL.createObjectURL(f);th.appendChild(im)}else{var sp=document.createElement('span');sp.className='pill';sp.textContent='video: '+f.name;th.appendChild(sp)}});
+  $('refclear').onclick=function(){REFS=[];$('reffile').value='';renderRefList()};
+}
+$('reffile').addEventListener('change',function(){REFS=Array.prototype.slice.call(this.files||[]).filter(function(f){return isImg(f)||isVid(f)}).slice(0,3);renderRefList()});
 function renderCoverPrev(){var b=$('coverprev');if(!COVER){b.textContent='';return}b.innerHTML='<div class="thumbs"></div><div>Gambar cover dipakai di slide 1. <button class="btn" id="coverclear" style="padding:2px 10px;font-size:12px">Hapus</button></div>';var im=document.createElement('canvas');im.width=64;im.height=64;var x=im.getContext('2d'),k=Math.max(64/COVER.width,64/COVER.height);x.drawImage(COVER,(64-COVER.width*k)/2,(64-COVER.height*k)/2,COVER.width*k,COVER.height*k);b.querySelector('.thumbs').appendChild(im);$('coverclear').onclick=function(){COVER=null;$('coverfile').value='';renderCoverPrev()}}
 $('coverfile').addEventListener('change',function(){var f=(this.files||[])[0];if(!f){COVER=null;renderCoverPrev();return}coverFromFile(f).then(function(cv){COVER=cv;renderCoverPrev()},function(){COVER=null;$('coverprev').textContent='Gambar tidak bisa dipakai (pilih JPG, PNG, atau WebP, maks. 25 MB).'})});
 

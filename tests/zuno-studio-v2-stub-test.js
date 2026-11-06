@@ -32,7 +32,8 @@ const args = process.argv.slice(2); const TIPE=(args.find(a=>a.startsWith('--tip
   await p.goto('file://'+process.cwd()+'/prototypes/zuno-studio-v2.html');
   await p.waitForTimeout(300);
   console.log('paket default:', await p.$eval('#count',e=>e.value));
-  assert(!(await p.$('#reffile'))&&!(await p.$('#chips')),'kolom referensi gaya dan chip ide sudah hilang');
+  assert(!!(await p.$('#reffile'))&&!(await p.$('#chips')),'kolom referensi gaya ada lagi (permintaan Zulnan 2026-11-06), chip ide tetap hilang');
+  const REF=process.env.REF||require('path').join(process.cwd(),'assets/karakter/zuno-tim-orkestrasi.webp'); if(require('fs').existsSync(REF)){ await p.setInputFiles('#reffile',[REF]); await p.fill('#refnote','neon, cepat'); assert(/zuno-tim-orkestrasi|\.webp/.test(await p.$eval('#reflist',e=>e.innerText)),'referensi gaya terunggah dan tampil di daftar'); }
   await p.selectOption('#mode',MODE); if(TIPE) await p.selectOption('#tv',TIPE); if(COVERF){ await p.setInputFiles('#coverfile',COVERF); await p.waitForSelector('#coverprev canvas',{timeout:5000}); console.log('cover dipilih:',await p.$eval('#coverprev',e=>e.innerText.slice(0,40))); } await p.fill('#cmd','tes'); if(!WEB) await p.fill('#src','Tools AI baru untuk merangkum rapat https://contoh.test/berita'); await p.click('#run');
   await p.waitForFunction(()=>document.querySelectorAll('.res .btn.ok').length===2&&!document.getElementById('run').disabled,null,{timeout:60000});
   { const c=await p.evaluate(()=>window.__calls.map(x=>x.role)); assert(!c.includes('D.1')&&!c.some(r=>/^Q\./.test(r)),'gerbang naskah: desain dan Divisi Mutu belum jalan sebelum Lanjut ('+[...new Set(c)].join(',')+')'); }
@@ -48,6 +49,7 @@ const args = process.argv.slice(2); const TIPE=(args.find(a=>a.startsWith('--tip
   await p.evaluate(()=>{window.__docx=null}); await p.click('#tabv'); await p.click('#resv .btn >> text=Unduh naskah (.docx)'); await p.waitForFunction(()=>window.__docx,null,{timeout:10000}); require('fs').writeFileSync('/tmp/naskah-test-video.docx',Buffer.from(await p.evaluate(()=>window.__docx),'base64')); await p.click('#tabc');
   for(const sel of ['#resc','#resv']){ if(sel==='#resv') await p.click('#tabv'); await p.click(sel+' .btn.ok >> text=Lanjut ke desain & editing'); await p.waitForFunction(()=>!document.getElementById('run').disabled,null,{timeout:60000}); }
   await p.waitForSelector('.banner:has-text("siap kamu tinjau")',{timeout:30000});
+  { const d=(await p.evaluate(()=>window.__calls)).filter(c=>c.role==='D.1'); assert(d.some(c=>c.images>0),'Pencerita Visual menerima gambar referensi untuk video: '+JSON.stringify(d)); }
   await p.waitForFunction(()=>!document.getElementById('run').disabled,null,{timeout:120000});
   console.log('cards:',await p.$$eval('.kc',e=>e.map(x=>x.innerText.replace(/\n/g,' | '))));
   console.log('tracks:',await p.$$eval('.track',e=>e.map(x=>x.querySelector('.tname').textContent+'='+x.dataset.s)));
