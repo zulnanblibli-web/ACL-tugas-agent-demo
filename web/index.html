@@ -1076,11 +1076,38 @@ function cDrawCard(ctx,img,x,y,w,h){
   ctx.save();rr(ctx,x,y,w,h,36);ctx.clip();ctx.drawImage(img,(iw-sw)/2,(ih-sh)/2,sw,sh,x,y,w,h);ctx.restore();
   ctx.lineWidth=2;ctx.strokeStyle='rgba(62,166,255,.7)';rr(ctx,x+1,y+1,w-2,h-2,35);ctx.stroke();
 }
+/* Cover penuh dari sumber pembahasan (Zulnan 2026-11-06): gambar memenuhi slide, tulisan ditimpa di bagian gambar
+   yang paling sepi (atas, tengah, atau bawah; diukur dari kerapatan detail), dengan gradasi gelap supaya terbaca. */
+function cSibuk(img,W,H){
+  var w=54,h=68,o=document.createElement('canvas');o.width=w;o.height=h;var x=o.getContext('2d',{willReadFrequently:true});cFill(x,img,w,h);
+  var d=x.getImageData(0,0,w,h).data,L=function(i,j){var k=(j*w+i)*4;return .299*d[k]+.587*d[k+1]+.114*d[k+2]};
+  var band=function(a,b){var e=0,n=0;for(var j=Math.floor(a*h);j<Math.floor(b*h)-1;j++)for(var i=0;i<w-1;i++){var v=L(i,j);e+=Math.abs(v-L(i+1,j))+Math.abs(v-L(i,j+1));n++}return n?e/n:0};
+  return {atas:band(0,.42),tengah:band(.3,.72),bawah:band(.55,1)};
+}
+function cKredit(ctx,c,H){ctx.save();ctx.font='500 22px '+CT.body;ctx.fillStyle='rgba(245,247,250,.85)';ctx.shadowColor='rgba(0,0,0,.7)';ctx.shadowBlur=6;ctx.textAlign='right';ctx.textBaseline='alphabetic';var kt=c.coverKredit;while(ctx.measureText(kt).width>520&&kt.length>12)kt=kt.slice(0,-2);if(kt!==c.coverKredit)kt+='…';ctx.fillText(kt,1040,H-34);ctx.restore()}
+function cFill(ctx,img,w,h){var iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,k=Math.max(w/iw,h/ih),sw=w/k,sh=h/k;ctx.drawImage(img,(iw-sw)/2,(ih-sh)/2,sw,sh,0,0,w,h)}
+function cFullCover(ctx,c,sl,label,W,H){
+  ctx.fillStyle='#0B0F1A';ctx.fillRect(0,0,W,H);cFill(ctx,c.cover,W,H);
+  var sb=cSibuk(c.cover,W,H),pos=sb.bawah<=sb.atas*1.08?'bawah':'atas';
+  if(sb.tengah<Math.min(sb.atas,sb.bawah)*.7)pos='tengah';
+  var tmp=document.createElement('canvas');tmp.width=W;tmp.height=H;var yEnd=cHead(tmp.getContext('2d'),sl,label,sl.sub,880,38,140),hh=yEnd-150;
+  var pillY=H-96-84,dy=pos==='atas'?0:pos==='tengah'?Math.round((H-hh)/2-150):pillY-60-yEnd,top=150+dy,bot=yEnd+dy;
+  var g;
+  if(pos==='atas'){g=ctx.createLinearGradient(0,0,0,Math.min(H,bot+260));g.addColorStop(0,'rgba(6,10,22,.95)');g.addColorStop(.55,'rgba(6,10,22,.86)');g.addColorStop(.8,'rgba(6,10,22,.5)');g.addColorStop(1,'rgba(6,10,22,0)')}
+  else if(pos==='bawah'){g=ctx.createLinearGradient(0,Math.max(0,top-300),0,H);g.addColorStop(0,'rgba(6,10,22,0)');g.addColorStop(.2,'rgba(6,10,22,.5)');g.addColorStop(.36,'rgba(6,10,22,.84)');g.addColorStop(1,'rgba(6,10,22,.96)')}
+  else{g=ctx.createLinearGradient(0,top-220,0,bot+220);g.addColorStop(0,'rgba(6,10,22,0)');g.addColorStop(.25,'rgba(6,10,22,.86)');g.addColorStop(.75,'rgba(6,10,22,.86)');g.addColorStop(1,'rgba(6,10,22,0)')}
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  var bv=ctx.createLinearGradient(0,H-260,0,H);bv.addColorStop(0,'rgba(6,10,22,0)');bv.addColorStop(1,'rgba(6,10,22,.55)');ctx.fillStyle=bv;ctx.fillRect(0,H-260,W,260);
+  ctx.save();ctx.translate(0,dy);ctx.shadowColor='rgba(0,0,0,.45)';ctx.shadowBlur=18;cHead(ctx,sl,label,sl.sub,880,38,140);ctx.restore();
+  cPill(ctx,100,pillY,'Swipe untuk lanjut');
+  c.coverPosisi=pos;
+}
 var CAR_LABEL={poin:'POIN PENTING',fakta:'DATA DAN INSIGHT',alasan:'KENAPA PENTING',cta:'AJAKAN'};
 function drawSlide(c,i){
   var W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;var ctx=cv.getContext('2d');
   var sl=c.konten.slides[i],v=(c.visual&&c.visual.items&&c.visual.items[i])||{},t=sl.tipe;
   var label=v.label||(t==='cover'?(c.pilar?String(c.pilar).split(/\s+/).slice(0,3).join(' '):'ZULNAN'):CAR_LABEL[t]||'');
+  if(t==='cover'&&c.coverKredit&&c.cover){cFullCover(ctx,c,sl,label,W,H);cKredit(ctx,c,H);return cv}
   cBg(ctx,W,H);
   var CI=t==='cover'?(c.cover||COVER||FOTO):null,usr=!!(t==='cover'&&(c.cover||COVER)),lay='none';
   if(CI)lay=(CI.naturalHeight||CI.height)/(CI.naturalWidth||CI.width)>=1.1?'right':'card';
@@ -1091,7 +1118,6 @@ function drawSlide(c,i){
     y=cHead(ctx,sl,label,sl.sub,nar?430:820,nar?36:38,140);
     if(lay==='card'){var ct=y+44,chh=Math.min(560,1140-ct);if(chh>=200)cDrawCard(ctx,CI,100,ct,880,chh)}
     if(lay!=='none')cPill(ctx,100,H-96-84,'Swipe untuk lanjut');else cPill(ctx,1014-cPillW(ctx,'Swipe untuk lanjut'),H-150-84,'Swipe untuk lanjut');
-    if(c.coverKredit&&c.cover&&CI===c.cover){ctx.save();ctx.font='500 22px '+CT.body;ctx.fillStyle='rgba(245,247,250,.78)';ctx.shadowColor='rgba(0,0,0,.6)';ctx.shadowBlur=6;ctx.textAlign='right';ctx.textBaseline='alphabetic';var kt=c.coverKredit;while(ctx.measureText(kt).width>560&&kt.length>12)kt=kt.slice(0,-2);if(kt!==c.coverKredit)kt+='…';ctx.fillText(kt,1040,H-34);ctx.restore()}
     return cv;
   }
   y=cHead(ctx,sl,label,t==='cta'?sl.sub:t==='poin'?sl.sub:'',820,38,112);
