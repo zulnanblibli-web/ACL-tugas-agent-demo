@@ -58,6 +58,7 @@ Konteks bisnis untuk semua skill ini ada di `.claude/product-marketing.md` (menu
 
 | Skill | Gunanya |
 |---|---|
+| `penulis-hook` | **P.1 Kreator Konten.** Hook video pendek: 3 kandidat beda jenis, slot Fakta & Klaim wajib, angka Zulnan disalin persis dari bank fakta, tanpa angka penghasilan. Agen pertama hasil `perakit-agen`, diuji 2026-11-06 (RED/GREEN/REFACTOR, 4 skenario lewat `claude -p`; `docs/uji-agen/penulis-hook.md`) |
 | `perakit-agen` | Pabrik agen: membuat agen atau skill baru (coding atau konten) dengan uji RED-GREEN-REFACTOR lewat subagent, berpatokan brief Zuno. Diadaptasi dari `writing-skills` (obra/superpowers, MIT). Bukti uji: `docs/uji-agen/perakit-agen.md` |
 | `rilis-engineering` | Di laptop Zulnan: paket rilis Build App, uji laptop + HP, link uji lalu production, cek pakai agent-desktop, kirim link live + bukti + catatan keputusan ke Zulnan |
 | `antrian-posting` | **Pending, jangan dipakai.** Versi laptop lama. Akan diganti pengiriman dari web (Google Drive + API Metricool) setelah Zulnan membuka lagi bagian Metricool |
