@@ -40,6 +40,7 @@ textarea{min-height:80px;resize:vertical}
 .track[data-s=run] .dot{border-color:var(--info);color:var(--info);animation:pulse 1.2s ease-in-out infinite}
 .track[data-s=done] .dot{background:var(--accent);border-color:var(--accent);color:#fff}
 .track[data-s=bad] .dot{background:var(--bad);border-color:var(--bad);color:#fff}
+.track[data-s=warn] .dot{background:var(--warn);border-color:var(--warn);color:#fff}
 @keyframes pulse{50%{box-shadow:0 0 0 6px var(--info-soft)}}
 @media(prefers-reduced-motion:reduce){.track[data-s=run] .dot{animation:none}}
 .tname{font-weight:600}.tact{color:var(--muted);font-size:14.5px}
@@ -47,6 +48,7 @@ textarea{min-height:80px;resize:vertical}
 .track[data-s=run] .tstat{background:var(--info-soft);color:var(--info)}
 .track[data-s=done] .tstat{background:var(--accent-soft);color:var(--accent)}
 .track[data-s=bad] .tstat{background:var(--bad-soft);color:var(--bad)}
+.track[data-s=warn] .tstat{background:var(--warn-soft);color:var(--warn)}
 @media(max-width:560px){.track{grid-template-columns:34px 1fr auto}.tact{grid-column:2/4}}
 .cards{display:grid;gap:8px;margin-top:12px}
 .kc{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);font-size:14.5px}
@@ -65,7 +67,7 @@ textarea{min-height:80px;resize:vertical}
 video{width:230px;max-width:100%;border-radius:10px;background:#000;display:block}
 .cap{white-space:pre-wrap;background:var(--surface-2);border-radius:8px;padding:10px 12px;font-size:14.5px;margin-top:8px}
 .pill{display:inline-block;font:600 12.5px var(--font);padding:2px 9px;border-radius:999px;margin-left:6px;background:var(--surface-2)}
-.pill.ok{background:var(--accent-soft);color:var(--accent)}.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.ok{background:var(--accent-soft);color:var(--accent)}.pill.bad{background:var(--bad-soft);color:var(--bad)}.pill.warn{background:var(--warn-soft);color:var(--warn)}
 .muted{color:var(--muted);font-size:14px}
 .ws{margin:4px 0 6px}.sw{display:inline-block;width:28px;height:28px;border-radius:6px;border:1px solid var(--line);vertical-align:middle;margin-right:6px}
 .bframe{width:100%;height:640px;border:1px solid var(--line);border-radius:10px;background:#fff}.bframe.hp{width:390px;max-width:100%}
@@ -287,6 +289,8 @@ async function ask(who,cardId,prompt,tier,images){
       if(e&&FATAL.indexOf(e.code)>-1){fatal=e.code;throw e}
       if(useImg&&e&&e.code!=='refused'){useImg=false;if(S)notice('info','Gambar referensi gagal diproses Claude ('+esc((e&&(e.code||e.message))||'error')+'). Dilanjutkan tanpa gambar; referensimu dipakai lewat data terukur (palet dan energi gerak).');continue}
       if(e&&e.code==='refused')throw e;
+      /* jawaban kosong: jangan kirim ulang yang sama persis; coba sekali di tier quick */
+      if(e&&e.code==='empty_completion'){if(tier==='quick')throw e;tier='quick'}
     }
   }
   throw last;
@@ -1564,6 +1568,8 @@ async function askText(who,id,prompt,tier,onProg,opt){
       if(aborted||(e&&e.code==='cancelled'))throw {code:'cancelled'};
       if(e&&FATAL.indexOf(e.code)>-1){fatal=e.code;throw e}
       if(e&&(e.code==='refused'||e.code==='prompt_too_large'||e.code==='invalid_request'))throw e;
+      /* Claude tidak menulis apa pun: mengirim ulang yang sama tidak membantu (dok. sample). Pemanggil memecah tugasnya. */
+      if(e&&e.code==='empty_completion'){if(parts)break;throw e}
       /* teks yang sudah sempat mengalir tetap disimpan walau koneksi putus */
       if(keep(e&&e.text||cur))fails=0;
       else{if(++fails>=4)break;await sleep(1500*fails)}
@@ -1571,6 +1577,64 @@ async function askText(who,id,prompt,tier,onProg,opt){
   }
   if(parts)return stripFence(parts);
   throw last||{code:'upstream_error'};
+}
+/* T.3 bertahap (2026-11-06): aplikasi besar ditulis per bagian supaya tiap panggilan Claude kecil.
+   Dipakai sejak awal bila fitur > 15, dan otomatis bila satu file pulang kosong (empty_completion).
+   Bagian fitur yang tetap kosong dipecah dua; bagian lain dicoba sekali di tier quick. */
+var FITUR_BERTAHAP=15;
+function bagianHtml(s,d){
+  var hal=(d&&d.halaman||[]).map(function(h){return h&&h.nama}).filter(Boolean).join(', ');
+  var L=[{n:'Kepala',isi:'<!DOCTYPE html>, <html lang="id">, <head> berisi <meta charset>, <meta name="viewport">, <meta name="author">, <script> konfigurasi kecil (IS_PREVIEW, TAMPILKAN_CONTOH_LOGIN, dan konstanta mesin), <title>, lalu SELURUH CSS dalam satu <style>. Akhiri dengan </head>.'},
+    {n:'Markup',isi:'<body> dan seluruh HTML statis: halaman login dengan kotak "Contoh akses", kerangka navigasi (sidebar desktop, navigasi bawah HP), wadah tiap halaman'+(hal?' ('+hal+')':'')+', modal, toast, footer kredit. Beri id yang jelas pada elemen yang dipakai JS. Jangan menulis <script> utama.'},
+    {n:'Inti JS',isi:'Buka <script> utama. Tulis: data contoh preview (1-2 baris per koleksi), lapisan data (backend bila IS_PREVIEW false, memori bila true), login dengan hash SHA-256 + salt, sesi, router halaman, menu Reset Akses, util umum (format tanggal, toast, modal). Jangan menutup <\/script>.'}];
+  var f=s&&s.fitur||[];for(var i=0;i<f.length;i+=6)L.push({n:'Fitur',fitur:f.slice(i,i+6)});
+  L.push({n:'Penutup',isi:'Inisialisasi: pasang semua event, render awal, cek sesi. Lalu tutup <\/script>, </body>, </html>.'});
+  return L;
+}
+function bagianBackend(s){
+  var L=[{n:'Inti server',isi:'doGet yang menyajikan Index (HtmlService.createHtmlOutputFromFile("Index")) dan memanggil setupDatabase() di awal; setupDatabase() aman diulang; util baca/tulis sheet; login (hash SHA-256 + salt lewat Utilities.computeDigest); fungsi Reset Akses'+(B&&B.ai?'; tanyaAI dengan API key dari Script Properties dan adaptor AI_PROVIDER':'')+'.'}];
+  var f=s&&s.fitur||[];for(var i=0;i<f.length;i+=8)L.push({n:'Fitur server',server:true,fitur:f.slice(i,i+8)});
+  return L;
+}
+function isiBagian(b){
+  if(b.fitur&&b.server)return 'Fungsi server untuk fitur: '+b.fitur.join('; ')+'. Nama fungsi harus sama dengan yang dipanggil index.html lewat google.script.run. Pakai util inti yang sudah ada.';
+  if(b.fitur)return 'Fungsi JS lengkap untuk fitur: '+b.fitur.join('; ')+'. Termasuk render halaman, form, validasi, simpan/ubah/hapus lewat lapisan data inti. Pakai fungsi dan id yang sudah ada. Jangan menutup <\/script>.';
+  return b.isi;
+}
+function ringkasKode(t){
+  t=String(t||'');if(t.length<=90000)return t;
+  var uniq=function(a){return a.filter(function(x,i){return a.indexOf(x)===i})};
+  var ids=uniq((t.match(/id="[^"]+"/g)||[]).map(function(x){return x.slice(4,-1)})).slice(0,400);
+  var nm=uniq((t.match(/function\s+[A-Za-z0-9_$]+|(?:const|let|var)\s+[A-Za-z0-9_$]+\s*=/g)||[]).map(function(x){return x.replace(/^(function|const|let|var)\s+/,'').replace(/\s*=$/,'')})).slice(0,600);
+  return '[Bagian awal kode dipendekkan karena panjang]\nID ELEMEN YANG ADA: '+ids.join(', ')+'\nFUNGSI/VARIABEL YANG ADA: '+nm.join(', ')+'\n\nAKHIR KODE SAAT INI (lanjutkan tepat setelahnya):\n'+t.slice(-30000);
+}
+/* st = {prompt, parts, ke, bag} disimpan di B.code supaya "Coba lagi" melanjutkan dari bagian terakhir */
+async function tulisBertahap(who,prompt,st,prog,onSave){
+  var quick={};
+  while(st.ke<st.bag.length){
+    if(aborted)throw {code:'cancelled'};
+    var b=st.bag[st.ke],N=st.bag.length;
+    var input=prompt+'\n\nCARA MENULIS: file ini ditulis bertahap dalam '+N+' bagian; tiap bagian di panggilan terpisah lalu disambung apa adanya.\nRENCANA BAGIAN:\n'+st.bag.map(function(x,i){return (i+1)+'. '+x.n+(x.fitur?' ('+x.fitur.length+' fitur)':'')}).join('\n')+(st.parts?'\n\nKODE YANG SUDAH DITULIS (bagian 1-'+st.ke+'):\n'+ringkasKode(st.parts):'')+'\n\nSEKARANG tulis HANYA BAGIAN '+(st.ke+1)+'/'+N+' ('+b.n+'): '+isiBagian(b)+(st.parts?' Lanjutkan tepat setelah kode di atas, jangan mengulang kode yang sudah ada.':' Mulai dari awal file.')+' Tanpa penjelasan, tanpa blok kode markdown.'+(quick[st.ke]?' Tulis langsung dan ringkas.':'');
+    try{
+      var out=await askText(who,B.id,input,quick[st.ke]?'quick':'default',prog,{});
+      st.parts+=(st.parts?'\n':'')+out;st.ke++;if(onSave)onSave(st.parts);
+    }catch(e){
+      if(!e||e.code!=='empty_completion')throw e;
+      LOG.push({t:new Date().toISOString(),who:who,proyek:B.id,bagian_kosong:st.ke+1,nama:b.n,fitur:b.fitur?b.fitur.length:0});
+      if(b.fitur&&b.fitur.length>1){var h=Math.ceil(b.fitur.length/2);st.bag.splice(st.ke,1,{n:b.n,server:b.server,fitur:b.fitur.slice(0,h)},{n:b.n,server:b.server,fitur:b.fitur.slice(h)});continue}
+      if(!quick[st.ke]){quick[st.ke]=1;continue}
+      throw e;
+    }
+  }
+  return stripFence(st.parts);
+}
+/* Revisi kode besar: daftar edit cari-ganti, bukan menulis ulang seluruh file. */
+async function editKode(nama,kode,note){
+  var j=await ask('T.3',B.id,PE('T.3','REVISI atas permintaan: "'+note+'". Ubah HANYA bagian yang perlu lewat daftar edit cari-ganti. Jangan menulis ulang file.',bCtx(true)+'\n\n'+nama+' SAAT INI:\n'+kode,'Balas HANYA JSON: {"edit":[{"cari":"potongan kode yang PERSIS ada di file (unik, 1-20 baris)","ganti":"potongan pengganti"}],"catatan":"singkat"}. Untuk menambah kode, cari potongan di dekat tempatnya lalu ganti dengan potongan itu ditambah kode baru.'),'default');
+  var ok=0,gagal=0;
+  (Array.isArray(j&&j.edit)?j.edit:[]).slice(0,40).forEach(function(e){var c=String(e&&e.cari||''),g=String(e&&e.ganti!=null?e.ganti:'');var i=c?kode.indexOf(c):-1;if(i<0||kode.indexOf(c,i+1)>-1){gagal++;return}kode=kode.slice(0,i)+g+kode.slice(i+c.length);ok++});
+  LOG.push({t:new Date().toISOString(),who:'T.3',proyek:B.id,edit:nama,berhasil:ok,gagal:gagal});
+  return kode;
 }
 var B=null;
 var BTRACKS=[['lead','Lead','Orkestraror Agen · Juru Kabar'],['t1','T.1 Arsitek','Ruang lingkup, mesin, PRD'],['g1','Tinjauan 1','Penguji: ruang lingkup vs permintaan/PRD'],['t2','T.2 Desainer UI/UX','Wireframe, gaya, animasi'],['g2','Tinjauan 2','Penguji: desain vs ruang lingkup/referensi'],['t3','T.3 Pengembang','Kode aplikasi'],['t4','T.4 Penguji & Rilis','Uji, laporan, panduan'],['g3','Tinjauan akhir','Uji + perbaikan, paket rilis siap']];
@@ -1590,7 +1654,7 @@ var BEng={
   error:function(m){var b=$('berr');b.textContent=m;b.classList.remove('hidden')},
   busy:function(on){running=on;$('brun').disabled=on||!sample||!!B&&!!B.scope&&!B.done;$('bstop').disabled=!on;$('run').disabled=on||!sample;BEng.results()},
   update:function(){
-    if(!B)return;var ic={wait:'·',run:'●',done:'✓',bad:'!',gate:'?'},lb={wait:'Menunggu',run:'Bekerja',done:'Selesai',bad:'Tertahan',gate:'Menunggu kamu'};
+    if(!B)return;var ic={wait:'·',run:'●',done:'✓',bad:'!',warn:'!',gate:'?'},lb={wait:'Menunggu',run:'Bekerja',done:'Selesai',bad:'Tertahan',warn:'Lanjut + catatan',gate:'Menunggu kamu'};
     $('btracks').innerHTML=BTRACKS.map(function(t){var s=B.tr[t[0]]||'wait';return '<div class="track" data-s="'+(s==='gate'?'run':s)+'"><div class="dot">'+ic[s]+'</div><div><div class="tname">'+t[1]+'</div><div class="muted">'+t[2]+'</div></div><div class="tact">'+esc(B.act[t[0]]||'—')+'</div><div class="tstat">'+lb[s]+'</div></div>'}).join('');
     $('bcard').innerHTML='<div class="kc" data-s="'+(B.held?'fail':B.done?'ok':'')+'"><b>'+esc(B.id)+'</b><span>'+esc(B.jenis)+(B.klien?' · '+esc(B.klien):'')+' · '+esc(B.scope&&B.scope.mesin||B.mesinPilih||'mesin belum dipilih')+'</span><span class="muted">'+esc(B.req.slice(0,90))+'</span><span class="st">'+esc(B.stage)+(B.revisi?' · revisi '+B.revisi:'')+'</span></div>';
   },
@@ -1626,7 +1690,7 @@ var BEng={
     var lbl=g==='g1'?'ruang lingkup':'desain',maks=2,r;
     for(var i=0;i<=maks;i++){
       BEng.set(g,'run','Penguji meninjau '+lbl+(i?' (putaran '+(i+1)+')':''));
-      r=await BEng.tinjau(g);
+      r=await BEng.tinjau(g,i?r.kurang:null);
       BEng.catat(g==='g1'?'Ruang lingkup':'Desain',r.keputusan);
       if(r.sesuai||!r.kurang.length||i===maks)break;
       BEng.set(g,'run','Ada yang kurang: '+r.kurang.length+' butir, diperbaiki');
@@ -1634,14 +1698,15 @@ var BEng={
       if(g==='g1'){B.scopeOld=B.scope;B.cur='t1';await BEng.scope(note)}else{B.designOld=B.design;B.cur='t2';await BEng.design(note)}
       B.cur=g;B.putaran=(B.putaran||0)+1;
     }
-    B.tinjau[g]={sesuai:!!r.sesuai,kurang:r.kurang,putaran:i};
-    BEng.set(g,r.sesuai||!r.kurang.length?'done':'bad',r.sesuai||!r.kurang.length?'Lolos tinjauan, diputuskan sendiri':'Masih ada '+r.kurang.length+' catatan setelah '+maks+' perbaikan; dicatat sebagai risiko, build lanjut');
+    B.tinjau[g]={sesuai:!!r.sesuai,kurang:r.kurang,saran:r.saran||[],putaran:i};
+    BEng.set(g,r.sesuai||!r.kurang.length?'done':'warn',r.sesuai||!r.kurang.length?'Lolos tinjauan, diputuskan sendiri':'Masih ada '+r.kurang.length+' catatan setelah '+maks+' perbaikan; dicatat sebagai risiko, build lanjut');
   },
-  tinjau:async function(g){
+  tinjau:async function(g,prev){
     var data=bCtx(g==='g2')+(g==='g1'&&B.scope.pertanyaan&&B.scope.pertanyaan.length?'\n\nPERTANYAAN TERBUKA ARSITEK (putuskan sendiri):\n- '+B.scope.pertanyaan.join('\n- '):'')+(g==='g2'?'\n\nDESAIN YANG DITINJAU:\n'+JSON.stringify(B.design):'');
     var kerja=g==='g1'?'Tinjau RUANG LINGKUP terhadap PERMINTAAN'+(B.prd?', PRD':'')+(B.desref&&B.desref.ada?', dan referensi desain':'')+' dari Zulnan. Cek: (1) tidak ada fitur yang diminta atau tertulis di PRD yang hilang atau dipangkas; (2) tidak ada fitur tambahan yang tidak diminta; (3) mesin, kredit, role, dan data cocok; (4) tiap definisi selesai bisa diuji. Jawab sendiri setiap pertanyaan terbuka Arsitek dengan patokan brief (jangan bertanya ke Zulnan) dan catat sebagai keputusan.':'Tinjau DESAIN terhadap RUANG LINGKUP'+(B.desref&&B.desref.ada?' dan REFERENSI DESAIN dari Zulnan':'')+'. Cek: (1) tiap menu/fitur punya halaman; (2) login dengan kotak Contoh akses, menu Reset Akses, posisi kredit ada; (3) responsif HP dan desktop; (4) animasi hanya yang bertujuan; '+(B.desref&&B.desref.ada?'(5) arah tampilan mengikuti referensi tanpa menyalin logo/merek; ':'')+'kontras terbaca. Putuskan sendiri hal yang belum jelas dan catat.';
-    var j=await ask('T.4',B.id,PE('T.4',kerja,data,'Balas HANYA JSON: {"sesuai":true atau false,"kurang":["hal yang wajib diperbaiki, spesifik; kosong bila sesuai"],"keputusan":[{"apa":"keputusan yang diambil","alasan":"patokan dari permintaan/PRD/referensi","risiko_bila_salah":"singkat"}]}'),'quick');
-    return {sesuai:j.sesuai!==false,kurang:arr(j.kurang).slice(0,8),keputusan:j.keputusan};
+    kerja+=' Isi "kurang" HANYA dengan masalah wajib: fitur yang diminta hilang atau dipangkas, fitur tambahan yang tidak diminta, mesin/role/kredit/data salah'+(g==='g2'?', fitur tanpa halaman, login/Reset Akses/kredit tidak ada':'')+'. Penamaan, detail tampilan, dan ide perbaikan masuk "saran", bukan "kurang".'+(prev&&prev.length?' Ini tinjauan ulang setelah perbaikan. Catatan wajib putaran sebelumnya: '+prev.join('; ')+'. Cek apakah sudah diperbaiki; jangan menambah temuan kecil baru.':'');
+    var j=await ask('T.4',B.id,PE('T.4',kerja,data,'Balas HANYA JSON: {"sesuai":true atau false,"kurang":["masalah wajib, spesifik; kosong bila sesuai"],"saran":["perbaikan opsional, maks 5"],"keputusan":[{"apa":"keputusan yang diambil","alasan":"patokan dari permintaan/PRD/referensi","risiko_bila_salah":"singkat"}]}'),'default');
+    return {sesuai:j.sesuai!==false,kurang:arr(j.kurang).slice(0,8),saran:arr(j.saran).slice(0,5),keputusan:j.keputusan};
   },
   /* Perbaikan otomatis dari laporan uji (pola fix loop superpowers), maks. 2 putaran. */
   fixLoop:async function(){
@@ -1658,7 +1723,7 @@ var BEng={
   finish:function(){
     var sisa=B.tinjau.g3&&B.tinjau.g3.sisa||[];
     B.done=true;B.stage='Siap dirilis (diputuskan sendiri, '+B.keputusan.length+' keputusan dicatat)';
-    BEng.set('g3',sisa.length?'bad':'done',sisa.length?sisa.length+' temuan tersisa, dicatat; paket rilis siap':'Lolos uji dan tinjauan; paket rilis siap');
+    BEng.set('g3',sisa.length?'warn':'done',sisa.length?sisa.length+' temuan tersisa, dicatat; paket rilis siap':'Lolos uji dan tinjauan; paket rilis siap');
     BEng.set('lead','done','Juru Kabar: aplikasi siap dirilis, belum online. Unduh paket rilis lalu bilang "rilis": Claude + agent-desktop di laptopmu membawanya sampai live dan mengirim linknya.');
     B.code.panduan=BEng.panduan();
   },
@@ -1683,6 +1748,13 @@ var BEng={
     B.design={halaman:(Array.isArray(j.halaman)?j.halaman:[]).slice(0,10).map(function(h){return {nama:String(h&&h.nama||''),isi:arr(h&&h.isi).slice(0,8),hp:String(h&&h.hp||''),desktop:String(h&&h.desktop||'')}}),gaya:{primer:hx(g.primer,'#0e6b62'),latar:hx(g.latar,'#ffffff'),teks:hx(g.teks,'#15202b'),aksen:hx(g.aksen,'#f2a900'),huruf:String(g.huruf||'Inter'),nuansa:String(g.nuansa||'')},komponen:arr(j.komponen).slice(0,10),animasi:(Array.isArray(j.animasi)?j.animasi:[]).slice(0,6).map(function(a){return {elemen:String(a&&a.elemen||''),tujuan:String(a&&a.tujuan||''),durasi_ms:Math.min(300,Math.max(100,+(a&&a.durasi_ms)||250))}}).filter(function(a){return /state|aksi|perhatian/.test(a.tujuan)}),posisi_kredit:String(j.posisi_kredit||'footer dan halaman login'),catatan:arr(j.catatan).slice(0,3),acuan_referensi:R?String(j.acuan_referensi||'').slice(0,400):'',referensi_desain:R?R.nama.map(function(n,i){return 'referensi-desain/ref-'+(i+1)+'.jpg ('+n+')'}):[]};
     B.stage='Desain siap, ditinjau Penguji';BEng.set('t2','done',B.design.halaman.length+' halaman, '+B.design.animasi.length+' animasi bertujuan');
   },
+  bertahap:async function(key,prompt,mk,label,onSave){
+    var t=B.code[key];
+    if(!(t&&t.prompt===prompt&&t.ke<t.bag.length))t=B.code[key]={prompt:prompt,parts:'',ke:0,bag:mk()};
+    var lt=0,prog=function(n){var now=Date.now();if(now-lt<800)return;lt=now;B.act.t3='Pengembang menulis '+label+' bagian '+(t.ke+1)+'/'+t.bag.length+' ('+Math.round((t.parts.length+n)/1000)+' KB tertulis)';BEng.update()};
+    BEng.set('t3','run','Pengembang menulis '+label+' bertahap: '+t.bag.length+' bagian');
+    return tulisBertahap('T.3',prompt,t,prog,onSave);
+  },
   /* T.3 + T.4 */
   build:async function(note){
     var s=B.scope,be=s.mesin==='Firebase'?'firestore.rules':s.mesin==='Vercel + Supabase'?'schema.sql':'Code.gs';
@@ -1693,11 +1765,25 @@ var BEng={
     var lengkap=function(t){return /<\/html>\s*$/i.test(String(t||'').trim())};
     var resume=!note&&B.code.html&&!lengkap(B.code.html)?B.code.html:'';
     if(resume)BEng.set('t3','run','Pengembang melanjutkan kode yang terpotong ('+Math.round(resume.length/1000)+' KB sudah ada)');
-    var html=await askText('T.3',B.id,resume&&B.code.prompt?B.code.prompt:(B.code.prompt=PE('T.3',rev+(note?B.code.html+'\n\n':'')+'Tulis SATU file index.html lengkap (HTML+CSS+JS) untuk mesin '+s.mesin+'. Urutan file WAJIB: di <head> paling atas taruh <meta name="viewport">, <meta name="author">, dan <script> konfigurasi kecil berisi const IS_PREVIEW dan const TAMPILKAN_CONTOH_LOGIN; setelah itu CSS, lalu HTML, lalu <script> utama; file diakhiri </html>. Wajib: const IS_PREVIEW = true; (true = jalan sendiri di browser tanpa backend memakai 1-2 data contoh per koleksi di memori; false = terhubung ke backend '+(s.mesin==='Firebase'?'Firebase (tulis persis `const firebaseConfig = {apiKey:"ISI"};` sebagai placeholder, diisi otomatis saat rilis; login Firebase Auth memakai email <username>@zuno.local)':s.mesin==='Vercel + Supabase'?'Supabase (tulis persis `const SUPABASE_URL = "";` dan `const SUPABASE_ANON_KEY = "";`, diisi otomatis saat rilis)':s.mesin==='Apps Script + Blogger'?'Apps Script lewat google.script.run bila dibuka dari web app, atau fetch ke `const GAS_URL = "";` (diisi otomatis saat rilis) bila ditempel di Blogger':'Apps Script lewat google.script.run')+'); const TAMPILKAN_CONTOH_LOGIN = '+B.contoh+'; halaman login dengan kotak "Contoh akses" berisi akun contoh dari DATA bila setelan true; login membandingkan hash SHA-256 + salt (crypto.subtle); menu "Reset Akses" untuk Admin; semua fitur di ruang lingkup berfungsi; responsif (sidebar desktop, navigasi bawah HP); <meta name="viewport">; kredit sesuai DATA di footer dan halaman login serta <meta name="author">'+(B.ai?'; blok AI_PROVIDER/AI_MODEL dan fungsi tanyaAI yang memanggil backend (bukan langsung ke penyedia), di mode preview jawab dengan teks contoh':'')+'. Kode padat (CSS dan JS ringkas, tanpa komentar panjang), panjang mengikuti jumlah fitur, tanpa // TODO, tanpa library yang tidak perlu.',bCtx(true),'Balas HANYA isi file index.html, tanpa penjelasan dan tanpa blok kode markdown.')),'default',prog(resume?'Pengembang melanjutkan index.html':'Pengembang menulis index.html'),{done:lengkap,resume:resume,save:note?null:function(t){B.code.html=t}});
+    var besar=(s.fitur||[]).length>FITUR_BERTAHAP,tahapJalan=!note&&B.code.tahap&&B.code.tahap.ke<B.code.tahap.bag.length;
+    var html,svH=function(t){B.code.html=t},mkH=function(){return bagianHtml(s,B.design)};
+    if(note&&B.code.html&&B.code.html.length>40000){BEng.set('t3','run','Pengembang memperbaiki index.html lewat edit kecil');html=await editKode('INDEX.HTML',B.code.html,note)}
+    else{
+      var pHtml=(resume||tahapJalan)&&B.code.prompt?B.code.prompt:(B.code.prompt=PE('T.3',rev+(note?B.code.html+'\n\n':'')+'Tulis SATU file index.html lengkap (HTML+CSS+JS) untuk mesin '+s.mesin+'. Urutan file WAJIB: di <head> paling atas taruh <meta name="viewport">, <meta name="author">, dan <script> konfigurasi kecil berisi const IS_PREVIEW dan const TAMPILKAN_CONTOH_LOGIN; setelah itu CSS, lalu HTML, lalu <script> utama; file diakhiri </html>. Wajib: const IS_PREVIEW = true; (true = jalan sendiri di browser tanpa backend memakai 1-2 data contoh per koleksi di memori; false = terhubung ke backend '+(s.mesin==='Firebase'?'Firebase (tulis persis `const firebaseConfig = {apiKey:"ISI"};` sebagai placeholder, diisi otomatis saat rilis; login Firebase Auth memakai email <username>@zuno.local)':s.mesin==='Vercel + Supabase'?'Supabase (tulis persis `const SUPABASE_URL = "";` dan `const SUPABASE_ANON_KEY = "";`, diisi otomatis saat rilis)':s.mesin==='Apps Script + Blogger'?'Apps Script lewat google.script.run bila dibuka dari web app, atau fetch ke `const GAS_URL = "";` (diisi otomatis saat rilis) bila ditempel di Blogger':'Apps Script lewat google.script.run')+'); const TAMPILKAN_CONTOH_LOGIN = '+B.contoh+'; halaman login dengan kotak "Contoh akses" berisi akun contoh dari DATA bila setelan true; login membandingkan hash SHA-256 + salt (crypto.subtle); menu "Reset Akses" untuk Admin; semua fitur di ruang lingkup berfungsi; responsif (sidebar desktop, navigasi bawah HP); <meta name="viewport">; kredit sesuai DATA di footer dan halaman login serta <meta name="author">'+(B.ai?'; blok AI_PROVIDER/AI_MODEL dan fungsi tanyaAI yang memanggil backend (bukan langsung ke penyedia), di mode preview jawab dengan teks contoh':'')+'. Kode padat (CSS dan JS ringkas, tanpa komentar panjang), panjang mengikuti jumlah fitur, tanpa // TODO, tanpa library yang tidak perlu.',bCtx(true),'Balas HANYA isi file index.html, tanpa penjelasan dan tanpa blok kode markdown.'));
+      if(!note&&(tahapJalan||besar&&!resume))html=await BEng.bertahap('tahap',pHtml,mkH,'index.html',svH);
+      else try{html=await askText('T.3',B.id,pHtml,'default',prog(resume?'Pengembang melanjutkan index.html':'Pengembang menulis index.html'),{done:lengkap,resume:resume,save:note?null:svH})}
+      catch(e){if(e&&e.code==='empty_completion'&&!note&&!resume){B.code.html='';html=await BEng.bertahap('tahap',pHtml,mkH,'index.html',svH)}else throw e}
+    }
     if(!lengkap(html))throw {code:'kode_terpotong'};
     B.code.html=html;
     BEng.set('t3','run','Pengembang menulis backend ('+be+')');
-    B.code.backend=await askText('T.3',B.id,PE('T.3',rev+(note&&B.code.backend?B.code.backend+'\n\n':'')+'Tulis file '+be+' yang cocok dengan index.html berikut untuk mesin '+s.mesin+'. '+(be==='Code.gs'?'Wajib doGet yang menyajikan file HTML bernama Index (HtmlService.createHtmlOutputFromFile("Index")) dan memanggil setupDatabase() di awal; setupDatabase() aman dipanggil berulang (hanya membuat sheet+header dan sheet "Pengaturan" yang belum ada, akun awal hanya bila sheet akun kosong), supaya aplikasi siap tanpa menjalankan fungsi manual setelah rilis otomatis; akun awal dari DATA disimpan sebagai hash SHA-256 + salt (Utilities.computeDigest), fungsi untuk menu Reset Akses'+(B.ai?', fungsi tanyaAI di server dengan API key dari PropertiesService (Script Properties) dan adaptor AI_PROVIDER':'')+'.':be==='firestore.rules'?'Aturan keamanan Firestore: Admin (Firebase Auth) baca/tulis semua; pengguna lain hanya koleksi sesuai haknya; koleksi pengaturan hanya Admin. Tambahkan komentar singkat cara mendaftarkan Admin pertama.':'Skema tabel Postgres + Row Level Security untuk Supabase, tabel pengaturan untuk Reset Akses, kolom password_hash dan salt.'),bCtx(true)+'\n\nINDEX.HTML:\n'+html.slice(0,60000),'Balas HANYA isi file '+be+', tanpa penjelasan dan tanpa blok kode markdown.'),'default',prog('Pengembang menulis '+be));
+    if(note&&B.code.backend&&B.code.backend.length>40000){BEng.set('t3','run','Pengembang memperbaiki '+be+' lewat edit kecil');B.code.backend=await editKode(be,B.code.backend,note)}
+    else{
+      var pBe=PE('T.3',rev+(note&&B.code.backend?B.code.backend+'\n\n':'')+'Tulis file '+be+' yang cocok dengan index.html berikut untuk mesin '+s.mesin+'. '+(be==='Code.gs'?'Wajib doGet yang menyajikan file HTML bernama Index (HtmlService.createHtmlOutputFromFile("Index")) dan memanggil setupDatabase() di awal; setupDatabase() aman dipanggil berulang (hanya membuat sheet+header dan sheet "Pengaturan" yang belum ada, akun awal hanya bila sheet akun kosong), supaya aplikasi siap tanpa menjalankan fungsi manual setelah rilis otomatis; akun awal dari DATA disimpan sebagai hash SHA-256 + salt (Utilities.computeDigest), fungsi untuk menu Reset Akses'+(B.ai?', fungsi tanyaAI di server dengan API key dari PropertiesService (Script Properties) dan adaptor AI_PROVIDER':'')+'.':be==='firestore.rules'?'Aturan keamanan Firestore: Admin (Firebase Auth) baca/tulis semua; pengguna lain hanya koleksi sesuai haknya; koleksi pengaturan hanya Admin. Tambahkan komentar singkat cara mendaftarkan Admin pertama.':'Skema tabel Postgres + Row Level Security untuk Supabase, tabel pengaturan untuk Reset Akses, kolom password_hash dan salt.'),bCtx(true)+'\n\nINDEX.HTML:\n'+html.slice(0,60000),'Balas HANYA isi file '+be+', tanpa penjelasan dan tanpa blok kode markdown.'),mkB=function(){return bagianBackend(s)},tb=B.code.tahapBe,tbJalan=!note&&tb&&tb.prompt===pBe&&tb.ke<tb.bag.length;
+      if(be==='Code.gs'&&!note&&(besar||tbJalan))B.code.backend=await BEng.bertahap('tahapBe',pBe,mkB,be);
+      else try{B.code.backend=await askText('T.3',B.id,pBe,'default',prog('Pengembang menulis '+be))}
+      catch(e){if(e&&e.code==='empty_completion'&&be==='Code.gs'&&!note)B.code.backend=await BEng.bertahap('tahapBe',pBe,mkB,be);else throw e}
+    }
     B.code.beName=be;
     BEng.set('t3','done','Kode siap: index.html ('+Math.round(html.length/1000)+' KB) + '+be);
     BEng.set('t4','run','Penguji menjalankan cek otomatis dan pratinjau di browser');B.stage='Diuji';
@@ -1707,7 +1793,7 @@ var BEng={
     B.test={auto:auto,review:(Array.isArray(rv.butir)?rv.butir:[]).slice(0,12).map(function(x){return {butir:String(x&&x.butir||''),status:['terlihat di kode','belum terlihat','perlu uji manual'].indexOf(x&&x.status)>-1?x.status:'perlu uji manual',catatan:String(x&&x.catatan||'')}}),risiko:arr(rv.risiko).slice(0,3),ringkas:String(rv.ringkas||'')};
     B.code.panduan=BEng.panduan();
     var gagal=auto.filter(function(a){return a.status==='Gagal'}).length;
-    B.stage='Diuji';BEng.set('t4',gagal?'bad':'done','Cek otomatis: '+(auto.length-gagal)+' lolos, '+gagal+' gagal');
+    B.stage='Diuji';BEng.set('t4',gagal?'warn':'done','Cek otomatis: '+(auto.length-gagal)+' lolos, '+gagal+' gagal');
   },
   autoTest:async function(){
     var h=B.code.html||'',bk=B.code.backend||'',all=h+'\n'+bk,R=[];
@@ -1761,7 +1847,7 @@ var BEng={
   results:function(){
     if(!B)return;var box=$('bres');box.innerHTML='';
     if(B.held&&B.retry&&!running){var rw=document.createElement('div');rw.className='btns';var rb=document.createElement('button');rb.className='btn primary';rb.textContent='Coba lagi ('+({t1:'Arsitek',t2:'Desainer',t3:'Pengembang',t4:'Pengembang + Penguji',g1:'Penguji',g2:'Penguji',g3:'Pengembang'}[B.retry]||'lanjutkan')+')';rb.onclick=function(){var st=B.retry;BEng.run(st,function(){return BEng.auto()})};rw.appendChild(rb);box.appendChild(rw)}var s=B.scope,d=B.design,t=B.test,li=function(a){return a.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')};
-    var tj=function(g,lbl){var w=document.createElement('div');w.className='btns';var r=B.tinjau&&B.tinjau[g];if(!r){w.innerHTML='<span class="pill">Menunggu tinjauan Penguji</span>';return w}var ok=r.sesuai||!(r.kurang&&r.kurang.length);w.innerHTML='<span class="pill '+(ok?'ok':'bad')+'">'+(ok?'Lolos tinjauan '+lbl:'Tinjauan '+lbl+': '+r.kurang.length+' catatan tersisa (risiko)')+(r.putaran?' · '+r.putaran+' perbaikan':'')+'</span>'+(!ok?'<ul>'+li(r.kurang)+'</ul>':'');return w};
+    var tj=function(g,lbl){var w=document.createElement('div');w.className='btns';var r=B.tinjau&&B.tinjau[g];if(!r){w.innerHTML='<span class="pill">Menunggu tinjauan Penguji</span>';return w}var ok=r.sesuai||!(r.kurang&&r.kurang.length);w.innerHTML='<span class="pill '+(ok?'ok':'warn')+'">'+(ok?'Lolos tinjauan '+lbl:'Tinjauan '+lbl+': '+r.kurang.length+' catatan tersisa (risiko)')+(r.putaran?' · '+r.putaran+' perbaikan':'')+'</span>'+(!ok?'<ul>'+li(r.kurang)+'</ul>':'');return w};
     if(s){var e=document.createElement('div');e.className='res';
       e.innerHTML='<h3>1 · Ruang lingkup: '+esc(s.nama_aplikasi)+'<span class="pill">T.1 Arsitek</span></h3><p><b>Masalah:</b> '+esc(s.masalah)+'</p><p><b>Fitur ('+s.fitur.length+'):</b></p><ul>'+li(s.fitur)+'</ul>'+(B.prd?'<p class="muted">Referensi PRD: '+esc(B.prdName)+'</p>':'')+''+(s.nanti.length?'<p class="muted"><b>Nanti:</b> '+esc(s.nanti.join('; '))+'</p>':'')+''+(s.out_of_scope.length?'<p><b>Out of scope:</b></p><ul>'+li(s.out_of_scope)+'</ul>':'')+'<p><b>Definisi selesai:</b></p><ul>'+li(s.definisi_selesai)+'</ul><p><b>Mesin:</b> '+esc(s.mesin)+' · '+esc(s.alasan_mesin)+'<br><b>Biaya:</b> '+esc(s.biaya)+'<br><b>Menu:</b> '+esc(s.menu.join(', '))+'<br><b>Kredit:</b> '+esc(s.kredit)+'<br><b>AI:</b> '+esc(s.ai||'-')+'</p>'+(s.asumsi.length?'<p class="muted"><b>Asumsi:</b> '+esc(s.asumsi.join('; '))+'</p>':'')+(s.pertanyaan.length?'<div class="banner warn"><b>Pertanyaan Arsitek:</b><ul>'+li(s.pertanyaan)+'</ul>Diputuskan sendiri oleh Penguji; lihat Catatan keputusan.</div>':'');
       e.appendChild(tj('g1','ruang lingkup'));box.appendChild(e)}
@@ -1775,7 +1861,7 @@ var BEng={
       [['index.html',B.code.html,'text/html'],[B.code.beName,B.code.backend,'text/plain'],['PANDUAN.md',B.code.panduan,'text/markdown']].forEach(function(o){var b=document.createElement('button');b.className='btn'+(o[0]==='index.html'?' primary':'');b.textContent='Unduh '+o[0];b.onclick=function(){Save.file(slug(s.nama_aplikasi)+'_'+o[0],new Blob([o[1]||''],{type:o[2]}),b)};bt.appendChild(b)});
       e3.appendChild(bt);e3.appendChild(pb);
       var rl=document.createElement('p');rl.className='muted';rl.textContent='Rilis: unduh paket rilis (tersimpan di C:\\zuno-proyek\\unduhan), lalu bilang ke Claude "rilis proyek '+slug(s.nama_aplikasi)+'". Claude Desktop + agent-desktop di laptopmu menjalankan rilis.mjs sesuai mesin '+s.mesin+' sampai live, lalu mengirim link live ke kamu.';e3.appendChild(rl);
-      if(B.done){var dn=document.createElement('div');dn.className='btns';var sisa=B.tinjau&&B.tinjau.g3&&B.tinjau.g3.sisa||[];dn.innerHTML='<span class="pill '+(sisa.length?'bad':'ok')+'">'+(sisa.length?'Siap dirilis, '+sisa.length+' temuan dicatat':'Siap dirilis')+'</span>';var ru=document.createElement('button');ru.className='btn primary';ru.textContent='Unduh paket rilis (.zip)';ru.onclick=function(){Save.file(slug(s.nama_aplikasi)+'_rilis.zip',rilisZip(B),ru)};dn.appendChild(ru);
+      if(B.done){var dn=document.createElement('div');dn.className='btns';var sisa=B.tinjau&&B.tinjau.g3&&B.tinjau.g3.sisa||[];dn.innerHTML='<span class="pill '+(sisa.length?'warn':'ok')+'">'+(sisa.length?'Siap dirilis, '+sisa.length+' temuan dicatat':'Siap dirilis')+'</span>';var ru=document.createElement('button');ru.className='btn primary';ru.textContent='Unduh paket rilis (.zip)';ru.onclick=function(){Save.file(slug(s.nama_aplikasi)+'_rilis.zip',rilisZip(B),ru)};dn.appendChild(ru);
         var nt=document.createElement('input');nt.type='text';nt.placeholder='Catatan tambahan (opsional)';nt.style.maxWidth='260px';nt.setAttribute('aria-label','Catatan tambahan untuk Pengembang');dn.appendChild(nt);
         var rv=document.createElement('button');rv.className='btn';rv.textContent='Ubah dengan catatan';rv.disabled=running;rv.onclick=function(){var n=nt.value.trim();if(!n){nt.focus();return}B.revisi++;B.keputusan.push({tahap:'Zulnan',apa:'Catatan tambahan: '+n,alasan:'permintaan Zulnan',risiko:'-'});BEng.run('t3',async function(){B.cur='t3';await BEng.build(n);B.tinjau.g3=null;await BEng.fixLoop();B.cur=null;BEng.finish()})};dn.appendChild(rv);e3.appendChild(dn)}
       box.appendChild(e3)}

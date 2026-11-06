@@ -78,6 +78,8 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
+000019. **Build App aplikasi besar tidak tertahan lagi di T.3 (2026-11-06, entri 57).** T.3 menulis per bagian, jawaban kosong ditangani, Tinjauan kuning bila masih ada catatan. Berikutnya: Zulnan coba lagi build 46 fitur di artifact (versi baru); bila tertahan, kirim screenshot + log (tombol log di bawah hasil).
+
 000018. **Rilis tanpa disentuh di laptop: Claude Desktop + agent-desktop + rilis.mjs (2026-11-06, entri 55).** Berikutnya (Zulnan, sekali): `git pull`, klik `pasang-tangan-komputer.bat` (login clasp, nyalakan Apps Script API), Claude Desktop > Settings > Claude Code > Remote Control > tambah `C:\zuno-proyek`, lokasi download Chrome = `C:\zuno-proyek\unduhan`. Lalu build satu aplikasi Apps Script di Build App, unduh paket, bilang "rilis proyek <nama>". Bila gagal: kirim `LAPORAN-RILIS.md`. Push menunggu kata Zulnan.
 
 000017. **Alat fondasi docling + graphify terpasang (2026-11-06, entri 54).** Opsional, alur tidak berubah. Berikutnya: di laptop pasang `uv tool install docling` dan `uv tool install graphifyy` bila mau dipakai lokal; PDF mode lengkap docling akan mengunduh model sekali. Push menunggu kata Zulnan.

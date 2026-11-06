@@ -548,4 +548,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Kait uji `window.ZunoUji.rilisZip`.
 - Tes: jasa 4 cek baru lolos (tanpa Zulnan/nexamind, pemilik = brand, JSON valid dengan tanda kutip, rilis.mjs netral); laptop 24 lolos; build stub, v2, web stub lolos.
 
-## 57. (entri berikutnya di sini)
+## 57. Build App: T.3 bertahap, jawaban kosong ditangani, Tinjauan tidak lagi "Tertahan" palsu (2026-11-06)
+- Laporan Zulnan (screenshot artifact): Tinjauan 1/2 "Tertahan" dengan 6/8 catatan, T.3 "Pengembang tertahan: empty_completion" untuk ruang lingkup 46 fitur.
+- Akar masalah: T.3 meminta seluruh index.html 46 fitur dalam satu panggilan; Claude tidak menulis apa pun, lalu panggilan yang sama dikirim ulang 4 kali (dok. `sample`: jangan kirim ulang, minta lebih sedikit). Tinjauan memakai tier quick dan menghitung saran kecil sebagai kekurangan, lalu status "masih ada catatan, build lanjut" ditampilkan merah "Tertahan".
+- Perbaikan di `prototypes/zuno-studio-v2.html`: `bagianHtml`/`bagianBackend`/`tulisBertahap`/`ringkasKode`/`editKode`, `BEng.bertahap` (lanjut dari bagian terakhir saat "Coba lagi"); `askText` berhenti pada `empty_completion`; `ask` mencoba sekali di tier quick; Tinjauan tier default dengan `kurang` wajib + `saran`, tinjauan ulang membawa catatan sebelumnya; status baru `warn` ("Lanjut + catatan").
+- Tes: build stub mode baru `--besar` (20 fitur: 8 bagian html + 4 bagian Code.gs, revisi lewat edit) dan `--kosong` (fallback + pecah 6 -> 3+3), 9 mode lama tetap lolos; v2, web stub, web api, rilis laptop, jasa lolos.
+
+## 58. (entri berikutnya di sini)
