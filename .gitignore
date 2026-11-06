@@ -7,3 +7,6 @@ antrian-posting/*
 
 # Proyek Engineering yang sedang dirilis di laptop (paket rilis Build App)
 proyek/
+
+# Graf pengetahuan graphify (dibuat ulang lokal, tidak di-commit)
+graphify-out/

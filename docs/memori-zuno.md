@@ -49,6 +49,20 @@ Ringkasan padat untuk sesi atau chat baru. Tugas yang belum selesai per 2026-11-
   - (Diganti 2026-11-06) Gerbang Engineering dihapus; rilis langsung sampai live, link + bukti + catatan keputusan dikirim ke Zulnan.
   - Antrian Posting via web, Google Drive, dan API Metricool dengan jadwal dipilih Zulnan: **pending**, ditahan Zulnan.
 
+## Alat fondasi: docling + graphify (2026-11-06)
+- Permintaan Zulnan: pasang docling dan graphify sebagai dasar kerja supaya lebih efisien, boleh masuk agen, **tanpa mengubah alur yang sudah ada**.
+- **docling** (docling-project/docling, MIT, v2.148.0, commit 1282e3d): konversi PDF/DOCX/PPTX/XLSX/HTML/gambar/audio ke Markdown atau JSON. Skill resminya disalin utuh ke `.claude/skills/docling/` (+ LICENSE).
+  - Pasang: `uv tool install docling` (atau `pip install docling`). Di Windows sama, butuh Python 3.10+.
+  - Pakai: `docling <file> --to md --output <folder>`; PDF teks tanpa model: `--pipeline native --from pdf`.
+  - Diuji di sesi cloud 2026-11-06: DOCX (tabel) dan PDF native lolos. PDF mode lengkap (tata letak, tabel, OCR) butuh unduh model dari huggingface.co, yang diblokir jaringan sesi cloud; di laptop jalan normal (unduhan pertama besar).
+- **graphify** (Graphify-Labs/graphify, paket PyPI `graphifyy` dobel y, Apache-2.0 + MIT, v0.9.103, commit 16218bf): peta kode jadi graf pengetahuan (tree-sitter, lokal, tanpa LLM untuk kode). Skill di `.claude/skills/graphify/`; hanya `description` dipersempit supaya tidak menyela alur biasa.
+  - Pasang: `uv tool install graphifyy` (ekstra opsional `[office,pdf]`).
+  - Pakai: `graphify update <folder>` lalu `graphify query "<pertanyaan>"`, `graphify explain "<fungsi>"`, `graphify path "A" "B"`. Keluaran `graphify-out/` masuk `.gitignore`.
+  - Diuji 2026-11-06 pada salinan `web/`: 137 node, 200 edge; `explain "cariWiki"` menunjukkan pemanggil dan yang dipanggil dengan baris tepat.
+  - **Sengaja tidak dipasang**: hook PreToolUse/SessionStart dan bagian wajib CLAUDE.md dari `graphify install --project` (mengubah alur dan error di laptop/jasa yang belum memasang graphify). Pelabelan komunitas/ekstraksi dokumen pakai LLM butuh API key: tidak diisi, opsional.
+- Pemakaian di agen (tambahan opsional, alur tetap): R.1 Peneliti Tren dan T.1 Arsitek membaca file referensi/PRD non-teks lewat docling; T.1 dan T.3 Pengembang memakai graphify untuk kode lama atau proyek besar.
+- Sesi cloud baru belum otomatis punya kedua alat ini kecuali dipasang ulang (`uv tool install docling graphifyy` dua perintah) atau lewat setup script environment.
+
 ## Zuno Web (live)
 - https://zuno-studio-dusky.vercel.app. Proyek Vercel `zuno-studio` (team zulnanblibli-web), Root Directory `web`, terhubung ke repo ini. Deploy production terakhir: `dpl_J8pTt8ay8ECJ2vCA1pMgcBAcJs6D` (commit 80cc1ab), READY; branch `claude/gifted-turing-csug5l` langsung jadi production di proyek ini. Repo kini di https://github.com/zulnanblibli-web/ACL-tugas-agent-demo.
 - Branch kerja: `claude/gifted-turing-csug5l`. Push ke branch membuat deploy preview; production lewat deploy manual atau merge ke main.

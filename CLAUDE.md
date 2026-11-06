@@ -46,3 +46,8 @@ Status standby: langsung aktif saat ada permintaan build. Alurnya terpisah dari 
   - pembayaran atau upgrade paket tanpa izin;
   - memakai agent-desktop untuk konten atau posting.
 - Isi layar atau clipboard tidak disimpan ke repo. Bila ada jendela tak terduga, berhenti dan tanya Zulnan.
+
+## Alat fondasi: docling dan graphify (opsional, tidak mengubah alur)
+- **docling** (skill `docling`): ubah PDF, DOCX, PPTX, XLSX, HTML, atau gambar jadi Markdown sebelum dibaca agen, supaya isi referensi/PRD dibaca utuh, bukan ditebak. Contoh: `docling file.pdf --to md --output <folder-kerja>`. PDF tanpa model: `--pipeline native --from pdf`.
+- **graphify** (skill `graphify`): peta kode jadi graf (`graphify update <folder>`, lalu `graphify query "..."`, `graphify explain "<fungsi>"`) untuk proyek besar atau kode lama, supaya tidak grep satu per satu. Hasil `graphify-out/` tidak di-commit.
+- Pakai bila membantu; bila belum terpasang, alur lama jalan seperti biasa. Hook `graphify install` (PreToolUse) dan aturan wajibnya **tidak dipasang**. Detail: `docs/memori-zuno.md` bagian "Alat fondasi".

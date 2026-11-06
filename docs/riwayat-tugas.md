@@ -504,4 +504,19 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Foto tokoh/orang memakai konsep yang sama. Slide 1 dikunci sebagai thumbnail carousel di paket posting dan Antrian Posting (`thumbnail` di item.json, berisi kredit dan asal).
 - Sudah di-commit; push menunggu kata Zulnan (permintaan ini tidak menyebut push).
 
-## 54. (entri berikutnya di sini)
+## 54. Pasang docling + graphify sebagai alat fondasi (2026-11-06)
+- Permintaan Zulnan: pasang https://github.com/docling-project/docling dan https://github.com/Graphify-Labs/graphify, simpan ke memori jangka panjang, boleh masuk agen, tanpa mengubah alur yang sudah ada.
+- Dipasang di sesi cloud: `uv tool install docling` (2.148.0) dan `uv tool install "graphifyy[office,pdf]"` (0.9.103).
+- Skill:
+  - `.claude/skills/docling/`: skill resmi docling disalin utuh + LICENSE (MIT).
+  - `.claude/skills/graphify/`: dari `graphify install --project` + LICENSE (Apache-2.0). Hanya `description` dipersempit (dipicu `/graphify` atau permintaan peta kode).
+  - Hook PreToolUse/SessionStart di `.claude/settings.json` dan bagian wajib di `CLAUDE.md` yang ditulis installer graphify **dicabut**: hook itu menyela tiap Read/Grep dan akan error di laptop/jasa yang belum memasang graphify.
+  - `graphify-out/` masuk `.gitignore`.
+- Memori: `docs/memori-zuno.md` bagian "Alat fondasi", `CLAUDE.md` bagian singkat (opsional), `.claude/skills/README.md`.
+- Agen (tambahan opsional, alur tetap): R.1 dan T.1 membaca PDF/DOCX lewat docling; T.1 dan T.3 memakai graphify untuk kode lama/proyek besar.
+- Uji:
+  - docling: DOCX bertabel ke Markdown (0,16 detik), PDF `--pipeline native` (0,39 detik) lolos. PDF mode lengkap gagal di cloud karena huggingface.co diblokir (403 proxy); di laptop perlu unduh model sekali.
+  - graphify: `graphify update` pada salinan `web/` menghasilkan 137 node, 200 edge, 14 komunitas; `query` dan `explain "cariWiki"` benar (pemanggil GET L159, memanggil bacaMaks dan cocokJudul).
+  - `node web/build.mjs`, ekspor jasa, `tests/zuno-jasa-test.js`: HASIL: SEMUA LOLOS (repo jasa tidak berubah; skill tidak ikut edisi jasa).
+
+## 55. (entri berikutnya di sini)

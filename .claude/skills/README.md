@@ -1,6 +1,6 @@
 # Skill terpasang di project Zuno (Claude Code)
 
-Folder ini dibaca otomatis oleh Claude Code saat bekerja di repo ini, baik di cloud maupun di laptop Zulnan. Semua skill di sini adalah salinan dari sumber terbuka (MIT), disaring dari katalog PINAX (`akhmadilham/pinax-registry`) pada 2026-11-04. Isi dan lisensi aslinya tidak diubah; folder `agents/` dan `evals/` bawaan sumber tidak ikut disalin.
+Folder ini dibaca otomatis oleh Claude Code saat bekerja di repo ini, baik di cloud maupun di laptop Zulnan. Semua skill di sini adalah salinan dari sumber terbuka (MIT, sebagian Apache-2.0), disaring dari katalog PINAX (`akhmadilham/pinax-registry`) pada 2026-11-04. Isi dan lisensi aslinya tidak diubah; folder `agents/` dan `evals/` bawaan sumber tidak ikut disalin.
 
 **Aturan Zuno selalu menang.** Bila skill bertentangan dengan `CLAUDE.md`, `docs/brief-gaya-konten.md`, `docs/aturan-engineering.md`, atau `docs/alur-posting.md`, ikuti aturan Zuno: tulis dalam Bahasa Indonesia, jangan mengarang angka/testimoni/pengalaman, butir [ISI] tidak ditebak, harga [HARGA BELUM DITENTUKAN], status Disetujui hanya dari Zulnan.
 
@@ -53,6 +53,15 @@ Konteks bisnis untuk semua skill ini ada di `.claude/product-marketing.md` (menu
 | `ad-creative` | 14 Strategis Iklan | Variasi copy iklan |
 | `ads` | 14 Strategis Iklan | Strategi kampanye berbayar. Meta Ads **belum aktif**: hanya rencana, tidak menyentuh akun iklan |
 | `analytics` | 13 Pelapor Analitik | Rencana pelacakan dan UTM. Angka hanya dari data nyata |
+
+## Alat fondasi semua divisi (2026-11-06)
+
+Opsional dan tidak mengubah alur: bila CLI-nya belum terpasang, kerja jalan seperti biasa.
+
+| Skill | Agen | Gunanya | Sumber (commit) |
+|---|---|---|---|
+| `docling` | R.1 Peneliti Tren, T.1 Arsitek (semua agen yang menerima file) | Ubah PDF/DOCX/PPTX/XLSX/HTML/gambar jadi Markdown supaya referensi dan PRD dibaca utuh. CLI `docling` (`uv tool install docling`). Disalin utuh | docling-project/docling (1282e3d, MIT) |
+| `graphify` | T.1 Arsitek, T.3 Pengembang | Peta kode jadi graf pengetahuan: `graphify update`, `query`, `explain`, `path`. CLI dari paket `graphifyy`. Hanya `description` dipersempit; hook dan aturan wajib CLAUDE.md bawaan installer sengaja tidak dipasang | Graphify-Labs/graphify (16218bf, Apache-2.0) |
 
 ## Skill buatan Zuno
 

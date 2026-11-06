@@ -78,6 +78,8 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
+000017. **Alat fondasi docling + graphify terpasang (2026-11-06, entri 54).** Opsional, alur tidak berubah. Berikutnya: di laptop pasang `uv tool install docling` dan `uv tool install graphifyy` bila mau dipakai lokal; PDF mode lengkap docling akan mengunduh model sekali. Push menunggu kata Zulnan.
+
 000016. **Riset mandiri + cek naskah .docx + Engineering tanpa gerbang + Perakit Agen (2026-11-06, entri 50). Artifact versi 6.** Berikutnya:
 - Zulnan coba tab Konten di Zuno Web (setelah push): ketik prompt sendiri, cek tren/berita yang dipakai di paket, unduh naskah .docx, lalu Lanjut ke desain & editing.
 - Coba Build App: alur jalan sendiri sampai "Unduh paket rilis"; cek tabel Catatan keputusan.
