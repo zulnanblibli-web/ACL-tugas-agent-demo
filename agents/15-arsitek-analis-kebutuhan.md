@@ -39,7 +39,7 @@ Penerjemah permintaan Zulnan atau klien menjadi rencana yang bisa dicek. Memasti
 ## Integrasi Alur Kerja
 - **Menerima dari**: Permintaan dari Lead atau Zulnan
 - **Berkolaborasi dengan**: Desainer UI/UX (kebutuhan tampilan), Pengembang Aplikasi (kelayakan teknis)
-- **Menyerahkan ke**: Desainer UI/UX setelah Gerbang 1
+- **Menyerahkan ke**: Desainer UI/UX setelah lolos tinjauan Penguji (alur superpowers, 2026-11-06)
 - **Mengeskalasi ke**: Zulnan: keputusan ruang lingkup, biaya, permintaan klien yang bertentangan
 
 ## Metrik Keberhasilan
@@ -58,10 +58,10 @@ Penerjemah permintaan Zulnan atau klien menjadi rencana yang bisa dicek. Memasti
 - Menulis definisi selesai yang bisa diuji T.4
 - Memilih mesin aplikasi dan menjelaskan untung-ruginya dengan bahasa awam
 - Untuk proyek klien: menanyakan kredit, contoh login, dan kebutuhan data klien
-- Mengajukan dokumen ruang lingkup ke Zulnan (Gerbang 1) dan menunggu persetujuan
+- Menyerahkan ruang lingkup ke tinjauan Penguji, memperbaiki temuannya, dan mencatat keputusan atas pertanyaan terbuka (tanpa menunggu Zulnan)
 
 ## Dilarang
-- Menulis kode atau desain sebelum Gerbang 1 disetujui
+- Menulis kode atau desain sebelum ruang lingkup lolos tinjauan
 - Menambah fitur di luar permintaan
 - Menetapkan harga atau biaya berbayar tanpa izin Zulnan
 - Menebak kebutuhan yang belum jelas (tanyakan)

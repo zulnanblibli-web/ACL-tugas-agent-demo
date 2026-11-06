@@ -4,7 +4,7 @@ Keputusan Zulnan 2026-11-05: rilis Divisi Engineering dijalankan di **Google Ant
 - Claude Code di laptop Zulnan tidak bisa start (`claude.exe is not compatible with the version of Windows you're running`, lihat bagian "Catatan teknis").
 - Antigravity sudah punya editor, terminal, dan browser dalam satu layar, jadi agent-desktop tidak diperlukan di jalur ini.
 
-Alur gerbang tidak berubah (`docs/tangan-komputer.md`, `docs/aturan-engineering.md`): gerbang 1 dan 2 di tab Build App, gerbang 3 = Zulnan cek link live.
+Sejak 2026-11-06 alurnya tanpa gerbang persetujuan (alur superpowers, `docs/aturan-engineering.md`): Build App jalan sendiri sampai paket rilis, agent di sini memutuskan hal teknis sendiri berpatokan brief dan mencatat keputusannya. Tombol setuju Antigravity (Review-driven) tetap dipakai sebagai pengaman perintah berisiko.
 
 ## Pasang sekali
 1. Pasang Antigravity dari https://antigravity.google (Windows 64-bit, sebaiknya di drive C:). Login dengan akun Google.
@@ -20,17 +20,17 @@ Alur gerbang tidak berubah (`docs/tangan-komputer.md`, `docs/aturan-engineering.
 6. Di Antigravity buka Customizations > Rules, pastikan `zuno-engineering` aktif (Always On).
 
 ## Tiap rilis
-1. Di tab Build App: lewati gerbang 1 dan 2, tunggu T.3 dan T.4, lalu unduh **paket rilis (.zip)**.
+1. Di tab Build App: kirim permintaan, tunggu sampai muncul tombol **Unduh paket rilis (.zip)** (T.1 sampai T.4 jalan sendiri dengan tinjauan otomatis), lalu unduh.
 2. Klik kanan zip > Extract All ke folder baru, misalnya `C:\zuno-proyek\<nama>\`.
 3. (Bila memilih "per proyek") salin folder `.agents` dari repo Zuno ke folder itu.
 4. Di Antigravity: File > Open Folder > pilih folder proyek. Commit atau salin cadangan dulu bila isinya penting.
 5. Di kotak agent ketik: `/rilis-engineering`.
 6. Tonton di layar: terminal menjalankan uji dan deploy, browser membuka link live.
 7. Bila agent berhenti dan minta login, OTP, izin Google, atau isi env, lakukan sendiri lalu balas "lanjut".
-8. Agent melapor link live dan bukti uji. Cek di laptop dan HP. Bilang **oke** untuk final, atau sebut revisinya. Setelah oke agent menjalankan langkah Final (`vercel deploy --prod` dan sejenisnya).
+8. Bila semua cek lolos, agent langsung menjalankan langkah Production (`vercel deploy --prod` dan sejenisnya), lalu melapor link live, bukti uji, dan catatan keputusan. Cek di laptop dan HP; catatan tambahan boleh kapan saja.
 
 ## Yang tetap tugas Zulnan
-- Gerbang 1, 2, dan 3.
+- Klik setuju di Antigravity untuk perintah berisiko (Review-driven).
 - Login, OTP, captcha, password, izin Google (consent OAuth), UAC.
 - Isi env dan API key di dashboard (Vercel, Supabase, Firebase, Script Properties).
 - Izin bila ada biaya.

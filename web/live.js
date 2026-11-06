@@ -71,6 +71,16 @@
   }
   sample.limits = function () { return Promise.resolve({ images: true }); };
 
+  /* Riset web untuk Peneliti Tren: Google Trends, Google News, Hacker News lewat /api/riset. */
+  window.ZunoRiset = async function (queries) {
+    var key = getKey();
+    if (!key) throw { code: 'not_granted', message: 'Kunci akses belum diisi.' };
+    var q = (queries || []).map(function (x) { return String(x).replace(/\|/g, ' ').trim(); }).filter(Boolean).slice(0, 4).join('|');
+    var r = await fetch('/api/riset?q=' + encodeURIComponent(q), { headers: { 'x-zuno-key': key } });
+    if (!r.ok) throw { code: r.status === 401 ? 'not_granted' : 'upstream_error', message: 'Riset web gagal (HTTP ' + r.status + ').' };
+    return r.json();
+  };
+
   window.claude = {
     use: function (name) {
       if (name === 'sample') return Promise.resolve(sample);

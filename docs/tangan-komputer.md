@@ -11,15 +11,15 @@ Keputusan Zulnan 2026-11-04:
 - **Tangan untuk file dan perintah**: Claude Code sendiri. Ia membaca dan menulis kode, menjalankan Node, Playwright, `vercel`, `clasp`, dan `firebase`.
 - **Tangan untuk aplikasi**: agent-desktop (Vercel Labs, Apache-2.0, versi 1.1.0). Ia membuka browser ke link live dan mencoba aplikasinya seperti pengguna. Ia juga mengerjakan langkah yang hanya bisa lewat klik. agent-desktop tidak punya AI sendiri; Claude yang memutuskan langkahnya.
 
-## Alur (gerbang disetujui Zulnan 2026-11-04)
+## Alur (alur superpowers, keputusan Zulnan 2026-11-06; menggantikan 3 gerbang)
 ```
-Zuno Studio tab Build App (web)
-  T.1 ruang lingkup  -> GERBANG 1: Zulnan setujui
-  T.2 tampilan       -> GERBANG 2: Zulnan setujui
-  T.3 kode, T.4 cek  -> "Lanjut rilis": unduh paket rilis (.zip)
+Zuno Studio tab Build App (web), jalan sendiri tanpa menunggu Zulnan
+  T.1 ruang lingkup -> tinjauan T.4 -> perbaiki
+  T.2 tampilan      -> tinjauan T.4 -> perbaiki
+  T.3 kode, T.4 cek -> perbaiki temuan -> "Unduh paket rilis (.zip)"
 Laptop (Claude Code + agent-desktop, skill rilis-engineering)
-  ekstrak paket ke proyek/<nama>/ -> lengkapi, uji laptop + HP -> deploy ke link live -> cek link live
-  -> GERBANG 3: Zulnan cek link live, bilang oke -> final (production)
+  ekstrak paket ke proyek/<nama>/ -> lengkapi, uji laptop + HP -> link uji -> cek -> production
+  -> link live + bukti uji + catatan keputusan dikirim ke Zulnan
 ```
 Perintah ke Claude Code: **"rilis proyek <nama>"**.
 
@@ -41,7 +41,8 @@ Perintah ke Claude Code: **"rilis proyek <nama>"**.
    Cukup login yang dipakai saja.
 
 ## Yang tetap butuh Zulnan
-- Gerbang 1, 2, dan 3.
+- Keputusan teknis tidak butuh Zulnan (diputuskan sendiri, dicatat). Yang tetap butuh Zulnan ada di bawah ini.
+- Akun deploy proyek klien bila belum jelas.
 - Login, OTP, captcha, password, dan jendela izin Google (consent OAuth).
 - Jendela "Run as administrator" (UAC). Windows tidak mengizinkan klik otomatis di sana.
 - Mengisi env dan API key di dashboard (Vercel, Supabase, Firebase, Script Properties).

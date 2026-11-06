@@ -38,7 +38,7 @@ Perancang tampilan web app. Mengubah PRD menjadi tata letak tiap halaman dan gay
 ## Integrasi Alur Kerja
 - **Menerima dari**: Arsitek & Analis Kebutuhan
 - **Berkolaborasi dengan**: Pengembang Aplikasi (kelayakan tampilan)
-- **Menyerahkan ke**: Pengembang Aplikasi setelah Gerbang 2
+- **Menyerahkan ke**: Pengembang Aplikasi setelah lolos tinjauan Penguji
 - **Mengeskalasi ke**: Zulnan: pilihan gaya; T.1: kebutuhan halaman yang tidak ada di PRD
 
 ## Metrik Keberhasilan
@@ -55,7 +55,7 @@ Perancang tampilan web app. Mengubah PRD menjadi tata letak tiap halaman dan gay
 - Menetapkan gaya visual dan komponen
 - Memeriksa rencana animasi dengan checklist motion
 - Menyiapkan tampilan mode preview (banner dan data contoh)
-- Mengajukan tampilan ke Zulnan (Gerbang 2)
+- Menyerahkan tampilan ke tinjauan Penguji dan memperbaiki temuannya
 
 ## Dilarang
 - Menulis kode aplikasi

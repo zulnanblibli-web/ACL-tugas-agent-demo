@@ -1,5 +1,7 @@
 const { chromium } = require('playwright');
-// Tes alur Build App (Divisi Engineering) dengan Claude tiruan. Argumen: --klien untuk proyek klien.
+// Tes alur Build App (Divisi Engineering) dengan Claude tiruan. Alur sejak 2026-11-06: otomatis ala superpowers
+// (kerjakan -> tinjau Penguji -> perbaiki -> lanjut), tanpa gerbang persetujuan Zulnan; keputusan dicatat.
+// Argumen: --klien --buruk --potong --gagal --putus --putus-parah --desref --prd
 const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.includes('--buruk'); const POTONG = process.argv.includes('--potong'); const GAGAL = process.argv.includes('--gagal'); const PUTUS = process.argv.includes('--putus'); const PARAH = process.argv.includes('--putus-parah'); const DESREF = process.argv.includes('--desref');
 (async()=>{
   const b = await chromium.launch(); const p = await b.newPage({viewport:{width:1100,height:900}});
@@ -13,6 +15,8 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
       const role=(input.match(/PERAN ANDA: (\S+)/)||[])[1]; window.__calls.push({role,rev:/REVISI/.test(input),prd:/PRD DARI ZULNAN[\s\S]*Fitur ketujuh dari PRD/.test(input)});
       if(role==='T.1') return {nama_aplikasi:'Absensi Siswa',masalah:'Guru rekap absensi manual di kertas',fitur:['Login','Input absensi','Rekap bulanan','Ekspor Excel','Data siswa','Fitur keenam','Fitur ketujuh dari PRD'],nanti:['Notifikasi orang tua'],out_of_scope:['Multi-bahasa','Pembayaran','Aplikasi Android'],definisi_selesai:['Guru bisa input absensi','Rekap per bulan tampil'],mesin:'Apps Script + Google Sheets',alasan_mesin:'gratis dan data terlihat di Sheets',biaya:'gratis',role:[{nama:'Admin',hak:'semua'}],menu:['Dashboard','Absensi','Rekap','Reset Akses'],data:[{nama:'Siswa',kolom:['id','nama','kelas']}],ai:'tidak dipakai',kredit:'Creative @nexamind.ai',asumsi:['satu sekolah'],pertanyaan:/REVISI/.test(input)?[]:['Berapa kelas?']};
       if(role==='T.2') return {acuan_referensi:/ADA REFERENSI DESAIN/.test(input)?'Kartu putih membulat, sidebar gelap, aksen hijau dari referensi':'',halaman:[{nama:'Login',isi:['form','Contoh akses','kredit'],hp:'satu kolom',desktop:'tengah'}],gaya:{primer:'#1f3a5f',latar:'#ffffff',teks:'#15202b',aksen:'#f2a900',huruf:'Inter',nuansa:'bersih'},komponen:['tombol','kartu'],animasi:[{elemen:'tombol simpan',tujuan:'respons aksi',durasi_ms:250},{elemen:'logo',tujuan:'hiasan',durasi_ms:900}],posisi_kredit:'footer',catatan:[]};
+      if(role==='T.4'&&/Tinjau RUANG LINGKUP/.test(input)){ window.__tinjau1=(window.__tinjau1||0)+1; window.__q1=/PERTANYAAN TERBUKA ARSITEK[\s\S]*Berapa kelas/.test(input)||window.__q1; return window.__tinjau1===1?{sesuai:false,kurang:['Fitur ekspor PDF dari permintaan belum ada'],keputusan:[{apa:'Jumlah kelas dibuat bebas (Admin menambah kelas sendiri)',alasan:'permintaan tidak menyebut jumlah kelas',risiko_bila_salah:'menu kelas sedikit lebih banyak'}]}:{sesuai:true,kurang:[],keputusan:[]}; }
+      if(role==='T.4'&&/Tinjau DESAIN/.test(input)) return {sesuai:true,kurang:[],keputusan:[{apa:'Navigasi bawah di HP',alasan:'standar responsif',risiko_bila_salah:'-'}]};
       if(role==='T.4') return {butir:[{butir:'Guru bisa input absensi',status:'terlihat di kode',catatan:'form absensi'},{butir:'Rekap per bulan tampil',status:'perlu uji manual',catatan:'butuh data asli'}],risiko:['kuota Apps Script'],ringkas:'Kode lengkap, dua butir perlu dicoba di Sheets asli.'};
       return {};
     };
@@ -52,29 +56,32 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
     console.log('referensi desain tampil:', await p.$eval('#bdesinfo',e=>e.innerText.trim()), '| thumbnail:', await p.$$eval('#bdesinfo img',e=>e.length), '| file non-gambar ditolak:', (await p.$eval('#berr',e=>e.innerText)).includes('dilewati')); }
   if(KLIEN){ await p.selectOption('#bjenis','klien'); await p.fill('#bklien','SD Contoh'); await p.fill('#bkredit','Dibuat untuk SD Contoh'); }
   await p.click('#brun');
-  await p.waitForSelector('#bres .res >> text=Setujui ruang lingkup',{timeout:15000});
-  console.log('gerbang 1 muncul; semua 7 fitur tetap (tanpa batas MVP):', await p.$eval('#bres .res',e=>e.innerText.includes('Fitur (7)')&&e.innerText.includes('Fitur ketujuh dari PRD')&&!/MVP/.test(e.innerText)), '| PRD ikut ke Arsitek:', PRD?(await p.evaluate(()=>window.__calls)).filter(c=>c.role==='T.1')[0].prd:'(tanpa PRD)', '| tombol desain belum ada:', !(await p.$('text=Setujui tampilan')));
-  // revisi ruang lingkup
-  await p.fill('#bres input[aria-label="Catatan revisi gerbang 1"]','kelasnya 3'); await p.click('#bres button:has-text("Revisi bagian ini")');
-  await p.waitForFunction(()=>window.__calls.filter(c=>c.role==='T.1').length===2&&document.getElementById('bstop').disabled,null,{timeout:15000}); console.log('revisi T.1 membawa catatan:', (await p.evaluate(()=>window.__calls)).filter(c=>c.role==='T.1')[1].rev);
-  await p.waitForSelector('#bres .res >> text=Setujui ruang lingkup');
-  await p.click('#bres button:has-text("Setujui ruang lingkup")');
-  await p.waitForSelector('text=Setujui tampilan',{timeout:15000});
-  if(DESREF) console.log('gerbang 2 tampilkan acuan:', await p.$eval('#bres',e=>/Acuan referensi desain[\s\S]*Kartu putih membulat/.test(e.innerText)));
-  console.log('animasi tanpa tujuan dibuang:', await p.$eval('#bres',e=>!e.innerText.includes('logo (hiasan')));
-  await p.click('#bres button:has-text("Setujui tampilan")');
+  const assert=(ok,m)=>{if(!ok){console.error('GAGAL: '+m);process.exitCode=1}else console.log('LOLOS: '+m)};
   if(GAGAL){ await p.waitForSelector('#bres button:has-text("Coba lagi")',{timeout:30000}); console.log('error tampil:', (await p.$eval('#berr',e=>e.innerText)).slice(0,120), '| log tampil:', await p.isVisible('#bdlog'));
     await p.click('#bdlog'); await p.click('#bres button:has-text("Coba lagi")'); }
   if(PARAH){ await p.waitForSelector('#bres button:has-text("Coba lagi")',{timeout:60000}); console.log('kode terpotong, pesan:', (await p.$eval('#berr',e=>e.innerText)).slice(0,140),'| panggilan lanjutan yang gagal:', await p.evaluate(()=>window.__lanjutHtml));
     await p.evaluate(()=>{window.__pulih=true}); await p.click('#bres button:has-text("Coba lagi")'); }
-  await p.waitForSelector('text=Lanjut rilis',{timeout:30000});
+  await p.waitForSelector('#bres >> text=Unduh paket rilis (.zip)',{timeout:60000});
+  const calls=await p.evaluate(()=>window.__calls);
+  assert(!(await p.$('#bres >> text=Setujui ruang lingkup'))&&!(await p.$('#bres >> text=Setujui tampilan'))&&!(await p.$('#bres >> text=Lanjut rilis')),'tanpa tombol gerbang persetujuan: alur jalan sendiri sampai paket rilis');
+  assert(await p.$eval('#bres .res',e=>e.innerText.includes('Fitur (7)')&&e.innerText.includes('Fitur ketujuh dari PRD')&&!/MVP/.test(e.innerText)),'semua 7 fitur tetap (tanpa batas MVP)');
+  if(PRD) assert(calls.filter(c=>c.role==='T.1')[0].prd,'PRD ikut ke Arsitek');
+  assert(calls.filter(c=>c.role==='T.1').length===2&&calls.filter(c=>c.role==='T.1')[1].rev,'tinjauan ruang lingkup menemukan kekurangan -> Arsitek memperbaiki sendiri (2 panggilan T.1)');
+  assert(await p.evaluate(()=>window.__q1),'pertanyaan terbuka Arsitek diserahkan ke Penguji untuk diputuskan');
+  assert(await p.$eval('#bres',e=>/Catatan keputusan[\s\S]*Jumlah kelas dibuat bebas[\s\S]*Navigasi bawah di HP/.test(e.innerText)),'catatan keputusan tampil (ruang lingkup + desain)');
+  assert(await p.$eval('#bres',e=>/Lolos tinjauan ruang lingkup · 1 perbaikan/.test(e.innerText)&&/Lolos tinjauan desain/.test(e.innerText)),'label tinjauan per tahap tampil');
+  if(DESREF) assert(await p.$eval('#bres',e=>/Acuan referensi desain[\s\S]*Kartu putih membulat/.test(e.innerText)),'tampilan menampilkan acuan referensi');
+  assert(await p.$eval('#bres',e=>!e.innerText.includes('logo (hiasan')),'animasi tanpa tujuan dibuang');
+  if(BURUK){ const n=calls.filter(c=>c.role==='T.3'&&c.file==='html').length; assert(n===3&&calls.filter(c=>c.role==='T.3'&&c.file==='html'&&c.rev).length===2,'kode buruk: 2 putaran perbaikan otomatis lalu berhenti ('+n+' panggilan html)'); assert(await p.$eval('#bres',e=>/temuan dicatat/.test(e.innerText)&&/Tetap lanjut ke paket rilis/.test(e.innerText)),'sisa temuan dicatat sebagai keputusan + risiko'); }
+  else assert(calls.filter(c=>c.role==='T.3'&&c.rev).length===0,'kode bersih: tidak ada putaran perbaikan');
   const rows=await p.$$eval('#bres table.uji:first-of-type tr',r=>r.slice(1).map(x=>x.children[0].innerText+'='+x.children[1].innerText));
   console.log('cek otomatis:', rows.join(' | '));
   console.log('akun acak (bukan admin2026):', await p.evaluate(()=>window.__akun));
   await p.click('#bres >> text=Pratinjau HP'); await p.waitForSelector('iframe.bframe.hp');
   await p.click('#bres >> text=Unduh index.html'); await p.click('#bres >> text=Unduh PANDUAN.md');
-  await p.click('#bres button:has-text("Lanjut rilis")');
-  await p.waitForSelector('text=gerbang 3 menunggu link live');
+  await p.click('#bres button:has-text("Unduh paket rilis (.zip)")'); await p.waitForFunction(()=>window.__zipTxt,null,{timeout:10000});
+  { const z=await p.evaluate(()=>window.__zipTxt); assert(/tanpa gerbang persetujuan di tengah/.test(z)&&/Catatan keputusan/.test(z)&&!/gerbang 3/.test(z),'paket rilis: instruksi tanpa gerbang 3, panduan memuat catatan keputusan'); }
+  assert(/Siap dirilis/.test(await p.$eval('#bcard .st',e=>e.innerText)),'status akhir Siap dirilis');
   console.log('status:', await p.$eval('#bcard .st',e=>e.innerText));
   console.log('tracks:', await p.$$eval('#btracks .track',e=>e.map(x=>x.querySelector('.tname').textContent+'='+x.dataset.s).join(', ')));
   console.log('urutan peran:', (await p.evaluate(()=>window.__calls)).map(c=>c.role+(c.file?':'+c.file:'')+(c.rev?'(rev)':'')).join(','));
@@ -88,5 +95,5 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   // alur konten tidak tersentuh
   await p.click('#wsK'); console.log('kembali ke konten, kartu konten kosong:', await p.$$eval('.kc',e=>e.filter(x=>x.closest('#wsKonten')).length)===0);
   await p.screenshot({path:'/tmp/v2-build.png',fullPage:true});
-  console.log('ERRORS',errs); await b.close();
+  console.log('ERRORS',errs); assert(!errs.filter(e=>!(BURUK&&/undefinedFn/.test(e))).length,'tanpa error halaman (error dari aplikasi buruk di pratinjau sandbox diabaikan)'); await b.close();
 })().catch(e=>{console.error('FAIL',e);process.exit(1)});

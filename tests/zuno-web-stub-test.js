@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
-// Argumen opsional: path file referensi (foto/video) yang diunggah ke tool.
-const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'tampil' : 'tanpa'; const refs = args.filter(a=>!a.startsWith('--'));
+// Uji Zuno Web (web/index.html) dengan /api/ai, /api/status, dan /api/riset tiruan. Argumen: --tampil.
+const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'tampil' : 'tanpa'; const assert=(ok,m)=>{if(!ok){console.error('GAGAL: '+m);process.exitCode=1}else console.log('LOLOS: '+m)};
 (async()=>{
   const b = await chromium.launch(); const p = await b.newPage({viewport:{width:1100,height:900}});
   const errs=[]; p.on('pageerror',e=>errs.push('PAGEERR '+e.message)); p.on('console',m=>{if(m.type()==='error')errs.push('CONSOLE '+m.text())});
@@ -11,9 +11,9 @@ const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'ta
       await sleep(30);
       const role=(input.match(/PERAN ANDA: (\S+)/)||[])[1];
       window.__calls.push({role,images:(opts&&opts.images||[]).length});
-      if(role==='L.0') return {golongan:'ide baru',kartu:[{id:'KK-001',platform:'Instagram',funnel:'TOFU',ide:'AI rapikan kerja'},{id:'KK-002',platform:'TikTok',funnel:'MOFU',ide:'Prompt harian'}]};
+      if(role==='L.0') return {kata_kunci_riset:['AI agent'],golongan:'ide baru',kartu:[{id:'KK-001',platform:'Instagram',funnel:'TOFU',ide:'AI rapikan kerja'},{id:'KK-002',platform:'TikTok',funnel:'MOFU',ide:'Prompt harian'}]};
       if(role==='R.2') return {briefs:[1,2].map(i=>({id:'KK-00'+i,ide:'Ide '+i,funnel:['TOFU','MOFU'][i-1],platform:'Instagram',angle:'a',hooks:['h'],tujuan_cta:'simpan'}))};
-      if(role==='R.1') return {sumber:/SUMBER:/.test(input)?[{judul:'Tools AI baru untuk merangkum rapat',tautan:'https://contoh.test/berita',jenis:'berita',inti:'Ada fitur ringkas rapat otomatis',sudut_konten:'Rapat 1 jam jadi 3 poin'}]:[],masalah_audiens:['kerjaan numpuk, bingung mulai dari mana','takut salah pakai AI'],sudut_jarang:['AI bukan pengganti, tapi asisten'],pola_hook:['pain point','negative'],catatan:'semua perlu dicek'};
+      if(role==='R.1'){ window.__r1=input; } if(role==='R.1') return {sumber:/SUMBER:/.test(input)?[{judul:'Tools AI baru untuk merangkum rapat',tautan:'https://contoh.test/berita',jenis:'berita',inti:'Ada fitur ringkas rapat otomatis',sudut_konten:'Rapat 1 jam jadi 3 poin'}]:[],masalah_audiens:['kerjaan numpuk, bingung mulai dari mana','takut salah pakai AI'],sudut_jarang:['AI bukan pengganti, tapi asisten'],pola_hook:['pain point','negative'],catatan:'semua perlu dicek'};
       if(role==='P.1'){ if(/Format: video/.test(input)){ const B=[['hook','Capek kerjaan numpuk?',true],['hook','Salah mulai dari sini',true],['hook','Bukan karena malas',false],['problem','Semua serba telat',false],['problem','To-do list makin panjang',false],['problem','Tiap hari lembur',false],['twist','Eits. Bukan itu masalahnya',true],['twist','Kamu belum punya sistem',false],['solusi','Tulis semua tugas',false],['solusi','Minta AI urutkan',false],['solusi','Kerjakan satu dulu',false],['solusi','Cek ulang sore',false],['cta','Simpan dulu ya',false],['cta','Coba besok pagi',false]]; return {big_idea:'Kerjaan numpuk itu masalah sistem, bukan malas',jenis_hook:'pain',jenis_ending:'cta',foreshadow:'Jawabannya ada di langkah ketiga',faktor_viral:['relate','fakta mengejutkan'],adegan:B.map((x,i)=>({babak:x[0],teks:x[1],vo:x[1]+'.',visual:'teks besar bergerak',detik:1.2+((i%3)*.3),wajah:x[2]})),caption:'cap v',hashtag:['#ai'],fakta:['tidak ada']}}
         return {big_idea:'Kerjaan numpuk itu masalah sistem',jenis_hook:'pain',jenis_ending:'cta',foreshadow:'Jawabannya ada di slide 4',faktor_viral:['relate'],slides:[{babak:'hook',tipe:'cover',judul:'Capek kerjaan numpuk?',isi:''},{babak:'problem',tipe:'poin',judul:'3 langkah singkat',isi:'Urutan kerja yang bisa dicoba.',poin:[{judul:'Pilih satu tugas',isi:'Jangan semuanya, satu dulu.'},{judul:'Minta AI buat draf',isi:'Lu tinggal rapikan.'}]},{babak:'twist',tipe:'fakta',judul:'Fakta singkat',angka:{nilai:'30',satuan:'menit',isi:'Rata-rata waktu per web.'},baris:[{label:'6 web',isi:'Sudah aktif'}],sumber:'Sumber: catatan Zulnan'},{babak:'solusi',tipe:'alasan',judul:'Kenapa ini penting?',kutipan:'Jalan dulu, rapikan sambil jalan.',butir:['Cepat dites','Revisi murah']},{babak:'solusi',judul:'Langkah nomor 5 yang terlalu panjang sekali',isi:'Isi singkat slide 5 yang cukup panjang supaya teks membungkus beberapa baris dengan rapi'},{babak:'cta',tipe:'cta',judul:'Simpan dulu ya',isi:'',centang:['Simpan konten ini','Bagikan ke teman','Komen WEB'],tombol:'Follow untuk info terbaru'}],caption:'cap',hashtag:['#ai','#produktif'],fakta:['tidak ada']}; }
       if(role==='P.2') return {lolos:!window.__optFail,skor:window.__optFail?5:8,gagal:window.__optFail?['hook lembek']:[],perbaikan:window.__optFail?['tulis ulang: A -> B']:[]};
@@ -30,7 +30,9 @@ const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'ta
     try{localStorage.setItem('zuno-akses','kunci-uji')}catch(e){}
     const of=window.fetch.bind(window);
     window.__aiReq=[];
+    window.__risetReq=[];
     window.fetch=async(u,o)=>{
+      if(String(u).includes('/api/riset')){window.__risetReq.push({url:String(u),key:o&&o.headers&&o.headers['x-zuno-key']});return new Response(JSON.stringify({diambil:'2026-11-06T07:00:00Z',tren:[{kata:'chatgpt',perkiraan_pencarian:'2000+',berita:[]}],berita:[{kata_kunci:'AI agent',judul:'Berita AI agent',tautan:'https://news.test/a',sumber:'News Test'}],diskusi:[],gagal:[]}),{headers:{'content-type':'application/json'}})}
       if(String(u).includes('/api/status'))return new Response(JSON.stringify({online:true,provider:'claude',model:'claude-opus-5-5',ai_key_set:true,access_set:true}),{headers:{'content-type':'application/json'}});
       if(String(u).includes('/api/ai')){
         const body=JSON.parse(o.body);window.__aiReq.push({tier:body.tier,img:(body.images||[]).length,key:o.headers['x-zuno-key']});
@@ -53,8 +55,12 @@ const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'ta
   console.log('alur awal:',await p.$$eval('#hFlow .node b',e=>e.map(x=>x.textContent).join(' > ')));
   await p.waitForTimeout(300);
   console.log('paket default:', await p.$eval('#count',e=>e.value));
-  if(refs.length){ await p.setInputFiles('#reffile',refs); await p.fill('#refnote','neon, cepat'); console.log('ref list:', await p.$eval('#reflist',e=>e.innerText.slice(0,80))); }
+  assert(!(await p.$('#reffile'))&&!(await p.$('#chips')),'Zuno Web: kolom referensi gaya dan chip ide hilang');
   await p.selectOption('#mode',MODE); await p.fill('#cmd','tes'); await p.fill('#src','Tools AI baru untuk merangkum rapat https://contoh.test/berita'); await p.click('#run');
+  await p.waitForFunction(()=>document.querySelectorAll('.res .btn.ok').length===2&&!document.getElementById('run').disabled,null,{timeout:60000});
+  { const r=await p.evaluate(()=>window.__risetReq); assert(r.length===1&&/q=AI%20agent/.test(r[0].url)&&r[0].key==='kunci-uji','live.js memanggil /api/riset dengan kata kunci + kunci akses'); assert(await p.evaluate(()=>/HASIL RISET WEB/.test(window.__r1)&&/news\.test\/a/.test(window.__r1)),'hasil riset web sampai ke Peneliti Tren'); }
+  for(const sel of ['#resc','#resv']){ if(sel==='#resv') await p.click('#tabv'); await p.click(sel+' .btn >> text=Unduh naskah (.docx)'); await p.click(sel+' .btn.ok >> text=Lanjut ke desain & editing'); await p.waitForFunction(()=>!document.getElementById('run').disabled,null,{timeout:60000}); }
+  assert(await p.$$eval('.res .btn',e=>e.filter(x=>/Unduh naskah/.test(x.textContent)).length)===0&&await p.$$eval('.ringkas',e=>e.length)===2,'setelah Lanjut: desain, editing, Mutu, dan Ringkasan jalan untuk kedua kartu');
   await p.waitForSelector('.banner:has-text("siap kamu tinjau")',{timeout:30000});
   await p.waitForFunction(()=>!document.getElementById('run').disabled,null,{timeout:120000});
   console.log('cards:',await p.$$eval('.kc',e=>e.map(x=>x.innerText.replace(/\n/g,' | '))));
@@ -78,5 +84,5 @@ const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'ta
   console.log('alur HUD akhir:',await p.$$eval('#hFlow .node',e=>e.map(x=>x.querySelector('b').textContent+'='+x.dataset.s).join(' ')));
   console.log('proses %:',await p.$eval('#hPct',e=>e.textContent),'| model:',await p.$eval('#hModel',e=>e.textContent),'| panggilan /api/ai:',(await p.evaluate(()=>window.__aiReq)).length,'| kunci terkirim:',(await p.evaluate(()=>window.__aiReq[0]&&window.__aiReq[0].key)));
   await p.screenshot({path:process.env.SHOT||'/tmp/zuno-web.png',fullPage:true});
-  console.log('ERRORS',errs); await b.close(); process.exit(0);
+  console.log('ERRORS',errs); assert(!errs.length,'tanpa error halaman'); await b.close(); process.exit(process.exitCode||0);
 })().catch(e=>{console.error('FAIL',e);process.exit(1)});

@@ -32,6 +32,7 @@ const args = process.argv.slice(2); const JASA = args.find(a=>!a.startsWith('--'
     const of=window.fetch.bind(window);
     window.__aiReq=[];
     window.fetch=async(u,o)=>{
+      if(String(u).includes('/api/riset'))return new Response(JSON.stringify({diambil:'2026-11-06T07:00:00Z',tren:[],berita:[{kata_kunci:'kue',judul:'Berita uji',tautan:'https://news.test/b',sumber:'News Test'}],diskusi:[],gagal:[]}),{headers:{'content-type':'application/json'}});
       if(String(u).includes('/api/status'))return new Response(JSON.stringify({online:true,provider:'claude',model:'claude-opus-5-5',ai_key_set:true,access_set:true}),{headers:{'content-type':'application/json'}});
       if(String(u).includes('/api/ai')){
         const body=JSON.parse(o.body);window.__aiReq.push({tier:body.tier,img:(body.images||[]).length,key:o.headers['x-zuno-key'],input:typeof body.input==='string'?body.input:JSON.stringify(body.input)});
@@ -54,8 +55,10 @@ const args = process.argv.slice(2); const JASA = args.find(a=>!a.startsWith('--'
   console.log('alur awal:',await p.$$eval('#hFlow .node b',e=>e.map(x=>x.textContent).join(' > ')));
   await p.waitForTimeout(300);
   console.log('paket default:', await p.$eval('#count',e=>e.value));
-  if(refs.length){ await p.setInputFiles('#reffile',refs); await p.fill('#refnote','neon, cepat'); console.log('ref list:', await p.$eval('#reflist',e=>e.innerText.slice(0,80))); }
   await p.selectOption('#mode',MODE); await p.fill('#cmd','tes'); await p.fill('#src','Tools AI baru untuk merangkum rapat https://contoh.test/berita'); await p.click('#run');
+  await p.waitForFunction(()=>document.querySelectorAll('.res .btn.ok').length===2&&!document.getElementById('run').disabled,null,{timeout:60000});
+  for(const sel of ['#resc','#resv']){ if(sel==='#resv') await p.click('#tabv'); await p.click(sel+' .btn.ok >> text=Lanjut ke desain & editing'); await p.waitForFunction(()=>!document.getElementById('run').disabled,null,{timeout:60000}); }
+  await p.click('#tabc');
   await p.waitForSelector('.banner:has-text("siap kamu tinjau")',{timeout:30000});
   await p.waitForFunction(()=>!document.getElementById('run').disabled,null,{timeout:120000});
   console.log('cards:',await p.$$eval('.kc',e=>e.map(x=>x.innerText.replace(/\n/g,' | '))));

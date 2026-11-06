@@ -5,8 +5,9 @@ Aturan ini berlaku untuk rilis web app dari paket Build App Zuno. Aturan induk: 
 
 ## Prinsip kerja
 - Pikir dulu, sesederhana mungkin, ubah seperlunya, berbasis tujuan.
-- Fitur, tampilan, kredit, dan aturan akun tidak boleh diubah di luar yang sudah disetujui Zulnan (`ruang-lingkup.json`, `desain.json`). Bila ada yang tidak mungkin dikerjakan, tanya Zulnan. Jangan diam-diam memangkas fitur.
-- "Selesai" atau "rilis" hanya boleh dinyatakan bila ada bukti uji (perintah, hasil, screenshot) dan Zulnan sudah oke di gerbang 3.
+- Alur superpowers (keputusan Zulnan 2026-11-06): hal teknis yang belum jelas diputuskan sendiri dengan patokan `ruang-lingkup.json`, `desain.json`, `PRD.md`, dan referensi desain, lalu dicatat (apa, alasan, risiko bila salah). Tidak ada gerbang persetujuan.
+- Fitur, tampilan, kredit, dan aturan akun tidak boleh diubah di luar ruang lingkup dan desain yang terkunci. Jangan diam-diam memangkas fitur.
+- "Selesai" atau "rilis" hanya boleh dinyatakan bila ada bukti uji (perintah, hasil, screenshot) dan link live benar-benar terbuka.
 
 ## Standar proyek
 - Proyek pribadi atau portofolio mencantumkan "Creative @nexamind.ai". Proyek klien sesuai klien.
@@ -32,4 +33,4 @@ Aturan ini berlaku untuk rilis web app dari paket Build App Zuno. Aturan induk: 
 
 ## Kebiasaan aman
 - Sebelum aksi besar, tulis satu baris apa yang akan dilakukan. Setelahnya, cek ulang hasilnya.
-- Perintah terminal yang menghapus, menimpa, atau men-deploy hanya dijalankan setelah Zulnan menyetujui (kebijakan "Review-driven", bukan "Always Proceed").
+- Perintah terminal yang menghapus, menimpa, atau men-deploy tetap lewat tombol setuju Antigravity (kebijakan "Review-driven", bukan "Always Proceed"). Ini pengaman alat, bukan gerbang keputusan: agent tidak bertanya "boleh lanjut?" di chat.

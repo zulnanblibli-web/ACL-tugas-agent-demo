@@ -53,9 +53,12 @@ MARKETING [12 Kurator Instagram] paket posting -> Antrian Posting + leads/arsip
 Alur Engineering (standby; terpisah dari alur konten, di Zuno Studio v2 ada ruang kerja sendiri "Build App"):
 
 ```
-Permintaan build -> [15 Arsitek & Analis Kebutuhan] ruang lingkup + mesin -> GERBANG 1 Zulnan
-  -> [16 Desainer UI/UX] wireframe + gaya + cek animasi -> GERBANG 2 Zulnan
-  -> [17 Pengembang Aplikasi] bangun (preview dulu) -> [18 Penguji & Rilis] uji + bukti -> GERBANG 3 Zulnan -> rilis
+Permintaan build (+ PRD, + referensi desain)
+  -> [15 Arsitek & Analis Kebutuhan] ruang lingkup + mesin -> tinjauan [18] -> perbaiki
+  -> [16 Desainer UI/UX] wireframe + gaya + cek animasi -> tinjauan [18] -> perbaiki
+  -> [17 Pengembang Aplikasi] bangun (preview dulu) -> [18 Penguji & Rilis] uji + bukti -> [17] perbaiki temuan
+  -> paket rilis -> laptop: live -> link + bukti + catatan keputusan ke Zulnan
+(sejak 2026-11-06: alur superpowers, diputuskan sendiri berpatokan brief; tanpa gerbang persetujuan di tengah)
 ```
 
 Tugas paralel: antar kartu; Peneliti Tren dengan Pelapor Analitik; Penjaga Merek dengan Pengumpul Bukti.

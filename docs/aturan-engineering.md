@@ -10,26 +10,31 @@ Agen: T.1 Arsitek & Analis Kebutuhan, T.2 Desainer UI/UX, T.3 Pengembang Aplikas
 
 Diadaptasi dari [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (lisensi MIT), berdasarkan pengamatan Andrej Karpathy soal kesalahan umum AI saat menulis kode.
 
-1. **Pikir dulu sebelum ngoding.** Sebutkan asumsi. Kalau ada lebih dari satu tafsiran, tampilkan pilihannya, jangan pilih diam-diam. Kalau ada cara yang lebih sederhana, katakan. Kalau bingung, berhenti dan tanya.
+1. **Pikir dulu sebelum ngoding.** Sebutkan asumsi. Kalau ada lebih dari satu tafsiran, tampilkan pilihannya, lalu **putuskan sendiri** dengan patokan brief (permintaan, PRD, referensi Zulnan) dan catat keputusannya (apa, alasan, risiko bila salah). Kalau ada cara yang lebih sederhana, katakan. Berhenti dan tanya hanya untuk hal di bagian 2 "Kapan berhenti".
 2. **Sesederhana mungkin.** Hanya fitur yang diminta. Tanpa lapisan atau "fleksibilitas" yang tidak diminta. Kalau 200 baris bisa jadi 50, tulis ulang.
 3. **Ubah seperlunya.** Jangan "merapikan" kode, komentar, atau format di luar permintaan. Ikuti gaya kode yang sudah ada. Kode mati yang ditemukan dilaporkan, tidak dihapus. Setiap baris yang berubah harus bisa ditelusuri ke permintaan.
 4. **Kerja berbasis tujuan.** Setiap tugas diubah jadi tujuan yang bisa dicek ("tombol unduh menghasilkan file .xlsx berisi semua data"). Rencana bertahap ditulis dengan cara ceknya. Kerja diulang sampai cek terpenuhi.
 
-## 2. Alur dan gerbang persetujuan
+## 2. Alur: diputuskan sendiri, ditinjau tiap tahap (alur superpowers)
+
+Keputusan Zulnan 2026-11-06: tiga gerbang persetujuan diganti alur [superpowers](https://github.com/obra/superpowers) (MIT). Divisi Engineering **memutuskan sendiri** di tengah build, tetapi selalu berpatokan pada brief Zulnan: permintaan, PRD (.md), dan referensi desain yang diunggah. Setiap tahap dikerjakan, ditinjau Penguji (sesuai spesifikasi + mutu), diperbaiki sampai lolos, lalu lanjut tanpa menunggu Zulnan.
 
 ```
-Permintaan Zulnan / klien
-  -> T.1 Kunci ruang lingkup (masalah, semua fitur tanpa batas jumlah, PRD .md bila ada, out of scope, definisi selesai) + pilih mesin
-  -> GERBANG 1: Zulnan setujui ruang lingkup
-  -> T.2 Wireframe + UI/UX + cek animasi (acuan: referensi desain UI/UX dari Zulnan bila diunggah)
-  -> GERBANG 2: Zulnan setujui tampilan
+Permintaan Zulnan / klien (+ PRD .md, + referensi desain)
+  -> T.1 Kunci ruang lingkup (semua fitur tanpa batas jumlah, out of scope, definisi selesai) + pilih mesin
+  -> Tinjauan 1 (T.4): fitur tidak hilang, tidak ada fitur tambahan, pertanyaan terbuka diputuskan -> perbaiki (maks. 2 putaran)
+  -> T.2 Wireframe + UI/UX + cek animasi (acuan: referensi desain)
+  -> Tinjauan 2 (T.4): halaman lengkap, login/Reset Akses/kredit, responsif, mengikuti referensi -> perbaiki (maks. 2 putaran)
   -> T.3 Bangun aplikasi (mode preview dulu)
-  -> T.4 Uji (laptop + layar HP), perbaiki bug, siapkan paket rilis dan panduan
-  -> Laptop Zulnan: Claude Code + agent-desktop (skill rilis-engineering) deploy ke link live dan cek
-  -> GERBANG 3: Zulnan cek link live, bilang oke -> final (production)
+  -> T.4 Cek otomatis + tinjauan kode -> T.3 memperbaiki temuan (maks. 2 putaran; sisa dicatat sebagai risiko)
+  -> Paket rilis (.zip) -> laptop Zulnan: Claude Code + agent-desktop (skill rilis-engineering) deploy sampai live dan cek
+  -> Link live + bukti uji + catatan keputusan dikirim ke Zulnan
 ```
 
-- Tidak ada coding sebelum Gerbang 1. Link live untuk dicek boleh dibuat sebelum Gerbang 3; versi final (production, domain, dibagikan ke klien) hanya setelah Zulnan oke di Gerbang 3 (keputusan Zulnan 2026-11-04). Jalur laptop: `docs/tangan-komputer.md`.
+- **Catatan keputusan** wajib: setiap hal yang diputuskan sendiri dicatat (tahap, keputusan, alasan dari brief, risiko bila salah). Tampil di Build App, ikut di `PANDUAN.md` paket rilis, dan di laporan rilis.
+- **Kapan berhenti dan tanya Zulnan** (hanya ini): pembayaran atau upgrade paket; API key, password, login, OTP, atau rahasia lain; tindakan yang merusak atau menghapus data; akun deploy proyek klien yang belum jelas.
+- Zulnan tetap bisa memberi catatan tambahan kapan saja (tombol "Ubah dengan catatan" di Build App, atau bilang ke Claude Code); hanya bagian itu yang diubah.
+- Skill superpowers yang dipakai di Claude Code: `writing-plans` (rencana bertahap dengan cara cek), `test-driven-development` (tes dulu), `subagent-driven-development` (satu pengerja per tugas + peninjau spesifikasi dan mutu), `executing-plans`, `requesting-code-review`, `using-git-worktrees`, `finishing-a-development-branch`. Aturan Zuno tetap menang: push hanya bila Zulnan bilang sendiri. Jalur laptop: `docs/tangan-komputer.md`.
 - Laporan "selesai" wajib membawa bukti uji dari T.4 (screenshot, daftar cek lolos). Bila belum diuji, tulis "belum diuji".
 - Skill pendukung (Claude Code, `.claude/skills/`):
   - T.1: `grilling` untuk menguji PRD dan ruang lingkup tanpa memangkas fitur.
@@ -37,7 +42,7 @@ Permintaan Zulnan / klien
   - T.3: `systematic-debugging`, `review-my-diff`, dan Context7 bila terpasang.
   - T.4: `prove-it-ran` (bukti uji), `break-ui` (data terburuk), `vibe-security` (audit keamanan), `mobile-native`.
 - Revisi: hanya bagian yang diminta yang berubah; fitur lain tetap.
-- Status proyek: Ide, Ruang Lingkup Disetujui, Desain Disetujui, Dibangun, Diuji, Rilis.
+- Status proyek: Ide, Ruang Lingkup Terkunci, Desain Terkunci, Dibangun, Diuji, Siap Dirilis, Rilis (live).
 - Error dan kendala disampaikan ke Zulnan lewat Juru Kabar dengan bahasa sederhana plus langkah yang bisa diambil.
 
 ### Di Zuno Studio v2 (tab Build App)

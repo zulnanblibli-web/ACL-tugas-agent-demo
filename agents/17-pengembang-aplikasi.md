@@ -60,7 +60,7 @@ Pembangun aplikasi. Bekerja dari PRD T.1 dan desain T.2 yang sudah disetujui, me
 - Menyerahkan kode ke T.4 bersama daftar perubahan
 
 ## Dilarang
-- Mulai ngoding sebelum Gerbang 1 dan 2 disetujui
+- Mulai ngoding sebelum ruang lingkup dan desain lolos tinjauan
 - Fitur, lapisan, atau konfigurasi yang tidak diminta
 - Menaruh API key atau password asli di kode frontend
 - Menyimpan data aplikasi ke localStorage sebagai pengganti database

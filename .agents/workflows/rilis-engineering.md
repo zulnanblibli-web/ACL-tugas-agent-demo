@@ -1,11 +1,11 @@
 ---
-description: Rilis proyek Divisi Engineering Zuno dari paket rilis Build App sampai live, lalu minta Zulnan cek link live (gerbang 3)
+description: Rilis proyek Divisi Engineering Zuno dari paket rilis Build App sampai live, lalu kirim link live + bukti uji + catatan keputusan ke Zulnan (tanpa gerbang; keputusan teknis diambil sendiri)
 ---
 
 Jalankan di folder proyek hasil ekstrak paket `*_rilis.zip` dari tab Build App. Patuhi aturan di `.agents/rules/zuno-engineering.md`.
 
 ## 0. Baca paket
-1. Baca `INSTRUKSI-RILIS.md`, `PANDUAN.md`, `ruang-lingkup.json`, `desain.json`, dan `PRD.md` bila ada. Gerbang 1 dan 2 sudah disetujui Zulnan.
+1. Baca `INSTRUKSI-RILIS.md`, `PANDUAN.md`, `ruang-lingkup.json`, `desain.json`, dan `PRD.md` bila ada. Ruang lingkup dan desain sudah terkunci dan ditinjau Penguji di Build App. Catatan keputusan ada di `PANDUAN.md`.
 2. Bila ada folder `referensi-desain/`: itu acuan tampilan dari Zulnan (lihat `acuan_referensi` di `desain.json`). Ikuti arahnya, jangan menyalin logo, merek, atau teks milik orang lain.
 3. Tulis ringkasan 5 baris: nama proyek, mesin (`mesin` di ruang lingkup), jumlah fitur, apa yang harus Zulnan isi sendiri. Lanjut tanpa menunggu.
 
@@ -22,7 +22,7 @@ Jalankan di folder proyek hasil ekstrak paket `*_rilis.zip` dari tab Build App. 
 ## 2. Deploy ke link live
 Pilih jalur sesuai `mesin`. Login CLI dilakukan Zulnan sendiri. Bila belum login, berhenti dan minta Zulnan login.
 
-| Mesin | Link untuk dicek (gerbang 3) | Final setelah Zulnan oke |
+| Mesin | Link uji (cek dulu) | Production (setelah semua cek lolos) |
 |---|---|---|
 | Vercel + Supabase | `vercel deploy` (URL preview) | `vercel deploy --prod` |
 | Apps Script + Sheets/Blogger | `clasp push` lalu `clasp deploy` (URL web app `/exec`) | Deployment yang sama ditandai final di `PANDUAN.md` |
@@ -38,9 +38,9 @@ Pilih jalur sesuai `mesin`. Login CLI dilakukan Zulnan sendiri. Bila belum login
 3. Simpan screenshot di `bukti/`.
 4. Jendela izin Google, login, dan UAC: berhenti dan minta Zulnan yang klik.
 
-## 4. Gerbang 3 (Zulnan)
-1. Laporkan singkat: link live, akun contoh, tabel bukti uji, apa yang belum bisa diuji dan kenapa, langkah yang perlu Zulnan lakukan (isi env dan sebagainya).
-2. Tunggu jawaban Zulnan:
-   - **oke**: jalankan langkah "Final" di tabel bagian 2, catat link final di `PANDUAN.md`, status "Rilis";
-   - **revisi**: ubah hanya bagian yang diminta, ulangi bagian 1 sampai 4.
-3. Jangan pernah menyatakan "rilis" atau "selesai" sebelum Zulnan oke dan sebelum ada bukti uji.
+## 4. Production dan laporan (keputusan Zulnan 2026-11-06: tanpa gerbang)
+1. Bila semua cek di bagian 1 dan 3 lolos di link uji, jalankan langkah "Production" di tabel bagian 2. Bila masih ada cek gagal, perbaiki dulu (maks. 2 putaran); bila tetap gagal, tetap di link uji dan catat sebagai keputusan.
+2. Catat link final di `PANDUAN.md`, status "Rilis (live)".
+3. Laporkan singkat: link live, akun contoh, tabel bukti uji, catatan keputusan (apa, alasan, risiko), apa yang belum bisa diuji, langkah yang perlu Zulnan lakukan (isi env dan sebagainya).
+4. Catatan Zulnan setelahnya: ubah hanya bagian itu, ulangi bagian 1 sampai 4.
+5. Jangan menyatakan "rilis" atau "selesai" tanpa bukti uji dan link yang benar-benar terbuka.

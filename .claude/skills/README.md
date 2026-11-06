@@ -16,9 +16,19 @@ Folder ini dibaca otomatis oleh Claude Code saat bekerja di repo ini, baik di cl
 | `prove-it-ran` | T.4 Penguji (semua agen sebelum bilang "selesai") | Bukti tes benar-benar jalan: jumlah tes, exit code, tes gagal tanpa perbaikan. Ini wujud aturan "selesai wajib ada bukti uji" | agentkitco/agentkit-dev-skills (a042296) |
 | `review-my-diff` | T.3, T.4 | Tinjau perubahan sebelum commit, temuan diurutkan per tingkat bahaya dengan file dan baris | agentkitco/agentkit-dev-skills (a042296) |
 | `systematic-debugging` | T.3 Pengembang | Cari akar masalah dulu sebelum memperbaiki bug | obra/superpowers (22f0b46) |
+| `writing-skills` | Perakit Agen (dasar metodenya) | Membuat dan menguji skill seperti TDD: skenario tekanan lewat subagent | obra/superpowers (22f0b46) |
+| `writing-plans` | T.1, T.3 | Rencana bertahap yang tiap langkahnya punya cara cek, sebelum menyentuh kode | obra/superpowers (22f0b46) |
+| `test-driven-development` | T.3, T.4 | Tes ditulis dan dilihat gagal dulu, baru kode (RED-GREEN-REFACTOR) | obra/superpowers (22f0b46) |
+| `subagent-driven-development` | T.3, T.4 (Claude Code) | Satu subagent pengerja per tugas + peninjau spesifikasi dan mutu + tinjauan akhir; dasar alur Build App sejak 2026-11-06 | obra/superpowers (22f0b46) |
+| `executing-plans` | T.3 | Menjalankan rencana sendiri bila tidak ada subagent | obra/superpowers (22f0b46) |
+| `requesting-code-review` | T.3, T.4 | Minta tinjauan kode sebelum lanjut | obra/superpowers (22f0b46) |
+| `using-git-worktrees` | T.3 | Ruang kerja terpisah untuk satu fitur | obra/superpowers (22f0b46) |
+| `finishing-a-development-branch` | T.3 | Menutup pekerjaan setelah tes lolos. **Aturan Zuno menang**: push/merge hanya bila Zulnan bilang sendiri; pilih opsi "simpan branch / commit saja" | obra/superpowers (22f0b46) |
 | `vibe-security` | T.4 Penguji | Audit keamanan aplikasi buatan AI: API key bocor, aturan database, login, rate limit, integrasi LLM | raroque/vibe-security-skill (850938f) |
 
 Alat tambahan untuk T.3 (dipasang di laptop lewat `pasang-tangan-komputer.bat` bersama CLI deploy Vercel/clasp/Firebase, opsional): **Context7**, dokumentasi library sesuai versi supaya agen tidak mengarang API (`npx ctx7 setup --claude`, login dilakukan Zulnan sendiri).
+
+Catatan skill superpowers (disalin utuh dengan LICENSE, 2026-11-06): rujukan `superpowers:<nama>` di dalamnya berarti skill `<nama>` di folder ini. Pesan "jangan berhenti bertanya, putuskan sendiri" sejalan dengan keputusan Zulnan 2026-11-06 untuk Engineering. Titik berhenti versi Zuno tetap berlaku: pembayaran, rahasia/API key, tindakan merusak, push/merge tanpa kata Zulnan. Yang sengaja tidak disalin: `using-superpowers` dan hook awal sesinya (memaksa skill di tiap jawaban), `brainstorming` (sudah ada `grilling` + `01-idea-to-scope-lock`), `verification-before-completion` (sudah ada `prove-it-ran`), `diagnosing-superpowers`, `dispatching-parallel-agents`, `receiving-code-review`.
 
 ## Divisi Editing (Pelatih Editing, Perender)
 
@@ -48,7 +58,8 @@ Konteks bisnis untuk semua skill ini ada di `.claude/product-marketing.md` (menu
 
 | Skill | Gunanya |
 |---|---|
-| `rilis-engineering` | Di laptop Zulnan: paket rilis Build App, uji laptop + HP, deploy ke link live, cek pakai agent-desktop, gerbang 3 (Zulnan cek link live) |
+| `perakit-agen` | Pabrik agen: membuat agen atau skill baru (coding atau konten) dengan uji RED-GREEN-REFACTOR lewat subagent, berpatokan brief Zuno. Diadaptasi dari `writing-skills` (obra/superpowers, MIT). Bukti uji: `docs/uji-agen/perakit-agen.md` |
+| `rilis-engineering` | Di laptop Zulnan: paket rilis Build App, uji laptop + HP, link uji lalu production, cek pakai agent-desktop, kirim link live + bukti + catatan keputusan ke Zulnan |
 | `antrian-posting` | **Pending, jangan dipakai.** Versi laptop lama. Akan diganti pengiriman dari web (Google Drive + API Metricool) setelah Zulnan membuka lagi bagian Metricool |
 
 ## Yang sengaja tidak dipasang

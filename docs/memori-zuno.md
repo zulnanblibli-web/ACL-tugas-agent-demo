@@ -20,12 +20,14 @@ Ringkasan padat untuk sesi atau chat baru. Tugas yang belum selesai per 2026-11-
 - Struktur Killer Script; hook paling penting (3 kandidat, pakai yang terkuat); storytelling boleh; motion sekitar 30 detik.
 - Bank fakta: 6 web aktif (produk digital + landing page, sekitar 30 menit per web), sedang membangun Zuno. Latar SMK tidak dipakai.
 - BOFU = bukti tentang Zulnan, arah ke follow dan komentar. Ukuran konten menang: komentar (lalu retensi, view).
-- Bahan dari sumber luar, diolah sendiri dan disebut sumbernya. Riset otomatis via Apify/Scrapelyfy nanti.
+- Bahan dari sumber luar, diolah sendiri dan disebut sumbernya. **Riset mandiri lebih diutamakan** (2026-11-06): Peneliti Tren mencari sendiri lewat Google Trends ID, Google News (7 hari), Hacker News (14 hari) di `web/api/riset.js` (hanya Zuno Web; artifact tidak punya akses web). Apify/Scrapelyfy belum.
+- Prompt konten diketik sendiri (chip ide dan kolom referensi gaya dihapus 2026-11-06). **Naskah dicek dulu**: file naskah `.docx` diunduh, desain dan editing jalan setelah Zulnan klik "Lanjut ke desain & editing".
+- **Perakit Agen** (`.claude/skills/perakit-agen`): pabrik agen/skill baru dengan uji RED-GREEN lewat subagent, dari `writing-skills` superpowers.
 - **Carousel: SATU template saja** (navy-biru dari referensi Zulnan, 2026-11-03), 5 tipe slide (cover, poin, fakta, alasan, cta), isi menyesuaikan topik, foto Zulnan di cover, tanpa maskot. Template A-D dihentikan. Batas kata dipaksa kode; angka wajib bersumber. Spesifikasi: `docs/template-carousel.md`. Keluhan "rame" hanya untuk carousel, bukan video.
 - **Video: tiga tipe** (2026-11-03, `docs/referensi-video.md`): A Percakapan (avatar voxel Zulnan ngobrol dengan Zuno), B Proses tim (Zuno dan agen divisi, papan Task Orchestration; tulisan "Design" benar, isi papan hanya contoh), C Zulnan di frame (ikuti referensi). Karakter hanya di video A dan B, bukan carousel. Referensi dipakai untuk struktur dan ritme, tanpa meniru merek lain. Footage 3D tidak otomatis dari VPS; butuh generator.
 
 ## Engineering (keputusan Zulnan)
-- Alur terpisah dari konten. 3 gerbang persetujuan: ruang lingkup, tampilan, hasil uji.
+- Alur terpisah dari konten. **Sejak 2026-11-06 alur superpowers**: tanpa gerbang persetujuan Zulnan di tengah build; keputusan diambil sendiri berpatokan permintaan, PRD, dan referensi, lalu dicatat (Catatan keputusan); tiap tahap ditinjau T.4 dan diperbaiki maks. 2 putaran. Berhenti hanya untuk pembayaran, rahasia, tindakan merusak, akun deploy klien yang belum jelas. Skill superpowers di `.claude/skills/` (writing-plans, test-driven-development, subagent-driven-development, dll).
 - **Tanpa batas fitur MVP**: semua fitur yang diminta atau ada di PRD dikunci. Tab Build App menerima **PRD (.md)** sebagai referensi utama.
 - Kredit "Creative @nexamind.ai" (pribadi/portofolio), klien sesuai klien. Akun login acak, kotak Contoh akses, menu Reset Akses, password di-hash, LLM bisa diganti, API key hanya di server.
 - Aturan: `docs/aturan-engineering.md`. Skill: `skills/engineering/` (.zip untuk diunggah ulang ke claude.ai).
@@ -43,7 +45,7 @@ Ringkasan padat untuk sesi atau chat baru. Tugas yang belum selesai per 2026-11-
 
 - Arahan Zulnan 2026-11-04:
   - **Sudah dikerjakan**: agent-desktop khusus Divisi Engineering di laptop, dari bangun sampai live (skill `rilis-engineering`, paket rilis dari tab Build App, `pasang-tangan-komputer.bat` + CLI deploy). Divisi kreatif tidak memakainya; konten di web.
-  - Gerbang Engineering: gerbang 1-2 tetap, gerbang 3 = cek link live (disetujui).
+  - (Diganti 2026-11-06) Gerbang Engineering dihapus; rilis langsung sampai live, link + bukti + catatan keputusan dikirim ke Zulnan.
   - Antrian Posting via web, Google Drive, dan API Metricool dengan jadwal dipilih Zulnan: **pending**, ditahan Zulnan.
 
 ## Zuno Web (live)
