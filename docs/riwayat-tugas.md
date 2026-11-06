@@ -500,6 +500,7 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Dicoba langsung dari sesi ini: tautan Google News -> artikel yangcanggih.com -> og:image webp 55 KB berhasil.
 - Wikipedia membalas 429 (rate limit) untuk alamat sesi ini, jadi mode cari baru diuji dengan data tiruan; perlu dicek di Vercel.
 - Host environment sesi ditambah: Wikipedia/Wikimedia, www.yangcanggih.com, photos.yangcanggih.com.
+- Lanjutan atas permintaan Zulnan: cover dari sumber dibuat **full gambar**. Tulisan ditimpa dengan posisi menyesuaikan tata letak gambar: atas, tengah, atau bawah, dipilih dari bagian yang paling sedikit detailnya, plus gradasi gelap. Dicek dengan foto artikel asli dan gambar karakter Zuno.
 - Sudah di-commit; push menunggu kata Zulnan (permintaan ini tidak menyebut push).
 
 ## 54. (entri berikutnya di sini)
