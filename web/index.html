@@ -671,7 +671,7 @@ function buildMd(c){
   }else{
     L.push('## 4. Storyboard per slide','','| # | Babak | Tipe | Judul | Isi | Label |','|---|---|---|---|---|---|');
     K.slides.forEach(function(sl,i){L.push('| '+(i+1)+' | '+sl.babak+' | '+sl.tipe+' | '+cell(sl.judul)+' | '+cell(sl.isi)+' | '+cell(c.visual.items[i].label)+' |')});
-    L.push.apply(L,['','## 5. Desain','','- Template: **'+c.template+'** (satu template tetap; tipe slide: cover, poin, fakta, alasan, cta)','- Ukuran 1080x1350, slide 1 hook, slide terakhir CTA, penomoran slide, handle akun belum diisi.','- Gambar cover: '+(c.coverKredit?'diambil dari sumber pembahasan, '+c.coverKredit+' ('+c.coverAsal+'). Kredit tertulis di slide 1. Gambar milik penerbit/pemiliknya: **cek hak pakai sebelum posting**, atau ganti lewat tombol "Ganti gambar cover".':c.cover?'diunggah Zulnan':(FOTO?'foto Zulnan bawaan (assets/foto-zulnan.webp)':'tidak ada (cover teks saja)'))+'; maskot tidak dipakai.'].concat((K.lint&&K.lint.length)?['','Catatan tata letak (teks dipotong otomatis agar tidak ramai):'].concat(K.lint.map(function(x){return '- '+x})):[]).concat(['']));
+    L.push.apply(L,['','## 5. Desain','','- Template: **'+c.template+'** (satu template tetap; tipe slide: cover, poin, fakta, alasan, cta)','- Thumbnail carousel: **slide 1** (cover)'+(c.coverKredit?', full gambar dari sumber pembahasan':'')+'.','- Ukuran 1080x1350, slide 1 hook, slide terakhir CTA, penomoran slide, handle akun belum diisi.','- Gambar cover: '+(c.coverKredit?'diambil dari sumber pembahasan, '+c.coverKredit+' ('+c.coverAsal+'). Kredit tertulis di slide 1. Gambar milik penerbit/pemiliknya: **cek hak pakai sebelum posting**, atau ganti lewat tombol "Ganti gambar cover".':c.cover?'diunggah Zulnan':(FOTO?'foto Zulnan bawaan (assets/foto-zulnan.webp)':'tidak ada (cover teks saja)'))+'; maskot tidak dipakai.'].concat((K.lint&&K.lint.length)?['','Catatan tata letak (teks dipotong otomatis agar tidak ramai):'].concat(K.lint.map(function(x){return '- '+x})):[]).concat(['']));
   }
   L.push('## 6. Caption dan hashtag','',K.caption||'-','',K.hashtag.join(' '),'','## 7. Daftar fakta & klaim (untuk Pemeriksa Realitas)','');
   (K.fakta.length?K.fakta:['(tidak ada)']).forEach(function(x){L.push('- '+x)});L.push('');
@@ -871,6 +871,7 @@ async function approve(c){
   try{
     running=true;aborted=false;ctl=new AbortController();
     c.paket=await ask('M.1',c.id,P('M.1','Susun paket posting untuk kartu ini. Zulnan sudah menyetujui; paket ini masuk Antrian Posting dan dikirim terpisah oleh Juru Kabar. Kamu hanya menyiapkan paket, tidak mengirim. Saran jadwal tanpa data adalah asumsi dan harus ditandai.',ctxCard(c,false)+'\n\nCAPTION DRAF: '+c.konten.caption+'\nHASHTAG: '+c.konten.hashtag.join(' '),'Balas HANYA JSON: {"platform":"...","caption_final":"...","hashtag":["#..."],"cover":"slide/adegan mana sebagai cover dan alasannya","saran_jadwal":"saran + tulis (asumsi)","catatan":["maks 3 poin"]}'),'quick');
+    if(c.format==='carousel'){c.paket=c.paket||{};c.paket.cover='Slide 1 (thumbnail tetap carousel'+(c.coverKredit?', '+c.coverKredit+'; cek hak pakai sebelum posting':'')+')'}
     c.antri={status:c.format==='video'?'Menunggu file video final':'Siap dikirim',masuk:new Date().toISOString()};
     c.stage='Disetujui, masuk Antrian Posting (belum terkirim)';c.md=buildMd(c);
   }catch(e){c.stage='Disetujui (paket gagal dibuat)';if(!(e&&e.code==='cancelled'))UI.error(errMsg(e))}
@@ -1570,7 +1571,7 @@ function antrianItem(c){
   var pk=c.paket||{},vid=c.format==='video',n=vid?0:((c.hasil&&c.hasil.png)||[]).length,media=[];
   for(var i=0;i<n;i++)media.push('slide-'+(i+1)+'.png');
   return {id:c.id,topik:c.topik||'',format:c.format,platform:pk.platform||c.platform,status_konten:'Disetujui Zulnan',status_antrian:c.antri.status,masuk_antrian:c.antri.masuk,
-    caption:pk.caption_final||(c.konten&&c.konten.caption)||'',hashtag:pk.hashtag||(c.konten&&c.konten.hashtag)||[],cover:pk.cover||'',saran_jadwal:pk.saran_jadwal||'',catatan:pk.catatan||[],
+    caption:pk.caption_final||(c.konten&&c.konten.caption)||'',hashtag:pk.hashtag||(c.konten&&c.konten.hashtag)||[],cover:c.format==='carousel'?'slide-1.png (thumbnail carousel)':(pk.cover||''),thumbnail:c.format==='carousel'?{file:'slide-1.png',kredit:c.coverKredit||'',asal:c.coverAsal||''}:null,saran_jadwal:pk.saran_jadwal||'',catatan:pk.catatan||[],
     media:vid?['video-final.mp4 (taruh di folder ini setelah dirender dan kamu cek)']:media,terkirim:null,bukti_tayang:null};
 }
 function antrianZip(q){

@@ -73,7 +73,7 @@ const args = process.argv.slice(2); const TIPE=(args.find(a=>a.startsWith('--tip
     if(KARANG){ assert(g.length===1&&!g.some(x=>x.cari),'nama yang tidak tertulis di naskah/sumber tidak dicari (anti mengarang); cover jatuh ke foto bawaan'); }
     else if(GGAGAL) assert(g.length===2&&g[0].u==='https://news.test/ai-agent'&&g[1].cari==='AI agent','sumber tanpa gambar -> cari foto Wikimedia untuk nama yang tertulis di sumber');
     else assert(g.length===1&&g[0].u==='https://news.test/ai-agent','cover slide 1 diambil dari sumber pembahasan kartu (sumber_utama)');
-    if(!KARANG){ assert(/Gambar cover: diambil dari sumber pembahasan, Gambar: /.test(mdc)&&/cek hak pakai sebelum posting/.test(mdc),'paket .md mencatat asal gambar cover + cek hak pakai');
+    if(!KARANG){ assert(/Thumbnail carousel: slide 1 \(cover\), full gambar dari sumber pembahasan/.test(mdc),'paket .md: slide 1 = thumbnail carousel, full gambar'); assert(/Gambar cover: diambil dari sumber pembahasan, Gambar: /.test(mdc)&&/cek hak pakai sebelum posting/.test(mdc),'paket .md mencatat asal gambar cover + cek hak pakai');
     const px=await p.evaluate(async()=>{const im=new Image();im.src=document.querySelector('#resc .slides img').src;await im.decode();const c=document.createElement('canvas');c.width=1080;c.height=1350;const x=c.getContext('2d');x.drawImage(im,0,0);let red=0;const d=x.getImageData(0,0,1080,1350).data;for(let i=0;i<d.length;i+=4*97)if(d[i]>150&&d[i+1]<90&&d[i+2]<90)red++;return red});
     assert(px>200,'gambar sumber benar-benar tergambar di slide 1 (piksel merah: '+px+')'); require('fs').writeFileSync('/tmp/cover-sumber'+(GGAGAL?'-wiki':'')+'.png',Buffer.from((await p.$eval('#resc .slides img',e=>e.src)).split(',')[1],'base64')); } }
   if(WEB&&!GGAGAL){ assert(mdc.includes('dicari sendiri oleh Peneliti Tren')&&mdc.includes('https://news.test/ai-agent'),'paket .md menyebut riset mandiri + tautan asli'); assert(!mdc.includes('palsu.test')&&mdc.includes('dikosongkan'),'tautan karangan model dikosongkan'); }
@@ -84,10 +84,11 @@ const args = process.argv.slice(2); const TIPE=(args.find(a=>a.startsWith('--tip
   console.log('setelah setuju paket posting di md:', await p.evaluate(()=>document.querySelector('#resv .mdprev').innerText.includes('Paket posting')));
   await p.waitForFunction(()=>!document.getElementById('antrianp').classList.contains('hidden'),null,{timeout:15000});
   console.log('antrian posting:',await p.$$eval('#antrianl .res',e=>e.map(x=>x.innerText.replace(/\n/g,' | '))));
+  if(WEB){ await p.click('#tabc'); await p.click('#resc .btn.ok >> text=Setujui'); await p.waitForSelector('#resc .pill.ok',{timeout:15000}); await p.waitForTimeout(500); }
   await p.evaluate(()=>{window.__zip=null}); await p.click('#antrianzip'); await p.waitForFunction(()=>window.__zip,null,{timeout:15000});
   { const zp='/tmp/antrian-posting-test.zip'; require('fs').writeFileSync(zp,Buffer.from(await p.evaluate(()=>window.__zip),'base64'));
-    const ls=require('child_process').execFileSync('python3',['-I','-c','import zipfile,sys,json;z=zipfile.ZipFile(sys.argv[1]);n=z.namelist();print(n);it=[json.loads(z.read(x)) for x in n if x.endswith("item.json")];print([(i["id"],i["status_antrian"],i["status_konten"],i["caption"]) for i in it])',zp]).toString();
-    console.log('isi zip antrian:',ls.trim()); }
+    const ls=require('child_process').execFileSync('python3',['-I','-c','import zipfile,sys,json;z=zipfile.ZipFile(sys.argv[1]);n=z.namelist();print(n);it=[json.loads(z.read(x)) for x in n if x.endswith("item.json")];print([(i["id"],i["status_antrian"],i["status_konten"],i["caption"]) for i in it]);print(json.dumps([i.get("thumbnail") for i in it if i["format"]=="carousel"]))',zp]).toString();
+    console.log('isi zip antrian:',ls.trim()); if(WEB&&!KARANG) assert(/"file": "slide-1.png", "kredit": "Gambar: /.test(ls)&&/kk-001[^']*slide-1\.png/.test(ls),'Antrian Posting: slide 1 jadi thumbnail carousel, kredit gambar sumber ikut'); }
   console.log('unduhan:',await p.evaluate(()=>window.__saved));
   console.log('ERRORS',errs); assert(!errs.length,'tanpa error halaman'); await b.close();
 })().catch(e=>{console.error('FAIL',e);process.exit(1)});

@@ -44,6 +44,8 @@ Aturannya:
   - Bagian itu diberi gradasi gelap supaya tulisan terbaca.
   - Tombol "Swipe untuk lanjut" di kiri bawah.
   - Kredit "Gambar: <situs atau Wikimedia Commons, pembuat (lisensi)>" kecil di kanan bawah.
+- Foto tokoh atau orang (dari artikel atau Wikimedia) memakai tata letak yang sama.
+- **Slide 1 = thumbnail carousel** (tetap): paket posting dan `item.json` Antrian Posting mencatat `slide-1.png` beserta kreditnya.
 - Paket .md mencatat asal gambar dan "cek hak pakai sebelum posting".
 - Endpoint: `web/api/gambar.js`. `RISET_GAMBAR=off` mematikan fitur ini.
 - Di preview claude.ai fitur ini tidak jalan, karena tidak ada akses web.
