@@ -1,7 +1,7 @@
 @echo off
 rem Pasang "tangan komputer" Zuno (khusus Divisi Engineering) di Windows: klik dua kali, cukup sekali.
-rem Yang dipasang: agent-desktop (Vercel Labs, Apache-2.0), Claude Code bila belum ada,
-rem CLI deploy Vercel / clasp / Firebase (opsional), Context7 (opsional).
+rem Otak: Claude Desktop (Remote Control). Tangan: agent-desktop (Vercel Labs, Apache-2.0).
+rem Yang dipasang: agent-desktop, CLI deploy clasp (Apps Script) / Firebase / Vercel, folder C:\zuno-proyek.
 rem Panduan lengkap: docs\tangan-komputer.md
 chcp 65001 >nul
 title Pasang tangan komputer Zuno
@@ -15,13 +15,13 @@ echo ============================================================
 echo  Pasang tangan komputer Zuno (Divisi Engineering)
 echo ============================================================
 echo  Yang akan dipasang di laptop ini:
-echo   1. agent-desktop  : Claude bisa melihat dan mengklik aplikasi
-echo   2. Claude Code    : bila belum terpasang
-echo   3. Sambungan agent-desktop ke Claude Code, khusus folder ini
-echo   4. CLI deploy     : Vercel, clasp (Apps Script), Firebase (ditanya dulu)
-echo   5. Context7       : dokumentasi library untuk Engineering (ditanya dulu)
+echo   1. agent-desktop : tangan Claude untuk melihat dan mengklik aplikasi
+echo   2. CLI deploy    : clasp (Apps Script), Firebase, Vercel
+echo   3. Folder kerja  : C:\zuno-proyek (unduhan + proyek)
+echo   4. Sambungan agent-desktop ke Claude Desktop
+echo   5. Login sekali  : clasp / firebase / vercel (kamu sendiri, di browser)
 echo.
-echo  Tidak ada key atau password yang diminta di sini.
+echo  Tidak ada key atau password yang diminta di jendela ini.
 echo ============================================================
 pause
 
@@ -34,79 +34,58 @@ if errorlevel 1 goto nonpm
 
 echo.
 echo [1/5] Memasang agent-desktop...
-call npm install -g agent-desktop@1.1.0 --no-audit --no-fund
+call npm install -g agent-desktop@latest --no-audit --no-fund
 if errorlevel 1 goto gagalnpm
 call agent-desktop status
 if errorlevel 1 echo [PERINGATAN] agent-desktop status tidak berhasil. Lanjut dulu; kirim tulisan di atas ke Claude bila nanti tidak jalan.
 
 echo.
-echo [2/5] Mengecek Claude Code...
-where claude >nul 2>nul
-if not errorlevel 1 goto adaclaude
-echo Claude Code belum ada. Memasang...
-call npm install -g @anthropic-ai/claude-code --no-audit --no-fund
-if errorlevel 1 goto gagalnpm
-:adaclaude
-for /f "delims=" %%v in ('claude --version') do echo Claude Code %%v
+echo [2/5] Memasang CLI deploy (clasp, Firebase, Vercel)...
+call npm install -g @google/clasp firebase-tools vercel --no-audit --no-fund
+if errorlevel 1 echo [PERINGATAN] Sebagian CLI gagal dipasang. rilis.mjs akan mencoba memasangnya lagi saat dibutuhkan.
 
 echo.
-echo [3/5] Menyambungkan agent-desktop ke Claude Code untuk folder ini...
-call claude mcp remove agent-desktop -s local >nul 2>nul
-call claude mcp add --scope local agent-desktop -- agent-desktop mcp
-if errorlevel 1 echo [PERINGATAN] Gagal menyambungkan. Jalankan manual di folder ini: claude mcp add --scope local agent-desktop -- agent-desktop mcp
+echo [3/5] Membuat folder kerja C:\zuno-proyek ...
+if not exist "C:\zuno-proyek\unduhan" mkdir "C:\zuno-proyek\unduhan"
+if not exist "C:\zuno-proyek\proyek" mkdir "C:\zuno-proyek\proyek"
+> "C:\zuno-proyek\BACA-DULU.txt" echo Folder kerja rilis Zuno. unduhan\ = tempat paket *_rilis.zip dari Build App. proyek\ = hasil ekstrak + rilis. Folder ini dibagikan ke Claude lewat Remote Control. Jangan taruh file pribadi di sini.
 
 echo.
-echo Mau Claude memakai tangan komputer tanpa minta izin di setiap klik?
-echo  Y = jalan sendiri. Aturan larangan di CLAUDE.md tetap berlaku.
-echo  N = Claude minta izin dulu tiap kali memakai agent-desktop.
-choice /c YN /n /m "Pilih Y atau N: "
-if errorlevel 2 goto lewatizin
-if exist ".claude\settings.local.json" goto adasetting
-> ".claude\settings.local.json" echo {"permissions":{"allow":["mcp__agent-desktop"]}}
-echo Izin disimpan di .claude\settings.local.json (hanya di laptop ini, tidak ikut ke GitHub).
-goto lewatizin
-:adasetting
-echo .claude\settings.local.json sudah ada, tidak ditimpa. Tambahkan sendiri "mcp__agent-desktop" ke permissions.allow, atau minta Claude.
-:lewatizin
+echo [4/5] Menyambungkan agent-desktop ke Claude Desktop...
+call node "%~dp0tools\laptop\sambung-agent-desktop.mjs"
 
 echo.
-echo [4/5] CLI deploy untuk membawa web app sampai live.
-choice /c YN /n /m "Pasang Vercel CLI (mesin Vercel + Supabase)? (Y/N): "
-if errorlevel 2 goto lewatvercel
-call npm install -g vercel --no-audit --no-fund
-:lewatvercel
-choice /c YN /n /m "Pasang clasp (mesin Apps Script)? (Y/N): "
+echo [5/5] Login sekali per alat (browser terbuka, pilih akun Google/Vercel milikmu, Izinkan).
+choice /c YN /n /m "Login clasp sekarang (mesin Apps Script)? (Y/N): "
 if errorlevel 2 goto lewatclasp
-call npm install -g @google/clasp --no-audit --no-fund
+call clasp login
+echo Nyalakan juga Google Apps Script API (sekali): halaman pengaturannya dibuka sekarang.
+start "" "https://script.google.com/home/usersettings"
 :lewatclasp
-choice /c YN /n /m "Pasang Firebase CLI (mesin Firebase)? (Y/N): "
+choice /c YN /n /m "Login Firebase sekarang (mesin Firebase)? (Y/N): "
 if errorlevel 2 goto lewatfirebase
-call npm install -g firebase-tools --no-audit --no-fund
+call firebase login
 :lewatfirebase
-echo Login CLI dilakukan sendiri sekali saja: vercel login / clasp login / firebase login
+choice /c YN /n /m "Login Vercel sekarang (mesin Vercel + Supabase)? (Y/N): "
+if errorlevel 2 goto lewatvercel
+call vercel login
+:lewatvercel
 
-:ctx7
-echo.
-echo [5/5] Context7 (opsional): dokumentasi library terbaru untuk Divisi Engineering.
-echo Browser akan terbuka untuk login Context7. Login dilakukan sendiri, jangan kirim key ke chat.
-choice /c YN /n /m "Pasang Context7 sekarang? (Y/N): "
-if errorlevel 2 goto selesai
-call npx -y ctx7 setup --claude
-
-:selesai
 echo.
 echo ============================================================
-echo  Selesai. Cara pakai:
-echo   1. Buka Command Prompt di folder ini, ketik: claude
-echo   2. Unduh paket rilis dari tab Build App, lalu bilang:
-echo      "rilis proyek nama-aplikasi"
-echo   Claude membangun sampai live, lalu memberi link untuk kamu cek.
-echo  Laptop harus menyala dan tidak terkunci selama Claude bekerja.
-echo  CLI yang baru dipasang terbaca setelah jendela ini ditutup.
+echo  Hampir selesai. Tiga langkah sekali saja di aplikasi:
+echo   1. Claude Desktop: Settings ^> Claude Code ^> Remote Control,
+echo      tambahkan folder C:\zuno-proyek lalu nyalakan.
+echo   2. Chrome: Setelan ^> Download ^> Lokasi = C:\zuno-proyek\unduhan
+echo      (paket rilis dari Build App langsung masuk ke sini).
+echo   3. Tutup Claude Desktop (Quit dari tray) lalu buka lagi.
+echo.
+echo  Cara pakai setelah itu:
+echo   Unduh paket rilis di tab Build App, lalu bilang ke Claude
+echo   (di HP atau laptop): "rilis proyek nama-aplikasi".
+echo   Claude + agent-desktop membawanya sampai live dan mengirim link.
+echo  Laptop harus menyala, tidak terkunci, dan Claude Desktop terbuka.
 echo ============================================================
-choice /c YN /n /m "Buka Claude Code sekarang? (Y/N): "
-if errorlevel 2 goto akhir
-claude
 goto akhir
 
 :darizip

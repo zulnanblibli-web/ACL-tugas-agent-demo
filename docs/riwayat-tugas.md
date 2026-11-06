@@ -519,4 +519,25 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - graphify: `graphify update` pada salinan `web/` menghasilkan 137 node, 200 edge, 14 komunitas; `query` dan `explain "cariWiki"` benar (pemanggil GET L159, memanggil bacaMaks dan cocokJudul).
   - `node web/build.mjs`, ekspor jasa, `tests/zuno-jasa-test.js`: HASIL: SEMUA LOLOS (repo jasa tidak berubah; skill tidak ikut edisi jasa).
 
-## 55. (entri berikutnya di sini)
+## 55. Rilis Engineering di laptop tanpa disentuh: Claude Desktop + agent-desktop + rilis.mjs (2026-11-06)
+- Permintaan Zulnan: setelah zip dari Build App diunduh, Engineering mengoperasikan laptop/PC-nya sendiri sampai web app live **sesuai mesin yang dipilih** (termasuk Apps Script yang butuh backend), tanpa disentuh, semua tersinkron. Operator dipilih Zulnan: **Claude Desktop**; tangan: **agent-desktop**.
+- Rilis lewat server Zuno Web ke Vercel (sempat dibuat di sesi ini, belum di-push) **dihapus** atas pilihan Zulnan, karena tidak menjawab mesin Apps Script/Firebase/Supabase.
+- Baru:
+  - `tools/rilis/rilis.mjs`: skrip rilis pasti per mesin, ikut di setiap paket rilis.
+    - Apps Script + Google Sheets: `clasp create-script --type sheets`, push Code.gs + Index.html + manifest web app (USER_DEPLOYING, ANYONE_ANONYMOUS), deploy, link /exec, cek penanda proyek; rilis ulang memakai deployment yang sama.
+    - Apps Script + Blogger: sama + `blogger-widget.html` (GAS_URL terisi), tempel Blogger = langkah agen.
+    - Firebase: projects:create, apps:create, sdkconfig disuntik, Firestore, deploy hosting + rules; Email/Password = langkah agen; akun Admin dibuat lewat API (`--akun-firebase`).
+    - Vercel + Supabase: Supabase disiapkan agen (dashboard), skrip menyuntik URL + anon key lalu `vercel deploy --prod`.
+    - Status `live` / `perlu_agen` / `perlu_zulnan` / `gagal` (kode 0/10/20/1), `LAPORAN-RILIS.md`, `hasil-rilis.json`; CLI yang belum ada dipasang lewat npm.
+  - `tools/rilis/sisip.mjs`: menyalin rilis.mjs ke blok `<script type="text/plain" id="zuno-rilis-mjs">` di prototipe (sebelum `</body>` terakhir).
+  - Paket rilis kini berisi `rilis.mjs`, `rilis.json`, `akun-awal.json` (hanya di laptop), `CLAUDE.md` operator, `jalankan-rilis.bat`, INSTRUKSI-RILIS baru.
+  - Prompt T.3: Apps Script `doGet` menyajikan `Index` + `setupDatabase()` aman diulang; placeholder `firebaseConfig`, `SUPABASE_URL`/`SUPABASE_ANON_KEY`, `GAS_URL`.
+  - `pasang-tangan-komputer.bat` ditulis ulang: agent-desktop terbaru, clasp/firebase-tools/vercel, `C:\zuno-proyek\unduhan` + `proyek`, sambungan agent-desktop ke Claude Desktop (`tools/laptop/sambung-agent-desktop.mjs`, `cmd /c` di Windows, cadangan config), login sekali. Claude Code CLI tidak lagi dipasang.
+  - Skill `rilis-engineering` ditulis ulang (Remote Control -> ekstrak -> rilis.mjs -> agent-desktop -> lapor); `docs/tangan-komputer.md`, `docs/aturan-engineering.md`, `docs/rilis-antigravity.md` (jadi cadangan), CLAUDE.md, memori, agen 18.
+- Aturan diperjelas: agent-desktop tidak mengetik password akun Zulnan; akun acak aplikasi yang diuji boleh diisi lewat `set-value`. Klik "Izinkan" Google untuk Apps Script baru tetap Zulnan kecuali `opsi.izinGoogleOtomatis: true`.
+- Tes:
+  - `tests/zuno-rilis-laptop-test.mjs` 24 cek lolos (4 mesin dengan CLI tiruan, plus dijalankan sebagai program dengan clasp palsu: kode keluar + JSON terakhir).
+  - Build stub 9 mode lolos (termasuk isi zip baru).
+- Belum diuji di laptop Zulnan: Claude Desktop di Windows, folder Remote Control dari sesi cloud, CLI asli, Firebase/Supabase sungguhan.
+
+## 56. (entri berikutnya di sini)

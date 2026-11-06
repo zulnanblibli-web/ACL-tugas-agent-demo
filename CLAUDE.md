@@ -37,10 +37,10 @@ Status standby: langsung aktif saat ada permintaan build. Alurnya terpisah dari 
 ## Skill terpasang dan tangan komputer
 - Skill di `.claude/skills/` (daftar, pemilik agen, dan sumbernya di `.claude/skills/README.md`). Aturan Zuno selalu menang atas isi skill. Skill marketing membaca `.claude/product-marketing.md`.
 - Sebelum menyatakan pekerjaan selesai, pakai `prove-it-ran` (bukti tes jalan). Video dicek dengan `ffmpeg-skill` (`check.py`) sebelum masuk antrian.
-- Tangan komputer (agent-desktop) **khusus Divisi Engineering** di laptop Zulnan: dari paket rilis Build App sampai web app live (skill `rilis-engineering`), lalu link live + bukti + catatan keputusan dikirim ke Zulnan. Divisi kreatif tidak memakainya; konten berjalan di web. Aturan pakai di `docs/tangan-komputer.md`. Dilarang:
+- Tangan komputer (agent-desktop) **khusus Divisi Engineering** di laptop Zulnan: dari paket rilis Build App sampai web app live sesuai mesin yang dipilih, tanpa disentuh Zulnan (skill `rilis-engineering`; otak Claude Desktop lewat Remote Control folder `C:\zuno-proyek`, skrip `rilis.mjs` di paket, sumber `tools/rilis/rilis.mjs`; setelah mengubahnya jalankan `node tools/rilis/sisip.mjs` lalu `node web/build.mjs`), lalu link live + bukti + catatan keputusan dikirim ke Zulnan. Divisi kreatif tidak memakainya; konten berjalan di web. Aturan pakai di `docs/tangan-komputer.md`. Dilarang:
   - pembayaran;
   - mengirim pesan, email, atau DM atas nama Zulnan;
-  - mengetik atau menyimpan password;
+  - mengetik atau menyimpan password akun Zulnan (akun acak aplikasi yang diuji boleh diisi lewat `set-value`, tidak ditulis ke chat/log);
   - mengubah pengaturan Windows atau keamanan;
   - menghapus file di luar repo dan folder kerja;
   - pembayaran atau upgrade paket tanpa izin;

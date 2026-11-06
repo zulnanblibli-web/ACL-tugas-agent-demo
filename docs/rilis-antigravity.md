@@ -1,4 +1,6 @@
-# Rilis web app lewat Antigravity (jalur utama sejak 2026-11-05)
+# Rilis web app lewat Antigravity (cadangan sejak 2026-11-06)
+
+> **Jalur utama sejak 2026-11-06: Claude Desktop + agent-desktop + `rilis.mjs`** (`docs/tangan-komputer.md`, skill `rilis-engineering`), tanpa Zulnan menyentuh laptop. Di Antigravity cukup jalankan `node rilis.mjs` di folder paket dan ikuti `CLAUDE.md` paket.
 
 Keputusan Zulnan 2026-11-05: rilis Divisi Engineering dijalankan di **Google Antigravity** di laptop Zulnan, supaya Zulnan bisa menonton langsung sampai web app live dan mengecek hasilnya. Alasannya:
 - Claude Code di laptop Zulnan tidak bisa start (`claude.exe is not compatible with the version of Windows you're running`, lihat bagian "Catatan teknis").

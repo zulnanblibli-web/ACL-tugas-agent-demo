@@ -27,7 +27,7 @@ Permintaan Zulnan / klien (+ PRD .md, + referensi desain)
   -> Tinjauan 2 (T.4): halaman lengkap, login/Reset Akses/kredit, responsif, mengikuti referensi -> perbaiki (maks. 2 putaran)
   -> T.3 Bangun aplikasi (mode preview dulu)
   -> T.4 Cek otomatis + tinjauan kode -> T.3 memperbaiki temuan (maks. 2 putaran; sisa dicatat sebagai risiko)
-  -> Paket rilis (.zip) -> laptop Zulnan: Claude Code + agent-desktop (skill rilis-engineering) deploy sampai live dan cek
+  -> Paket rilis (.zip, berisi rilis.mjs + rilis.json) -> laptop Zulnan: Claude Desktop (Remote Control) + agent-desktop (skill rilis-engineering) menjalankan rilis.mjs sesuai mesin, langkah layar lewat agent-desktop, uji link live; tanpa disentuh Zulnan selain login/izin sekali
   -> Link live + bukti uji + catatan keputusan dikirim ke Zulnan
 ```
 
@@ -50,7 +50,8 @@ Permintaan Zulnan / klien (+ PRD .md, + referensi desain)
 - Akun awal dibuat acak oleh halaman (bukan oleh AI) dan dicantumkan di panduan.
 - T.3 menulis `index.html` (mode preview) dan file backend (`Code.gs`, `firestore.rules`, atau `schema.sql`).
 - T.4 = cek otomatis (file lengkap, IS_PREVIEW, TAMPILKAN_CONTOH_LOGIN, Reset Akses, hash, tanpa password lama, kredit, tanpa TODO, tanpa API key, viewport, AI_PROVIDER bila AI, halaman jalan di browser tanpa error) + tinjauan AI per butir definisi selesai. Tinjauan AI bukan uji jalan; butir "perlu uji manual" dicoba di backend asli dan HP.
-- Unduhan: `index.html`, file backend, `PANDUAN.md` (ruang lingkup, akun awal, setup, laporan uji). Rilis tidak dilakukan di halaman ini.
+- Unduhan: `index.html`, file backend, `PANDUAN.md` (ruang lingkup, akun awal, setup, laporan uji). Rilis tidak dilakukan di halaman ini: paket rilis membawa `rilis.mjs` (deploy pasti per mesin), `rilis.json` (mesin, nama, opsi izin Google), `akun-awal.json` (hanya di laptop), `CLAUDE.md` (aturan operator), `jalankan-rilis.bat` (cadangan). Lihat `docs/tangan-komputer.md`.
+- Agar rilis otomatis mulus, T.3 menulis: Apps Script `doGet` yang menyajikan `Index` dan memanggil `setupDatabase()` yang aman diulang; Firebase `const firebaseConfig = {apiKey:"ISI"};`; Supabase `const SUPABASE_URL = "";` dan `const SUPABASE_ANON_KEY = "";`; Blogger `const GAS_URL = "";`. rilis.mjs mengisinya.
 
 ## 3. Pilihan mesin aplikasi (dipilih T.1 per proyek)
 

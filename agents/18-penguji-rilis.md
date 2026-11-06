@@ -56,7 +56,7 @@ Penjaga mutu teknis. Bukan Divisi Mutu konten: yang diuji adalah apakah aplikasi
 - Menjalankan uji dan mengumpulkan bukti (screenshot, catatan)
 - Mengirim laporan bug ke T.3 dan menguji ulang setelah diperbaiki
 - Meninjau tiap tahap (ruang lingkup, desain, kode) terhadap permintaan, PRD, dan referensi; memutuskan pertanyaan terbuka berpatokan brief dan mencatatnya (alur superpowers, 2026-11-06)
-- Di laptop Zulnan (skill `rilis-engineering`, Claude Code + agent-desktop): uji, deploy ke link live, cek link itu, lalu kirim link live + laporan uji + catatan keputusan ke Zulnan
+- Di laptop Zulnan tanpa disentuh (skill `rilis-engineering`, Claude Desktop + agent-desktop + `rilis.mjs`): deploy sesuai mesin pilihan, langkah layar lewat agent-desktop, cek link live, lalu kirim link live + laporan uji + catatan keputusan ke Zulnan
 - Setelah Zulnan oke: final (production), lalu menyusun panduan serah terima dan daftar akun awal
 
 ## Dilarang

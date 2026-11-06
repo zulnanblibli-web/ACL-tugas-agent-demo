@@ -32,6 +32,11 @@ Ringkasan padat untuk sesi atau chat baru. Tugas yang belum selesai per 2026-11-
 - **Tanpa batas fitur MVP**: semua fitur yang diminta atau ada di PRD dikunci. Tab Build App menerima **PRD (.md)** sebagai referensi utama.
 - Kredit "Creative @nexamind.ai" (pribadi/portofolio), klien sesuai klien. Akun login acak, kotak Contoh akses, menu Reset Akses, password di-hash, LLM bisa diganti, API key hanya di server.
 - Aturan: `docs/aturan-engineering.md`. Skill: `skills/engineering/` (.zip untuk diunggah ulang ke claude.ai).
+- **Rilis tanpa disentuh (keputusan Zulnan 2026-11-06)**: "dia operasiin laptop gua sendiri pake zip yang udah dibangun kerangkanya sama Zuno, langsung live sesuai mesin yang gua pilih".
+  - Otak Claude Desktop (Remote Control folder `C:\zuno-proyek`), tangan agent-desktop (terbaru, MCP + CLI), skrip pasti `rilis.mjs` di tiap paket (sumber `tools/rilis/rilis.mjs`, salinan di prototipe lewat `tools/rilis/sisip.mjs`).
+  - Semua mesin tetap bisa dipilih; Apps Script paling otomatis (clasp). Zulnan sekali saja: login CLI, Apps Script API, klik Izinkan Google per aplikasi Apps Script baru (bisa diserahkan ke agen via `opsi.izinGoogleOtomatis`).
+  - Rilis lewat server Zuno Web ke Vercel sempat dibuat lalu **dihapus atas pilihan Zulnan** (patch tidak di repo).
+  - Belum diuji di laptop Zulnan; semua lolos dengan CLI tiruan.
 
 ## Skill dan tangan komputer (2026-11-04)
 - Skill dari katalog PINAX (sumber MIT, disaring dan dicek) ada di `.claude/skills/`. Daftar, pemilik agen, dan bukti uji ada di `.claude/skills/README.md`.

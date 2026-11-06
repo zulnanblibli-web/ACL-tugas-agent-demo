@@ -1564,7 +1564,13 @@ function rilisZip(B){
   add('ruang-lingkup.json',JSON.stringify(s,null,2));add('desain.json',JSON.stringify(B.design||{},null,2));
   if(B.prd)add('PRD.md',B.prd);
   if(B.desref&&B.desref.ada)B.desref.bytes.forEach(function(b,i){files.push({name:dir+'referensi-desain/ref-'+(i+1)+'.jpg',data:b})});
-  add('INSTRUKSI-RILIS.md',['# Rilis '+(s.nama_aplikasi||nm),'','Proyek '+B.id+' · '+(B.jenis||'')+(B.klien?' · klien '+B.klien:'')+' · mesin: '+(s.mesin||'-')+' · kredit: '+(s.kredit||'-'),'','Ruang lingkup dan tampilan sudah ditinjau otomatis oleh Penguji di Zuno Studio (alur superpowers: kerjakan, tinjau, perbaiki, lanjut; tanpa gerbang persetujuan di tengah). Keputusan yang diambil sendiri ada di PANDUAN.md bagian Catatan keputusan. Kode di folder ini dari T.3, laporan cek dari T.4.','','Untuk Claude Code di laptop Zulnan (jalankan dari root repo Zuno): pakai skill `rilis-engineering`.','1. Baca ruang-lingkup.json, desain.json, PANDUAN.md'+(B.prd?', PRD.md':'')+(B.desref&&B.desref.ada?', dan gambar di referensi-desain/ (acuan tampilan dari Zulnan, lihat acuan_referensi di desain.json)':'')+'. Fitur dan tampilan tidak boleh diubah di luar ruang lingkup dan desain yang terkunci.','2. Lengkapi dan uji: jalankan lokal, uji di ukuran laptop dan HP, perbaiki bug (T.3/T.4).','3. Deploy ke link live sesuai mesin, lalu cek link itu di browser.','4. Putuskan sendiri hal teknis yang belum jelas dengan patokan ruang lingkup, PRD, dan referensi; catat keputusannya di laporan. Berhenti dan tanya Zulnan hanya untuk pembayaran/upgrade, API key/rahasia, atau tindakan yang merusak.','5. Laporkan link live + bukti uji + catatan keputusan ke Zulnan.',''].join('\n'));
+  var kode=B.id.slice(-3),man={id:B.id,kode:kode,nama:s.nama_aplikasi||nm,slug:nm.replace(/_/g,'-'),mesin:s.mesin||'Apps Script + Google Sheets',jenis:B.jenis||'',klien:B.klien||'',kredit:s.kredit||'',backend:B.code&&B.code.beName||'',zonaWaktu:'Asia/Jakarta',dibuat:new Date().toISOString(),opsi:{izinGoogleOtomatis:false}};
+  add('rilis.json',JSON.stringify(man,null,2));
+  var rm=document.getElementById('zuno-rilis-mjs');add('rilis.mjs',rm?rm.textContent:'');
+  add('jalankan-rilis.bat','@echo off\r\nrem Rilis aplikasi ini sampai live (Zuno). Biasanya dijalankan Claude Desktop; boleh juga dobel-klik.\r\ncd /d "%~dp0"\r\nnode rilis.mjs\r\necho.\r\necho Laporan: LAPORAN-RILIS.md\r\npause\r\n');
+  var a=B.akun||{};add('akun-awal.json',JSON.stringify({catatan:'Akun awal aplikasi ini (acak). Hanya di laptop; jangan diunggah atau ditempel ke chat. Ganti lewat Reset Akses setelah login pertama.',akun:[{peran:'Admin',username:a.adminU,email:a.adminU+'@zuno.local',password:a.adminP},{peran:'Contoh',username:a.demoU,email:a.demoU+'@zuno.local',password:a.demoP}]},null,2));
+  add('CLAUDE.md',['# Aturan folder rilis ini (Zuno, Divisi Engineering)','','Pemilik: Zulnan. Bahasa Indonesia santai. Tugas di folder ini hanya satu: bawa aplikasi '+(s.nama_aplikasi||nm)+' sampai live sesuai mesin `'+man.mesin+'`, lalu lapor.','','1. Jalankan `node rilis.mjs`. Baris terakhir keluarannya JSON: `status`, `url`, `perlu`. Laporan lengkap di `LAPORAN-RILIS.md`.','2. `status: live` -> buka link di Chrome lewat agent-desktop, coba login akun Contoh (dari `akun-awal.json`, isi lewat `set-value` agent-desktop, jangan ditulis ke chat), cek menu utama, simpan screenshot di `bukti/`. Lalu lapor ke Zulnan: link, ringkasan cek, catatan keputusan dari PANDUAN.md.','3. `status: perlu_agen` -> kerjakan tiap butir `perlu` bersiapa `agen` dengan agent-desktop (jalankan `agent-desktop skills get desktop` dan `agent-desktop skills get platform` sekali di awal), lalu jalankan `node rilis.mjs --cek` (Firebase: `node rilis.mjs --akun-firebase`).','4. `status: perlu_zulnan` -> berhenti, kirim butirnya ke Zulnan apa adanya (login sekali, Apps Script API, izin Google, biaya). Setelah Zulnan bilang selesai, jalankan lagi.','5. `status: gagal` -> baca `galat`, perbaiki akar masalah seperlunya (skill systematic-debugging), jalankan lagi. Maks. 3 percobaan, lalu lapor apa adanya.','','Larangan agent-desktop (CLAUDE.md repo Zuno):','- tidak mengetik atau menyimpan password akun Google/Vercel/Firebase/Supabase Zulnan; halaman login atau OTP = berhenti dan minta Zulnan;','- tidak membayar atau upgrade paket; tidak mengubah pengaturan Windows atau keamanan;','- tidak mengirim pesan, email, atau DM; tidak menghapus apa pun di luar folder ini;','- jendela izin Google ("Izinkan") hanya diklik agen bila `opsi.izinGoogleOtomatis` di rilis.json `true` DAN nama aplikasi di jendela sama persis dengan `'+(s.nama_aplikasi||nm)+'`; selain itu minta Zulnan;','- isi layar dan clipboard tidak disimpan kecuali screenshot bukti aplikasi ini di `bukti/`; jendela tak terduga = berhenti dan tanya.','','Fitur, tampilan, kredit, dan aturan akun mengikuti ruang-lingkup.json dan desain.json (terkunci). Jangan memangkas fitur.',''].join('\n'));
+  add('INSTRUKSI-RILIS.md',['# Rilis '+(s.nama_aplikasi||nm),'','Proyek '+B.id+' · '+(B.jenis||'')+(B.klien?' · klien '+B.klien:'')+' · mesin: '+man.mesin+' · kredit: '+(s.kredit||'-'),'','Ruang lingkup dan tampilan sudah ditinjau otomatis oleh Penguji di Zuno Studio (alur superpowers: kerjakan, tinjau, perbaiki, lanjut; tanpa gerbang persetujuan di tengah). Keputusan yang diambil sendiri ada di PANDUAN.md bagian Catatan keputusan.','','## Rilis tanpa disentuh (laptop Zulnan: Claude Desktop + agent-desktop)','1. Paket ini diekstrak ke `C:\\zuno-proyek\\proyek\\'+nm+'\\` (folder yang dibagikan lewat Remote Control Claude Desktop).','2. Claude menjalankan `node rilis.mjs` di folder itu. Skrip mengerjakan semua yang bisa lewat perintah sesuai mesin:','   - Apps Script + Google Sheets / Blogger: buat Spreadsheet + Apps Script (clasp), kirim Code.gs + Index.html, deploy web app, ambil link /exec, cek link live; rilis ulang memakai deployment yang sama (link tetap).','   - Firebase: buat proyek, web app, Firestore, isi firebaseConfig, deploy hosting + aturan, buat akun Admin lewat API.','   - Vercel + Supabase: suntik URL + anon key, deploy production, cek link.','3. Langkah yang hanya bisa lewat layar (tempel ke Blogger, aktifkan login Email/Password Firebase, dashboard Supabase) dikerjakan Claude dengan agent-desktop.','4. Yang tetap Zulnan, sekali saja: login `clasp`/`firebase`/`vercel`, menyalakan Google Apps Script API, dan klik "Izinkan" Google di aplikasi Apps Script baru (kecuali Zulnan mengizinkan agen lewat `opsi.izinGoogleOtomatis`).','5. Hasil: `LAPORAN-RILIS.md` + `hasil-rilis.json` (link live), Claude melapor ke Zulnan.','','Cadangan tanpa Claude: dobel-klik `jalankan-rilis.bat`.',''].join('\n'));
   return zipStore(files);
 }
 function antrianItem(c){
@@ -1746,13 +1752,13 @@ var BEng={
       m=masalah();
     }
     B.tinjau.g3={sisa:m,putaran:i};
-    if(m.length)B.keputusan.push({tahap:'Uji',apa:'Tetap lanjut ke paket rilis dengan '+m.length+' temuan tersisa setelah '+maks+' putaran perbaikan',alasan:'Perbaikan otomatis sudah maksimal; sisa temuan dicek saat rilis di laptop (skill rilis-engineering)',risiko:m.slice(0,3).join('; ')});
+    if(m.length)B.keputusan.push({tahap:'Uji',apa:'Tetap lanjut ke paket rilis dengan '+m.length+' temuan tersisa setelah '+maks+' putaran perbaikan',alasan:'Perbaikan otomatis sudah maksimal; sisa temuan dicek saat rilis di laptop (rilis.mjs + skill rilis-engineering)',risiko:m.slice(0,3).join('; ')});
   },
   finish:function(){
     var sisa=B.tinjau.g3&&B.tinjau.g3.sisa||[];
     B.done=true;B.stage='Siap dirilis (diputuskan sendiri, '+B.keputusan.length+' keputusan dicatat)';
     BEng.set('g3',sisa.length?'bad':'done',sisa.length?sisa.length+' temuan tersisa, dicatat; paket rilis siap':'Lolos uji dan tinjauan; paket rilis siap');
-    BEng.set('lead','done','Juru Kabar: aplikasi siap dirilis, belum online. Rilis di laptop sampai live, lalu link dikirim ke kamu.');
+    BEng.set('lead','done','Juru Kabar: aplikasi siap dirilis, belum online. Unduh paket rilis lalu bilang "rilis": Claude + agent-desktop di laptopmu membawanya sampai live dan mengirim linknya.');
     B.code.panduan=BEng.panduan();
   },
   /* T.1 */
@@ -1786,11 +1792,11 @@ var BEng={
     var lengkap=function(t){return /<\/html>\s*$/i.test(String(t||'').trim())};
     var resume=!note&&B.code.html&&!lengkap(B.code.html)?B.code.html:'';
     if(resume)BEng.set('t3','run','Pengembang melanjutkan kode yang terpotong ('+Math.round(resume.length/1000)+' KB sudah ada)');
-    var html=await askText('T.3',B.id,resume&&B.code.prompt?B.code.prompt:(B.code.prompt=PE('T.3',rev+(note?B.code.html+'\n\n':'')+'Tulis SATU file index.html lengkap (HTML+CSS+JS) untuk mesin '+s.mesin+'. Urutan file WAJIB: di <head> paling atas taruh <meta name="viewport">, <meta name="author">, dan <script> konfigurasi kecil berisi const IS_PREVIEW dan const TAMPILKAN_CONTOH_LOGIN; setelah itu CSS, lalu HTML, lalu <script> utama; file diakhiri </html>. Wajib: const IS_PREVIEW = true; (true = jalan sendiri di browser tanpa backend memakai 1-2 data contoh per koleksi di memori; false = terhubung ke backend '+(s.mesin==='Firebase'?'Firebase (firebaseConfig placeholder)':s.mesin==='Vercel + Supabase'?'Supabase (URL dan anon key placeholder)':'Apps Script')+'); const TAMPILKAN_CONTOH_LOGIN = '+B.contoh+'; halaman login dengan kotak "Contoh akses" berisi akun contoh dari DATA bila setelan true; login membandingkan hash SHA-256 + salt (crypto.subtle); menu "Reset Akses" untuk Admin; semua fitur di ruang lingkup berfungsi; responsif (sidebar desktop, navigasi bawah HP); <meta name="viewport">; kredit sesuai DATA di footer dan halaman login serta <meta name="author">'+(B.ai?'; blok AI_PROVIDER/AI_MODEL dan fungsi tanyaAI yang memanggil backend (bukan langsung ke penyedia), di mode preview jawab dengan teks contoh':'')+'. Kode padat (CSS dan JS ringkas, tanpa komentar panjang), panjang mengikuti jumlah fitur, tanpa // TODO, tanpa library yang tidak perlu.',bCtx(true),'Balas HANYA isi file index.html, tanpa penjelasan dan tanpa blok kode markdown.')),'default',prog(resume?'Pengembang melanjutkan index.html':'Pengembang menulis index.html'),{done:lengkap,resume:resume,save:note?null:function(t){B.code.html=t}});
+    var html=await askText('T.3',B.id,resume&&B.code.prompt?B.code.prompt:(B.code.prompt=PE('T.3',rev+(note?B.code.html+'\n\n':'')+'Tulis SATU file index.html lengkap (HTML+CSS+JS) untuk mesin '+s.mesin+'. Urutan file WAJIB: di <head> paling atas taruh <meta name="viewport">, <meta name="author">, dan <script> konfigurasi kecil berisi const IS_PREVIEW dan const TAMPILKAN_CONTOH_LOGIN; setelah itu CSS, lalu HTML, lalu <script> utama; file diakhiri </html>. Wajib: const IS_PREVIEW = true; (true = jalan sendiri di browser tanpa backend memakai 1-2 data contoh per koleksi di memori; false = terhubung ke backend '+(s.mesin==='Firebase'?'Firebase (tulis persis `const firebaseConfig = {apiKey:"ISI"};` sebagai placeholder, diisi otomatis saat rilis; login Firebase Auth memakai email <username>@zuno.local)':s.mesin==='Vercel + Supabase'?'Supabase (tulis persis `const SUPABASE_URL = "";` dan `const SUPABASE_ANON_KEY = "";`, diisi otomatis saat rilis)':s.mesin==='Apps Script + Blogger'?'Apps Script lewat google.script.run bila dibuka dari web app, atau fetch ke `const GAS_URL = "";` (diisi otomatis saat rilis) bila ditempel di Blogger':'Apps Script lewat google.script.run')+'); const TAMPILKAN_CONTOH_LOGIN = '+B.contoh+'; halaman login dengan kotak "Contoh akses" berisi akun contoh dari DATA bila setelan true; login membandingkan hash SHA-256 + salt (crypto.subtle); menu "Reset Akses" untuk Admin; semua fitur di ruang lingkup berfungsi; responsif (sidebar desktop, navigasi bawah HP); <meta name="viewport">; kredit sesuai DATA di footer dan halaman login serta <meta name="author">'+(B.ai?'; blok AI_PROVIDER/AI_MODEL dan fungsi tanyaAI yang memanggil backend (bukan langsung ke penyedia), di mode preview jawab dengan teks contoh':'')+'. Kode padat (CSS dan JS ringkas, tanpa komentar panjang), panjang mengikuti jumlah fitur, tanpa // TODO, tanpa library yang tidak perlu.',bCtx(true),'Balas HANYA isi file index.html, tanpa penjelasan dan tanpa blok kode markdown.')),'default',prog(resume?'Pengembang melanjutkan index.html':'Pengembang menulis index.html'),{done:lengkap,resume:resume,save:note?null:function(t){B.code.html=t}});
     if(!lengkap(html))throw {code:'kode_terpotong'};
     B.code.html=html;
     BEng.set('t3','run','Pengembang menulis backend ('+be+')');
-    B.code.backend=await askText('T.3',B.id,PE('T.3',rev+(note&&B.code.backend?B.code.backend+'\n\n':'')+'Tulis file '+be+' yang cocok dengan index.html berikut untuk mesin '+s.mesin+'. '+(be==='Code.gs'?'Wajib doGet, setupDatabase() yang membuat sheet+header dan sheet "Pengaturan", akun awal dari DATA disimpan sebagai hash SHA-256 + salt (Utilities.computeDigest), fungsi untuk menu Reset Akses'+(B.ai?', fungsi tanyaAI di server dengan API key dari PropertiesService (Script Properties) dan adaptor AI_PROVIDER':'')+'.':be==='firestore.rules'?'Aturan keamanan Firestore: Admin (Firebase Auth) baca/tulis semua; pengguna lain hanya koleksi sesuai haknya; koleksi pengaturan hanya Admin. Tambahkan komentar singkat cara mendaftarkan Admin pertama.':'Skema tabel Postgres + Row Level Security untuk Supabase, tabel pengaturan untuk Reset Akses, kolom password_hash dan salt.'),bCtx(true)+'\n\nINDEX.HTML:\n'+html.slice(0,60000),'Balas HANYA isi file '+be+', tanpa penjelasan dan tanpa blok kode markdown.'),'default',prog('Pengembang menulis '+be));
+    B.code.backend=await askText('T.3',B.id,PE('T.3',rev+(note&&B.code.backend?B.code.backend+'\n\n':'')+'Tulis file '+be+' yang cocok dengan index.html berikut untuk mesin '+s.mesin+'. '+(be==='Code.gs'?'Wajib doGet yang menyajikan file HTML bernama Index (HtmlService.createHtmlOutputFromFile("Index")) dan memanggil setupDatabase() di awal; setupDatabase() aman dipanggil berulang (hanya membuat sheet+header dan sheet "Pengaturan" yang belum ada, akun awal hanya bila sheet akun kosong), supaya aplikasi siap tanpa menjalankan fungsi manual setelah rilis otomatis; akun awal dari DATA disimpan sebagai hash SHA-256 + salt (Utilities.computeDigest), fungsi untuk menu Reset Akses'+(B.ai?', fungsi tanyaAI di server dengan API key dari PropertiesService (Script Properties) dan adaptor AI_PROVIDER':'')+'.':be==='firestore.rules'?'Aturan keamanan Firestore: Admin (Firebase Auth) baca/tulis semua; pengguna lain hanya koleksi sesuai haknya; koleksi pengaturan hanya Admin. Tambahkan komentar singkat cara mendaftarkan Admin pertama.':'Skema tabel Postgres + Row Level Security untuk Supabase, tabel pengaturan untuk Reset Akses, kolom password_hash dan salt.'),bCtx(true)+'\n\nINDEX.HTML:\n'+html.slice(0,60000),'Balas HANYA isi file '+be+', tanpa penjelasan dan tanpa blok kode markdown.'),'default',prog('Pengembang menulis '+be));
     B.code.beName=be;
     BEng.set('t3','done','Kode siap: index.html ('+Math.round(html.length/1000)+' KB) + '+be);
     BEng.set('t4','run','Penguji menjalankan cek otomatis dan pratinjau di browser');B.stage='Diuji';
@@ -1837,7 +1843,7 @@ var BEng={
   },
   panduan:function(){
     var s=B.scope,a=B.akun,t=B.test,L=[];
-    L.push('# '+s.nama_aplikasi+' · panduan serah terima','','Proyek '+B.id+' · '+B.jenis+(B.klien?' · klien '+B.klien:'')+' · mesin '+s.mesin+' · kredit: '+s.kredit,'','> Dibuat Divisi Engineering Zuno. Status: **belum dirilis**. Rilis dikerjakan Claude Code di laptop Zulnan (paket rilis dari Build App, skill `rilis-engineering`) sampai live; link live dikirim ke Zulnan. Keputusan di tengah build diambil sendiri oleh Divisi Engineering (berpatokan permintaan, PRD, dan referensi) dan dicatat di bawah.','');
+    L.push('# '+s.nama_aplikasi+' · panduan serah terima','','Proyek '+B.id+' · '+B.jenis+(B.klien?' · klien '+B.klien:'')+' · mesin '+s.mesin+' · kredit: '+s.kredit,'','> Dibuat Divisi Engineering Zuno. Status: **belum dirilis**. Rilis dikerjakan Claude Desktop + agent-desktop di laptop Zulnan (paket rilis dari Build App, `rilis.mjs`, skill `rilis-engineering`) sampai live; link live dikirim ke Zulnan. Keputusan di tengah build diambil sendiri oleh Divisi Engineering (berpatokan permintaan, PRD, dan referensi) dan dicatat di bawah.','');
     L.push('## Ruang lingkup','- **Masalah:** '+s.masalah,'- **Fitur ('+s.fitur.length+'):** '+s.fitur.join('; '),'- **Nanti:** '+(s.nanti.join('; ')||'-'),'- **Out of scope:** '+s.out_of_scope.join('; '),'- **Biaya:** '+s.biaya,'');
     L.push('## Akun awal (acak, khusus proyek ini)','| Akun | Username | Password |','|---|---|---|','| Admin | `'+a.adminU+'` | `'+a.adminP+'` |','| Contoh | `'+a.demoU+'` | `'+a.demoP+'` |','','Ganti setelah login pertama lewat menu **Reset Akses** (Admin). Kotak "Contoh akses" di halaman login diatur `TAMPILKAN_CONTOH_LOGIN` (sekarang `'+B.contoh+'`) dan bisa dimatikan dari menu yang sama.','');
     L.push('## File','- `index.html`: aplikasi (frontend). `IS_PREVIEW = true` untuk coba tanpa backend; ubah ke `false` saat deploy.','- `'+B.code.beName+'`: '+(B.code.beName==='Code.gs'?'backend Apps Script.':B.code.beName==='firestore.rules'?'aturan keamanan Firestore.':'skema database Supabase.'),'');
@@ -1867,7 +1873,7 @@ var BEng={
       [['Pratinjau HP','hp'],['Pratinjau desktop','']].forEach(function(o){var b=document.createElement('button');b.className='btn';b.textContent=o[0];b.onclick=function(){pb.innerHTML='';var f=document.createElement('iframe');f.className='bframe '+o[1];f.title='Pratinjau '+s.nama_aplikasi;f.setAttribute('sandbox','allow-scripts allow-forms allow-modals');f.srcdoc=B.code.html;pb.appendChild(f)};bt.appendChild(b)});
       [['index.html',B.code.html,'text/html'],[B.code.beName,B.code.backend,'text/plain'],['PANDUAN.md',B.code.panduan,'text/markdown']].forEach(function(o){var b=document.createElement('button');b.className='btn'+(o[0]==='index.html'?' primary':'');b.textContent='Unduh '+o[0];b.onclick=function(){Save.file(slug(s.nama_aplikasi)+'_'+o[0],new Blob([o[1]||''],{type:o[2]}),b)};bt.appendChild(b)});
       e3.appendChild(bt);e3.appendChild(pb);
-      var rl=document.createElement('p');rl.className='muted';rl.textContent='Rilis: unduh paket rilis, ekstrak ke folder proyek/ di repo Zuno, lalu di laptop jalankan claude dan bilang "rilis proyek '+slug(s.nama_aplikasi)+'". Claude Code membangun sampai live, lalu mengirim link live ke kamu.';e3.appendChild(rl);
+      var rl=document.createElement('p');rl.className='muted';rl.textContent='Rilis: unduh paket rilis (tersimpan di C:\\zuno-proyek\\unduhan), lalu bilang ke Claude "rilis proyek '+slug(s.nama_aplikasi)+'". Claude Desktop + agent-desktop di laptopmu menjalankan rilis.mjs sesuai mesin '+s.mesin+' sampai live, lalu mengirim link live ke kamu.';e3.appendChild(rl);
       if(B.done){var dn=document.createElement('div');dn.className='btns';var sisa=B.tinjau&&B.tinjau.g3&&B.tinjau.g3.sisa||[];dn.innerHTML='<span class="pill '+(sisa.length?'bad':'ok')+'">'+(sisa.length?'Siap dirilis, '+sisa.length+' temuan dicatat':'Siap dirilis')+'</span>';var ru=document.createElement('button');ru.className='btn primary';ru.textContent='Unduh paket rilis (.zip)';ru.onclick=function(){Save.file(slug(s.nama_aplikasi)+'_rilis.zip',rilisZip(B),ru)};dn.appendChild(ru);
         var nt=document.createElement('input');nt.type='text';nt.placeholder='Catatan tambahan (opsional)';nt.style.maxWidth='260px';nt.setAttribute('aria-label','Catatan tambahan untuk Pengembang');dn.appendChild(nt);
         var rv=document.createElement('button');rv.className='btn';rv.textContent='Ubah dengan catatan';rv.disabled=running;rv.onclick=function(){var n=nt.value.trim();if(!n){nt.focus();return}B.revisi++;B.keputusan.push({tahap:'Zulnan',apa:'Catatan tambahan: '+n,alasan:'permintaan Zulnan',risiko:'-'});BEng.run('t3',async function(){B.cur='t3';await BEng.build(n);B.tinjau.g3=null;await BEng.fixLoop();B.cur=null;BEng.finish()})};dn.appendChild(rv);e3.appendChild(dn)}
@@ -1906,6 +1912,233 @@ $('breset').addEventListener('click',function(){aborted=true;try{ctl&&ctl.abort(
   else{info.className='banner warn';info.textContent='Server Zuno tidak bisa dihubungi. Muat ulang halaman.'}
 })();
 })();
+</script>
+<script type="text/plain" id="zuno-rilis-mjs">
+#!/usr/bin/env node
+// Zuno rilis: membawa paket rilis Build App sampai link live di laptop Zulnan, sesuai mesin yang dipilih.
+// Dijalankan oleh Claude Desktop (Remote Control) atau dobel-klik jalankan-rilis.bat di folder paket.
+//   node rilis.mjs           rilis (atau rilis ulang ke deployment yang sama)
+//   node rilis.mjs --cek     hanya cek link live (setelah izin Google / langkah agen selesai)
+// Hasil: hasil-rilis.json + LAPORAN-RILIS.md di folder ini; baris terakhir keluaran = JSON hasil.
+// Kode keluar: 0 live, 10 perlu langkah agen (agent-desktop), 20 perlu Zulnan (login sekali, izin, biaya), 1 gagal.
+// Aturan: tidak mengetik atau menyimpan password Zulnan, tidak membayar, tidak menghapus apa pun di luar folder ini.
+// Sumber tunggal: tools/rilis/rilis.mjs di repo Zuno (disalin ke prototypes/zuno-studio-v2.html oleh tools/rilis/sisip.mjs).
+import { spawnSync } from 'node:child_process';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync, readdirSync, copyFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const WIN = process.platform === 'win32';
+const qa = (a) => (WIN && /[\s&|<>^"()]/.test(a) ? '"' + String(a).replace(/"/g, '\\"') + '"' : a);
+export function jalankanPerintah(cmd, args, o = {}) {
+  const r = spawnSync(WIN ? cmd : cmd, WIN ? args.map(qa) : args, { cwd: o.cwd, encoding: 'utf8', shell: WIN, timeout: o.timeout || 600000, env: process.env });
+  return { code: r.status == null ? 1 : r.status, out: r.stdout || '', err: (r.stderr || '') + (r.error ? String(r.error.message) : '') };
+}
+const PAKET = { clasp: '@google/clasp', firebase: 'firebase-tools', vercel: 'vercel' };
+const jsonDari = (t) => { const s = String(t || ''); for (let i = s.indexOf('{'); i > -1; i = s.indexOf('{', i + 1)) { try { return JSON.parse(s.slice(i)); } catch (e) {} } return null; };
+const tunggu = (ms) => new Promise((r) => setTimeout(r, ms));
+const KOMENTAR = '<' + '!-- ';
+
+export async function rilis(dir, o = {}) {
+  const exec = o.exec || jalankanPerintah, ambil = o.fetch || ((u, x) => fetch(u, x)), sekarang = o.now || (() => new Date());
+  const tungguMs = o.tungguMs != null ? o.tungguMs : 8 * 60000, jeda = o.jedaMs != null ? o.jedaMs : 10000;
+  const man = JSON.parse(readFileSync(join(dir, 'rilis.json'), 'utf8'));
+  const stFile = join(dir, '.zuno-rilis-state.json');
+  const st = existsSync(stFile) ? JSON.parse(readFileSync(stFile, 'utf8')) : {};
+  const simpanSt = () => writeFileSync(stFile, JSON.stringify(st, null, 2));
+  const H = { proyek: man.id, nama: man.nama, mesin: man.mesin, status: 'gagal', url: st.url || '', langkah: [], perlu: [], cek: {}, waktu: sekarang().toISOString() };
+  const catat = (t) => { H.langkah.push(t); if (!o.diam) console.log('- ' + t); };
+  const perlu = (siapa, apa, cara) => H.perlu.push({ siapa, apa, cara });
+  const sel = (status) => { H.status = status; return H; };
+  const penanda = 'ZUNORILIS' + String(man.id || '').replace(/[^A-Za-z0-9]/g, '');
+  const baca = (f) => readFileSync(join(dir, f), 'utf8');
+  const siapkanHtml = (h) => {
+    h = h.replace(/const\s+IS_PREVIEW\s*=\s*true/, 'const IS_PREVIEW = false');
+    const tag = KOMENTAR + penanda + ' -->';
+    return h.includes(penanda) ? h : /<head[^>]*>/i.test(h) ? h.replace(/<head[^>]*>/i, (m) => m + tag) : tag + h;
+  };
+  const butuhCli = (nama) => {
+    if (exec(nama, ['--version'], { cwd: dir }).code === 0) return true;
+    catat(nama + ' belum ada, dipasang: npm install -g ' + PAKET[nama]);
+    if (exec('npm', ['install', '-g', PAKET[nama], '--no-audit', '--no-fund'], { cwd: dir, timeout: 900000 }).code !== 0 || exec(nama, ['--version'], { cwd: dir }).code !== 0) {
+      perlu('agen', 'Pasang ' + PAKET[nama], 'npm install -g ' + PAKET[nama] + ' (cek internet/VPN), lalu jalankan rilis.mjs lagi');
+      return false;
+    }
+    return true;
+  };
+  const cekLive = async (url, maks) => {
+    const akhir = Date.now() + maks;
+    for (let i = 0; ; i++) {
+      try {
+        const r = await ambil(url, { redirect: 'follow' });
+        const t = await r.text();
+        H.cek = { http: r.status, penanda: t.includes(penanda), izin_google: /accounts\.google\.com|ServiceLogin|Authorization is required|perlu otorisasi|needs authorization/i.test(t) };
+        if (r.ok && H.cek.penanda) return true;
+      } catch (e) { H.cek = { galat: String(e && e.message || e).slice(0, 160) }; }
+      if (Date.now() + jeda > akhir) return false;
+      await tunggu(jeda);
+    }
+  };
+  const hanyaCek = !!o.cek || !!o.akunFirebase;
+
+  try {
+    if (/^Apps Script/.test(man.mesin)) {
+      if (!hanyaCek) {
+        if (!butuhCli('clasp')) return sel('perlu_agen');
+        const au = jsonDari(exec('clasp', ['--json', 'show-authorized-user'], { cwd: dir }).out) || {};
+        if (!au.loggedIn) { perlu('Zulnan', 'Login clasp sekali (akun Google pemilik aplikasi)', 'Jalankan `clasp login` di Command Prompt, pilih akun Google, klik Izinkan. Setelah itu rilis berikutnya tanpa login.'); return sel('perlu_zulnan'); }
+        catat('clasp login sebagai ' + (au.email || 'akun Google'));
+        const gas = join(dir, 'gas');
+        if (!st.scriptId) {
+          if (existsSync(gas)) rmSync(gas, { recursive: true, force: true });
+          mkdirSync(gas, { recursive: true });
+          if (existsSync(join(dir, '.clasp.json'))) rmSync(join(dir, '.clasp.json'));
+          const c = exec('clasp', ['--json', 'create-script', '--type', 'sheets', '--title', man.nama, '--rootDir', 'gas'], { cwd: dir });
+          const j = jsonDari(c.out);
+          if (c.code !== 0 || !j || !j.scriptId) {
+            const t = c.out + c.err;
+            if (/Apps Script API|usersettings/i.test(t)) { perlu('Zulnan', 'Aktifkan Google Apps Script API sekali', 'Buka https://script.google.com/home/usersettings lalu nyalakan "Google Apps Script API". Satu kali untuk semua proyek.'); return sel('perlu_zulnan'); }
+            throw new Error('clasp create-script gagal: ' + t.trim().slice(0, 300));
+          }
+          st.scriptId = j.scriptId; st.parentId = j.parentId; simpanSt();
+          catat('Spreadsheet + Apps Script dibuat (' + j.scriptId + ')');
+        } else catat('Memakai Apps Script yang sama (' + st.scriptId + ')');
+        mkdirSync(gas, { recursive: true });
+        for (const f of readdirSync(gas)) if (/^(Code|Kode)\.(js|gs)$/.test(f)) rmSync(join(gas, f));
+        writeFileSync(join(gas, 'Code.gs'), baca(man.backend || 'Code.gs'));
+        writeFileSync(join(gas, 'Index.html'), siapkanHtml(baca('index.html')));
+        writeFileSync(join(gas, 'appsscript.json'), JSON.stringify({ timeZone: man.zonaWaktu || 'Asia/Jakarta', runtimeVersion: 'V8', exceptionLogging: 'STACKDRIVER', webapp: { executeAs: 'USER_DEPLOYING', access: 'ANYONE_ANONYMOUS' } }, null, 2));
+        const p = exec('clasp', ['push', '--force'], { cwd: dir });
+        if (p.code !== 0) throw new Error('clasp push gagal: ' + (p.out + p.err).trim().slice(0, 300));
+        catat('Kode dikirim ke Apps Script (clasp push)');
+        const d = exec('clasp', ['--json', 'create-deployment', '-d', 'Zuno ' + sekarang().toISOString().slice(0, 16)].concat(st.deploymentId ? ['-i', st.deploymentId] : []), { cwd: dir });
+        const dj = jsonDari(d.out);
+        if (d.code !== 0 || !dj || !dj.deploymentId) throw new Error('clasp deploy gagal: ' + (d.out + d.err).trim().slice(0, 300));
+        st.deploymentId = dj.deploymentId; st.url = 'https://script.google.com/macros/s/' + dj.deploymentId + '/exec'; simpanSt();
+        catat((st.redeploy ? 'Deployment diperbarui, link tetap: ' : 'Web app dideploy: ') + st.url); st.redeploy = true; simpanSt();
+        if (man.mesin === 'Apps Script + Blogger') {
+          let w = siapkanHtml(baca('index.html')).replace(/((?:const|let|var)\s+GAS_URL\s*=\s*)(['"`])[^'"`]*\2/, (m, a, q) => a + q + st.url + q);
+          writeFileSync(join(dir, 'blogger-widget.html'), w);
+          catat('blogger-widget.html siap (GAS_URL diisi)');
+        }
+      }
+      H.url = st.url; H.spreadsheet = st.parentId ? 'https://docs.google.com/spreadsheets/d/' + st.parentId + '/edit' : '';
+      if (!H.url) throw new Error('Belum ada deployment. Jalankan tanpa --cek dulu.');
+      if (!(await cekLive(H.url, hanyaCek ? Math.min(tungguMs, 60000) : 15000))) {
+        perlu(man.opsi && man.opsi.izinGoogleOtomatis ? 'agen' : 'Zulnan', 'Izin Google sekali untuk aplikasi baru ini', 'Buka ' + H.url + ' di Chrome (akun pemilik), klik "Tinjau izin" > pilih akun > "Lanjutan" > "Buka ' + man.nama + '" > "Izinkan". Lalu jalankan `node rilis.mjs --cek`.');
+        return sel(man.opsi && man.opsi.izinGoogleOtomatis ? 'perlu_agen' : 'perlu_zulnan');
+      }
+      if (man.mesin === 'Apps Script + Blogger') perlu('agen', 'Pasang tampilan di Blogger', 'Buka blogger.com (sudah login) > blog tujuan > Tata Letak > Tambah Gadget > HTML/JavaScript, tempel isi blogger-widget.html, Simpan. Aplikasi sudah jalan di link Apps Script sambil menunggu.');
+      catat('Link live terbuka dan berisi aplikasi ini');
+      return sel(H.perlu.length ? 'perlu_agen' : 'live');
+    }
+
+    if (man.mesin === 'Firebase') {
+      const fb = join(dir, 'firebase');
+      if (!hanyaCek) {
+        if (!butuhCli('firebase')) return sel('perlu_agen');
+        const lg = jsonDari(exec('firebase', ['login:list', '--json'], { cwd: dir }).out) || {};
+        if (!(Array.isArray(lg.result) ? lg.result.length : lg.result)) { perlu('Zulnan', 'Login Firebase sekali', 'Jalankan `firebase login` di Command Prompt, pilih akun Google, Izinkan.'); return sel('perlu_zulnan'); }
+        if (!st.fbProject) {
+          const pid = ('zuno-' + man.slug).replace(/[^a-z0-9-]/g, '-').slice(0, 24).replace(/-+$/, '') + '-' + String(man.kode || 'app').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 5);
+          const c = exec('firebase', ['projects:create', pid, '-n', String(man.nama).slice(0, 30), '--json'], { cwd: dir, timeout: 900000 });
+          if (c.code !== 0) { const t = c.out + c.err; if (/billing|Terms of Service|ToS|quota/i.test(t)) { perlu('Zulnan', 'Firebase minta persetujuan atau kuota proyek', t.trim().slice(0, 200)); return sel('perlu_zulnan'); } throw new Error('firebase projects:create gagal: ' + t.trim().slice(0, 300)); }
+          st.fbProject = pid; simpanSt(); catat('Proyek Firebase dibuat: ' + pid);
+        }
+        const pid = st.fbProject;
+        if (!st.fbConfig) {
+          const a = jsonDari(exec('firebase', ['apps:create', 'WEB', String(man.nama).slice(0, 40), '--project', pid, '--json'], { cwd: dir }).out) || {};
+          const appId = a.result && a.result.appId;
+          if (!appId) throw new Error('firebase apps:create gagal');
+          const s = jsonDari(exec('firebase', ['apps:sdkconfig', 'WEB', appId, '--project', pid, '--json'], { cwd: dir }).out) || {};
+          const r = s.result || {};
+          st.fbConfig = r.sdkConfig || (r.fileContents ? jsonDari(r.fileContents) : null);
+          if (!st.fbConfig || !st.fbConfig.apiKey) throw new Error('firebase apps:sdkconfig tidak memberi konfigurasi');
+          simpanSt(); catat('Aplikasi web Firebase dibuat, konfigurasi diambil');
+          const db = exec('firebase', ['firestore:databases:create', '(default)', '--location', man.lokasiFirestore || 'asia-southeast2', '--project', pid, '--json'], { cwd: dir });
+          catat(db.code === 0 || /already exists/i.test(db.out + db.err) ? 'Firestore siap' : 'Firestore belum terbuat: ' + (db.out + db.err).trim().slice(0, 120));
+        }
+        mkdirSync(join(fb, 'public'), { recursive: true });
+        const cfgTxt = 'const firebaseConfig = ' + JSON.stringify(st.fbConfig) + ';';
+        let h = siapkanHtml(baca('index.html'));
+        h = /(?:const|let|var)\s+firebaseConfig\s*=\s*\{[\s\S]*?\};?/.test(h) ? h.replace(/(?:const|let|var)\s+firebaseConfig\s*=\s*\{[\s\S]*?\};?/, cfgTxt) : h;
+        writeFileSync(join(fb, 'public', 'index.html'), h);
+        if (existsSync(join(dir, 'firestore.rules'))) copyFileSync(join(dir, 'firestore.rules'), join(fb, 'firestore.rules'));
+        writeFileSync(join(fb, 'firebase.json'), JSON.stringify({ hosting: { public: 'public', ignore: ['firebase.json'] }, firestore: { rules: 'firestore.rules' } }, null, 2));
+        writeFileSync(join(fb, '.firebaserc'), JSON.stringify({ projects: { default: pid } }, null, 2));
+        const d = exec('firebase', ['deploy', '--only', 'hosting,firestore:rules', '--project', pid, '--non-interactive', '--json'], { cwd: fb, timeout: 900000 });
+        if (d.code !== 0) throw new Error('firebase deploy gagal: ' + (d.out + d.err).trim().slice(0, 300));
+        st.url = 'https://' + pid + '.web.app'; simpanSt(); catat('Hosting + aturan Firestore dideploy: ' + st.url);
+        if (!st.fbAuth) perlu('agen', 'Aktifkan login Email/Password lalu buat akun Admin', 'Buka https://console.firebase.google.com/project/' + pid + '/authentication/providers, aktifkan Email/Password, Simpan (agent-desktop). Lalu jalankan `node rilis.mjs --akun-firebase` (akun Admin dibuat skrip dari akun-awal.json, tanpa mengetik password).');
+      }
+      H.url = st.url;
+      if (o.akunFirebase) {
+        const ak = JSON.parse(baca('akun-awal.json'));
+        for (const a of ak.akun) {
+          const r = await ambil('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + encodeURIComponent(st.fbConfig.apiKey), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: a.email, password: a.password, returnSecureToken: false }) });
+          const j = await r.json().catch(() => ({}));
+          if (!r.ok && !/EMAIL_EXISTS/.test(JSON.stringify(j))) { perlu('agen', 'Login Email/Password belum aktif', 'Aktifkan dulu di console (lihat langkah sebelumnya), lalu ulangi --akun-firebase'); return sel('perlu_agen'); }
+          catat('Akun ' + a.peran + ' Firebase siap: ' + a.email);
+        }
+        st.fbAuth = true; simpanSt();
+      }
+      if (!(await cekLive(H.url, hanyaCek ? Math.min(tungguMs, 60000) : 30000))) throw new Error('Link ' + H.url + ' belum menampilkan aplikasi ini');
+      catat('Link live terbuka dan berisi aplikasi ini');
+      return sel(H.perlu.length ? 'perlu_agen' : 'live');
+    }
+
+    if (man.mesin === 'Vercel + Supabase') {
+      const web = join(dir, 'web');
+      if (!hanyaCek) {
+        if (!butuhCli('vercel')) return sel('perlu_agen');
+        if (exec('vercel', ['whoami'], { cwd: dir }).code !== 0) { perlu('Zulnan', 'Login Vercel sekali', 'Jalankan `vercel login` di Command Prompt.'); return sel('perlu_zulnan'); }
+        const sbFile = join(dir, 'supabase.json');
+        const sb = existsSync(sbFile) ? JSON.parse(readFileSync(sbFile, 'utf8')) : null;
+        if (!sb || !sb.url || !sb.anonKey) {
+          perlu('agen', 'Siapkan Supabase', 'Lewat agent-desktop di https://supabase.com/dashboard (sudah login): New project (paket Free; bila diminta bayar, berhenti dan tanya Zulnan), password database dibuat acak oleh dashboard (jangan diketik ulang). SQL Editor: tempel isi schema.sql, Run. Settings > API: salin Project URL dan anon public key ke supabase.json di folder ini: {"url":"...","anonKey":"..."}. Lalu jalankan rilis.mjs lagi.');
+          return sel('perlu_agen');
+        }
+        mkdirSync(web, { recursive: true });
+        let h = siapkanHtml(baca('index.html'));
+        h = h.replace(/((?:const|let|var)\s+SUPABASE_URL\s*=\s*)(['"`])[^'"`]*\2/, (m, a, q) => a + q + sb.url + q).replace(/((?:const|let|var)\s+SUPABASE_ANON_KEY\s*=\s*)(['"`])[^'"`]*\2/, (m, a, q) => a + q + sb.anonKey + q);
+        writeFileSync(join(web, 'index.html'), h);
+        const nama = ('zuno-' + man.slug + '-' + String(man.kode || '').toLowerCase()).replace(/[^a-z0-9-]/g, '-').slice(0, 90);
+        if (!st.vercelLink) { const l = exec('vercel', ['link', '--yes', '--project', nama], { cwd: web }); if (l.code !== 0) throw new Error('vercel link gagal: ' + (l.out + l.err).trim().slice(0, 300)); st.vercelLink = nama; simpanSt(); }
+        const d = exec('vercel', ['deploy', '--prod', '--yes'], { cwd: web, timeout: 900000 });
+        const u = (d.out.match(/https:\/\/[a-z0-9.-]+\.vercel\.app/gi) || []).pop();
+        if (d.code !== 0 || !u) throw new Error('vercel deploy gagal: ' + (d.out + d.err).trim().slice(0, 300));
+        st.url = u; simpanSt(); catat('Dideploy ke Vercel: ' + u);
+      }
+      H.url = st.url;
+      if (!(await cekLive(H.url, 30000))) { perlu('agen', 'Link Vercel belum terbuka publik', 'Bila diminta login Vercel: matikan Vercel Authentication di Settings > Deployment Protection proyek ' + (st.vercelLink || '') + ' lewat agent-desktop, lalu `node rilis.mjs --cek`.'); return sel('perlu_agen'); }
+      catat('Link live terbuka dan berisi aplikasi ini');
+      return sel('live');
+    }
+    throw new Error('Mesin tidak dikenal: ' + man.mesin);
+  } catch (e) {
+    H.galat = String(e && e.message || e);
+    return sel('gagal');
+  }
+}
+
+export function tulisLaporan(dir, H) {
+  writeFileSync(join(dir, 'hasil-rilis.json'), JSON.stringify(H, null, 2));
+  const L = ['# Laporan rilis: ' + H.nama, '', '- Proyek: ' + H.proyek + ' · mesin ' + H.mesin, '- Status: **' + H.status + '**', '- Link: ' + (H.url || '-')];
+  if (H.spreadsheet) L.push('- Spreadsheet data: ' + H.spreadsheet);
+  if (H.galat) L.push('- Galat: ' + H.galat);
+  L.push('', '## Langkah', ...H.langkah.map((x) => '- ' + x));
+  if (H.perlu.length) L.push('', '## Masih perlu', ...H.perlu.map((p) => '- [' + p.siapa + '] ' + p.apa + ': ' + p.cara));
+  writeFileSync(join(dir, 'LAPORAN-RILIS.md'), L.join('\n') + '\n');
+}
+
+const KODE = { live: 0, perlu_agen: 10, perlu_zulnan: 20, gagal: 1 };
+if (process.argv[1] && /(^|[\\/])rilis\.mjs$/i.test(process.argv[1])) {
+  const dir = dirname(fileURLToPath(import.meta.url));
+  const H = await rilis(dir, { cek: process.argv.includes('--cek'), akunFirebase: process.argv.includes('--akun-firebase') });
+  tulisLaporan(dir, H);
+  console.log(JSON.stringify({ status: H.status, url: H.url, perlu: H.perlu, galat: H.galat || null }));
+  process.exit(KODE[H.status] ?? 1);
+}
 </script>
 </body>
 </html>

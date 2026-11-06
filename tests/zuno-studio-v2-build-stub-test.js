@@ -81,6 +81,11 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   await p.click('#bres >> text=Unduh index.html'); await p.click('#bres >> text=Unduh PANDUAN.md');
   await p.click('#bres button:has-text("Unduh paket rilis (.zip)")'); await p.waitForFunction(()=>window.__zipTxt,null,{timeout:10000});
   { const z=await p.evaluate(()=>window.__zipTxt); assert(/tanpa gerbang persetujuan di tengah/.test(z)&&/Catatan keputusan/.test(z)&&!/gerbang 3/.test(z),'paket rilis: instruksi tanpa gerbang 3, panduan memuat catatan keputusan'); }
+  { const z=await p.evaluate(()=>window.__zipTxt);
+    assert(/proyek\/absensi_siswa\/rilis\.mjs/.test(z)&&/Zuno rilis: membawa paket rilis Build App sampai link live/.test(z)&&/export async function rilis/.test(z),'paket rilis membawa rilis.mjs (skrip rilis laptop)');
+    assert(/proyek\/absensi_siswa\/rilis\.json/.test(z)&&/"mesin": "Apps Script \+ Google Sheets"/.test(z)&&/"izinGoogleOtomatis": false/.test(z),'rilis.json: mesin pilihan + izin Google tidak otomatis secara bawaan');
+    assert(/proyek\/absensi_siswa\/CLAUDE\.md/.test(z)&&/agent-desktop skills get desktop/.test(z)&&/tidak mengetik atau menyimpan password/.test(z),'CLAUDE.md operator: alur rilis + larangan agent-desktop');
+    assert(/proyek\/absensi_siswa\/akun-awal\.json/.test(z)&&/proyek\/absensi_siswa\/jalankan-rilis\.bat/.test(z)&&/Claude Desktop \+ agent-desktop/.test(z),'akun-awal.json, jalankan-rilis.bat, instruksi Claude Desktop + agent-desktop'); }
   assert(/Siap dirilis/.test(await p.$eval('#bcard .st',e=>e.innerText)),'status akhir Siap dirilis');
   console.log('status:', await p.$eval('#bcard .st',e=>e.innerText));
   console.log('tracks:', await p.$$eval('#btracks .track',e=>e.map(x=>x.querySelector('.tname').textContent+'='+x.dataset.s).join(', ')));
