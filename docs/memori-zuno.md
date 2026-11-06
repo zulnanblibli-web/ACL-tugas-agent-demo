@@ -18,7 +18,7 @@ Ringkasan padat untuk sesi atau chat baru. Tugas yang belum selesai per 2026-11-
 ## Konten (keputusan Zulnan)
 - 6 pilar: cuan dari AI, tutorial, storytelling proses membangun, peluang produk digital, tools AI, AI agent. Satu konten satu pilar dan satu arah.
 - Struktur Killer Script; hook paling penting (3 kandidat, pakai yang terkuat); storytelling boleh; motion sekitar 30 detik.
-- Bank fakta: 6 web aktif (produk digital + landing page, sekitar 30 menit per web), sedang membangun Zuno. Latar SMK tidak dipakai.
+- Bank fakta: 6 web aktif (produk digital + landing page, kurang lebih 30 menit per web), sedang membangun Zuno. Latar SMK tidak dipakai.
 - BOFU = bukti tentang Zulnan, arah ke follow dan komentar. Ukuran konten menang: komentar (lalu retensi, view).
 - Bahan dari sumber luar, diolah sendiri dan disebut sumbernya. **Riset mandiri lebih diutamakan** (2026-11-06): Peneliti Tren mencari sendiri lewat Google Trends ID, Google News (7 hari), Hacker News (14 hari) di `web/api/riset.js` (hanya Zuno Web; artifact tidak punya akses web). Apify/Scrapelyfy belum.
 - Prompt konten diketik sendiri (chip ide dan kolom referensi gaya dihapus 2026-11-06). **Naskah dicek dulu**: file naskah `.docx` diunduh, desain dan editing jalan setelah Zulnan klik "Lanjut ke desain & editing".

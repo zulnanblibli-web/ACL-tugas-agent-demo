@@ -414,4 +414,49 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Belum diuji: Antigravity dengan paket rilis asli; format aturan dan workflow diambil dari dokumentasi Antigravity, bukan dijalankan.
 - Tertunda: paket rilis Build App belum membawa `.agents` (Zulnan harus menyalinnya); perbaiki `pasang-tangan-komputer.bat`; perbaiki Claude Code di laptop. Belum di-push.
 
-## 50. (entri berikutnya di sini)
+## 50. 2026-11-06: superpowers, riset mandiri, cek naskah .docx, Engineering tanpa gerbang
+- Permintaan:
+  - pakai obra/superpowers untuk agen yang menghasilkan agen baru (coding dan konten) supaya lebih akurat;
+  - Engineering memakai alur superpowers: diputuskan sendiri, berpatokan brief dan referensi;
+  - divisi kreatif mencari bahan sendiri (Google Trends dan lainnya), dan dicatat bahwa riset mandiri lebih diutamakan;
+  - hapus pilihan ide yang diklik dan kolom referensi;
+  - naskah jadi file docs yang bisa diunduh dan dicek dulu sebelum editing.
+- Hasil:
+  - Riset web `web/api/riset.js`:
+    - Google Trends RSS Indonesia, Google News RSS (7 hari), Hacker News Algolia (14 hari);
+    - dikunci `ZUNO_ACCESS_KEY`; `window.ZunoRiset` di `live.js`; route ada di `dev-server.mjs`;
+    - Orkestraror menulis `kata_kunci_riset`, Peneliti Tren memakai hasilnya;
+    - tautan di luar hasil riset dikosongkan otomatis;
+    - format feed dicek langsung dari sesi ini (environment baru "Zuno (riset konten)" dengan 3 host diizinkan).
+  - Tab Konten:
+    - chip ide dan kolom "Referensi gaya video" dihapus;
+    - setelah naskah dan uji retensi, alur berhenti di **Naskah siap dicek**, dengan tombol Unduh naskah (.docx), Lanjut ke desain & editing, dan Revisi naskah;
+    - .docx dibuat di browser (WordprocessingML + ZIP), valid di python-docx dan LibreOffice.
+  - Build App (alur superpowers):
+    - tiga gerbang dihapus; T.1 -> tinjauan T.4 -> T.2 -> tinjauan T.4 -> T.3 -> uji + perbaikan otomatis (maks. 2 putaran) -> paket rilis;
+    - Catatan keputusan tampil dan ikut di PANDUAN.md;
+    - "Coba lagi" melanjutkan dari tahap yang tertahan.
+  - Dokumen yang disesuaikan:
+    - `docs/aturan-engineering.md`, `docs/tangan-komputer.md`, `docs/rilis-antigravity.md`, `.agents/` (Antigravity);
+    - skill `rilis-engineering`, profil T.1-T.4, `CLAUDE.md`.
+  - Skill superpowers (MIT, commit 22f0b46) di `.claude/skills/`: writing-skills, writing-plans, test-driven-development, subagent-driven-development, executing-plans, requesting-code-review, using-git-worktrees, finishing-a-development-branch.
+  - `perakit-agen` (buatan Zuno, dari writing-skills):
+    - RED: tanpa skill, agen tidak diuji perilaku, ada usulan agen ke-19, tidak didaftarkan, "12 tahun" tanpa "sekitar";
+    - GREEN: semua lolos (`docs/uji-agen/perakit-agen.md`).
+  - Agen pertama hasil perakit-agen: skill `penulis-hook` untuk P.1, diuji 4 skenario lewat `claude -p` (`docs/uji-agen/penulis-hook.md`).
+- Tes (semua lolos):
+  - v2 stub (default, --web, --tampil, --tipe=A/B);
+  - build stub (default, --prd, --klien, --buruk, --potong, --gagal, --putus, --putus-parah, --desref);
+  - web stub;
+  - web api/gemini/openrouter/riset;
+  - dev-server;
+  - jasa (SEMUA LOLOS).
+- Artifact versi 6.
+- File berubah: `prototypes/zuno-studio-v2.html`, `web/api/riset.js` (baru), `web/src/live.js`, `web/dev-server.mjs`, `web/index.html`, tes di `tests/` (+ `tests/fixtures/`, `tests/zuno-web-riset-test.mjs`), `.claude/skills/*`, `docs/*`, `agents/*`, `.agents/*`, `CLAUDE.md`, `pending.md` (P6 sebagian).
+- Tertunda:
+  - push (menunggu Zulnan);
+  - uji dengan Claude asli dan di Vercel;
+  - feed Google News hanya untuk pemakaian pribadi (catat bila dipakai di edisi jasa);
+  - skenario coding untuk perakit-agen.
+
+## 51. (entri berikutnya di sini)
