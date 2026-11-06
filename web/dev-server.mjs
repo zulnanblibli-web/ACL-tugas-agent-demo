@@ -1,5 +1,5 @@
 // Zuno Web: server lokal untuk uji di komputer sendiri (tanpa Vercel).
-// Menyajikan halaman dan memakai handler yang sama dengan Vercel (api/ai.js, api/status.js, api/riset.js).
+// Menyajikan halaman dan memakai handler yang sama dengan Vercel (api/ai.js, api/status.js, api/riset.js, api/gambar.js).
 // Pakai:  cd web && npm install && node dev-server.mjs   lalu buka http://localhost:3000
 // Pengaturan dibaca dari web/.env.local (salin dari .env.local.example). API key hanya ada di file itu.
 import http from 'node:http';
@@ -44,11 +44,12 @@ function loadEnv(file) {
 const hasEnvFile = loadEnv(path.join(here, '.env.local'));
 
 // Handler dimuat setelah env terisi (api/ai.js membaca env saat dimuat).
-let POST, GET, RISET;
+let POST, GET, RISET, GAMBAR;
 try {
   ({ POST } = await import('./api/ai.js'));
   ({ GET } = await import('./api/status.js'));
   ({ GET: RISET } = await import('./api/riset.js'));
+  ({ GET: GAMBAR } = await import('./api/gambar.js'));
 } catch (e) {
   if (e && e.code === 'ERR_MODULE_NOT_FOUND') gagal('Paket belum terpasang', 'Jalankan "npm install" di folder web (atau hapus folder web\\node_modules lalu klik jalankan-lokal.bat lagi). Bila gagal, matikan VPN sebentar.', e);
   else gagal('Server AI tidak bisa dimuat', 'Kirim isi web\\server-lokal.log ke Claude Code.', e);
@@ -93,6 +94,7 @@ const server = http.createServer(async (req, res) => {
     if (url.pathname === '/api/ai' && req.method === 'POST') return await sendWeb(res, await POST(await toWebRequest(req)));
     if (url.pathname === '/api/status' && req.method === 'GET') return await sendWeb(res, await GET(await toWebRequest(req)));
     if (url.pathname === '/api/riset' && req.method === 'GET') return await sendWeb(res, await RISET(await toWebRequest(req)));
+    if (url.pathname === '/api/gambar' && req.method === 'GET') return await sendWeb(res, await GAMBAR(await toWebRequest(req)));
     if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }
     const rel = url.pathname === '/' ? 'index.html' : decodeURIComponent(url.pathname).replace(/^\/+/, '');
     const file = path.resolve(here, rel);

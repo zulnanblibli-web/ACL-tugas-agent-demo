@@ -671,7 +671,7 @@ function buildMd(c){
   }else{
     L.push('## 4. Storyboard per slide','','| # | Babak | Tipe | Judul | Isi | Label |','|---|---|---|---|---|---|');
     K.slides.forEach(function(sl,i){L.push('| '+(i+1)+' | '+sl.babak+' | '+sl.tipe+' | '+cell(sl.judul)+' | '+cell(sl.isi)+' | '+cell(c.visual.items[i].label)+' |')});
-    L.push.apply(L,['','## 5. Desain','','- Template: **'+c.template+'** (satu template tetap; tipe slide: cover, poin, fakta, alasan, cta)','- Ukuran 1080x1350, slide 1 hook, slide terakhir CTA, penomoran slide, handle akun belum diisi.','- Gambar cover: '+(c.cover?'diunggah Zulnan':(FOTO?'foto Zulnan bawaan (assets/foto-zulnan.webp)':'tidak ada (cover teks saja)'))+'; maskot tidak dipakai.'].concat((K.lint&&K.lint.length)?['','Catatan tata letak (teks dipotong otomatis agar tidak ramai):'].concat(K.lint.map(function(x){return '- '+x})):[]).concat(['']));
+    L.push.apply(L,['','## 5. Desain','','- Template: **'+c.template+'** (satu template tetap; tipe slide: cover, poin, fakta, alasan, cta)','- Ukuran 1080x1350, slide 1 hook, slide terakhir CTA, penomoran slide, handle akun belum diisi.','- Gambar cover: '+(c.coverKredit?'diambil dari sumber pembahasan, '+c.coverKredit+' ('+c.coverAsal+'). Kredit tertulis di slide 1. Gambar milik penerbit/pemiliknya: **cek hak pakai sebelum posting**, atau ganti lewat tombol "Ganti gambar cover".':c.cover?'diunggah Zulnan':(FOTO?'foto Zulnan bawaan (assets/foto-zulnan.webp)':'tidak ada (cover teks saja)'))+'; maskot tidak dipakai.'].concat((K.lint&&K.lint.length)?['','Catatan tata letak (teks dipotong otomatis agar tidak ramai):'].concat(K.lint.map(function(x){return '- '+x})):[]).concat(['']));
   }
   L.push('## 6. Caption dan hashtag','',K.caption||'-','',K.hashtag.join(' '),'','## 7. Daftar fakta & klaim (untuk Pemeriksa Realitas)','');
   (K.fakta.length?K.fakta:['(tidak ada)']).forEach(function(x){L.push('- '+x)});L.push('');
@@ -742,8 +742,9 @@ async function renderCard(c){
   }else{
     setCard(c,'Perender membuat file');UI.act('edit',c.id+': Perender merender slide ke PNG');
     if(COVER&&!c.cover)c.cover=COVER;
+    if(!c.cover)await coverSumber(c);
     c.hasil=await limRender(function(){if(aborted)throw {code:'cancelled'};return Render.carousel(c)});
-    c.fileInfo={bentuk:'PNG per slide',ukuran:'1080x1350',jumlah_slide:c.hasil.png.length,template:c.template,gambar_cover:c.cover?'diunggah Zulnan':(FOTO?'foto Zulnan bawaan':'tidak ada'),teks_dipotong:(c.konten.lint||[]).length,handle_akun:'belum diisi Zulnan',penomoran:'ada'};
+    c.fileInfo={bentuk:'PNG per slide',ukuran:'1080x1350',jumlah_slide:c.hasil.png.length,template:c.template,gambar_cover:c.coverKredit?'dari sumber pembahasan: '+c.coverKredit.replace(/^Gambar: /,'')+' ('+c.coverAsal+'); cek hak pakai sebelum posting':c.cover?'diunggah Zulnan':(FOTO?'foto Zulnan bawaan':'tidak ada'),teks_dipotong:(c.konten.lint||[]).length,handle_akun:'belum diisi Zulnan',penomoran:'ada'};
   }
   c.md=buildMd(c);
 }
@@ -903,13 +904,13 @@ async function main(){
     UI.act('riset',S.web?'Peneliti Tren memilih bahan dari hasil riset web'+(S.src?' dan sumber dari Zulnan':''):S.src?'Peneliti Tren mengolah sumber dari Zulnan menjadi sudut konten':'Peneliti Tren menyusun bahan dari pengetahuan umum per pilar (riset web tidak tersedia di sini)');
     try{var rs=await ask('R.1',null,pRiset(),'quick');S.riset={sumber:(Array.isArray(rs.sumber)?rs.sumber:[]).slice(0,5).map(function(x){return {judul:String(x&&x.judul||'').slice(0,160),tautan:String(x&&x.tautan||'').slice(0,300),jenis:String(x&&x.jenis||'').slice(0,20),inti:String(x&&x.inti||'').slice(0,300),sudut:String(x&&x.sudut_konten||'').slice(0,300)}}).filter(function(x){return x.judul||x.inti}).map(cekTautan),masalah_audiens:arr(rs.masalah_audiens),sudut_jarang:arr(rs.sudut_jarang),pola_hook:arr(rs.pola_hook),bahan_umum:arr(rs.bahan_umum).slice(0,6),catatan:String(rs.catatan||'')}}catch(e){if(e&&(e.code==='cancelled'||FATAL.indexOf(e.code)>-1))throw e;S.riset=null}
     UI.act('riset','Ahli Strategi Media Sosial menyusun angle dan hook untuk semua kartu');
-    var br=await ask('R.2',null,P('R.2','Susun brief untuk setiap kartu. Tahap funnel dan angle antar kartu harus berbeda. Pertahankan pilar dan arah tiap kartu. Hook harus kuat dan spesifik (angka nyata dari bank fakta, nama tools, situasi kerja yang relate), bukan pertanyaan umum. BOFU = bukti tentang Zulnan dari bank fakta, tanpa klaim hasil.',S.cards.map(function(c){return ctxCard(c,false)}).join('\n---\n')+'\n\nBAHAN RISET (hipotesis): '+risetTxt(),'Balas HANYA JSON: {"briefs":[{"id":"KK-001","ide":"...","funnel":"TOFU/MOFU/BOFU","platform":"Instagram/TikTok/Threads","angle":"...","hooks":["...","...","..."],"tujuan_cta":"..."}]}'),'quick');
+    var br=await ask('R.2',null,P('R.2','Susun brief untuk setiap kartu. Tahap funnel dan angle antar kartu harus berbeda. Pertahankan pilar dan arah tiap kartu. Hook harus kuat dan spesifik (angka nyata dari bank fakta, nama tools, situasi kerja yang relate), bukan pertanyaan umum. BOFU = bukti tentang Zulnan dari bank fakta, tanpa klaim hasil.',S.cards.map(function(c){return ctxCard(c,false)}).join('\n---\n')+'\n\nBAHAN RISET (hipotesis): '+risetTxt(),'Balas HANYA JSON: {"briefs":[{"id":"KK-001","ide":"...","funnel":"TOFU/MOFU/BOFU","platform":"Instagram/TikTok/Threads","angle":"...","hooks":["...","...","..."],"tujuan_cta":"...","sumber_utama":"judul PERSIS dari BAHAN RISET yang jadi bahan kartu ini, atau kosong","gambar_cari":"nama tokoh, produk, perusahaan, atau tempat NYATA yang dibahas kartu ini dan tertulis di bahan riset (untuk mencari foto aslinya); kosong bila tidak ada. Jangan mengarang."}]}'),'quick');
     (br.briefs||[]).forEach(function(b){
       var c=S.cards.filter(function(x){return x.id===b.id})[0];if(!c)return;
       if(b.ide)c.topik=String(b.ide).slice(0,160);
       if(['TOFU','MOFU','BOFU'].indexOf(b.funnel)>-1)c.funnel=b.funnel;
       if(['Instagram','TikTok','Threads'].indexOf(b.platform)>-1)c.platform=b.platform;
-      c.angle=String(b.angle||'');c.hooks=(Array.isArray(b.hooks)?b.hooks:[]).map(String).slice(0,3);c.cta=String(b.tujuan_cta||'');
+      c.angle=String(b.angle||'');c.sumberUtama=String(b.sumber_utama||'').slice(0,200);c.gambarCari=String(b.gambar_cari||'').replace(/\s+/g,' ').trim().slice(0,60);c.hooks=(Array.isArray(b.hooks)?b.hooks:[]).map(String).slice(0,3);c.cta=String(b.tujuan_cta||'');
     });
     UI.track('riset','done');UI.act('riset','Bahan dan brief selesai, diserahkan ke Divisi Produksi.');UI.update();
     await Promise.all(S.cards.map(function(c){return cardFlow(c)}));
@@ -1018,6 +1019,43 @@ function cFoot(ctx,i,lineX){
   ctx.lineWidth=2;ctx.strokeStyle='rgba(62,166,255,.85)';rr(ctx,903,1229,110,58,29);ctx.stroke();
   ctx.font='700 32px '+CT.head;ctx.fillStyle=CT.ink;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(String(i+1).padStart(2,'0'),958,1259);ctx.textAlign='left';
 }
+/* Cover slide 1 dari sumber pembahasan (keputusan Zulnan 2026-11-06), hanya di Zuno Web (window.ZunoGambar).
+   Urutan: gambar utama artikel sumber -> thumbnail berita dari Google Trends -> foto berlisensi bebas Wikimedia untuk
+   tokoh/produk/tempat nyata yang tertulis di naskah atau sumber -> foto Zulnan bawaan. Tidak ada gambar buatan AI. */
+function cariSumberKartu(c){
+  var R=S&&S.riset,L=(R&&R.sumber)||[],k=String(c.sumberUtama||'').toLowerCase().trim();
+  var hit=k?L.filter(function(x){var j=String(x.judul||'').toLowerCase();return j&&(j===k||j.indexOf(k)>-1||k.indexOf(j)>-1)})[0]:null;
+  if(!hit){var withLink=L.filter(function(x){return x.tautan});hit=withLink[S.cards.indexOf(c)%Math.max(1,withLink.length)]||null}
+  return hit;
+}
+function gambarTren(src){
+  var W=S&&S.web,out='';if(!W||!src)return '';
+  (W.tren||[]).forEach(function(t){(t.berita||[]).forEach(function(b){if(!out&&b.gambar&&(b.tautan===src.tautan||b.judul===src.judul))out=b.gambar})});
+  return out;
+}
+async function coverSumber(c){
+  if(typeof window.ZunoGambar!=='function'||c.format!=='carousel')return;
+  var src=cariSumberKartu(c),coba=[];
+  if(src&&src.tautan)coba.push({q:{u:src.tautan},jenis:'sumber'});
+  var tg=gambarTren(src);if(tg)coba.push({q:{u:tg},jenis:'tren',kredit:src&&src.judul});
+  var nm=String(c.gambarCari||'').trim();
+  if(nm){
+    var teks=JSON.stringify([c.konten&&c.konten.slides,c.konten&&c.konten.caption,c.topik,src&&src.judul,src&&src.inti,(S.riset&&S.riset.sumber)||[]]).toLowerCase();
+    if(teks.indexOf(nm.toLowerCase())>-1)coba.push({q:{cari:nm},jenis:'wikimedia'});
+    else LOG.push({t:new Date().toISOString(),who:'E.2 cover',lewati:'"'+nm+'" tidak tertulis di naskah/sumber, tidak dicari'});
+  }
+  for(var i=0;i<coba.length;i++){
+    if(aborted)return;
+    setCard(c,'Perender mencari gambar cover dari sumber');
+    try{
+      var g=await window.ZunoGambar(coba[i].q),cv=await coverFromFile(g.blob);
+      if(Math.max(cv.width,cv.height)<200)throw {message:'gambar terlalu kecil ('+cv.width+'x'+cv.height+')'};
+      c.cover=cv;c.coverKredit='Gambar: '+(g.sumber||'sumber');c.coverAsal=g.asal||(coba[i].q.u||coba[i].q.cari);c.coverJenis=coba[i].jenis;
+      LOG.push({t:new Date().toISOString(),who:'E.2 cover',ok:true,jenis:coba[i].jenis,asal:c.coverAsal});
+      return;
+    }catch(e){LOG.push({t:new Date().toISOString(),who:'E.2 cover',ok:false,jenis:coba[i].jenis,error:String(e&&e.message||e).slice(0,160)})}
+  }
+}
 function coverFromFile(f){return new Promise(function(res,rej){
   if(!f||!/^image\//.test(f.type||'')||f.size>25*1024*1024)return rej(new Error('bukan gambar atau terlalu besar'));
   var u=URL.createObjectURL(f),im=new Image();
@@ -1053,6 +1091,7 @@ function drawSlide(c,i){
     y=cHead(ctx,sl,label,sl.sub,nar?430:820,nar?36:38,140);
     if(lay==='card'){var ct=y+44,chh=Math.min(560,1140-ct);if(chh>=200)cDrawCard(ctx,CI,100,ct,880,chh)}
     if(lay!=='none')cPill(ctx,100,H-96-84,'Swipe untuk lanjut');else cPill(ctx,1014-cPillW(ctx,'Swipe untuk lanjut'),H-150-84,'Swipe untuk lanjut');
+    if(c.coverKredit&&c.cover&&CI===c.cover){ctx.save();ctx.font='500 22px '+CT.body;ctx.fillStyle='rgba(245,247,250,.78)';ctx.shadowColor='rgba(0,0,0,.6)';ctx.shadowBlur=6;ctx.textAlign='right';ctx.textBaseline='alphabetic';var kt=c.coverKredit;while(ctx.measureText(kt).width>560&&kt.length>12)kt=kt.slice(0,-2);if(kt!==c.coverKredit)kt+='…';ctx.fillText(kt,1040,H-34);ctx.restore()}
     return cv;
   }
   y=cHead(ctx,sl,label,t==='cta'?sl.sub:t==='poin'?sl.sub:'',820,38,112);
@@ -1398,7 +1437,7 @@ var UI={
       var bg=document.createElement('button');bg.className='btn';bg.textContent='Ganti gambar cover (slide 1)';bg.title='Pilih gambar lain untuk slide 1; hanya slide 1 yang dirender ulang';
       var gf=document.createElement('input');gf.type='file';gf.accept='image/*';gf.style.display='none';gf.setAttribute('aria-label','Gambar cover baru untuk '+c.id);
       bg.onclick=function(){gf.click()};
-      gf.onchange=function(){var f=(gf.files||[])[0];if(!f)return;bg.textContent='Memproses gambar...';coverFromFile(f).then(async function(cv){c.cover=cv;await loadFonts();await loadFoto();c.hasil.png[0]=drawSlide(c,0).toDataURL('image/png');var im0=sl.querySelector('img');if(im0)im0.src=c.hasil.png[0];bg.textContent='Cover diganti ✓'},function(){bg.textContent='Gambar tidak bisa dipakai (JPG, PNG, WebP, maks. 25 MB)'});gf.value=''};
+      gf.onchange=function(){var f=(gf.files||[])[0];if(!f)return;bg.textContent='Memproses gambar...';coverFromFile(f).then(async function(cv){c.cover=cv;c.coverKredit='';c.coverAsal='';c.coverJenis='';await loadFonts();await loadFoto();c.hasil.png[0]=drawSlide(c,0).toDataURL('image/png');var im0=sl.querySelector('img');if(im0)im0.src=c.hasil.png[0];bg.textContent='Cover diganti ✓'},function(){bg.textContent='Gambar tidak bisa dipakai (JPG, PNG, WebP, maks. 25 MB)'});gf.value=''};
       d.appendChild(bg);d.appendChild(gf);
     }
     /* pratinjau paket .md */

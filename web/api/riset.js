@@ -44,8 +44,9 @@ export function parseTrends(xml, max = 12) {
     kata: tag(it, 'title'),
     perkiraan_pencarian: tag(it, 'ht:approx_traffic'),
     tanggal: tag(it, 'pubDate'),
+    gambar: tag(it, 'ht:picture'),
     berita: (it.match(/<ht:news_item>[\s\S]*?<\/ht:news_item>/g) || []).slice(0, 2).map((n) => ({
-      judul: tag(n, 'ht:news_item_title'), tautan: tag(n, 'ht:news_item_url'), sumber: tag(n, 'ht:news_item_source')
+      judul: tag(n, 'ht:news_item_title'), tautan: tag(n, 'ht:news_item_url'), sumber: tag(n, 'ht:news_item_source'), gambar: tag(n, 'ht:news_item_picture')
     }))
   })).filter((x) => x.kata);
 }

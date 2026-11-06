@@ -32,6 +32,7 @@ const args = process.argv.slice(2); const JASA = args.find(a=>!a.startsWith('--'
     const of=window.fetch.bind(window);
     window.__aiReq=[];
     window.fetch=async(u,o)=>{
+      if(String(u).includes('/api/gambar')){window.__gambarReq=(window.__gambarReq||[]).concat([String(u)]);return new Response(JSON.stringify({code:'no_image',message:'tes: tidak ada gambar'}),{status:422,headers:{'content-type':'application/json'}})}
       if(String(u).includes('/api/riset'))return new Response(JSON.stringify({diambil:'2026-11-06T07:00:00Z',tren:[],berita:[{kata_kunci:'kue',judul:'Berita uji',tautan:'https://news.test/b',sumber:'News Test'}],diskusi:[],gagal:[]}),{headers:{'content-type':'application/json'}});
       if(String(u).includes('/api/status'))return new Response(JSON.stringify({online:true,provider:'claude',model:'claude-opus-5-5',ai_key_set:true,access_set:true}),{headers:{'content-type':'application/json'}});
       if(String(u).includes('/api/ai')){

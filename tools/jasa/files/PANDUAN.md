@@ -84,11 +84,13 @@ Peneliti Tren mencari bahan sendiri dari Google Trends (pencarian yang sedang na
    | `RISET_HARI_BERITA` | Umur berita maksimal, dalam hari (1-30) | `7` |
    | `RISET_HARI_DISKUSI` | Umur diskusi Hacker News, dalam hari (1-60) | `14` |
    | `RISET_AKTIF` | `off` untuk mematikan riset web | `off` |
+   | `RISET_GAMBAR` | `off` bila cover slide 1 tidak boleh memakai gambar dari sumber | `off` |
 
 3. Klik **Redeploy** (tab Deployments).
 
 Catatan:
 - Tautan sumber selalu dari hasil riset. Tautan yang dikarang AI dikosongkan otomatis. Buka tautannya sebelum memakai isinya sebagai fakta.
+- **Cover slide 1 carousel** otomatis diambil dari gambar utama artikel yang jadi bahan naskah. Bila artikel tidak punya gambar, Zuno mencari foto asli berlisensi bebas di Wikimedia Commons untuk tokoh, produk, atau tempat yang benar-benar tertulis di naskah atau sumber. Tidak ada gambar buatan AI. Kreditnya ("Gambar: <situs>") tertulis di slide 1. Gambar berita tetap milik penerbitnya: cek hak pakai sebelum posting, atau ganti lewat tombol **Ganti gambar cover**. Gambar cover yang kamu unggah sendiri selalu didahulukan.
 - Feed Google News hanya boleh untuk pemakaian pribadi, menurut ketentuan di feed-nya. Pakai untuk riset bahan kontenmu sendiri, jangan dijual ulang sebagai layanan berita.
 
 ## 7. Masalah umum

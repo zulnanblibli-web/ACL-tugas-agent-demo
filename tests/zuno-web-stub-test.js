@@ -32,6 +32,7 @@ const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'ta
     window.__aiReq=[];
     window.__risetReq=[];
     window.fetch=async(u,o)=>{
+      if(String(u).includes('/api/gambar')){window.__gambarReq=(window.__gambarReq||[]).concat([String(u)]);return new Response(JSON.stringify({code:'no_image',message:'tes: tidak ada gambar'}),{status:422,headers:{'content-type':'application/json'}})}
       if(String(u).includes('/api/riset')){window.__risetReq.push({url:String(u),key:o&&o.headers&&o.headers['x-zuno-key']});return new Response(JSON.stringify({diambil:'2026-11-06T07:00:00Z',tren:[{kata:'chatgpt',perkiraan_pencarian:'2000+',berita:[]}],berita:[{kata_kunci:'AI agent',judul:'Berita AI agent',tautan:'https://news.test/a',sumber:'News Test'}],diskusi:[],gagal:[]}),{headers:{'content-type':'application/json'}})}
       if(String(u).includes('/api/status'))return new Response(JSON.stringify({online:true,provider:'claude',model:'claude-opus-5-5',ai_key_set:true,access_set:true}),{headers:{'content-type':'application/json'}});
       if(String(u).includes('/api/ai')){
@@ -84,5 +85,6 @@ const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'ta
   console.log('alur HUD akhir:',await p.$$eval('#hFlow .node',e=>e.map(x=>x.querySelector('b').textContent+'='+x.dataset.s).join(' ')));
   console.log('proses %:',await p.$eval('#hPct',e=>e.textContent),'| model:',await p.$eval('#hModel',e=>e.textContent),'| panggilan /api/ai:',(await p.evaluate(()=>window.__aiReq)).length,'| kunci terkirim:',(await p.evaluate(()=>window.__aiReq[0]&&window.__aiReq[0].key)));
   await p.screenshot({path:process.env.SHOT||'/tmp/zuno-web.png',fullPage:true});
+  { const g=await p.evaluate(()=>window.__gambarReq||[]); assert(g.length>=1&&g.every(u=>/\/api\/gambar\?(u|cari)=/.test(u)),'live.js memanggil /api/gambar untuk cover slide 1 ('+g.length+'x); gagal -> foto bawaan, tanpa error'); }
   console.log('ERRORS',errs); assert(!errs.length,'tanpa error halaman'); await b.close(); process.exit(process.exitCode||0);
 })().catch(e=>{console.error('FAIL',e);process.exit(1)});

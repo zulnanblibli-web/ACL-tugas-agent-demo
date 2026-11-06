@@ -98,7 +98,7 @@ writeFileSync(join(out, 'VERSI.txt'), 'Zuno Studio edisi jasa\nDiekspor: ' + new
 
 // ---------- cek akhir: tidak ada identitas Zulnan tersisa yang tidak terlindungi ----------
 const leaks = [];
-for (const f of ['index.html', 'live.js', 'hud.js', 'hud.css', 'api/ai.js', 'api/status.js', 'api/riset.js']) {
+for (const f of ['index.html', 'live.js', 'hud.js', 'hud.css', 'api/ai.js', 'api/status.js', 'api/riset.js', 'api/gambar.js']) {
   const t = readFileSync(join(out, f), 'utf8');
   for (const bad of ['sales sekitar 12 tahun', 'FMCG', '6 web aktif', 'rambut hitam keriting', 'foto-zulnan', 'zuno-zulnan-percakapan']) if (t.includes(bad)) leaks.push(f + ': ' + bad);
 }

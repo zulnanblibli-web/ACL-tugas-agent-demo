@@ -1,11 +1,28 @@
 {
   "functions": {
-    "api/ai.js": { "maxDuration": 300 }
+    "api/ai.js": {
+      "maxDuration": 300
+    },
+    "api/gambar.js": {
+      "maxDuration": 30
+    },
+    "api/riset.js": {
+      "maxDuration": 30
+    }
   },
   "headers": [
-    { "source": "/(.*)", "headers": [
-      { "key": "X-Content-Type-Options", "value": "nosniff" },
-      { "key": "Referrer-Policy", "value": "same-origin" }
-    ] }
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "same-origin"
+        }
+      ]
+    }
   ]
 }

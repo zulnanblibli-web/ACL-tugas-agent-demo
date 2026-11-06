@@ -81,6 +81,17 @@
     return r.json();
   };
 
+  /* Gambar cover dari sumber (og:image artikel / thumbnail tren) atau foto berlisensi bebas Wikimedia lewat /api/gambar. */
+  window.ZunoGambar = async function (q) {
+    var key = getKey();
+    if (!key) throw { code: 'not_granted', message: 'Kunci akses belum diisi.' };
+    var qs = q && q.cari ? 'cari=' + encodeURIComponent(q.cari) : 'u=' + encodeURIComponent((q && q.u) || '');
+    var r = await fetch('/api/gambar?' + qs, { headers: { 'x-zuno-key': key } });
+    if (!r.ok) { var j = {}; try { j = await r.json(); } catch (e) {} throw { code: j.code || 'no_image', message: j.message || ('HTTP ' + r.status) }; }
+    var dec = function (v) { try { return decodeURIComponent(v || ''); } catch (e) { return v || ''; } };
+    return { blob: await r.blob(), sumber: dec(r.headers.get('x-zuno-sumber')), asal: dec(r.headers.get('x-zuno-asal')) };
+  };
+
   window.claude = {
     use: function (name) {
       if (name === 'sample') return Promise.resolve(sample);

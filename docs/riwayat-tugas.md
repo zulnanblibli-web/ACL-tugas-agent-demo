@@ -476,4 +476,30 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Tes: v2 stub (referensi terunggah, D.1 menerima gambar), web stub, build, jasa lolos. Artifact dipublikasi ulang.
 - Di-push atas kata Zulnan.
 
-## 53. (entri berikutnya di sini)
+## 53. 2026-11-06: cover slide 1 dari sumber pembahasan
+- Permintaan:
+  - gambar slide 1 carousel diambil dari sumber yang jadi bahan naskah (tren/berita);
+  - bila sumber tidak punya gambar, cari gambar yang relevan (termasuk tokoh), tanpa mengarang dan tetap sesuai pembahasan;
+  - langsung push.
+- Hasil:
+  - `web/api/gambar.js` (baru):
+    - tautan Google News dibuka ke artikel asli (batchexecute), lalu og:image/twitter:image diambil;
+    - gambar langsung (thumbnail Trends) dipakai apa adanya;
+    - mode `cari=`: foto `pilicense=free` dari Wikipedia id/en (Wikimedia Commons), judul wajib cocok dengan nama yang dicari, kredit memuat pembuat dan lisensi;
+    - pengaman: http(s) saja, port standar, tanpa alamat lokal/privat (dicek ulang tiap redirect), halaman maks. 1,5 MB, gambar maks. 6 MB, batas waktu, `RISET_GAMBAR=off`;
+    - route di `dev-server.mjs`; maxDuration 30 detik di `vercel.json`.
+  - Riset menyimpan `gambar` dari Google Trends.
+  - R.2 mengisi `sumber_utama` dan `gambar_cari` per kartu.
+  - Perender memasang cover dengan urutan: unggahan Zulnan, artikel sumber, thumbnail tren, Wikimedia (hanya bila nama itu tertulis di naskah/sumber), foto bawaan.
+  - Kredit "Gambar: <situs>" ada di slide 1, dan paket .md mencatat asal + "cek hak pakai".
+  - Tombol "Ganti gambar cover" menghapus kredit.
+- Tes:
+  - `tests/zuno-web-gambar-test.mjs` 21 cek lolos (termasuk 7 alamat berbahaya ditolak tanpa fetch);
+  - v2 stub `--web`, `--web --gambar-gagal`, `--web --gambar-karang` lolos;
+  - web stub dan jasa lolos.
+- Dicoba langsung dari sesi ini: tautan Google News -> artikel yangcanggih.com -> og:image webp 55 KB berhasil.
+- Wikipedia membalas 429 (rate limit) untuk alamat sesi ini, jadi mode cari baru diuji dengan data tiruan; perlu dicek di Vercel.
+- Host environment sesi ditambah: Wikipedia/Wikimedia, www.yangcanggih.com, photos.yangcanggih.com.
+- Sudah di-commit; push menunggu kata Zulnan (permintaan ini tidak menyebut push).
+
+## 54. (entri berikutnya di sini)
