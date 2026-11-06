@@ -343,7 +343,7 @@ async function risetWeb(){
     if(web.tren.length+web.berita.length+web.diskusi.length)S.web=web;
     else notice('warn','Riset web tidak menemukan bahan'+(web.gagal.length?' ('+esc(web.gagal.join('; '))+')':'')+'. Peneliti Tren memakai pengetahuan umum (perlu dicek).');
     LOG.push({t:new Date().toISOString(),who:'R.1 riset web',ok:!!S.web,jumlah:{tren:web.tren.length,berita:web.berita.length,diskusi:web.diskusi.length},gagal:web.gagal});
-  }catch(e){if(e&&e.code==='cancelled')throw e;notice('warn','Riset web gagal ('+esc(e&&e.message||'error')+'). Peneliti Tren memakai pengetahuan umum (perlu dicek).')}
+  }catch(e){if(e&&e.code==='cancelled')throw e;if(e&&e.code==='riset_off'){UI.act('riset','Riset web dimatikan di setelan server (RISET_AKTIF=off); Peneliti Tren memakai sumber dari kamu atau pengetahuan umum');return}notice('warn','Riset web gagal ('+esc(e&&e.message||'error')+'). Peneliti Tren memakai pengetahuan umum (perlu dicek).')}
 }
 function webTxt(){var W=S&&S.web;if(!W)return '';return 'HASIL RISET WEB (diambil otomatis '+W.diambil+'; kata kunci: '+W.kata_kunci.join(', ')+'):\nTREN PENCARIAN GOOGLE INDONESIA: '+JSON.stringify(W.tren.map(function(t){return {kata:t.kata,perkiraan:t.perkiraan_pencarian,berita:t.berita}}))+'\nBERITA GOOGLE NEWS (7 hari): '+JSON.stringify(W.berita)+'\nDISKUSI HACKER NEWS (14 hari): '+JSON.stringify(W.diskusi)}
 function cekTautan(x){ /* tautan hanya boleh dari hasil riset web atau teks sumber Zulnan */

@@ -16,6 +16,7 @@ Versi live Zuno Studio v2 dengan tampilan HUD. Logika agen tetap dari `prototype
 
 ## Setelan Vercel
 - Root Directory: `web`. Framework: Other. Tanpa build command.
+- Riset web Peneliti Tren (`api/riset.js`): setelan opsional `RISET_AKTIF`, `RISET_SUMBER`, `RISET_NEGARA`, `RISET_BAHASA`, `RISET_KATA_KUNCI`, `RISET_HARI_BERITA`, `RISET_HARI_DISKUSI` (lihat komentar di atas file dan `.env.local.example`). Tanpa API key.
 - Environment variables:
 
 | Nama | Isi | Wajib |

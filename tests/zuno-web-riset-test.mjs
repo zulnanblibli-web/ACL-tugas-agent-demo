@@ -31,6 +31,22 @@ out.push(['Google News mati: tetap 200, dicatat di gagal', r.status === 200 && r
 out.push(['kata kunci dibersihkan, maks. 4', JSON.stringify(cleanQueries('a| a |b|c|d|e|' + 'x'.repeat(200))) === JSON.stringify(['a', 'b', 'c', 'd'])]);
 out.push(['entitas + CDATA diurai', unesc('<![CDATA[A &amp; B]]> &#39;x&#39; &apos;y&apos;') === "A & B 'x' 'y'"]);
 out.push(['parser kebal feed kosong', parseTrends('').length === 0 && parseNews('<rss></rss>', 'q').length === 0]);
+const { setelan } = await import('../web/api/riset.js');
+out.push(['setelan bawaan: aktif, 3 sumber, ID/id, 7/14 hari', (() => { const c = setelan({}); return c.aktif && c.sumber.join() === 'trends,news,hn' && c.negara === 'ID' && c.bahasa === 'id' && c.hari_berita === 7 && c.hari_diskusi === 14; })()]);
+out.push(['setelan nilai aneh dibersihkan', (() => { const c = setelan({ RISET_NEGARA: 'xxx', RISET_BAHASA: '<b>', RISET_SUMBER: 'twitter', RISET_HARI_BERITA: '999' }); return c.negara === 'ID' && c.bahasa === 'id' && c.sumber.length === 3 && c.hari_berita === 30; })()]);
+mode = 'ok';
+Object.assign(process.env, { RISET_SUMBER: 'news', RISET_NEGARA: 'my', RISET_BAHASA: 'ms', RISET_KATA_KUNCI: 'kue rumahan|resep viral', RISET_HARI_BERITA: '3' });
+urls.length = 0;
+r = await call('AI agent');
+out.push(['pembeli atur sumber=news, negara MY, bahasa ms: hanya Google News, parameter ikut', urls.length === 3 && urls.every((u) => /news\.google/.test(u) && /hl=ms/.test(u) && /gl=MY/.test(u) && /ceid=MY%3Ams/.test(u) && /when%3A3d/.test(u)) && r.j.tren.length === 0 && r.j.diskusi.length === 0]);
+out.push(['kata kunci niche pembeli selalu ikut dicari', JSON.stringify(r.j.setelan.kata_kunci_dicari) === JSON.stringify(['AI agent', 'kue rumahan', 'resep viral'])]);
+process.env.RISET_AKTIF = 'off';
+r = await call('AI agent');
+out.push(['RISET_AKTIF=off -> 403 riset_off', r.status === 403 && r.j.code === 'riset_off']);
+for (const k of ['RISET_SUMBER', 'RISET_NEGARA', 'RISET_BAHASA', 'RISET_KATA_KUNCI', 'RISET_HARI_BERITA', 'RISET_AKTIF']) delete process.env[k];
+const { GET: STATUS } = await import('../web/api/status.js');
+const st = await (await STATUS()).json();
+out.push(['/api/status melaporkan setelan riset (tanpa rahasia)', st.riset && st.riset.aktif === true && st.riset.negara === 'ID']);
 let ok = true;
 for (const [n, v] of out) { console.log((v ? 'LOLOS ' : 'GAGAL ') + n); if (!v) ok = false; }
 console.log(ok ? 'HASIL: SEMUA LOLOS' : 'HASIL: ADA YANG GAGAL'); process.exit(ok ? 0 : 1);

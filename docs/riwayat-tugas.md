@@ -459,4 +459,15 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - feed Google News hanya untuk pemakaian pribadi (catat bila dipakai di edisi jasa);
   - skenario coding untuk perakit-agen.
 
-## 51. (entri berikutnya di sini)
+## 51. 2026-11-06: riset otomatis bisa disetel pembeli, push
+- Permintaan: push; riset otomatis bisa disetel supaya pembeli edisi jasa memakai setelan sendiri.
+- Hasil:
+  - `web/api/riset.js` membaca env opsional `RISET_AKTIF`, `RISET_SUMBER`, `RISET_NEGARA`, `RISET_BAHASA`, `RISET_KATA_KUNCI`, `RISET_HARI_BERITA`, `RISET_HARI_DISKUSI`. Nilai aneh dibersihkan ke bawaan.
+  - `RISET_AKTIF=off` membuat endpoint membalas 403 `riset_off`; Zuno Studio lanjut tanpa riset web.
+  - `/api/status` melaporkan setelan riset (tanpa rahasia).
+  - Contoh di `web/.env.local.example`.
+  - Panduan pembeli di PANDUAN edisi jasa bagian 6, serta `docs/jasa-zuno.md` dan `web/README.md`.
+- Tes: `tests/zuno-web-riset-test.mjs` 18 cek lolos, termasuk setelan pembeli (MY/ms, hanya news, kata kunci niche, off). Dicoba langsung dengan negara MY dari sesi ini.
+- Di-push atas kata Zulnan: repo Zuno dan repo jasa.
+
+## 52. (entri berikutnya di sini)

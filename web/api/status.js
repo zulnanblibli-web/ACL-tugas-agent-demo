@@ -1,5 +1,6 @@
 // Zuno: status server untuk panel HUD. Tidak membocorkan kunci apa pun.
 import { pickGemini } from './ai.js';
+import { setelan } from './riset.js';
 export async function GET() {
   const provider = (process.env.AI_PROVIDER || 'claude').toLowerCase();
   const keyEnv = { claude: 'ANTHROPIC_API_KEY', openai: 'OPENAI_API_KEY', gemini: 'GEMINI_API_KEY', openrouter: 'OPENROUTER_API_KEY', 'openai-compatible': 'AI_BASE_URL' }[provider];
@@ -11,6 +12,7 @@ export async function GET() {
     model,
     model_quick: process.env.AI_MODEL_QUICK || null,
     ai_key_set: !!(keyEnv && process.env[keyEnv]),
-    access_set: !!process.env.ZUNO_ACCESS_KEY
+    access_set: !!process.env.ZUNO_ACCESS_KEY,
+    riset: (() => { const c = setelan(); return { aktif: c.aktif, sumber: c.sumber, negara: c.negara, bahasa: c.bahasa, kata_kunci_tetap: c.kata_kunci }; })()
   }, { headers: { 'cache-control': 'no-store' } });
 }

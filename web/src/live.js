@@ -77,7 +77,7 @@
     if (!key) throw { code: 'not_granted', message: 'Kunci akses belum diisi.' };
     var q = (queries || []).map(function (x) { return String(x).replace(/\|/g, ' ').trim(); }).filter(Boolean).slice(0, 4).join('|');
     var r = await fetch('/api/riset?q=' + encodeURIComponent(q), { headers: { 'x-zuno-key': key } });
-    if (!r.ok) throw { code: r.status === 401 ? 'not_granted' : 'upstream_error', message: 'Riset web gagal (HTTP ' + r.status + ').' };
+    if (!r.ok) { var j = {}; try { j = await r.json(); } catch (e) {} throw { code: j.code || (r.status === 401 ? 'not_granted' : 'upstream_error'), message: j.message || ('Riset web gagal (HTTP ' + r.status + ').') }; }
     return r.json();
   };
 

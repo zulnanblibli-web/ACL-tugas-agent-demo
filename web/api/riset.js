@@ -3,8 +3,16 @@
 //   - Google Trends: pencarian yang sedang naik di Indonesia (RSS harian)
 //   - Google News: berita terbaru per kata kunci (RSS pencarian, 7 hari terakhir)
 //   - Hacker News (Algolia): diskusi teknologi/AI yang ramai (14 hari terakhir)
-// Masuk : GET /api/riset?q=kata kunci 1|kata kunci 2   (maks. 4 kata kunci), header x-zuno-key
+// Masuk : GET /api/riset?q=kata kunci 1|kata kunci 2   (maks. 4 kata kunci + RISET_KATA_KUNCI), header x-zuno-key
 // Keluar: JSON {tren:[...], berita:[...], diskusi:[...], gagal:[...], diambil:"ISO"}
+// Setelan (Environment Variables di Vercel atau web/.env.local; semua opsional):
+//   RISET_AKTIF        on (bawaan) | off            matikan riset web sama sekali
+//   RISET_SUMBER       trends,news,hn (bawaan)      pilih sumber, pisahkan koma
+//   RISET_NEGARA       ID (bawaan)                  kode negara 2 huruf untuk Google Trends dan Google News
+//   RISET_BAHASA       id (bawaan)                  kode bahasa Google News (id, en, ms, ...)
+//   RISET_KATA_KUNCI   mis. "kue rumahan|resep viral"  kata kunci niche yang selalu ikut dicari (pisahkan |)
+//   RISET_HARI_BERITA  7 (bawaan, 1-30)             umur berita Google News
+//   RISET_HARI_DISKUSI 14 (bawaan, 1-60)            umur diskusi Hacker News
 // Catatan: feed Google News hanya untuk pemakaian pribadi (lihat <copyright> di feed-nya).
 import { timingSafeEqual } from 'node:crypto';
 
@@ -67,27 +75,43 @@ async function get(url, as, ms = 8000) {
   } finally { clearTimeout(t); }
 }
 
-export function cleanQueries(raw) {
-  return String(raw || '').split('|').map((s) => s.replace(/[\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80)).filter(Boolean).filter((s, i, a) => a.indexOf(s) === i).slice(0, 4);
+export function cleanQueries(raw, max = 4) {
+  return String(raw || '').split('|').map((s) => s.replace(/[\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80)).filter(Boolean).filter((s, i, a) => a.indexOf(s) === i).slice(0, max);
+}
+const num = (v, d, lo, hi) => { const n = parseInt(v, 10); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, n)) : d; };
+// Setelan riset dari env (dibaca tiap permintaan supaya perubahan di .env.local/Vercel langsung terasa setelah redeploy/mulai ulang).
+export function setelan(env = process.env) {
+  const sumber = String(env.RISET_SUMBER || 'trends,news,hn').toLowerCase().split(/[\s,]+/).filter((x) => ['trends', 'news', 'hn'].includes(x));
+  return {
+    aktif: String(env.RISET_AKTIF || 'on').toLowerCase() !== 'off',
+    sumber: sumber.length ? [...new Set(sumber)] : ['trends', 'news', 'hn'],
+    negara: (/^[a-z]{2}$/i.test(env.RISET_NEGARA || '') ? env.RISET_NEGARA : 'ID').toUpperCase(),
+    bahasa: (/^[a-z]{2,3}(-[a-z]{2,4})?$/i.test(env.RISET_BAHASA || '') ? env.RISET_BAHASA : 'id'),
+    kata_kunci: cleanQueries(env.RISET_KATA_KUNCI || '', 3),
+    hari_berita: num(env.RISET_HARI_BERITA, 7, 1, 30),
+    hari_diskusi: num(env.RISET_HARI_DISKUSI, 14, 1, 60)
+  };
 }
 
-export async function riset(qs, geo = 'ID') {
-  const gagal = [], since = Math.floor(Date.now() / 1000) - 14 * 86400;
-  const jobs = [
-    get('https://trends.google.com/trending/rss?geo=' + encodeURIComponent(geo), 'xml').then(parseTrends).catch((e) => { gagal.push('Google Trends: ' + e.message); return []; }),
-    ...qs.map((q) => get('https://news.google.com/rss/search?q=' + encodeURIComponent(q + ' when:7d') + '&hl=id&gl=ID&ceid=ID:id', 'xml').then((x) => parseNews(x, q)).catch((e) => { gagal.push('Google News "' + q + '": ' + e.message); return []; })),
-    ...qs.map((q) => get('https://hn.algolia.com/api/v1/search?query=' + encodeURIComponent(q) + '&tags=story&hitsPerPage=4&numericFilters=' + encodeURIComponent('created_at_i>' + since), 'json').then((x) => parseHN(x, q)).catch((e) => { gagal.push('Hacker News "' + q + '": ' + e.message); return []; }))
-  ];
-  const r = await Promise.all(jobs);
-  const n = qs.length;
+export async function riset(qs, cfg = setelan()) {
+  const gagal = [], since = Math.floor(Date.now() / 1000) - cfg.hari_diskusi * 86400, on = (k) => cfg.sumber.includes(k);
+  qs = cleanQueries([...qs, ...cfg.kata_kunci].join('|'), 6);
+  const hl = cfg.bahasa, gl = cfg.negara, ceid = gl + ':' + hl.split('-')[0];
+  const none = Promise.resolve([]);
+  const tren = on('trends') ? get('https://trends.google.com/trending/rss?geo=' + encodeURIComponent(gl), 'xml').then(parseTrends).catch((e) => { gagal.push('Google Trends: ' + e.message); return []; }) : none;
+  const berita = on('news') ? Promise.all(qs.map((q) => get('https://news.google.com/rss/search?q=' + encodeURIComponent(q + ' when:' + cfg.hari_berita + 'd') + '&hl=' + encodeURIComponent(hl) + '&gl=' + encodeURIComponent(gl) + '&ceid=' + encodeURIComponent(ceid), 'xml').then((x) => parseNews(x, q)).catch((e) => { gagal.push('Google News "' + q + '": ' + e.message); return []; }))) : Promise.resolve([]);
+  const diskusi = on('hn') ? Promise.all(qs.map((q) => get('https://hn.algolia.com/api/v1/search?query=' + encodeURIComponent(q) + '&tags=story&hitsPerPage=4&numericFilters=' + encodeURIComponent('created_at_i>' + since), 'json').then((x) => parseHN(x, q)).catch((e) => { gagal.push('Hacker News "' + q + '": ' + e.message); return []; }))) : Promise.resolve([]);
+  const [t, b, d] = await Promise.all([tren, berita, diskusi]);
   const seen = new Set();
   const uniq = (arr) => arr.filter((x) => { const k = x.tautan || x.judul; if (seen.has(k)) return false; seen.add(k); return true; });
-  return { tren: r[0], berita: uniq(r.slice(1, 1 + n).flat()), diskusi: uniq(r.slice(1 + n).flat()), gagal, diambil: new Date().toISOString() };
+  return { tren: t, berita: uniq(b.flat()), diskusi: uniq(d.flat()), gagal, diambil: new Date().toISOString(), setelan: { sumber: cfg.sumber, negara: gl, bahasa: hl, kata_kunci_tetap: cfg.kata_kunci, kata_kunci_dicari: qs } };
 }
 
 export async function GET(req) {
   if (!process.env.ZUNO_ACCESS_KEY) return json(503, { code: 'not_configured', message: 'ZUNO_ACCESS_KEY belum diisi di Vercel.' });
   if (!keyOk(req.headers.get('x-zuno-key'))) return json(401, { code: 'not_granted', message: 'Kunci akses salah.' });
+  const cfg = setelan();
+  if (!cfg.aktif) return json(403, { code: 'riset_off', message: 'Riset web dimatikan (RISET_AKTIF=off).' });
   const u = new URL(req.url);
-  return json(200, await riset(cleanQueries(u.searchParams.get('q')), (u.searchParams.get('geo') || 'ID').slice(0, 2).toUpperCase()));
+  return json(200, await riset(cleanQueries(u.searchParams.get('q')), cfg));
 }
