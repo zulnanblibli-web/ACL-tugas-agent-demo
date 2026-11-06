@@ -85,6 +85,8 @@
   try {
     var enc = TextEncoder.prototype.encode;
     TextEncoder.prototype.encode = function (s) { return enc.call(this, typeof s === 'string' ? rep(s) : s); };
+    /* Untuk skrip dan JSON di ZIP (rilis.mjs, rilis.json): dikodekan apa adanya, nama brand sudah diisi lewat ZB.nama. */
+    window.ZB.encodeAsli = function (s) { return enc.call(new TextEncoder(), String(s == null ? '' : s)); };
   } catch (e) {}
   try {
     var NB = window.Blob;

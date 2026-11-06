@@ -528,7 +528,7 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
     - Apps Script + Blogger: sama + `blogger-widget.html` (GAS_URL terisi), tempel Blogger = langkah agen.
     - Firebase: projects:create, apps:create, sdkconfig disuntik, Firestore, deploy hosting + rules; Email/Password = langkah agen; akun Admin dibuat lewat API (`--akun-firebase`).
     - Vercel + Supabase: Supabase disiapkan agen (dashboard), skrip menyuntik URL + anon key lalu `vercel deploy --prod`.
-    - Status `live` / `perlu_agen` / `perlu_zulnan` / `gagal` (kode 0/10/20/1), `LAPORAN-RILIS.md`, `hasil-rilis.json`; CLI yang belum ada dipasang lewat npm.
+    - Status `live` / `perlu_agen` / `perlu_pemilik` / `gagal` (kode 0/10/20/1), `LAPORAN-RILIS.md`, `hasil-rilis.json`; CLI yang belum ada dipasang lewat npm.
   - `tools/rilis/sisip.mjs`: menyalin rilis.mjs ke blok `<script type="text/plain" id="zuno-rilis-mjs">` di prototipe (sebelum `</body>` terakhir).
   - Paket rilis kini berisi `rilis.mjs`, `rilis.json`, `akun-awal.json` (hanya di laptop), `CLAUDE.md` operator, `jalankan-rilis.bat`, INSTRUKSI-RILIS baru.
   - Prompt T.3: Apps Script `doGet` menyajikan `Index` + `setupDatabase()` aman diulang; placeholder `firebaseConfig`, `SUPABASE_URL`/`SUPABASE_ANON_KEY`, `GAS_URL`.
@@ -540,4 +540,12 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - Build stub 9 mode lolos (termasuk isi zip baru).
 - Belum diuji di laptop Zulnan: Claude Desktop di Windows, folder Remote Control dari sesi cloud, CLI asli, Firebase/Supabase sungguhan.
 
-## 56. (entri berikutnya di sini)
+## 56. Paket rilis edisi jasa memakai nama brand pembeli (2026-11-06)
+- Permintaan Zulnan: "ubah kekurangan edisi jasa yang nyebut nama gua, diganti untuk opsi pilihan brand pembeli".
+- Sudah di-push sebelumnya: Zuno `96bf695`, jasa `8192aee`.
+- `rilis.mjs` dibuat netral: tanpa nama orang, status `perlu_zulnan` diganti `perlu_pemilik`, `siapa: 'pemilik'`, nama pemilik dari `rilis.json` (`pemilik`) dan tertulis di LAPORAN-RILIS.md.
+- `rilisZip`: nama pemilik = `ZB.nama` (Pengaturan Brand pembeli) atau "Zulnan" di Zuno sendiri; CLAUDE.md dan INSTRUKSI-RILIS memakai nama itu. `rilis.mjs`, `rilis.json`, `akun-awal.json` dikodekan apa adanya lewat `ZB.encodeAsli` (baru di `tools/jasa/files/brand.js`) dan nilai teksnya dibersihkan lewat `ZB.rep` sebelum `JSON.stringify`, jadi tidak rusak walau nama brand memuat tanda kutip.
+- Kait uji `window.ZunoUji.rilisZip`.
+- Tes: jasa 4 cek baru lolos (tanpa Zulnan/nexamind, pemilik = brand, JSON valid dengan tanda kutip, rilis.mjs netral); laptop 24 lolos; build stub, v2, web stub lolos.
+
+## 57. (entri berikutnya di sini)

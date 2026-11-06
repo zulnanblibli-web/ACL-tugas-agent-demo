@@ -24,7 +24,7 @@ Aturan induk: `docs/aturan-engineering.md`, `docs/tangan-komputer.md`, dan `CLAU
 |---|---|
 | `live` (0) | Lanjut ke bagian 3 |
 | `perlu_agen` (10) | Kerjakan butir `perlu` bersiapa `agen` dengan agent-desktop, lalu `node rilis.mjs --cek` (Firebase: `--akun-firebase`) |
-| `perlu_zulnan` (20) | Berhenti. Kirim butirnya ke Zulnan apa adanya. Setelah dia bilang selesai, jalankan lagi |
+| `perlu_pemilik` (20) | Berhenti. Kirim butirnya ke Zulnan apa adanya. Setelah dia bilang selesai, jalankan lagi |
 | `gagal` (1) | Baca `galat`, cari akar masalah (`systematic-debugging`), perbaiki seperlunya, jalankan lagi. Maks. 3 kali |
 
 Yang dikerjakan rilis.mjs per mesin:

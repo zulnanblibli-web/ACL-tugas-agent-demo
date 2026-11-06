@@ -98,6 +98,15 @@ const args = process.argv.slice(2); const JASA = args.find(a=>!a.startsWith('--'
   const teks=await p.evaluate(()=>document.body.innerText);
   cek('halaman tanpa nama Zulnan',!/zulnan/i.test(teks));
   cek('halaman tanpa kredit nexamind',!/nexamind/i.test(teks));
+  { const z=await p.evaluate(async()=>{const B={id:'PRJ-261106-AB7',jenis:'portofolio',klien:'',scope:{nama_aplikasi:'Absensi "Kelas" O\'Neil',mesin:'Apps Script + Google Sheets',kredit:'Creative @nexamind.ai'},code:{html:'<html></html>',beName:'Code.gs',backend:'function doGet(){}',panduan:'# Panduan untuk Zulnan'},design:{},akun:{adminU:'admin_ab12',adminP:'Rahasia123',demoU:'demo_cd34',demoP:'Demo12345'}};return await window.ZunoUji.rilisZip(B).text()});
+    const blok=(n)=>{const i=z.indexOf('/'+n+'{');return i<0?'':z.slice(i+n.length+1)};
+    const rj=blok('rilis.json'),aj=blok('akun-awal.json');
+    const ambilJson=(t)=>{for(let k=t.indexOf('{'),d=0,i=k;i<t.length;i++){if(t[i]==='{')d++;else if(t[i]==='}'&&--d===0)return JSON.parse(t.slice(k,i+1))}};
+    let man=null,ak=null;try{man=ambilJson(rj);ak=ambilJson(aj)}catch(e){console.log('JSON rusak:',e.message)}
+    cek('paket rilis jasa: tanpa nama penjual (Zulnan/nexamind)',!/Zulnan|nexamind/i.test(z));
+    cek('paket rilis jasa: pemilik = nama brand pembeli di rilis.json dan CLAUDE.md',man&&man.pemilik==='Rina Kue'&&/Pemilik: Rina Kue/.test(z));
+    cek('paket rilis jasa: JSON tetap valid walau nama memuat tanda kutip',man&&man.nama==='Absensi "Kelas" O\'Neil'&&ak&&ak.akun.length===2);
+    cek('paket rilis jasa: rilis.mjs netral (perlu_pemilik, tanpa nama orang)',/perlu_pemilik/.test(z)&&/export async function rilis/.test(z)); }
   const unduh=await p.evaluate(async()=>{const t=await new Blob(['Dibuat Zulnan · Creative @nexamind.ai'],{type:'text/markdown'}).text();const z=new TextDecoder().decode(new TextEncoder().encode('Pemilik: Zulnan'));return t+' | '+z});
   cek('unduhan (.md dan isi zip) memakai brand: '+unduh,!/zulnan|nexamind/i.test(unduh)&&unduh.includes('Rina Kue')&&unduh.includes('Studio Rina'));
   const mdv=await p.evaluate(()=>{const e=document.querySelector('#resv .mdprev');return e?e.innerText:''});

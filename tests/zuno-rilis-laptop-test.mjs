@@ -61,9 +61,9 @@ const O = (t, x = {}) => Object.assign({ exec: t.exec, fetch: t.fetch, tungguMs:
 
 // Apps Script + Google Sheets
 let d = paket('Apps Script + Google Sheets'), t = tiruan({ belumLogin: true }), H = await rilis(d, O(t));
-ok('GAS belum login clasp -> perlu_zulnan + cara login sekali', H.status === 'perlu_zulnan' && /clasp login/.test(H.perlu[0].cara));
+ok('GAS belum login clasp -> perlu_pemilik + cara login sekali', H.status === 'perlu_pemilik' && /clasp login/.test(H.perlu[0].cara));
 t = tiruan({ apiMati: true }); H = await rilis(d, O(t));
-ok('GAS Apps Script API mati -> perlu_zulnan + link usersettings', H.status === 'perlu_zulnan' && /usersettings/.test(H.perlu[0].cara));
+ok('GAS Apps Script API mati -> perlu_pemilik + link usersettings', H.status === 'perlu_pemilik' && /usersettings/.test(H.perlu[0].cara));
 d = paket('Apps Script + Google Sheets'); t = tiruan({ tanpaCli: true }); H = await rilis(d, O(t));
 ok('GAS clasp belum terpasang -> dipasang sendiri lewat npm -g', t.calls.some((c) => c.cmd === 'npm' && c.args.join(' ') === 'install -g @google/clasp --no-audit --no-fund'));
 ok('GAS rilis pertama -> live + link /exec + spreadsheet', H.status === 'live' && H.url === 'https://script.google.com/macros/s/AKfyDEP1/exec' && /SHEET1/.test(H.spreadsheet));
@@ -75,7 +75,7 @@ ok('GAS Code.js bawaan dihapus, Code.gs dari paket dipakai', !existsSync(join(d,
 t = tiruan({}); H = await rilis(d, O(t));
 ok('GAS rilis ulang: tanpa create-script, deploy -i ke deployment yang sama (link tetap)', H.status === 'live' && !t.calls.some((c) => /create-script/.test((c.args || []).join(' '))) && t.calls.some((c) => c.cmd === 'clasp' && c.args.includes('-i') && c.args.includes('AKfyDEP1')));
 d = paket('Apps Script + Google Sheets'); t = tiruan({ izin: true }); H = await rilis(d, O(t));
-ok('GAS aplikasi baru belum diberi izin Google -> perlu_zulnan dengan langkah Izinkan (default tidak diklik agen)', H.status === 'perlu_zulnan' && /Izinkan/.test(H.perlu[0].cara) && H.perlu[0].siapa === 'Zulnan' && H.cek.izin_google);
+ok('GAS aplikasi baru belum diberi izin Google -> perlu_pemilik dengan langkah Izinkan (default tidak diklik agen)', H.status === 'perlu_pemilik' && /Izinkan/.test(H.perlu[0].cara) && H.perlu[0].siapa === 'pemilik' && H.cek.izin_google);
 t.cfg.diizinkan = true; H = await rilis(d, O(t, { cek: true }));
 ok('GAS --cek setelah diizinkan -> live tanpa deploy ulang', H.status === 'live' && !t.calls.slice(-3).some((c) => c.cmd));
 d = paket('Apps Script + Google Sheets', { opsi: { izinGoogleOtomatis: true } }); t = tiruan({ izin: true }); H = await rilis(d, O(t));
@@ -114,7 +114,7 @@ if (process.platform !== 'win32') {
   const env = Object.assign({}, process.env, { PATH: bin + ':' + process.env.PATH });
   let r = spawnSync(process.execPath, ['rilis.mjs'], { cwd: dp, env: Object.assign({}, env, { BELUM: '1' }), encoding: 'utf8' });
   const j1 = JSON.parse(r.stdout.trim().split('\n').pop());
-  ok('Program: belum login -> kode keluar 20, JSON terakhir status perlu_zulnan', r.status === 20 && j1.status === 'perlu_zulnan');
+  ok('Program: belum login -> kode keluar 20, JSON terakhir status perlu_pemilik', r.status === 20 && j1.status === 'perlu_pemilik');
   r = spawnSync(process.execPath, ['rilis.mjs'], { cwd: dp, env, encoding: 'utf8', timeout: 60000 });
   const j2 = JSON.parse(r.stdout.trim().split('\n').pop());
   ok('Program: link /exec tanpa izin (fetch asli gagal di sandbox) -> kode 20 + langkah izin, laporan ditulis', r.status === 20 && j2.url === 'https://script.google.com/macros/s/DEP9/exec' && existsSync(join(dp, 'LAPORAN-RILIS.md')) && existsSync(join(dp, '.zuno-rilis-state.json')));

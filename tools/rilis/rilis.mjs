@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-// Zuno rilis: membawa paket rilis Build App sampai link live di laptop Zulnan, sesuai mesin yang dipilih.
+// Zuno rilis: membawa paket rilis Build App sampai link live di laptop pemilik, sesuai mesin yang dipilih.
 // Dijalankan oleh Claude Desktop (Remote Control) atau dobel-klik jalankan-rilis.bat di folder paket.
 //   node rilis.mjs           rilis (atau rilis ulang ke deployment yang sama)
 //   node rilis.mjs --cek     hanya cek link live (setelah izin Google / langkah agen selesai)
 // Hasil: hasil-rilis.json + LAPORAN-RILIS.md di folder ini; baris terakhir keluaran = JSON hasil.
-// Kode keluar: 0 live, 10 perlu langkah agen (agent-desktop), 20 perlu Zulnan (login sekali, izin, biaya), 1 gagal.
-// Aturan: tidak mengetik atau menyimpan password Zulnan, tidak membayar, tidak menghapus apa pun di luar folder ini.
+// Kode keluar: 0 live, 10 perlu langkah agen (agent-desktop), 20 perlu pemilik (login sekali, izin, biaya), 1 gagal.
+// Aturan: tidak mengetik atau menyimpan password pemilik, tidak membayar, tidak menghapus apa pun di luar folder ini.
 // Sumber tunggal: tools/rilis/rilis.mjs di repo Zuno (disalin ke prototypes/zuno-studio-v2.html oleh tools/rilis/sisip.mjs).
 import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync, readdirSync, copyFileSync } from 'node:fs';
@@ -30,7 +30,7 @@ export async function rilis(dir, o = {}) {
   const stFile = join(dir, '.zuno-rilis-state.json');
   const st = existsSync(stFile) ? JSON.parse(readFileSync(stFile, 'utf8')) : {};
   const simpanSt = () => writeFileSync(stFile, JSON.stringify(st, null, 2));
-  const H = { proyek: man.id, nama: man.nama, mesin: man.mesin, status: 'gagal', url: st.url || '', langkah: [], perlu: [], cek: {}, waktu: sekarang().toISOString() };
+  const H = { pemilik: String(man.pemilik || 'pemilik'), proyek: man.id, nama: man.nama, mesin: man.mesin, status: 'gagal', url: st.url || '', langkah: [], perlu: [], cek: {}, waktu: sekarang().toISOString() };
   const catat = (t) => { H.langkah.push(t); if (!o.diam) console.log('- ' + t); };
   const perlu = (siapa, apa, cara) => H.perlu.push({ siapa, apa, cara });
   const sel = (status) => { H.status = status; return H; };
@@ -70,7 +70,7 @@ export async function rilis(dir, o = {}) {
       if (!hanyaCek) {
         if (!butuhCli('clasp')) return sel('perlu_agen');
         const au = jsonDari(exec('clasp', ['--json', 'show-authorized-user'], { cwd: dir }).out) || {};
-        if (!au.loggedIn) { perlu('Zulnan', 'Login clasp sekali (akun Google pemilik aplikasi)', 'Jalankan `clasp login` di Command Prompt, pilih akun Google, klik Izinkan. Setelah itu rilis berikutnya tanpa login.'); return sel('perlu_zulnan'); }
+        if (!au.loggedIn) { perlu('pemilik', 'Login clasp sekali (akun Google pemilik aplikasi)', 'Jalankan `clasp login` di Command Prompt, pilih akun Google, klik Izinkan. Setelah itu rilis berikutnya tanpa login.'); return sel('perlu_pemilik'); }
         catat('clasp login sebagai ' + (au.email || 'akun Google'));
         const gas = join(dir, 'gas');
         if (!st.scriptId) {
@@ -81,7 +81,7 @@ export async function rilis(dir, o = {}) {
           const j = jsonDari(c.out);
           if (c.code !== 0 || !j || !j.scriptId) {
             const t = c.out + c.err;
-            if (/Apps Script API|usersettings/i.test(t)) { perlu('Zulnan', 'Aktifkan Google Apps Script API sekali', 'Buka https://script.google.com/home/usersettings lalu nyalakan "Google Apps Script API". Satu kali untuk semua proyek.'); return sel('perlu_zulnan'); }
+            if (/Apps Script API|usersettings/i.test(t)) { perlu('pemilik', 'Aktifkan Google Apps Script API sekali', 'Buka https://script.google.com/home/usersettings lalu nyalakan "Google Apps Script API". Satu kali untuk semua proyek.'); return sel('perlu_pemilik'); }
             throw new Error('clasp create-script gagal: ' + t.trim().slice(0, 300));
           }
           st.scriptId = j.scriptId; st.parentId = j.parentId; simpanSt();
@@ -109,8 +109,8 @@ export async function rilis(dir, o = {}) {
       H.url = st.url; H.spreadsheet = st.parentId ? 'https://docs.google.com/spreadsheets/d/' + st.parentId + '/edit' : '';
       if (!H.url) throw new Error('Belum ada deployment. Jalankan tanpa --cek dulu.');
       if (!(await cekLive(H.url, hanyaCek ? Math.min(tungguMs, 60000) : 15000))) {
-        perlu(man.opsi && man.opsi.izinGoogleOtomatis ? 'agen' : 'Zulnan', 'Izin Google sekali untuk aplikasi baru ini', 'Buka ' + H.url + ' di Chrome (akun pemilik), klik "Tinjau izin" > pilih akun > "Lanjutan" > "Buka ' + man.nama + '" > "Izinkan". Lalu jalankan `node rilis.mjs --cek`.');
-        return sel(man.opsi && man.opsi.izinGoogleOtomatis ? 'perlu_agen' : 'perlu_zulnan');
+        perlu(man.opsi && man.opsi.izinGoogleOtomatis ? 'agen' : 'pemilik', 'Izin Google sekali untuk aplikasi baru ini', 'Buka ' + H.url + ' di Chrome (akun pemilik), klik "Tinjau izin" > pilih akun > "Lanjutan" > "Buka ' + man.nama + '" > "Izinkan". Lalu jalankan `node rilis.mjs --cek`.');
+        return sel(man.opsi && man.opsi.izinGoogleOtomatis ? 'perlu_agen' : 'perlu_pemilik');
       }
       if (man.mesin === 'Apps Script + Blogger') perlu('agen', 'Pasang tampilan di Blogger', 'Buka blogger.com (sudah login) > blog tujuan > Tata Letak > Tambah Gadget > HTML/JavaScript, tempel isi blogger-widget.html, Simpan. Aplikasi sudah jalan di link Apps Script sambil menunggu.');
       catat('Link live terbuka dan berisi aplikasi ini');
@@ -122,11 +122,11 @@ export async function rilis(dir, o = {}) {
       if (!hanyaCek) {
         if (!butuhCli('firebase')) return sel('perlu_agen');
         const lg = jsonDari(exec('firebase', ['login:list', '--json'], { cwd: dir }).out) || {};
-        if (!(Array.isArray(lg.result) ? lg.result.length : lg.result)) { perlu('Zulnan', 'Login Firebase sekali', 'Jalankan `firebase login` di Command Prompt, pilih akun Google, Izinkan.'); return sel('perlu_zulnan'); }
+        if (!(Array.isArray(lg.result) ? lg.result.length : lg.result)) { perlu('pemilik', 'Login Firebase sekali', 'Jalankan `firebase login` di Command Prompt, pilih akun Google, Izinkan.'); return sel('perlu_pemilik'); }
         if (!st.fbProject) {
           const pid = ('zuno-' + man.slug).replace(/[^a-z0-9-]/g, '-').slice(0, 24).replace(/-+$/, '') + '-' + String(man.kode || 'app').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 5);
           const c = exec('firebase', ['projects:create', pid, '-n', String(man.nama).slice(0, 30), '--json'], { cwd: dir, timeout: 900000 });
-          if (c.code !== 0) { const t = c.out + c.err; if (/billing|Terms of Service|ToS|quota/i.test(t)) { perlu('Zulnan', 'Firebase minta persetujuan atau kuota proyek', t.trim().slice(0, 200)); return sel('perlu_zulnan'); } throw new Error('firebase projects:create gagal: ' + t.trim().slice(0, 300)); }
+          if (c.code !== 0) { const t = c.out + c.err; if (/billing|Terms of Service|ToS|quota/i.test(t)) { perlu('pemilik', 'Firebase minta persetujuan atau kuota proyek', t.trim().slice(0, 200)); return sel('perlu_pemilik'); } throw new Error('firebase projects:create gagal: ' + t.trim().slice(0, 300)); }
           st.fbProject = pid; simpanSt(); catat('Proyek Firebase dibuat: ' + pid);
         }
         const pid = st.fbProject;
@@ -175,11 +175,11 @@ export async function rilis(dir, o = {}) {
       const web = join(dir, 'web');
       if (!hanyaCek) {
         if (!butuhCli('vercel')) return sel('perlu_agen');
-        if (exec('vercel', ['whoami'], { cwd: dir }).code !== 0) { perlu('Zulnan', 'Login Vercel sekali', 'Jalankan `vercel login` di Command Prompt.'); return sel('perlu_zulnan'); }
+        if (exec('vercel', ['whoami'], { cwd: dir }).code !== 0) { perlu('pemilik', 'Login Vercel sekali', 'Jalankan `vercel login` di Command Prompt.'); return sel('perlu_pemilik'); }
         const sbFile = join(dir, 'supabase.json');
         const sb = existsSync(sbFile) ? JSON.parse(readFileSync(sbFile, 'utf8')) : null;
         if (!sb || !sb.url || !sb.anonKey) {
-          perlu('agen', 'Siapkan Supabase', 'Lewat agent-desktop di https://supabase.com/dashboard (sudah login): New project (paket Free; bila diminta bayar, berhenti dan tanya Zulnan), password database dibuat acak oleh dashboard (jangan diketik ulang). SQL Editor: tempel isi schema.sql, Run. Settings > API: salin Project URL dan anon public key ke supabase.json di folder ini: {"url":"...","anonKey":"..."}. Lalu jalankan rilis.mjs lagi.');
+          perlu('agen', 'Siapkan Supabase', 'Lewat agent-desktop di https://supabase.com/dashboard (sudah login): New project (paket Free; bila diminta bayar, berhenti dan tanya pemilik), password database dibuat acak oleh dashboard (jangan diketik ulang). SQL Editor: tempel isi schema.sql, Run. Settings > API: salin Project URL dan anon public key ke supabase.json di folder ini: {"url":"...","anonKey":"..."}. Lalu jalankan rilis.mjs lagi.');
           return sel('perlu_agen');
         }
         mkdirSync(web, { recursive: true });
@@ -207,7 +207,7 @@ export async function rilis(dir, o = {}) {
 
 export function tulisLaporan(dir, H) {
   writeFileSync(join(dir, 'hasil-rilis.json'), JSON.stringify(H, null, 2));
-  const L = ['# Laporan rilis: ' + H.nama, '', '- Proyek: ' + H.proyek + ' · mesin ' + H.mesin, '- Status: **' + H.status + '**', '- Link: ' + (H.url || '-')];
+  const L = ['# Laporan rilis: ' + H.nama, '', '- Pemilik: ' + (H.pemilik || '-'), '- Proyek: ' + H.proyek + ' · mesin ' + H.mesin, '- Status: **' + H.status + '**', '- Link: ' + (H.url || '-')];
   if (H.spreadsheet) L.push('- Spreadsheet data: ' + H.spreadsheet);
   if (H.galat) L.push('- Galat: ' + H.galat);
   L.push('', '## Langkah', ...H.langkah.map((x) => '- ' + x));
@@ -215,7 +215,7 @@ export function tulisLaporan(dir, H) {
   writeFileSync(join(dir, 'LAPORAN-RILIS.md'), L.join('\n') + '\n');
 }
 
-const KODE = { live: 0, perlu_agen: 10, perlu_zulnan: 20, gagal: 1 };
+const KODE = { live: 0, perlu_agen: 10, perlu_pemilik: 20, gagal: 1 };
 if (process.argv[1] && /(^|[\\/])rilis\.mjs$/i.test(process.argv[1])) {
   const dir = dirname(fileURLToPath(import.meta.url));
   const H = await rilis(dir, { cek: process.argv.includes('--cek'), akunFirebase: process.argv.includes('--akun-firebase') });

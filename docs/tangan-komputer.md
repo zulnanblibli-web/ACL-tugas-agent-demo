@@ -10,7 +10,7 @@ Keputusan Zulnan 2026-11-04:
 - **Otak**: Claude Desktop di laptop Zulnan. Folder `C:\zuno-proyek` dibagikan lewat Remote Control, jadi Claude bisa diperintah dari HP, dari sesi cloud (`request_computer_folder`), atau langsung di laptop.
 - **Tangan untuk perintah**: shell di folder itu: `node rilis.mjs`, `clasp`, `firebase`, `vercel`, `tar`.
 - **Tangan untuk layar**: agent-desktop. Membuka Chrome ke link live dan mencoba aplikasinya seperti pengguna, serta mengerjakan langkah yang hanya bisa lewat klik (tempel ke Blogger, aktifkan login Email/Password di Firebase, dashboard Supabase). agent-desktop tidak punya AI sendiri; Claude yang memutuskan langkahnya. Tersambung ke Claude Desktop sebagai MCP (`agent-desktop mcp`) dan juga bisa dipanggil sebagai CLI.
-- **Skrip pasti**: `rilis.mjs` (sumber `tools/rilis/rilis.mjs`) membaca `rilis.json` (mesin pilihan Zulnan) dan mengerjakan deploy-nya. Keluar dengan status `live`, `perlu_agen`, `perlu_zulnan`, atau `gagal`, plus `LAPORAN-RILIS.md`.
+- **Skrip pasti**: `rilis.mjs` (sumber `tools/rilis/rilis.mjs`) membaca `rilis.json` (mesin pilihan Zulnan) dan mengerjakan deploy-nya. Keluar dengan status `live`, `perlu_agen`, `perlu_pemilik`, atau `gagal`, plus `LAPORAN-RILIS.md`.
 
 ## Alur
 ```
