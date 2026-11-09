@@ -628,7 +628,7 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - Dihapus dari Workspace: kotak perintah terpisah (Lead membagi tugas tambahan), diagram "Cara kerja tim", bar Proses. Edisi jasa tetap tampilan HUD lama (hanya `live.js` ikut berubah, tanpa efek tampilan).
 - Bukti: `nexaoffice-situs-test` SEMUA LOLOS (66 cek; baru: kantor kiri/perintah kanan, format di kolom perintah, tanpa Cara kerja/bar Proses, panel Hasil kerja agen di bawah format, siaga semua santai, Build App dari kotak yang sama, kartu agen Engineering dan agen kreatif tampil live); pengaturan-ai, api, dev-server, gambar, gemini, openrouter, riset, rilis-laptop, web stub, studio-v2 stub, build stub lolos; ekspor jasa + `zuno-jasa-test` SEMUA LOLOS.
 - File berubah: `web/src/studio-hero.html`, `web/src/studio-nexa.css`, `web/src/ui.js`, `web/src/live.js`, `web/bangun.mjs`, `web/src/kantor/sematan.js`, `web/src/kantor/sematan.css`, `web/studio.html`, `web/office/*` (hasil build), `tests/nexaoffice-situs-test.js`, `web/README.md`, `docs/vps-nexaoffice.md`, `progress.md`, `docs/memori-zuno.md`; jasa: `live.js`, `docs/vps-nexaoffice.md`, `VERSI.txt`.
-- Belum di-push (menunggu izin Zulnan).
+- Push (izin Zulnan "oke push dan deploy"): Zuno `09d947c`, jasa `main` `63d1d98`. Deploy Vercel `dpl_CbKt2QKWBXQMa1fgTvkBub9i54s6` READY; dicek live: `/studio.html` memuat layout baru (`ws-main`, kantor `asli=1`, panel Hasil kerja agen), tanpa Cara kerja tim dan kotak perintah lama.
 - Tertunda: coba dengan API key asli; harga, kontak, produk lain (P10).
 
 ## 65. (entri berikutnya di sini)
