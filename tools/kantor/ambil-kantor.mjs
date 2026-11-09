@@ -32,7 +32,11 @@ rmSync(join(web, 'kantor.html'), { force: true });
 mkdirSync(join(web, 'office'), { recursive: true });
 for (const f of ['office.bundle.js', 'office.css']) copyFileSync(join(jasa, 'office', f), join(web, 'office', f));
 // Galeri karakter: tautan kembali ke kantor di situs (bukan /kantor.html).
-writeFileSync(join(web, 'office', 'karakter.html'), readFileSync(join(jasa, 'office', 'karakter.html'), 'utf8').split('href="/kantor.html"').join('href="/#kantor"'));
+// Modul gerak bersama (web/src/site/gerak.*) ikut dipasang.
+let galeri = readFileSync(join(jasa, 'office', 'karakter.html'), 'utf8').split('href="/kantor.html"').join('href="/#kantor"');
+galeri = swap(galeri, '</head>', "<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('nx-gerak')</script><link rel=\"stylesheet\" href=\"/site/gerak.css\"></head>", 'karakter.html');
+galeri = swap(galeri, '</body>', "<script src=\"/site/gerak.js\" defer></script></body>", 'karakter.html');
+writeFileSync(join(web, 'office', 'karakter.html'), galeri);
 
 for (const d of ['agents', 'themes']) {
   const out = join(web, 'assets', d);

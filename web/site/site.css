@@ -6,6 +6,7 @@
 /* waive 2a/29-adjacent: near-black with one blue accent is the owner's reference image (JumpBot screenshot), applied without glows or gradients */
 @import url("./tokens.css");
 @import url("./base.css");
+@import url("./gerak.css");
 
 @font-face { font-family: "Antonio"; src: url("../assets/fonts/antonio-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 @font-face { font-family: "Onest"; src: url("../assets/fonts/onest-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
@@ -150,4 +151,32 @@ td { color: var(--color-ink-2); }
   table, tbody, tr, th, td { display: block; }
   tr { border-bottom: 1px solid var(--color-rule); padding-block: var(--space-sm); }
   th, td { border: 0; padding: var(--space-2xs) 0; }
+}
+
+/* ---------- gerak halaman utama (modul bersama: gerak.css, gerak.js) ---------- */
+.stage-penuh { z-index: 2; }
+.nx-gerak .nav { animation: nx-turun 600ms var(--ease-out) backwards; }
+.nx-gerak .hero-actions { animation: nx-naik 800ms var(--ease-out) 620ms backwards; }
+.nx-gerak .hero-stage { animation: nx-naik 900ms var(--ease-out) 760ms backwards; }
+.nx-gerak .steps li { animation: nx-naik 520ms var(--ease-out) backwards; }
+.nx-gerak .steps li:nth-child(2) { animation-delay: 90ms; }
+.nx-gerak .steps li:nth-child(3) { animation-delay: 180ms; }
+.nx-gerak .faq-list details[open] p { animation: nx-naik 420ms var(--ease-out) backwards; }
+.nav-links a { background: linear-gradient(90deg, #fff, var(--nx-biru)) 0 100% / 0 2px no-repeat; transition: color var(--dur-short) var(--ease-out), background-size 320ms var(--ease-out); }
+.nav-links a:hover, .nav-links a[aria-current="true"] { background-size: 100% 2px; }
+.btn-primary { position: relative; overflow: hidden; }
+.btn-primary::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(105deg, transparent 35%, oklch(100% 0 0 / 0.55) 50%, transparent 65%); translate: -120% 0; transition: translate 700ms var(--ease-out); }
+.tema-kartu img, .tim-grid img { transition: scale 420ms var(--ease-out), translate 420ms var(--ease-out); }
+.tim-grid b, .isi dt { transition: color var(--dur-short) var(--ease-out), translate 320ms var(--ease-out); }
+.isi dt { display: block; }
+@media (hover: hover) {
+  .btn-primary:hover::after { translate: 120% 0; }
+  .tema-kartu:hover img { scale: 1.02; }
+  .tim-grid li:hover img { translate: 0 -6px; scale: 1.06; }
+  .tim-grid li:hover b { color: var(--color-accent); }
+  .isi > div:hover dt { translate: 6px 0; color: var(--color-accent); }
+}
+@supports (animation-timeline: view()) {
+  .nx-gerak .tema-kartu img { animation: nx-apung linear both; animation-timeline: view(); }
+  @keyframes nx-apung { from { translate: 0 12px; } to { translate: 0 -12px; } }
 }

@@ -76,7 +76,8 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
 .bframe{width:100%;height:640px;border:1px solid var(--line);border-radius:10px;background:#fff}.bframe.hp{width:390px;max-width:100%}
 .uji td,.uji th{border-top:1px solid var(--line);padding:5px 8px;text-align:left;font-size:14px;vertical-align:top}.uji{border-collapse:collapse;width:100%}
 </style>
-<link rel="preload" href="/assets/fonts/antonio-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('nx-gerak')</script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="/assets/fonts/onest-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/studio-nexa.css">
 </head>
@@ -116,6 +117,7 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
   </div>
   <div class="ui-kantor-frame">
     <iframe id="kantorIframe" src="/office/ruang.html?awal=dalam&amp;ringkas=1&amp;kualitas=ringan&amp;asli=1" title="Kantor 3D: agen bergerak sesuai tugas yang sedang dikerjakan" tabindex="-1" allow="fullscreen"></iframe>
+    <div class="kantor-muat" id="kantorMuat" role="status"><b>Menyiapkan kantor 3D</b><i aria-hidden="true"></i></div>
   </div>
   <p class="ui-aktif" id="uiAktif" aria-live="polite">Siaga. Agen ke meja kerja begitu perintahmu jalan.</p>
   <dl class="studio-status">
@@ -294,6 +296,7 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
 <script src="/pengaturan-ai.js"></script>
 <script src="/office/kendali.js"></script>
 <script src="/studio-nexa.js" defer></script>
+<script src="/site/gerak.js" defer></script>
 <script src="/ui.js" defer></script>
 <script src="/serah.js" defer></script>
 <script>

@@ -10,6 +10,7 @@
 <link rel="icon" href="data:,">
 <link rel="preload" href="assets/fonts/antonio-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/onest-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('nx-gerak')</script>
 <link rel="stylesheet" href="site/site.css">
 </head>
 <body>
@@ -50,6 +51,7 @@
   <div class="container">
     <div class="hero-stage" id="heroStage" data-jelajah="0">
       <iframe id="kantorIframe" data-src="/office/ruang.html?awal=dalam&amp;demo=1&amp;ringkas=1&amp;tema=langit&amp;zoom=dekat" title="Kantor 3D Nexaoffice: simulasi gerak 18 agen di lantai studio" tabindex="-1" allow="fullscreen"></iframe>
+      <div class="kantor-muat" id="kantorMuat" role="status"><b>Menyiapkan kantor 3D</b><i aria-hidden="true"></i></div>
       <noscript><p class="note">Kantor 3D butuh JavaScript.</p></noscript>
       <button class="btn btn-ghost stage-penuh" type="button" id="kantorPenuh">Layar penuh</button>
     </div>
@@ -195,5 +197,6 @@
 </footer>
 <script src="office/kendali.js" defer></script>
 <script src="site/site.js" defer></script>
+<script src="site/gerak.js" defer></script>
 </body>
 </html>

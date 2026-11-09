@@ -1,8 +1,8 @@
 /* Nexaoffice: tampilan ruang kerja (/studio.html). Warna dan huruf sama dengan halaman utama (web/src/site/tokens.css).
    Logika dan kelas berasal dari prototypes/zuno-studio-v2.html; file ini hanya menimpa variabel dan gaya. */
 @import url("/site/tokens.css");
+@import url("/site/gerak.css");
 
-@font-face { font-family: "Antonio"; src: url("/assets/fonts/antonio-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 @font-face { font-family: "Onest"; src: url("/assets/fonts/onest-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 @font-face { font-family: "Onest"; src: url("/assets/fonts/onest-latin-700-normal.woff2") format("woff2"); font-weight: 500 700; font-display: swap; }
 @font-face { font-family: "JetBrains Mono"; src: url("/assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
@@ -18,7 +18,9 @@ html:root {
   --info: oklch(80% 0.11 236); --info-soft: oklch(27% 0.05 245);
   --font: var(--font-body);
 }
-html, body { overflow-x: clip; background: var(--color-paper); }
+html, body { overflow-x: clip; }
+html { background: var(--color-paper); }
+body { background: transparent; }
 body { font-family: var(--font-body); color: var(--color-ink); -webkit-font-smoothing: antialiased; }
 ::selection { background: color-mix(in oklab, var(--color-accent) 22%, transparent); }
 :focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
@@ -189,4 +191,87 @@ textarea { font-family: var(--font-outlier); }
   .nav-cta { padding: 0 var(--space-sm); }
   .ui-kantor-bar .seg button { padding: 0 var(--space-sm); }
 }
-@media (prefers-reduced-motion: reduce) { 
+@media (prefers-reduced-motion: reduce) { .studio-status .bar i, .nx-btn, .btn, .nav-links a { transition: none; } }
+
+/* ---------- Sentuhan tipografi dan gerak Workspace: gradient putih-biru ---------- */
+html:root {
+  --font-display: "Space Grotesk", "Onest", ui-sans-serif, system-ui, sans-serif;
+  --tracking-display: -0.035em;
+  --nx-kilau: linear-gradient(90deg, #fff 0%, #fff 12%, var(--nx-biru-muda) 32%, var(--nx-biru) 52%, var(--nx-biru-muda) 72%, #fff 92%, #fff 100%);
+  --nx-gradient-tombol: linear-gradient(100deg, #fff 0%, oklch(88% 0.08 232) 42%, oklch(72% 0.16 240) 100%);
+}
+
+/* Cahaya biru-putih di belakang halaman, latar tetap gelap supaya gradient teks kebaca. */
+body::before {
+  content: ""; position: fixed; inset: -18vmax; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(42vmax 30vmax at 78% 18%, oklch(97% 0.02 235 / 0.1), transparent 70%),
+    radial-gradient(60vmax 44vmax at 14% 8%, oklch(66% 0.17 242 / 0.2), transparent 72%),
+    radial-gradient(50vmax 40vmax at 62% 88%, oklch(58% 0.16 250 / 0.14), transparent 70%);
+  animation: nx-aurora 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.nav { border-bottom-color: transparent; }
+.nav::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--nx-biru) 30%, #fff 55%, var(--nx-biru) 78%, transparent); opacity: 0.45; }
+
+/* Judul dan tulisan bergradient */
+.wordmark, .wrap h2, .hud-dlg h2, #judulRuang {
+  width: fit-content;
+  background: var(--nx-gradient) 0 0 / 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+.wordmark { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; transition: background-position 700ms var(--ease-out); }
+.wordmark:hover { color: transparent; background-position: 60% 0; }
+.wrap h2, .hud-dlg h2 { font-weight: 600; letter-spacing: -0.02em; padding-bottom: 0.08em; }
+#judulRuang { padding-bottom: 0.12em; }
+.nx-gerak #judulRuang { background: none; color: var(--color-ink); }
+.nx-huruf {
+  --t: 6s;
+  display: inline-block; padding: 0 0.02em 0.14em; margin: 0 -0.02em -0.14em;
+  background: var(--nx-kilau) 0 0 / calc(var(--n) * 100%) 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  animation:
+    nx-huruf-naik 800ms var(--ease-out) calc(var(--i) * 45ms + 120ms) backwards,
+    nx-kilau var(--t) linear calc(var(--i) * var(--t) / var(--n) - var(--t)) infinite;
+}
+.nx-tampak h2 { animation: nx-sapu 1400ms var(--ease-out) backwards; }
+
+.studio-status dt { font: 400 0.75rem var(--font-outlier); letter-spacing: 0.08em; text-transform: uppercase; }
+.nav-links a { background: linear-gradient(90deg, #fff, var(--nx-biru)) 0 100% / 0 2px no-repeat; transition: color var(--dur-short) var(--ease-out), background-size 320ms var(--ease-out); }
+.nav-links a:hover, .nav-links a[aria-current="page"] { background-size: 100% 2px; }
+.nav-links a[aria-current="page"] { text-decoration: none; }
+
+/* Tombol utama dan tab aktif */
+.btn.primary, .btn.primary:hover:not(:disabled), .nx-primary, .nx-primary:hover, .tab[aria-selected=true] {
+  background-color: var(--nx-biru); background-image: var(--nx-gradient-tombol); background-size: 170% 100%; background-origin: border-box;
+  border-color: transparent; color: var(--color-accent-ink);
+}
+.btn.primary, .nx-primary { transition: background-position 420ms var(--ease-out), box-shadow 320ms var(--ease-out), translate 220ms var(--ease-out); }
+.btn.primary:hover:not(:disabled), .nx-primary:hover { background-position: 70% 0; box-shadow: 0 10px 30px -12px var(--nx-biru); translate: 0 -1px; }
+
+/* Panel dan kolom isian */
+.panel { background: linear-gradient(165deg, var(--color-paper-3), var(--color-paper-2) 55%); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.06); }
+textarea, select, input[type=text], input[type=password] { transition: border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out); }
+textarea:focus, select:focus, input[type=text]:focus, input[type=password]:focus { border-color: var(--nx-biru); box-shadow: 0 0 0 3px var(--color-accent-soft); }
+.live-item[data-s="jalan"] { box-shadow: 0 0 26px -12px var(--nx-biru); }
+
+/* Penanda muat kantor 3D, hilang saat kantor siap */
+.ui-kantor-frame { position: relative; }
+/* Gerak masuk halaman dan saat discroll (kelas dipasang studio-nexa.js) */
+.nx-gerak .nav { animation: nx-turun 600ms var(--ease-out) backwards; }
+.nx-gerak .ws-kantor > * { animation: nx-naik 800ms var(--ease-out) backwards; }
+.nx-gerak .ws-kantor > :nth-child(2) { animation-delay: 80ms; }
+.nx-gerak .ws-kantor > :nth-child(3) { animation-delay: 160ms; }
+.nx-gerak .ws-kantor > :nth-child(4) { animation-delay: 240ms; }
+.nx-gerak .ws-kanan > .wrap { animation: nx-naik 800ms var(--ease-out) 620ms backwards; }
+.nx-gerak .live-item { animation: nx-naik 500ms var(--ease-out) backwards; }
+
+@keyframes nx-aurora { to { transform: translate3d(4vmax, 3vmax, 0) scale(1.08); } }
+@keyframes nx-kilau { from { background-position: var(--akhir) 0; } to { background-position: 0 0; } }
+
+@media (max-width: 40rem) { .nav-row .wordmark { font-size: 1.3rem; } }
+@media (prefers-reduced-motion: reduce) {
+  body::before, .wordmark, .wrap h2, .hud-dlg h2, .btn.primary, .nx-primary { animation: none; transition: none; }
+}

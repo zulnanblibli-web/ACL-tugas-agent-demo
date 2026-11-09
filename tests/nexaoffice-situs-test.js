@@ -107,7 +107,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     await p.click('.nav-links a[href="/studio.html"]');
     await p.waitForURL(/studio\.html/);
     ok('Workspace: judul dan menu aktif', (await p.title()) === 'Nexaoffice · Workspace' && (await p.textContent('h1')).trim() === 'Workspace' && (await p.getAttribute('.nav-links a[href="/studio.html"]', 'aria-current')) === 'page');
-    ok('Workspace: tampilan Nexaoffice (tanpa HUD lama, huruf Antonio)', !(await p.$('.hud-title')) && !(await p.$('link[href="/hud.css"]')) && (await p.$eval('h1', (e) => getComputedStyle(e).fontFamily)).includes('Antonio'));
+    ok('Workspace: tampilan Nexaoffice (tanpa HUD lama, huruf Space Grotesk)', !(await p.$('.hud-title')) && !(await p.$('link[href="/hud.css"]')) && (await p.$eval('h1', (e) => getComputedStyle(e).fontFamily)).includes('Space Grotesk'));
     await p.waitForFunction(() => document.getElementById('keyDlg').open, null, { timeout: 5000 }).catch(() => {});
     ok('tanpa kunci: Pengaturan AI terbuka sendiri, 3 pilihan sambungan', await p.$eval('#keyDlg', (d) => d.open) && (await p.$$eval('input[name="aiMode"]', (r) => r.map((x) => x.value).join())) === 'server,lokal,vps');
     await p.click('#keyDlg button[value="cancel"]');

@@ -631,4 +631,16 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Push (izin Zulnan "oke push dan deploy"): Zuno `09d947c`, jasa `main` `63d1d98`. Deploy Vercel `dpl_CbKt2QKWBXQMa1fgTvkBub9i54s6` READY; dicek live: `/studio.html` memuat layout baru (`ws-main`, kantor `asli=1`, panel Hasil kerja agen), tanpa Cara kerja tim dan kotak perintah lama.
 - Tertunda: coba dengan API key asli; harga, kontak, produk lain (P10).
 
-## 65. (entri berikutnya di sini)
+## 65. Tipografi dan motion Nexaoffice (2026-11-09)
+- Permintaan Zulnan: `/studio.html` diberi sentuhan design, tipografi, dan motion dengan gradient putih-biru dan font menarik; lalu "berikan effect motion pada setiap halaman nya"; lalu "oke push".
+- Hasil:
+  - Workspace: judul Space Grotesk (Google Fonts), "Workspace" masuk per huruf dengan kilau putih-biru berjalan, judul panel dan logo gradient, tombol utama gradient, cahaya biru pelan di latar. Latar tetap gelap.
+  - Modul gerak bersama `web/src/site/gerak.css` + `gerak.js` (halaman utama, Workspace, galeri karakter): teks per kata, muncul bergantian saat discroll, garis kemajuan scroll, scroll halus, penanda "Menyiapkan kantor 3D".
+  - Halaman utama: font dan warna dasar tetap (Antonio, tanpa gradient permanen); kilau biru lewat berkala di judul, efek hover. Galeri: `tools/kantor/ambil-kantor.mjs` ikut memasang modul supaya tidak hilang saat disalin ulang.
+  - Diperbaiki: blok `prefers-reduced-motion` di `studio-nexa.css` yang terpotong sejak `09d947c`.
+  - Semua gerak mati bila pemakai meminta gerak dikurangi. `office/ruang.html` tidak diubah.
+- Bukti: `nexaoffice-situs-test` SEMUA LOLOS (66 cek, di Edge; cek huruf judul Workspace diganti ke Space Grotesk). Skrip scroll Playwright di halaman utama, Workspace, galeri (desktop) serta utama dan galeri (HP): tidak ada isi tertinggal transparan, tanpa geser samping, tanpa error. Kehalusan gerak belum diamati langsung karena panel browser tersembunyi saat uji.
+- Push (izin Zulnan "oke push"). Repo jasa tidak diekspor: tampilan HUD jasa tidak berubah.
+- Tertunda: coba dengan API key asli; harga, kontak, produk lain (P10).
+
+## 66. (entri berikutnya di sini)
