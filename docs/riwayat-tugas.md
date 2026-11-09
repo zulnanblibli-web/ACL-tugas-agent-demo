@@ -616,6 +616,7 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - `/kantor.html` sekarang dialihkan ke `/`.
 - Bukti: `nexaoffice-situs-test` SEMUA LOLOS (cek baru: urutan 8 menu, hero kantor tampil di layar pertama, agen benar-benar berpindah posisi, kantor tidak menahan scroll, Jelajahi, kartu tema mengganti tema hero, judul Workspace); dev-server lolos; ekspor jasa tidak mengubah repo jasa; sloplint 0 FAIL (REFLEX 79 diabaikan dengan catatan: visual hero ada di iframe).
 - File berubah: `web/src/site/index.html`, `web/src/site/site.css`, `web/src/site/site.js`, `web/src/kantor/sematan.js`, `web/src/studio-hero.html`, `web/src/studio-tail.html`, `web/src/studio-nexa.css`, `web/bangun.mjs`, `web/vercel.json`, tes, dokumen.
-- Tertunda: push menunggu kata Zulnan; isi harga, kontak, produk lain (P10); contoh hasil nyata.
+- Push (izin Zulnan "oke push dan deploy"): `83eda7d`, deploy Vercel `dpl_3JSPBCg39j5oSkkomNFMFDW89ocD` READY; dicek live: menu baru, hero kantor 3D (zoom dekat), Workspace.
+- Tertunda: isi harga, kontak, produk lain (P10); contoh hasil nyata.
 
 ## 64. (entri berikutnya di sini)
