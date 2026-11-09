@@ -56,6 +56,14 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     for (const a of ['/kantor.html', '/office/office.bundle.js', '/office/office.css', '/assets/agents/T.5.glb', '/assets/themes/senja.png', '/assets/nexaoffice-alur.mp4', '/assets/nexaoffice-alur.webm', '/studio.html', '/serah.js']) {
       const r = await p.request.get(U + a); ok('aset ' + a + ' 200', r.status() === 200);
     }
+    { // agen harus sama di ruang kerja, kantor 3D, dan halaman utama: 18
+      const studio = fs.readFileSync(path.join(root, 'studio.html'), 'utf8');
+      const roles = [...new Set([...studio.matchAll(/\n '([LRPDEQMT]\.\d)':\['/g)].map((m) => m[1]))].sort();
+      const kantor = [...new Set([...fs.readFileSync(path.join(root, 'office', 'karakter.html'), 'utf8').matchAll(/<span class="code">([A-Z]\.\d) /g)].map((m) => m[1]))].sort();
+      const situs = (await p.$$eval('#timGrid img', (im) => im.map((i) => i.getAttribute('src').match(/agents\/(.+)\.png/)[1]))).sort();
+      ok('18 agen sama di ruang kerja (' + roles.length + '), kantor 3D (' + kantor.length + '), halaman utama (' + situs.length + ')', roles.length === 18 && roles.join() === kantor.join() && kantor.join() === situs.join());
+      ok('ruang kerja: Bima (E.2), Fira (E.3), Damar (T.5) benar-benar dipanggil', /ask\('E\.2'/.test(studio) && /ask\('E\.3'/.test(studio) && /ask\('T\.5'/.test(studio));
+    }
     ok('tab Cara kerja: Build App bisa dibuka', await (async () => { await p.click('#tab-build'); return !(await p.$eval('#panel-build', (e) => e.hidden)) && (await p.$eval('#panel-konten', (e) => e.hidden)); })());
     await p.$eval('#alurVideo', (v) => v.scrollIntoView({ block: 'center' }));
     await p.waitForFunction(() => !document.getElementById('alurVideo').paused, null, { timeout: 8000 }).catch(() => {});

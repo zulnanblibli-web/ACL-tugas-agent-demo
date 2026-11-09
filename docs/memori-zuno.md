@@ -87,7 +87,8 @@ Ringkasan padat untuk sesi atau chat baru. Tugas yang belum selesai per 2026-11-
   - Identitas Zulnan diganti PENGATURAN BRAND.
   - Alat dan aturan di `docs/jasa-zuno.md`.
   - Aturan: salinan jasa harus selalu bisa jalan; setiap update Zuno diekspor dan dites ulang.
-  - Repo jasa punya fitur sendiri (2026-11-09): Kantor 3D (`kantor.html`, `office/`, tema Menara Senja + Griya Langit) dan agen E.2/E.3/T.5. Ekspor menjaganya lewat `tools/jasa/tambahan-jasa.mjs`, folder aset `agents`/`themes`, dan `package.json` gabungan. Fitur baru di `index.html` jasa wajib masuk `tambahan-jasa.mjs`.
+  - Repo jasa punya fitur sendiri (2026-11-09): Kantor 3D (`kantor.html`, `office/`, tema Menara Senja + Griya Langit). Ekspor menjaganya lewat folder aset `agents`/`themes` dan `package.json` gabungan. Fitur baru di `index.html` jasa wajib masuk `tools/jasa/tambahan-jasa.mjs` (sekarang kosong).
+  - **18 agen sama di mana-mana** (Zulnan 2026-11-09): ruang kerja (ROLES di `prototypes/zuno-studio-v2.html`), kantor 3D, dan halaman utama: L.0, L.1, R.1, R.2, P.1, P.2, D.1, E.1, E.2 Bima (rencana Remotion), E.3 Fira (prompt Google Flow), Q.1, Q.2, M.1, T.1-T.5 (T.5 Damar audit keamanan). Dicek `tests/nexaoffice-situs-test.js`.
 - Pending tugas: dicatat di `pending.md`; jawab dari situ bila Zulnan bertanya "pending tugas".
 - Rencana jangka panjang:
   - VPS dan versi agent di web + desktop dengan desain kantor; ditunda.

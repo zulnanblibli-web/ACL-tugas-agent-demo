@@ -65,13 +65,14 @@
     'P.1': ['Dika', 'Naskah'], 'P.2': ['Vino', 'Hook dan retensi video'],
     'D.1': ['Sari', 'Desain visual dan carousel'], 'E.1': ['Edo', 'Arahan editing'],
     'Q.1': ['Tara', 'Cek fakta dan suara brand'], 'Q.2': ['Nita', 'Cek format'],
+    'E.2': ['Bima', 'Rencana Remotion'], 'E.3': ['Fira', 'Prompt Google Flow'],
     'M.1': ['Maya', 'Caption dan antrian posting'],
     'T.1': ['Arga', 'PRD dan arsitektur'], 'T.2': ['Rani', 'Desain UI/UX'],
-    'T.3': ['Fajar', 'Menulis kode'], 'T.4': ['Tio', 'Uji dan paket rilis']
+    'T.3': ['Fajar', 'Menulis kode'], 'T.4': ['Tio', 'Uji dan paket rilis'], 'T.5': ['Damar', 'Audit bug dan keamanan']
   };
   var DIVISI = {
     konten: { nama: 'Divisi Konten', tim: ['L.0', 'R.1', 'R.2', 'P.1', 'D.1', 'Q.1', 'M.1'] },
-    build: { nama: 'Divisi Build App', tim: ['L.0', 'T.1', 'T.2', 'T.3', 'T.4'] }
+    build: { nama: 'Divisi Build App', tim: ['L.0', 'T.1', 'T.2', 'T.3', 'T.4', 'T.5'] }
   };
   var POLA_BUILD = /\b(aplikasi|app|web ?app|website|situs|dashboard|sistem|login|absensi|database|crud|landing ?page|toko online|kasir|form(ulir)?)\b/i;
 
@@ -103,10 +104,10 @@
   async function tanyaLead(teks, divisi, key, signal) {
     var daftar = Object.keys(AGEN).map(function (id) { return id + ' ' + AGEN[id][0] + ' (' + AGEN[id][1] + ')'; }).join('; ');
     var prompt = 'Kamu ZUNO, Lead di kantor AI Nexaoffice. Bagi perintah pemilik ke agen yang tepat.\n' +
-      'Agen: ' + daftar + '.\nDivisi Konten: ' + DIVISI.konten.tim.concat(['L.1', 'P.2', 'E.1', 'Q.2']).join(', ') + '. Divisi Build App: ' + DIVISI.build.tim.join(', ') + '.\n' +
+      'Agen: ' + daftar + '.\nDivisi Konten: ' + DIVISI.konten.tim.concat(['L.1', 'P.2', 'E.1', 'E.2', 'E.3', 'Q.2']).join(', ') + '. Divisi Build App: ' + DIVISI.build.tim.join(', ') + '.\n' +
       'Divisi yang disarankan: ' + divisi + ' (ganti hanya bila perintah jelas milik divisi lain).\n' +
       'PERINTAH: ' + teks + '\n' +
-      'Balas HANYA JSON tanpa teks lain: {"divisi":"konten|build","ringkasan":"satu kalimat apa yang akan dikerjakan tim","tugas":[{"id":"R.1","tugas":"tugas singkat maks 8 kata"}]} dengan 3 sampai 7 tugas, urut sesuai alur. Jangan mengarang angka, hasil, atau janji.';
+      'Balas HANYA JSON tanpa teks lain: {"divisi":"konten|build","ringkasan":"satu kalimat apa yang akan dikerjakan tim","tugas":[{"id":"R.1","tugas":"tugas singkat maks 8 kata"}]} dengan 3 sampai 8 tugas, urut sesuai alur. Untuk video, Bima (E.2) dan Fira (E.3) ikut bekerja. Jangan mengarang angka, hasil, atau janji.';
     var r = await fetch('/api/ai', { method: 'POST', headers: { 'content-type': 'application/json', 'x-zuno-key': key }, body: JSON.stringify({ input: prompt, tier: 'quick', effort: 'low' }), signal: signal });
     if (r.status === 401 || r.status === 403) throw { code: 'kunci' };
     if (r.status === 503) throw { code: 'belum' };

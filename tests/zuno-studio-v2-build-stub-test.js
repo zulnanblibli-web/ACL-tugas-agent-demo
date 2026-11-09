@@ -20,6 +20,7 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
       if(role==='T.3'&&/daftar edit cari-ganti/.test(input)){ window.__edit=(window.__edit||0)+1; window.__editLihatKode=/INDEX\.HTML SAAT INI:[\s\S]*<\/html>/.test(input); return {edit:[{cari:'<nav>Dashboard · Absensi</nav>',ganti:'<nav>Dashboard · Absensi · Reset Akses</nav>'},{cari:'potongan yang tidak ada',ganti:'x'}],catatan:'tambah menu Reset Akses'}; }
       if(role==='T.4'&&/Tinjau RUANG LINGKUP/.test(input)){ window.__tinjau1=(window.__tinjau1||0)+1; window.__q1=/PERTANYAAN TERBUKA ARSITEK[\s\S]*Berapa kelas/.test(input)||window.__q1; return window.__tinjau1===1?{sesuai:false,kurang:['Fitur ekspor PDF dari permintaan belum ada'],keputusan:[{apa:'Jumlah kelas dibuat bebas (Admin menambah kelas sendiri)',alasan:'permintaan tidak menyebut jumlah kelas',risiko_bila_salah:'menu kelas sedikit lebih banyak'}]}:{sesuai:true,kurang:[],keputusan:[]}; }
       if(role==='T.4'&&/Tinjau DESAIN/.test(input)) return {sesuai:true,kurang:[],keputusan:[{apa:'Navigasi bawah di HP',alasan:'standar responsif',risiko_bila_salah:'-'}]};
+      if(role==='T.5') return {temuan:[{judul:'Kunci API di client',tingkat:'rendah',lokasi:'index.html',bukti:'tidak ditemukan kunci, hanya cek',perbaikan:'tetap simpan di server'}],ringkasan:'Tidak ada temuan kritis'};
       if(role==='T.4') return {butir:[{butir:'Guru bisa input absensi',status:'terlihat di kode',catatan:'form absensi'},{butir:'Rekap per bulan tampil',status:'perlu uji manual',catatan:'butuh data asli'}],risiko:['kuota Apps Script'],ringkas:'Kode lengkap, dua butir perlu dicoba di Sheets asli.'};
       return {};
     };
@@ -126,5 +127,7 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   // alur konten tidak tersentuh
   await p.click('#wsK'); console.log('kembali ke konten, kartu konten kosong:', await p.$$eval('.kc',e=>e.filter(x=>x.closest('#wsKonten')).length)===0);
   await p.screenshot({path:'/tmp/v2-build.png',fullPage:true});
+  { const tr=await p.$$eval('#btracks .track',e=>e.map(x=>x.querySelector('.tname').textContent+'='+x.dataset.s)); const r=(await p.evaluate(()=>window.__calls)).map(c=>c.role);
+    assert(tr.some(t=>/^T\.5 Damar/.test(t)),'jalur T.5 Damar tampil di papan Build App'); if(process.argv.length<=2) assert(r.includes('T.5')&&tr.some(t=>/^T\.5 Damar.*=(done|warn)$/.test(t)),'T.5 Damar mengaudit kode setelah uji'); console.log('T.5 Damar: OK'); }
   console.log('ERRORS',errs); assert(!errs.filter(e=>!(BURUK&&/undefinedFn/.test(e))).length,'tanpa error halaman (error dari aplikasi buruk di pratinjau sandbox diabaikan)'); await b.close();
 })().catch(e=>{console.error('FAIL',e);process.exit(1)});

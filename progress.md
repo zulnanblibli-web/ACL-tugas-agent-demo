@@ -78,6 +78,7 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
+000022. **Ruang kerja 18 agen (2026-11-09, entri 60).** E.2 Bima, E.3 Fira, T.5 Damar ada di sumber Zuno; Bima dan Fira bekerja di setiap video (rencana Remotion, prompt Google Flow). Ruang kerja, kantor 3D, dan halaman utama sama-sama 18 agen (dites). Berikutnya: izin push Zuno + jasa; putuskan apakah profil `agents/` diselaraskan ke 18 agen ini.
 000021. **Zuno Web jadi Nexaoffice (2026-11-09, entri 59).** `/` = situs utama ala lembur.id (menu, konsol perintah AI, cara kerja + video Remotion, Kantor 3D, tim, isi paket, biaya, FAQ), `/studio.html` = ruang kerja (judul NEXAOFFICE), `/kantor.html` = Kantor 3D. Konsol: tanpa kunci = pratinjau pembagian tugas; dengan kunci akses = Lead membagi tugas lalu ruang kerja langsung jalan. Berikutnya: Zulnan izinkan push (auto-deploy ke zuno-studio-dusky.vercel.app), isi [HARGA] dan kontak penjual (P10), cek di HP dan laptop.
 000020. **Kantor 3D jasa di main + ekspor jasa aman (2026-11-09, entri 58).** Repo jasa `main` sampai `7396e18`: Kantor 3D dua tema (Menara Senja, Griya Langit) + agen E.2/E.3/T.5 tetap ada setelah ekspor. Berikutnya: Zulnan coba `preview/Nexa-Office-Preview.zip` atau `/kantor.html` di Vercel jasa; uji performa di laptop. Fitur baru langsung di `index.html` jasa harus masuk `tools/jasa/tambahan-jasa.mjs`.
 

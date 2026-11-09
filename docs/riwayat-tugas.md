@@ -574,4 +574,15 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `web/build.mjs`, `web/merek.mjs` (baru), `web/src/site/` (baru), `web/src/serah.js` (baru), `web/index.html`, `web/studio.html` (baru), `web/site/`, `web/kantor.html`, `web/office/`, `web/assets/{agents,themes,site,fonts}`, `web/assets/nexaoffice-alur.*`, `web/dev-server.mjs`, `web/README.md`, `tools/jasa/ekspor-jasa.mjs`, `tools/kantor/ambil-kantor.mjs`, `tools/video-nexaoffice/`, `tests/nexaoffice-situs-test.js`, `tests/zuno-web-stub-test.js`, `tests/zuno-web-dev-server-test.mjs`, `progress.md`, `docs/memori-zuno.md`, `docs/jasa-zuno.md`.
 - Tertunda: push (menunggu izin Zulnan; push = deploy produksi), harga dan kontak penjual (P10), uji di HP/laptop sungguhan, agen E.2/E.3/T.5 baru ada di edisi jasa (ruang kerja Nexaoffice masih 15 agen).
 
-## 60. (entri berikutnya di sini)
+## 60. Ruang kerja Nexaoffice jadi 18 agen, sama dengan kantor 3D dan halaman utama (2026-11-09)
+- Permintaan Zulnan: ruang kerja Nexaoffice masih 15 agen (Bima, Fira, Damar hanya di jasa) padahal halaman utama menampilkan 18; harus sama dan sesuai 18 agen.
+- Temuan: di jasa, E.2 Bima dan E.3 Fira hanya punya profil peran, tidak pernah dipanggil; T.5 Damar sudah jalan di Build App.
+- Hasil:
+  - E.2/E.3/T.5 (peran, jalur T.5, audit Damar) dipindah dari `tools/jasa/tambahan-jasa.mjs` ke sumber `prototypes/zuno-studio-v2.html`; tombol Kantor 3D ke `web/src/hero.html`. `tambahan-jasa.mjs` kini kosong.
+  - Bima dan Fira bekerja di tahap Editing setiap video: Bima menyusun rencana Remotion (scene, frame, animasi, audio; status RENCANA), Fira menyusun prompt Google Flow per shot (DNA visual, kamera, kontinuitas; status PROMPT, belum digenerate). Masuk paket .md dan paket Claude Code (`rencana-remotion.json`, `prompt-google-flow.json`). Jalur Editing: "Pelatih Editing · Bima (Remotion) · Fira (Google Flow) · Perender".
+  - Situs: konsol Lead mengenal 18 agen (Build App + Damar; video + Bima, Fira), teks hero "18 agen berbagi tugas", cara kerja menyebut Bima, Fira, Damar.
+- Bukti: `tests/nexaoffice-situs-test.js` cek baru "18 agen sama di ruang kerja (18), kantor 3D (18), halaman utama (18)" + E.2/E.3/T.5 dipanggil, SEMUA LOLOS; `zuno-studio-v2-stub` (Bima & Fira dipanggil, file json di paket, bagian di .md) lolos mode biasa dan tampil; `zuno-studio-v2-build-stub` 11 mode lolos (T.5 Damar done/warn); web stub, dev-server, api, rilis laptop, jasa lolos. Ekspor jasa: diff hanya kerja Bima/Fira + VERSI (peran dan Kantor 3D identik).
+- Catatan: profil di `agents/` (18 profil: ada Perender, Pelapor Analitik, Strategis Iklan; belum ada Bima, Fira, Damar) belum diselaraskan dengan 18 agen kantor/ruang kerja. Menunggu keputusan Zulnan.
+- Tertunda: push Zuno dan repo jasa menunggu izin Zulnan.
+
+## 61. (entri berikutnya di sini)
