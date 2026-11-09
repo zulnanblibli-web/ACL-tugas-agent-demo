@@ -35,6 +35,7 @@ Keputusan Zulnan 2026-11-04: Zuno Studio dijual sebagai jasa. Tiap pembeli menda
 - `index.html`: agen E.2 Bima (Remotion), E.3 Fira (Google Flow), T.5 Damar (audit bug & security di Build App), dan tombol hero "JELAJAHI KANTOR 3D". Disimpan di `tools/jasa/tambahan-jasa.mjs` dan ditempel ulang tiap ekspor; penanda yang hilang menghentikan ekspor. Fitur baru yang dibuat langsung di `index.html` repo jasa harus ditambahkan ke file itu, kalau tidak akan terhapus di ekspor berikutnya.
 - `assets/agents/` (18 GLB + PNG) dan `assets/themes/` tidak dihapus ekspor. Folder aset lain tetap diganti dari Zuno.
 - `package.json` digabung (dependensi `three`, devDependencies, script Kantor 3D tetap); `package-lock.json` repo jasa dipertahankan dan ekspor berhenti bila dependensi Zuno belum ada di dalamnya.
+- Sejak Nexaoffice (2026-11-09): ekspor membaca ruang kerja dari `web/studio.html` dan melepas merek Nexaoffice (`web/merek.mjs`), jadi `index.html` jasa tetap white-label. Halaman utama Nexaoffice (`web/index.html`, `web/site/`) dan aset situs (`assets/site`, `assets/fonts`, `nexaoffice-alur.*`) tidak ikut; salinan Kantor 3D di `web/` juga tidak ikut (sumbernya repo jasa).
 - File yang tidak disentuh ekspor sama sekali: `kantor.html`, `office/`, `preview/`, `tests/`, `tools/`, `artifacts/`, `AGENTS-18.md`, `progress.md`, `.github/`.
 
 ## Menjual ke pembeli

@@ -32,7 +32,9 @@ try {
   const lg = fs.existsSync(LOGF) ? fs.readFileSync(LOGF, 'utf8') : '';
   ok('log diagnosa ditulis tanpa isi key', /jalan di http:\/\/127\.0\.0\.1:/.test(lg) && /key terisi/.test(lg) && !lg.includes('kunci-tiruan') && !lg.includes('rahasia-lokal'));
   let r = await fetch(U + '/'); let t = await r.text();
-  ok('halaman utama 200 dan memuat ZUNO + input gambar cover', r.status === 200 && /ZUNO/.test(t) && t.includes('id="coverfile"'));
+  ok('halaman utama Nexaoffice 200 (konsol perintah)', r.status === 200 && /Nexaoffice/.test(t) && t.includes('id="konsol"'));
+  r = await fetch(U + '/studio.html'); t = await r.text();
+  ok('ruang kerja /studio.html 200 dan memuat ZUNO + input gambar cover', r.status === 200 && /ZUNO/.test(t) && t.includes('id="coverfile"'));
   r = await fetch(U + '/assets/foto-zulnan.webp'); ok('foto cover webp 200', r.status === 200 && r.headers.get('content-type') === 'image/webp' && (await r.arrayBuffer()).byteLength > 10000);
   r = await fetch(U + '/assets/karakter/zuno-tim-orkestrasi.webp'); ok('gambar karakter 200', r.status === 200);
   r = await fetch(U + '/hud.css'); ok('css 200', r.status === 200 && /text\/css/.test(r.headers.get('content-type')));

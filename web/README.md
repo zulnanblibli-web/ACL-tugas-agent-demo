@@ -1,11 +1,15 @@
-# Zuno Web (Vercel)
+# Nexaoffice Web (Vercel)
 
-Versi live Zuno Studio v2 dengan tampilan HUD. Logika agen tetap dari `prototypes/zuno-studio-v2.html`. Di artifact, halaman memanggil Claude lewat `window.claude`; di web, panggilan itu lewat server sendiri (`/api/ai`), dan API key hanya disimpan di Vercel.
+Sejak 2026-11-09 Zuno Web jadi **Nexaoffice**: `/` = situs utama, `/studio.html` = ruang kerja agen, `/kantor.html` = Kantor 3D. Ruang kerja adalah versi live Zuno Studio v2 dengan tampilan HUD. Logika agen tetap dari `prototypes/zuno-studio-v2.html`. Di artifact, halaman memanggil Claude lewat `window.claude`; di web, panggilan itu lewat server sendiri (`/api/ai`), dan API key hanya disimpan di Vercel.
 
 ## Isi folder
 | File | Fungsi |
 |---|---|
-| `index.html` | Halaman jadi (hasil `build.mjs`, jangan diedit langsung) |
+| `index.html` | Halaman utama **Nexaoffice** (salinan `src/site/index.html` oleh `build.mjs`): menu ala lembur.id, konsol perintah AI, cara kerja (video Remotion), Kantor 3D, tim, isi paket, biaya, FAQ |
+| `src/site/` | Sumber halaman utama: `index.html`, `site.css` (+ `tokens.css`, `base.css` dari Hallmark), `site.js` (menu, tab, video, konsol). Disalin ke `site/` |
+| `studio.html` | Ruang kerja (hasil `build.mjs` dari `zuno-studio-v2.html`, jangan diedit langsung). Merek Nexaoffice dipasang lewat `merek.mjs`; ekspor jasa melepasnya lagi |
+| `src/serah.js` | Serah terima: `/studio.html?perintah=...&divisi=konten\|build&jalan=1` mengisi perintah lalu langsung menjalankan tim |
+| `kantor.html`, `office/`, `assets/agents/`, `assets/themes/` | Kantor 3D, disalin dari repo jasa: `node tools/kantor/ambil-kantor.mjs <repo-jasa>` (sumbernya di repo jasa) |
 | `src/hero.html`, `src/tail.html`, `src/hud.css`, `src/hud.js` | Tampilan HUD: judul ZUNO, inti, panel status, diagram "Cara kerja" yang ikut proses asli |
 | `src/live.js` | Jembatan: `window.claude.use('sample')` diarahkan ke `/api/ai` (streaming) |
 | `api/ai.js` | Server AI. Penyedia bisa diganti lewat `AI_PROVIDER` |

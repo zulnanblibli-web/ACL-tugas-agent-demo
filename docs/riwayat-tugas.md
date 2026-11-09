@@ -561,4 +561,17 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Bukti: ekspor di atas `main` jasa yang sudah di-merge hanya mengubah `VERSI.txt` dan satu baris `index.html` (perbaikan di atas); `tests/zuno-jasa-test.js` HASIL: SEMUA LOLOS; `test:office`, `test:themes`, `test:preview` lolos di `main`.
 - Commit: jasa `main` sampai `7396e18`; Zuno: skrip ekspor + dokumen. P11 dipindah ke Selesai.
 
-## 59. (entri berikutnya di sini)
+## 59. Zuno Web jadi Nexaoffice: situs utama ala lembur.id, konsol perintah AI, Kantor 3D (2026-11-09)
+- Permintaan Zulnan: skema seperti lembur.id sebagai web utama dengan menu dan penawaran; interface AI langsung di web dan agen langsung mengeksekusi perintah; desain mengikuti gambar referensi (gelap, biru elektrik); Kantor 3D jadi menu; pakai skill UI/UX, Remotion, tipografi disesuaikan; nama "Nexaoffice" di kiri atas; "zuno web di revisi jadi nexa office".
+- lembur.id dibaca (jaringan sesi ditambah `lembur.id`): menu Hasil kerja, Tema kantor, Demo kantor, Isi paket, Materi, Biaya, FAQ. Yang ditiru strukturnya, bukan isi atau angkanya.
+- Hasil (repo Zuno, `web/`):
+  - `/` situs utama (`web/src/site/`): hero dengan konsol perintah (Otomatis/Konten/Build App) + render gedung Menara Senja; Cara kerja (tab Konten/Build App + video Remotion 12 detik); Kantor 3D (Griya Langit + Nexa Studio, tombol masuk); 18 agen; Yang kamu dapat; Biaya ([HARGA BELUM DITENTUKAN] + kontak penjual sebagai isian kosong); FAQ. Huruf: Antonio (judul), Onest (isi), JetBrains Mono (konsol), dipasang lokal di `web/assets/fonts/`. Skill Hallmark: sloplint 0 FAIL (1 WARN: daftar 18 agen memang padat).
+  - Konsol: tanpa kunci akses = pratinjau pembagian tugas (ditulis jelas belum memakai AI); dengan kunci = Lead (ZUNO) membagi tugas lewat `/api/ai`, lalu `/studio.html?perintah=..&divisi=..&jalan=1` langsung menjalankan Konten atau Build App (`web/src/serah.js`); alamat dibersihkan supaya muat ulang tidak menjalankan dua kali.
+  - Ruang kerja pindah ke `/studio.html`, merek Nexaoffice (judul, NEXAOFFICE di hero, tautan Nexaoffice kiri atas) dipasang lewat `web/merek.mjs`; ekspor jasa membaca `studio.html` dan melepas merek itu (jasa tetap white-label, diff jasa hanya `VERSI.txt`).
+  - Kantor 3D disalin dari repo jasa: `tools/kantor/ambil-kantor.mjs` (kantor.html, office/, assets/agents, assets/themes); render baru 1920 px untuk situs di `web/assets/site/`.
+  - Video Remotion: `tools/video-nexaoffice/` -> `web/assets/nexaoffice-alur.mp4` + `.webm` + poster `.webp`.
+- Bukti: `tests/nexaoffice-situs-test.js` (baru) HASIL: SEMUA LOLOS 4x berturut-turut (menu, font, gambar, aset kantor 3D, video putar/jeda, konsol tanpa kunci, kunci salah, Lead + serah ke Build App dan Konten, HP); `zuno-web-stub`, `zuno-web-dev-server`, `zuno-web-api`, `zuno-studio-v2-stub`, `zuno-studio-v2-build-stub`, `zuno-rilis-laptop`, `zuno-jasa-test` lolos.
+- File berubah: `web/build.mjs`, `web/merek.mjs` (baru), `web/src/site/` (baru), `web/src/serah.js` (baru), `web/index.html`, `web/studio.html` (baru), `web/site/`, `web/kantor.html`, `web/office/`, `web/assets/{agents,themes,site,fonts}`, `web/assets/nexaoffice-alur.*`, `web/dev-server.mjs`, `web/README.md`, `tools/jasa/ekspor-jasa.mjs`, `tools/kantor/ambil-kantor.mjs`, `tools/video-nexaoffice/`, `tests/nexaoffice-situs-test.js`, `tests/zuno-web-stub-test.js`, `tests/zuno-web-dev-server-test.mjs`, `progress.md`, `docs/memori-zuno.md`, `docs/jasa-zuno.md`.
+- Tertunda: push (menunggu izin Zulnan; push = deploy produksi), harga dan kontak penjual (P10), uji di HP/laptop sungguhan, agen E.2/E.3/T.5 baru ada di edisi jasa (ruang kerja Nexaoffice masih 15 agen).
+
+## 60. (entri berikutnya di sini)

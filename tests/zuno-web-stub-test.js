@@ -1,5 +1,5 @@
 const { chromium } = require('playwright');
-// Uji Zuno Web (web/index.html) dengan /api/ai, /api/status, dan /api/riset tiruan. Argumen: --tampil.
+// Uji Zuno Web (web/studio.html, ruang kerja Nexaoffice) dengan /api/ai, /api/status, dan /api/riset tiruan. Argumen: --tampil.
 const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'tampil' : 'tanpa'; const assert=(ok,m)=>{if(!ok){console.error('GAGAL: '+m);process.exitCode=1}else console.log('LOLOS: '+m)};
 (async()=>{
   const b = await chromium.launch(); const p = await b.newPage({viewport:{width:1100,height:900}});
@@ -50,7 +50,7 @@ const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'ta
   const http=require('http'),fs=require('fs'),path=require('path');const root=path.join(__dirname,'..','web');
   const srv=http.createServer((q,r)=>{let f=path.join(root,decodeURIComponent(q.url.split('?')[0]));if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,d)=>{if(e){r.writeHead(404);return r.end()}r.writeHead(200,{'content-type':f.endsWith('.js')?'text/javascript':f.endsWith('.css')?'text/css':'text/html'});r.end(d)})});
   await new Promise(r=>srv.listen(0,r));
-  await p.goto('http://127.0.0.1:'+srv.address().port+'/');
+  await p.goto('http://127.0.0.1:'+srv.address().port+'/studio.html');
   await p.waitForTimeout(500);
   console.log('HUD: judul',await p.$eval('.hud-title',e=>e.textContent),'| status',await p.$eval('#hStat',e=>e.textContent),'| dialog kunci terbuka?',await p.$eval('#keyDlg',e=>e.open));
   console.log('alur awal:',await p.$$eval('#hFlow .node b',e=>e.map(x=>x.textContent).join(' > ')));

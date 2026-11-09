@@ -8,6 +8,7 @@
 //
 // Setiap penanda harus ditemukan tepat satu kali. Bila Zuno berubah dan penanda hilang,
 // ekspor BERHENTI dengan pesan jelas: perbaiki penandanya, jangan dilewati.
+import { pasang } from '../../web/merek.mjs';
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,7 +30,8 @@ function swapIn(name, text, find, repl) {
 }
 
 // ---------- halaman ----------
-let page = readFileSync(join(web, 'index.html'), 'utf8');
+// Ruang kerja ada di web/studio.html (web/index.html = halaman utama Nexaoffice, tidak ikut). Merek Nexaoffice dilepas: jasa tetap white-label.
+let page = pasang(readFileSync(join(web, 'studio.html'), 'utf8'), 'mundur');
 const P = (f, r) => { page = swapIn('index.html', page, f, r); };
 P('<meta name="author" content="Creative @nexamind.ai">', '<meta name="author" content="Zuno Studio">');
 P('<script src="/live.js"></script>', '<script src="/brand.js"></script>\n<script src="/live.js"></script>');
@@ -75,9 +77,12 @@ for (const f of readdirSync(join(web, 'api'))) if (!['ai.js', 'status.js'].inclu
 
 // ---------- aset: tanpa foto dan avatar Zulnan ----------
 const SKIP_ASSET = /foto-zulnan|zulnan|README/i;
-function copyDir(a, b) {
+// Aset khusus situs Nexaoffice dan salinan Kantor 3D (sumbernya repo jasa sendiri) tidak ikut ke jasa.
+const SKIP_TOP = new Set(['agents', 'themes', 'site', 'fonts', 'nexaoffice-alur.mp4', 'nexaoffice-alur.webm', 'nexaoffice-alur.webp']);
+function copyDir(a, b, top = false) {
   mkdirSync(b, { recursive: true });
   for (const f of readdirSync(a)) {
+    if (top && SKIP_TOP.has(f)) continue;
     const s = join(a, f);
     if (statSync(s).isDirectory()) copyDir(s, join(b, f));
     else if (!SKIP_ASSET.test(f)) copyFileSync(s, join(b, f));
@@ -86,7 +91,7 @@ function copyDir(a, b) {
 // Folder aset milik repo jasa sendiri (Kantor 3D: 18 GLB agen, preview tema) tidak ikut dihapus.
 const KEEP_ASSETS = ['agents', 'themes'];
 if (existsSync(join(out, 'assets'))) for (const f of readdirSync(join(out, 'assets'))) if (!KEEP_ASSETS.includes(f)) rmSync(join(out, 'assets', f), { recursive: true, force: true });
-copyDir(join(web, 'assets'), join(out, 'assets'));
+copyDir(join(web, 'assets'), join(out, 'assets'), true);
 
 // ---------- paket, konfigurasi, dokumen ----------
 // package.json digabung: dependensi Zuno + dependensi/script/devDependencies milik repo jasa (Kantor 3D) tetap ada.

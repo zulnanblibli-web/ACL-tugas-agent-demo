@@ -1,9 +1,10 @@
-// Membangun web/index.html dari prototypes/zuno-studio-v2.html (sumber tunggal logika agen)
+// Membangun web/studio.html (ruang kerja) dari prototypes/zuno-studio-v2.html, plus halaman utama Nexaoffice (web/index.html dari web/src/site/), (sumber tunggal logika agen)
 // + tampilan HUD + jembatan /api/ai. Jalankan ulang setiap kali zuno-studio-v2.html berubah:
 //   node web/build.mjs
-import { readFileSync, writeFileSync, copyFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, copyFileSync, existsSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { pasang } from './merek.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const src = readFileSync(join(here, '..', 'prototypes', 'zuno-studio-v2.html'), 'utf8');
@@ -33,6 +34,11 @@ swap('\n<script>\n', '\n<script src="/live.js"></script>\n<script src="/hud.js">
 swap("not_granted:'Izin Claude belum diberikan.'", "not_granted:'Kunci akses Zuno salah atau belum diisi. Klik KUNCI AKSES di atas.',not_configured:'Server Zuno belum disetel (ZUNO_ACCESS_KEY di Vercel).',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.'");
 swap("info.textContent='Halaman ini baru bisa menjalankan agen saat dibuka di claude.ai dan diberi izin memakai Claude.'", "info.textContent='Server Zuno tidak bisa dihubungi. Muat ulang halaman.'");
 
-writeFileSync(join(here, 'index.html'), out);
-for (const f of ['hud.css', 'hud.js', 'live.js', 'motion.js']) copyFileSync(join(here, 'src', f), join(here, f));
-console.log('web/index.html dibuat (' + out.length + ' karakter)');
+// Ruang kerja pindah ke /studio.html dengan merek Nexaoffice (ekspor jasa melepas mereknya lagi, lihat merek.mjs).
+writeFileSync(join(here, 'studio.html'), pasang(out));
+for (const f of ['hud.css', 'hud.js', 'live.js', 'motion.js', 'serah.js']) copyFileSync(join(here, 'src', f), join(here, f));
+// Halaman utama Nexaoffice (/): web/src/site/index.html, gaya dan skrip di /site/.
+mkdirSync(join(here, 'site'), { recursive: true });
+for (const f of ['site.css', 'tokens.css', 'base.css', 'site.js']) copyFileSync(join(here, 'src', 'site', f), join(here, 'site', f));
+copyFileSync(join(here, 'src', 'site', 'index.html'), join(here, 'index.html'));
+console.log('web/studio.html dibuat (' + out.length + ' karakter), web/index.html = halaman utama Nexaoffice');
