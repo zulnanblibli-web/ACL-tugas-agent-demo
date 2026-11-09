@@ -1,4 +1,4 @@
-/* Nexaoffice: kendali Kantor 3D sematan dari halaman induk (situs dan User Interface).
+/* Nexaoffice: kendali Kantor 3D sematan dari halaman induk (situs dan Workspace).
    Kantor jalan di iframe /office/ruang.html (asal yang sama), dikendalikan lewat window.zunoOffice di dalamnya.
    Pakai: var k = NexaKantor(iframe); k.tema('langit'); k.dalam(); k.kerja(['R.1']); k.santai(['R.1']); k.fokus('R.1') */
 (function () {

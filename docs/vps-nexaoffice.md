@@ -4,7 +4,7 @@ Berlaku untuk Nexaoffice (repo ini, folder `web/`) dan edisi jasa (`zuno-studio-
 
 ## Tiga cara menyambungkan otak AI
 
-Buka **User Interface** (`/studio.html`), klik **Pengaturan AI** di kanan atas.
+Buka **Workspace** (`/studio.html`), klik **Pengaturan AI** di kanan atas.
 
 | Pilihan | API key disimpan di | Cocok untuk |
 |---|---|---|

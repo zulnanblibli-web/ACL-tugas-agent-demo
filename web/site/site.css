@@ -1,7 +1,8 @@
-/* Hallmark · shape: reception desk (agent simulation hero, then the live building) · genre: atmospheric · theme: custom · job: try · idea: "The site is the front desk of an AI office: you watch the team work, walk into the building, then give your own order in User Interface." · vibe: "night office, electric blue, condensed, calm"
- * paper: oklch(14% 0.022 250) · accent: oklch(70% 0.16 238) · display: Antonio 700 · body: Onest 400/700 · outlier: JetBrains Mono (the command line only) · hero: headline, one sentence and two actions on the left, a labelled simulation of a command split across agents on the right · nav: wordmark left, anchors centre, one quiet action · footer: one row, wordmark, links, credit · imagery: the product (the live 3D office embedded, agent portraits, Remotion animation of the flow) · signature: the agent-work simulation in the hero and the live 3D office one scroll below
+/* Hallmark · shape: reception desk (the live building is the hero) · genre: atmospheric · theme: custom · job: try · idea: "The site is the front desk of an AI office: the hero is the office itself with the team moving; you give your own order in Workspace." · vibe: "night office, electric blue, condensed, calm"
+ * paper: oklch(14% 0.022 250) · accent: oklch(70% 0.16 238) · display: Antonio 700 · body: Onest 400/700 · outlier: JetBrains Mono (unused on this page) · hero: headline left, one sentence and two actions right, then the real 3D office zoomed to the studio floor with agents walking (labelled simulation) · nav: wordmark left, anchors centre, one quiet action · footer: one row, wordmark, links, credit · imagery: the product (the live 3D office embedded, agent portraits, Remotion animation of the flow) · signature: the live 3D office in the hero, explorable on demand
  * axes: dark/display-condensed/chromatic-blue · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
 /* Hallmark · pre-emit critique: P3 H3 E2 S3 R2 V3 · weakest: E (dark ground with one blue accent is the reference the owner asked for), kept the blue to controls, focus and progress only, no glow */
+/* waive 79: the hero visual is the live 3D office inside an iframe (the render tier counts it as empty); it fills the screen below the head */
 /* waive 2a/29-adjacent: near-black with one blue accent is the owner's reference image (JumpBot screenshot), applied without glows or gradients */
 @import url("./tokens.css");
 @import url("./base.css");
@@ -9,7 +10,6 @@
 @font-face { font-family: "Antonio"; src: url("../assets/fonts/antonio-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 @font-face { font-family: "Onest"; src: url("../assets/fonts/onest-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 @font-face { font-family: "Onest"; src: url("../assets/fonts/onest-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "JetBrains Mono"; src: url("../assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 
 body { font-size: 1.0625rem; }
 h1, h2, h3 { font-weight: 700; letter-spacing: var(--tracking-display); line-height: 1.02; color: var(--color-ink); }
@@ -37,52 +37,38 @@ h2 { font-size: var(--text-section); max-width: 22ch; }
 .wordmark:hover { color: var(--color-ink-2); }
 .nav nav { flex: 1; min-width: 0; }
 .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--space-lg); justify-content: center; }
-.nav-links a { color: var(--color-ink-2); text-decoration: none; font-size: var(--text-sm); padding: var(--space-xs) 0; transition: color var(--dur-short) var(--ease-out); }
+.nav-links a { white-space: nowrap; color: var(--color-ink-2); text-decoration: none; font-size: var(--text-sm); padding: var(--space-xs) 0; transition: color var(--dur-short) var(--ease-out); }
 .nav-links a:hover, .nav-links a[aria-current="true"] { color: var(--color-ink); }
 .nav-cta { min-height: 44px; font-size: var(--text-sm); }
 .menu-btn { display: none; }
 
-/* ---------- hero: simulasi kerja agen ---------- */
-.hero { padding-block: var(--space-xl); min-height: calc(100svh - 65px); display: grid; align-items: center; }
-.hero-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-2xl); align-items: center; }
+/* ---------- hero: kantor 3D asli, zoom ke lantai studio, agen bergerak ---------- */
+.hero { padding-block: var(--space-xl) var(--space-2xl); }
+.hero-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-xl); align-items: end; }
 .hero h1 { font-size: var(--text-display); max-width: 15ch; overflow-wrap: break-word; min-width: 0; }
-.lead { font-size: var(--text-lead); color: var(--color-ink-2); margin-top: var(--space-lg); max-width: 34ch; }
-.hero-actions { margin-top: var(--space-xl); display: flex; align-items: center; gap: var(--space-lg); flex-wrap: wrap; }
-.sim { margin: 0; background: var(--color-paper-2); border: 1px solid var(--color-rule); border-radius: var(--radius-card); padding: var(--space-lg); display: grid; gap: var(--space-md); }
-.sim-bar { display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap; font-size: var(--text-sm); color: var(--color-ink-2); }
-.sim-tag { color: var(--color-muted); margin-left: auto; }
-.sim-jeda { background: none; border: 0; color: var(--color-ink-2); font-size: var(--text-sm); text-decoration: underline; text-decoration-color: var(--color-rule-strong); cursor: pointer; min-height: 32px; padding: 0; transition: color var(--dur-short) var(--ease-out); }
-.sim-jeda:hover { color: var(--color-ink); }
-.sim-jeda:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; transition: none; }
-.sim-cmd { font-family: var(--font-outlier); font-size: var(--text-md); color: var(--color-ink); background: var(--color-paper); border: 1px solid var(--color-rule-strong); border-radius: var(--radius-control); padding: var(--space-sm) var(--space-md); min-height: 3.2em; }
-.sim-prompt { color: var(--color-accent); }
-.sim-cmd[data-ketik]::after { content: ""; display: inline-block; width: 0.55em; height: 1.1em; vertical-align: text-bottom; background: var(--color-accent); margin-left: var(--space-3xs); animation: kedip 1s steps(1) infinite; }
-@keyframes kedip { 50% { opacity: 0; } }
-.sim-lead { display: flex; align-items: center; gap: var(--space-sm); color: var(--color-ink-2); font-size: var(--text-md); }
-.sim-lead img { width: 44px; height: 52px; object-fit: contain; background: var(--color-paper-3); border-radius: var(--radius-control); }
-.sim-lead b { color: var(--color-ink); }
-.sim-agen { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-xs); }
-.sim-agen li { display: grid; grid-template-columns: 40px 5.5rem minmax(0, 1fr) minmax(0, 7rem) 5.5rem; align-items: center; gap: var(--space-sm); padding: var(--space-2xs) 0; font-size: var(--text-sm); color: var(--color-ink-2); }
-.sim-agen img { width: 40px; height: 46px; object-fit: contain; background: var(--color-paper-3); border-radius: var(--radius-control); transition: opacity var(--dur-short) var(--ease-out); }
-.sim-agen b { color: var(--color-ink); font-size: var(--text-md); }
-.sim-job { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.sim-bar-p { height: 6px; background: var(--color-paper-3); border-radius: var(--radius-pill); overflow: hidden; }
-.sim-bar-p i { display: block; height: 100%; width: 100%; background: var(--color-accent); border-radius: inherit; transform-origin: left; transform: scaleX(var(--p, 1)); transition: transform var(--dur-long) var(--ease-out); }
-.sim-agen em { font-style: normal; text-align: right; color: var(--color-muted); }
-.sim-agen li[data-s="wait"] img { opacity: 0.45; }
-.sim-agen li[data-s="wait"] .sim-bar-p i { --p: 0; }
-.sim-agen li[data-s="run"] em { color: var(--color-accent); }
-.sim-agen li[data-s="done"] em { color: var(--color-ink); }
-.sim-hasil { display: flex; justify-content: space-between; align-items: center; gap: var(--space-md); border-top: 1px solid var(--color-rule); padding-top: var(--space-md); color: var(--color-ink); font-weight: 700; transition: opacity var(--dur-short) var(--ease-out); }
-.sim-hasil[data-on="0"] { opacity: 0.35; }
-.sim-setujui { font-weight: 700; font-size: var(--text-sm); color: var(--color-accent-ink); background: var(--color-accent); border-radius: var(--radius-pill); padding: var(--space-xs) var(--space-md); }
-.sim-hasil[data-on="0"] .sim-setujui { background: var(--color-paper-3); color: var(--color-muted); }
-@media (prefers-reduced-motion: reduce) { .sim-cmd[data-ketik]::after { animation: none; } .sim-bar-p i, .sim-agen img, .sim-hasil { transition: none; } }
+.lead { font-size: var(--text-lead); color: var(--color-ink-2); max-width: 34ch; }
+.hero-actions { margin-top: var(--space-lg); display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
+.hero-stage { position: relative; margin-top: var(--space-xl); height: clamp(420px, 62svh, 660px); border: 1px solid var(--color-rule); border-radius: var(--radius-card); overflow: hidden; background: var(--color-paper-2); }
+.hero-stage iframe { display: block; width: 100%; height: 100%; border: 0; pointer-events: none; }
+.hero-stage[data-jelajah="1"] iframe { pointer-events: auto; }
+.hero-stage[data-jelajah="1"] { border-color: var(--color-accent); }
+.stage-penuh { position: absolute; right: var(--space-md); bottom: var(--space-md); min-height: 44px; background: color-mix(in oklab, var(--color-paper) 82%, transparent); }
+.hero-stage:fullscreen { border-radius: 0; height: 100%; }
+.hero-stage:fullscreen iframe { pointer-events: auto; }
 figcaption { font-size: var(--text-sm); color: var(--color-muted); margin-top: var(--space-sm); }
+
+.tema-grid { margin-top: var(--space-xl); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-columns); }
+.tema-kartu { margin: 0; }
+.tema-kartu img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius-card); }
+.tema-kartu figcaption { display: flex; justify-content: space-between; align-items: center; gap: var(--space-md); margin-top: var(--space-md); color: var(--color-ink-2); font-size: var(--text-md); }
+.tema-kartu b { color: var(--color-ink); margin-right: var(--space-2xs); }
+.tema-kartu .btn[aria-pressed="true"] { border-color: var(--color-accent); background: var(--color-accent-soft); }
 
 /* ---------- sections ---------- */
 main > section + section { border-top: 1px solid var(--color-rule); }
-.alur, .kantor, .tim, .paket { padding-block: var(--space-3xl); }
+.alur, .tema, .tim, .paket, .panduan { padding-block: var(--space-3xl); }
+.produk { margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid var(--color-rule); color: var(--color-ink-2); font-size: var(--text-sm); }
+.produk b { color: var(--color-ink); margin-right: var(--space-xs); }
 .biaya, .faq { padding-block: var(--space-4xl); }
 .alur-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--space-2xl); align-items: start; }
 .tabs { display: flex; gap: var(--space-xs); margin-top: var(--space-xl); border-bottom: 1px solid var(--color-rule); }
@@ -98,16 +84,6 @@ main > section + section { border-top: 1px solid var(--color-rule); }
 .alur-video video { width: 100%; border-radius: var(--radius-card); border: 1px solid var(--color-rule); background: var(--color-paper-2); }
 .video-btn { position: absolute; right: var(--space-md); bottom: var(--space-md); min-height: 44px; background: color-mix(in oklab, var(--color-paper) 80%, transparent); }
 
-.kantor-head { display: flex; justify-content: space-between; align-items: end; gap: var(--space-lg); flex-wrap: wrap; }
-.kantor-kontrol { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
-.seg { display: inline-flex; border: 1px solid var(--color-rule-strong); border-radius: var(--radius-pill); padding: var(--space-3xs); }
-.seg button { white-space: nowrap; min-height: 44px; padding: 0 var(--space-md); border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--color-ink-2); font-size: var(--text-sm); cursor: pointer; transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out); }
-.seg button:hover { color: var(--color-ink); }
-.seg button[aria-pressed="true"] { background: var(--color-accent-soft); color: var(--color-ink); box-shadow: inset 0 0 0 1px var(--color-accent); font-weight: 700; }
-.seg button:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; transition: none; }
-.kantor-frame { margin-top: var(--space-xl); height: min(78svh, 720px); min-height: 460px; border: 1px solid var(--color-rule); border-radius: var(--radius-card); overflow: hidden; background: var(--color-paper-2); }
-.kantor-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
-.kantor-frame:fullscreen { border-radius: 0; height: 100%; }
 .note { margin-top: var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); }
 
 .tim-grid { list-style: none; margin: var(--space-xl) 0 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-lg) var(--gap-columns); }
@@ -151,25 +127,23 @@ td { color: var(--color-ink-2); }
   .nav-links { gap: var(--space-md); }
   .tim-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
-@media (max-width: 60rem) {
-  .hero { min-height: 0; }
-  .hero-grid { gap: var(--space-xl); }
-  .kantor-frame { height: 70svh; min-height: 420px; }
-  .biaya, .faq { padding-block: var(--space-3xl); }
+@media (max-width: 72rem) {
   .menu-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-md); background: none; color: var(--color-ink); border: 1px solid var(--color-rule-strong); border-radius: var(--radius-pill); cursor: pointer; margin-left: auto; }
   .nav-cta { display: none; }
   .nav nav { position: absolute; left: 0; right: 0; top: 100%; flex: none; }
   .nav-links { display: none; flex-direction: column; gap: 0; background: var(--color-paper); border-bottom: 1px solid var(--color-rule); padding: var(--space-xs) var(--gutter) var(--space-md); }
   .nav-links.open { display: flex; }
   .nav-links a { display: block; padding: var(--space-sm) 0; font-size: var(--text-md); }
-  .hero-grid, .alur-grid, .paket-grid, .faq-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 60rem) {
+  .biaya, .faq { padding-block: var(--space-3xl); }
+  .hero-head, .alur-grid, .paket-grid, .faq-grid, .tema-grid { grid-template-columns: minmax(0, 1fr); }
+  .hero-stage { height: 58svh; min-height: 360px; }
+  .tema-kartu figcaption { flex-direction: column; align-items: flex-start; }
   .hero { padding-top: var(--space-xl); }
   .isi div { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xs); }
 }
 @media (max-width: 40rem) {
-  .sim { padding: var(--space-md); }
-  .sim-agen li { grid-template-columns: 36px minmax(0, 1fr) 4.5rem; }
-  .sim-agen .sim-job, .sim-agen .sim-bar-p { display: none; }
   .tim-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tim-grid img { height: 112px; }
   thead { display: none; }

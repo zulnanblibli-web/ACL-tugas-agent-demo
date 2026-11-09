@@ -28,7 +28,7 @@
   "redirects": [
     {
       "source": "/kantor.html",
-      "destination": "/#kantor",
+      "destination": "/",
       "permanent": false
     }
   ]

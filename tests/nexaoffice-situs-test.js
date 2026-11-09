@@ -1,4 +1,4 @@
-// Uji Nexaoffice: halaman utama (simulasi agen, kantor 3D sematan), User Interface (/studio.html: perintah, kantor 3D ikut status asli,
+// Uji Nexaoffice: halaman utama (simulasi agen, kantor 3D sematan), Workspace (/studio.html: perintah, kantor 3D ikut status asli,
 // menu Pengaturan AI: server / API key lokal / VPS), 18 agen sama di semua tempat termasuk agents/. /api tiruan.
 //   node web/build.mjs && NODE_PATH=$(npm root -g) node tests/nexaoffice-situs-test.js
 const { chromium } = require('playwright');
@@ -52,10 +52,11 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     ok('judul halaman Nexaoffice', /Nexaoffice/.test(await p.title()));
     ok('nama Nexaoffice di pojok kiri atas', await p.$eval('header .wordmark', (e) => { const r = e.getBoundingClientRect(); return e.textContent.trim() === 'Nexaoffice' && r.left < 200 && r.top < 40; }));
     const anchors = await p.$$eval('.nav-links a', (as) => as.map((a) => a.getAttribute('href')));
-    ok('menu: 7 tautan, ada User Interface, semua bagian ada (' + anchors.join(' ') + ')', anchors.length === 7 && anchors[0] === '/studio.html' && (await p.evaluate((a) => a.filter((h) => h[0] === '#').every((h) => !!document.querySelector(h)), anchors)));
-    ok('menu: nama "User Interface"', (await p.textContent('.nav-links a[href="/studio.html"]')).trim() === 'User Interface');
+    const labels = await p.$$eval('.nav-links a', (as) => as.map((a) => a.textContent.trim()));
+    ok('menu: 8 tautan berurutan ala referensi, semua bagian ada (' + labels.join(' | ') + ')', labels.join('|') === 'Contoh hasil|Pilihan tema|Workspace|Isi kit|Panduan|Harga|Tanya jawab|Produk lain' && (await p.evaluate((a) => a.filter((h) => h[0] === '#').every((h) => !!document.querySelector(h)), anchors)));
+    ok('menu: Workspace ke /studio.html, tombol Pesan kit ke Harga', (await p.getAttribute('.nav-links a:text-is("Workspace")', 'href')) === '/studio.html' && (await p.textContent('.nav-cta')).trim() === 'Pesan kit' && (await p.getAttribute('.nav-cta', 'href')) === '#biaya');
     ok('font Antonio dan Onest termuat', await p.evaluate(async () => { await document.fonts.ready; return document.fonts.check('700 20px Antonio') && document.fonts.check('400 16px Onest'); }));
-    ok('gambar karakter termuat', await p.evaluate(async () => { const im = [...document.images]; im.forEach((i) => { i.loading = 'eager'; }); await Promise.all(im.map((i) => i.decode().catch(() => null))); return im.length >= 24 && im.every((i) => i.naturalWidth > 0); }));
+    ok('gambar karakter termuat', await p.evaluate(async () => { const im = [...document.images]; im.forEach((i) => { i.loading = 'eager'; }); await Promise.all(im.map((i) => i.decode().catch(() => null))); return im.length >= 20 && im.every((i) => i.naturalWidth > 0); }));
     for (const a of ['/office/ruang.html', '/office/kendali.js', '/office/sematan.js', '/office/sematan.css', '/office/office.bundle.js', '/office/karakter.html', '/assets/agents/T.5.glb', '/assets/themes/senja.png', '/assets/nexaoffice-alur.webm', '/studio.html', '/ui.js', '/pengaturan-ai.js', '/serah.js']) {
       const r = await p.request.get(U + a); ok('aset ' + a + ' 200', r.status() === 200);
     }
@@ -73,31 +74,26 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
       ok('ruang kerja: Bima (E.2), Fira (E.3), Damar (T.5) benar-benar dipanggil', /ask\('E\.2'/.test(studio) && /ask\('E\.3'/.test(studio) && /ask\('T\.5'/.test(studio));
     }
 
-    // ---------- 2. hero: simulasi kerja agen ----------
-    ok('hero: simulasi ditandai demo, bukan AI asli', /Demo, bukan AI asli/.test(await p.textContent('#sim')));
-    await p.waitForSelector('#simAgen li[data-s="run"]', { timeout: 15000 }).catch(() => {});
-    ok('hero: agen mulai bekerja (status Bekerja)', !!(await p.$('#simAgen li[data-s="run"]')));
-    await p.waitForFunction(() => document.getElementById('simHasil').getAttribute('data-on') === '1' && [...document.querySelectorAll('#simAgen li')].every((l) => l.dataset.s === 'done'), null, { timeout: 20000 }).catch(() => {});
-    ok('hero: semua agen selesai, hasil menunggu persetujuan', /menunggu/.test(await p.textContent('#simHasilTxt')));
-    await p.click('#simJeda');
-    const beku = await p.$eval('#sim', (e) => e.innerHTML); await p.waitForTimeout(2500);
-    ok('hero: simulasi bisa dijeda', (await p.$eval('#sim', (e) => e.innerHTML)) === beku && (await p.getAttribute('#simJeda', 'aria-pressed')) === 'true');
-    await p.click('#simJeda');
-
-    // ---------- 3. kantor 3D langsung di halaman (iframe), tema bisa diganti ----------
-    await p.$eval('#kantor', (e) => e.scrollIntoView());
+    // ---------- 2. hero = kantor 3D asli (zoom ke lantai studio), agen bergerak ----------
     const siap = await p.waitForFunction(() => { const f = document.getElementById('kantorIframe'); try { return !!(f.contentWindow.zunoOffice && f.contentWindow.zunoOffice.state.ready); } catch (e) { return false; } }, null, { timeout: 60000 }).then(() => true).catch(() => false);
-    ok('kantor 3D tampil langsung di halaman utama (bukan pindah halaman)', siap && p.url() === U + '/');
-    const kf = () => p.evaluate(() => document.getElementById('kantorIframe').contentWindow.zunoOffice.state);
-    ok('kantor 3D: dibuka di dalam studio dengan demo aktivitas', siap && (await kf()).view === 'interior' && (await p.evaluate(() => document.getElementById('kantorIframe').contentWindow.zunoOffice.demo.running)));
-    await p.click('[data-tema="langit"]'); await p.waitForTimeout(500);
-    ok('kantor 3D: tema Griya Langit dari tombol halaman', siap && (await kf()).theme === 'langit' && (await p.getAttribute('[data-tema="langit"]', 'aria-pressed')) === 'true');
-    await p.click('[data-tema="senja"]'); await p.waitForTimeout(300);
-    ok('kantor 3D: tema kembali ke Menara Senja', siap && (await kf()).theme === 'senja');
-    await p.click('[data-lihat="luar"]'); await p.waitForTimeout(300);
-    ok('kantor 3D: tampilan Gedung (eksterior)', siap && (await kf()).view === 'exterior');
-    await p.click('[data-lihat="dalam"]'); await p.waitForTimeout(300);
-    ok('kantor 3D: kembali ke dalam studio', siap && (await kf()).view === 'interior');
+    const office = () => p.evaluate(() => { const o = document.getElementById('kantorIframe').contentWindow.zunoOffice; return { view: o.state.view, theme: o.state.theme, demo: o.demo.running, t: o.demo.snapshot ? JSON.stringify(o.demo.snapshot()).length : 0 }; });
+    ok('hero: kantor 3D langsung tampil di layar pertama', siap && await p.$eval('#heroStage', (e) => e.getBoundingClientRect().top < 800));
+    ok('hero: di dalam studio, demo gerak agen berjalan, tema awal Griya Langit', siap && (await office()).view === 'interior' && (await office()).demo && (await office()).theme === 'langit');
+    const pos1 = siap ? await p.evaluate(() => JSON.stringify(document.getElementById('kantorIframe').contentWindow.zunoOffice.sceneAgents().map((a) => a.position.map((x) => x.toFixed(2))))) : '';
+    await p.waitForTimeout(4000);
+    const pos2 = siap ? await p.evaluate(() => JSON.stringify(document.getElementById('kantorIframe').contentWindow.zunoOffice.sceneAgents().map((a) => a.position.map((x) => x.toFixed(2))))) : '';
+    ok('hero: agen benar-benar bergerak (posisi berubah)', siap && pos1 !== pos2);
+    ok('hero: ditandai simulasi, bukan pekerjaan AI asli', /Simulasi gerak agen, bukan pekerjaan AI asli/.test(await p.textContent('#beranda')));
+    ok('hero: kantor tidak menahan scroll sebelum Jelajahi diklik', (await p.$eval('#kantorIframe', (f) => getComputedStyle(f).pointerEvents)) === 'none');
+    await p.click('#heroJelajah');
+    ok('hero: Jelajahi kantor mengaktifkan putar/zoom', (await p.$eval('#kantorIframe', (f) => getComputedStyle(f).pointerEvents)) === 'auto' && (await p.getAttribute('#heroJelajah', 'aria-pressed')) === 'true');
+    await p.click('#heroJelajah');
+
+    // ---------- 3. pilihan tema mengganti kantor di hero ----------
+    await p.click('.tema-kartu [data-tema="senja"]'); await p.waitForTimeout(800);
+    ok('Pilihan tema: Menara Senja dipakai di kantor hero', siap && (await office()).theme === 'senja' && (await p.getAttribute('.tema-kartu [data-tema="senja"]', 'aria-pressed')) === 'true');
+    await p.click('.tema-kartu [data-tema="langit"]'); await p.waitForTimeout(500);
+    ok('Pilihan tema: kembali ke Griya Langit', siap && (await office()).theme === 'langit');
 
     ok('tab Cara kerja: Build App bisa dibuka', await (async () => { await p.click('#tab-build'); return !(await p.$eval('#panel-build', (e) => e.hidden)) && (await p.$eval('#panel-konten', (e) => e.hidden)); })());
     await p.$eval('#alurVideo', (v) => v.scrollIntoView({ block: 'center' }));
@@ -106,11 +102,11 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     await p.click('#videoBtn');
     ok('video alur bisa dijeda', await p.$eval('#alurVideo', (v) => v.paused) && (await p.textContent('#videoBtn')) === 'Putar animasi');
 
-    // ---------- 4. User Interface tanpa kunci: pratinjau + Pengaturan AI terbuka ----------
+    // ---------- 4. Workspace tanpa kunci: pratinjau + Pengaturan AI terbuka ----------
     await p.click('.nav-links a[href="/studio.html"]');
     await p.waitForURL(/studio\.html/);
-    ok('User Interface: judul dan menu aktif', (await p.title()) === 'Nexaoffice · User Interface' && (await p.getAttribute('.nav-links a[href="/studio.html"]', 'aria-current')) === 'page');
-    ok('User Interface: tampilan Nexaoffice (tanpa HUD lama, huruf Antonio)', !(await p.$('.hud-title')) && !(await p.$('link[href="/hud.css"]')) && (await p.$eval('h1', (e) => getComputedStyle(e).fontFamily)).includes('Antonio'));
+    ok('Workspace: judul dan menu aktif', (await p.title()) === 'Nexaoffice · Workspace' && (await p.textContent('h1')).trim() === 'Workspace' && (await p.getAttribute('.nav-links a[href="/studio.html"]', 'aria-current')) === 'page');
+    ok('Workspace: tampilan Nexaoffice (tanpa HUD lama, huruf Antonio)', !(await p.$('.hud-title')) && !(await p.$('link[href="/hud.css"]')) && (await p.$eval('h1', (e) => getComputedStyle(e).fontFamily)).includes('Antonio'));
     await p.waitForFunction(() => document.getElementById('keyDlg').open, null, { timeout: 5000 }).catch(() => {});
     ok('tanpa kunci: Pengaturan AI terbuka sendiri, 3 pilihan sambungan', await p.$eval('#keyDlg', (d) => d.open) && (await p.$$eval('input[name="aiMode"]', (r) => r.map((x) => x.value).join())) === 'server,lokal,vps');
     await p.click('#keyDlg button[value="cancel"]');
@@ -138,8 +134,8 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     const kerjaT = await p.evaluate(() => Object.keys(window.NexaUI.keadaan).filter((k) => window.NexaUI.keadaan[k]));
     ok('kantor 3D ikut status asli: agen Engineering yang jalan pergi bekerja (' + kerjaT.join(',') + ')', kantorUI && kerjaT.some((k) => /^T\./.test(k)) && (await p.evaluate(() => document.getElementById('kantorIframe').contentWindow.zunoOffice.demo.running)));
     ok('kantor 3D: daftar "Sedang bekerja" tampil', /Sedang bekerja|Tim bekerja/.test(await p.textContent('#uiAktif')));
-    await p.click('[data-tema="langit"]'); await p.waitForTimeout(400);
-    ok('User Interface: tema kantor bisa diganti', kantorUI && (await p.evaluate(() => document.getElementById('kantorIframe').contentWindow.zunoOffice.state.theme)) === 'langit');
+    await p.click('[data-tema="senja"]'); await p.waitForTimeout(400);
+    ok('Workspace: tema kantor bisa diganti', kantorUI && (await p.evaluate(() => document.getElementById('kantorIframe').contentWindow.zunoOffice.state.theme)) === 'senja');
     if (await p.$('#bstop:not([disabled])')) await p.click('#bstop');
 
     // ---------- 6. Pengaturan AI: API key lokal dikirim per permintaan ----------
@@ -194,7 +190,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     ok('HP: Menu membuka tautan', await m.isVisible('.nav-links a[href="#biaya"]') && (await m.getAttribute('#menuBtn', 'aria-expanded')) === 'true');
     ok('HP: halaman utama tanpa geser samping', await m.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
     await m.goto(U + '/studio.html'); await m.waitForTimeout(800);
-    ok('HP: User Interface tanpa geser samping', await m.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+    ok('HP: Workspace tanpa geser samping', await m.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
 
     ok('tanpa galat JS (' + errors.join(' | ').slice(0, 300) + ')', errors.filter((e) => !/401 \(Unauthorized\)|404 \(Not Found\)/.test(e)).length === 0);
     ok('tanpa aset gagal dimuat (' + gagalMuat.join(' | ').slice(0, 300) + ')', gagalMuat.length === 0);

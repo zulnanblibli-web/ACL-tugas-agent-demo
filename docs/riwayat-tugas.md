@@ -607,4 +607,15 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Push (izin Zulnan "oke push dua dua nya deploy juga"): Zuno `e815828`, jasa `main` `c866d09`. Deploy Vercel `dpl_CFJaqACj6Szf9PArgGFz4cMCmvgK` READY; dicek live: `/api/status` memuat `kunci_pengguna` dan `server`, `/studio.html` = User Interface + Pengaturan AI, `/office/ruang.html` 200, `/kantor.html` dialihkan ke halaman utama.
 - Tertunda: Zulnan isi API key lewat Pengaturan AI + Tes sambungan; VPS (sewa + uji skrip); harga + kontak (P10).
 
-## 63. (entri berikutnya di sini)
+## 63. Hero kantor 3D bergerak, menu ala referensi, Workspace (2026-11-09)
+- Permintaan Zulnan: hero pakai tampilan kantor 3D yang di-zoom seperti gambar (lantai Nexa Studio) dengan simulasi gerak; menu disusun seperti referensi lembur.id (Hasil kerja, Tema kantor, Demo kantor, Isi paket, Materi, Biaya, FAQ, Lihat produk lainnya, Beli kit) tapi nama berbeda; menu "User Interface" diganti "Workspace".
+- Hasil:
+  - Hero = iframe `/office/ruang.html?awal=dalam&demo=1&ringkas=1&tema=langit&zoom=dekat`: kantor 3D asli, kamera mendekat ke lantai studio (`nexaZoom` di `sematan.js`), demo gerak agen jalan, tema awal Griya Langit bila pemakai belum memilih. Ditandai "Simulasi gerak agen, bukan pekerjaan AI asli". Kantor tidak menahan scroll sampai tombol **Jelajahi kantor** diklik; ada **Layar penuh**. Panel simulasi teks lama dihapus.
+  - Menu (nama beda, fungsi dan urutan sama): Contoh hasil (#hasil), Pilihan tema (#tema, kartu Menara Senja/Griya Langit yang langsung mengganti kantor di hero), Workspace (/studio.html), Isi kit (#paket), Panduan (#panduan, baru), Harga (#biaya), Tanya jawab (#faq), Produk lain (#produk, slot "belum diisi" di footer), tombol Pesan kit (ke Harga). Menu jadi tombol Menu di layar ≤72rem.
+  - "User Interface" jadi **Workspace** (judul halaman, h1, menu di semua halaman).
+  - `/kantor.html` sekarang dialihkan ke `/`.
+- Bukti: `nexaoffice-situs-test` SEMUA LOLOS (cek baru: urutan 8 menu, hero kantor tampil di layar pertama, agen benar-benar berpindah posisi, kantor tidak menahan scroll, Jelajahi, kartu tema mengganti tema hero, judul Workspace); dev-server lolos; ekspor jasa tidak mengubah repo jasa; sloplint 0 FAIL (REFLEX 79 diabaikan dengan catatan: visual hero ada di iframe).
+- File berubah: `web/src/site/index.html`, `web/src/site/site.css`, `web/src/site/site.js`, `web/src/kantor/sematan.js`, `web/src/studio-hero.html`, `web/src/studio-tail.html`, `web/src/studio-nexa.css`, `web/bangun.mjs`, `web/vercel.json`, tes, dokumen.
+- Tertunda: push menunggu kata Zulnan; isi harga, kontak, produk lain (P10); contoh hasil nyata.
+
+## 64. (entri berikutnya di sini)

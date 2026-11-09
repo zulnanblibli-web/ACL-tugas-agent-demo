@@ -33,7 +33,7 @@ body { font-family: var(--font-body); color: var(--color-ink); -webkit-font-smoo
 .wordmark:hover { color: var(--color-ink-2); }
 .nav nav { flex: 1; min-width: 0; }
 .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--space-lg); justify-content: center; }
-.nav-links a { color: var(--color-ink-2); text-decoration: none; font-size: var(--text-sm); padding: var(--space-xs) 0; transition: color var(--dur-short) var(--ease-out); }
+.nav-links a { white-space: nowrap; color: var(--color-ink-2); text-decoration: none; font-size: var(--text-sm); padding: var(--space-xs) 0; transition: color var(--dur-short) var(--ease-out); }
 .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--color-ink); }
 .nav-links a[aria-current="page"] { text-decoration: underline; text-decoration-color: var(--color-accent); text-underline-offset: 0.4em; }
 .nx-btn { white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 var(--space-lg); border-radius: var(--radius-pill); font: 700 var(--text-sm) var(--font-body); cursor: pointer; border: 1px solid var(--color-rule-strong); background: transparent; color: var(--color-ink); transition: border-color var(--dur-short) var(--ease-out); }
@@ -113,7 +113,7 @@ textarea { font-family: var(--font-outlier); }
 .credit { color: var(--color-muted); font-size: var(--text-sm); margin: 0; }
 
 
-/* ---------- User Interface: perintah + kantor 3D live ---------- */
+/* ---------- Workspace: perintah + kantor 3D live ---------- */
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .ui-head { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-lg) var(--space-xl); padding-block: var(--space-lg); align-items: start; }
 .ui-head h1 { margin: 0; font: 700 var(--text-display-s)/1.02 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); overflow-wrap: break-word; min-width: 0; }
@@ -181,14 +181,8 @@ textarea { font-family: var(--font-outlier); }
 
 /* tepi halaman di HP sama dengan halaman utama (site/base.css) */
 @media (max-width: 60rem) { :root { --gutter: 24px; } }
-@media (max-width: 40rem) {
-  :root { --gutter: 16px; }
-  .nav-row .wordmark { font-size: 1.5rem; }
-  .nav-cta { padding: 0 var(--space-sm); }
-  .ui-kantor-bar .seg button { padding: 0 var(--space-sm); }
-}
 @media (max-width: 68rem) { .nav-links { gap: var(--space-md); } }
-@media (max-width: 60rem) {
+@media (max-width: 72rem) {
   .menu-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-md); background: none; color: var(--color-ink); border: 1px solid var(--color-rule-strong); border-radius: var(--radius-pill); cursor: pointer; margin-left: auto; font: inherit; }
   .nav-row { gap: var(--space-sm); }
   .nav-cta { margin-left: auto; min-height: 40px; padding: 0 var(--space-md); }
@@ -197,6 +191,8 @@ textarea { font-family: var(--font-outlier); }
   .nav-links { display: none; flex-direction: column; gap: 0; background: var(--color-paper); border-bottom: 1px solid var(--color-rule); padding: var(--space-xs) var(--gutter) var(--space-md); }
   .nav-links.open { display: flex; }
   .nav-links a { display: block; padding: var(--space-sm) 0; font-size: var(--text-md); }
+}
+@media (max-width: 60rem) {
   .studio-head { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); padding-top: var(--space-lg); }
   .studio-status { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ui-head { grid-template-columns: minmax(0, 1fr); }
@@ -209,5 +205,11 @@ textarea { font-family: var(--font-outlier); }
   .flow-head:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
   .flow-body { display: none; max-height: 55vh; padding: 0 16px 12px; }
   .hud-flow.open .flow-body { display: block; border-top: 1px solid var(--color-rule); }
+}
+@media (max-width: 40rem) {
+  :root { --gutter: 16px; }
+  .nav-row .wordmark { font-size: 1.5rem; }
+  .nav-cta { padding: 0 var(--space-sm); }
+  .ui-kantor-bar .seg button { padding: 0 var(--space-sm); }
 }
 @media (prefers-reduced-motion: reduce) { .studio-status .bar i, .nx-btn, .btn, .nav-links a { transition: none; } }

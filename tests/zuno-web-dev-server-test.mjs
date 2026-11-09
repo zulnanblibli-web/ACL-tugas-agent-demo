@@ -32,7 +32,7 @@ try {
   const lg = fs.existsSync(LOGF) ? fs.readFileSync(LOGF, 'utf8') : '';
   ok('log diagnosa ditulis tanpa isi key', /jalan di http:\/\/127\.0\.0\.1:/.test(lg) && /key terisi/.test(lg) && !lg.includes('kunci-tiruan') && !lg.includes('rahasia-lokal'));
   let r = await fetch(U + '/'); let t = await r.text();
-  ok('halaman utama Nexaoffice 200 (simulasi agen + kantor 3D)', r.status === 200 && /Nexaoffice/.test(t) && t.includes('id="simulasi"') && t.includes('/office/ruang.html'));
+  ok('halaman utama Nexaoffice 200 (hero kantor 3D + Workspace)', r.status === 200 && /Nexaoffice/.test(t) && t.includes('id="beranda"') && t.includes('/office/ruang.html'));
   r = await fetch(U + '/office/ruang.html'); t = await r.text(); ok('kantor 3D sematan /office/ruang.html 200', r.status === 200 && t.includes('class="sematan"'));
   r = await fetch(U + '/kantor.html'); ok('/kantor.html tidak dipakai lagi (404)', r.status === 404);
   r = await fetch(U + '/api/ai', { method: 'OPTIONS', headers: { origin: 'https://situs.contoh', 'access-control-request-method': 'POST' } });

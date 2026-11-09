@@ -26,7 +26,7 @@ export function bangunRuangKerja(varian) {
   };
   const nexa = varian === 'nexa';
   swap('<title>Zuno Studio v2</title>', nexa
-    ? '<title>Nexaoffice · User Interface</title>\n<meta name="description" content="User Interface Nexaoffice: beri perintah, 18 agen AI bekerja di kantor 3D untuk riset, naskah, desain, dan build web app.">\n<meta name="author" content="Creative @nexamind.ai">\n<meta name="theme-color" content="#060b14">'
+    ? '<title>Nexaoffice · Workspace</title>\n<meta name="description" content="Workspace Nexaoffice: beri perintah, 18 agen AI bekerja di kantor 3D untuk riset, naskah, desain, dan build web app.">\n<meta name="author" content="Creative @nexamind.ai">\n<meta name="theme-color" content="#060b14">'
     : '<title>ZUNO · Tim Agent AI</title>\n<meta name="description" content="Zuno: tim agent AI pribadi untuk riset, naskah, desain, dan build web app.">\n<meta name="author" content="Creative @nexamind.ai">\n<meta name="theme-color" content="#03060b">');
   swap('</style>\n</head>', nexa
     ? '</style>\n<link rel="preload" href="/assets/fonts/antonio-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="/assets/fonts/onest-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="/studio-nexa.css">\n</head>'

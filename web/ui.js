@@ -1,4 +1,4 @@
-/* Nexaoffice User Interface (/studio.html): kotak perintah di atas + Kantor 3D yang ikut status kerja asli.
+/* Nexaoffice Workspace (/studio.html): kotak perintah di atas + Kantor 3D yang ikut status kerja asli.
    1. Perintah -> Lead (ZUNO) membagi tugas lewat window.claude (live.js), jadi ikut menu Pengaturan AI
       (server, API key lokal, atau VPS).
    2. Perintah langsung dijalankan di ruang kerja di bawah (#cmd + #run untuk Konten, #breq + #brun untuk Build App).

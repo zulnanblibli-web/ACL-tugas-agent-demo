@@ -1,6 +1,6 @@
 # Nexaoffice Web (Vercel)
 
-Sejak 2026-11-09 Zuno Web jadi **Nexaoffice**: `/` = situs utama (hero simulasi kerja agen + Kantor 3D tertanam langsung), `/studio.html` = menu **User Interface** (kotak perintah + Kantor 3D yang ikut status kerja asli + ruang kerja + menu Pengaturan AI). `/kantor.html` tidak dipakai lagi (dialihkan ke `/#kantor`). User Interface adalah versi live Zuno Studio v2. Logika agen tetap dari `prototypes/zuno-studio-v2.html`. Di artifact, halaman memanggil Claude lewat `window.claude`; di web, panggilan itu lewat server sendiri (`/api/ai`), dan API key hanya disimpan di Vercel.
+Sejak 2026-11-09 Zuno Web jadi **Nexaoffice**: `/` = situs utama (hero = Kantor 3D asli (zoom ke lantai studio, agen bergerak)), `/studio.html` = menu **Workspace** (kotak perintah + Kantor 3D yang ikut status kerja asli + ruang kerja + menu Pengaturan AI). `/kantor.html` tidak dipakai lagi (dialihkan ke `/#kantor`). Workspace adalah versi live Zuno Studio v2. Logika agen tetap dari `prototypes/zuno-studio-v2.html`. Di artifact, halaman memanggil Claude lewat `window.claude`; di web, panggilan itu lewat server sendiri (`/api/ai`), dan API key hanya disimpan di Vercel.
 
 ## Isi folder
 | File | Fungsi |
@@ -72,4 +72,4 @@ Buka alamat yang tertulis di layar (biasanya http://127.0.0.1:3000), klik Pengat
 
 ## Pengaturan AI dan VPS (2026-11-09)
 
-Menu **Pengaturan AI** di User Interface: tiga sambungan (Server ini, API key lokal, Server VPS). Server memakai key dari header `x-llm-*` hanya untuk permintaan itu (`api/ai.js`, `konfigDari`), kunci akses tetap wajib. Matikan dengan `NEXA_KUNCI_PENGGUNA=off`. `dev-server.mjs` sekaligus server VPS (`HOST`, `NEXA_CORS_ORIGIN`, `NEXA_SERVER`). Pasang di VPS: `tools/vps/pasang-vps.sh`, panduan lengkap `docs/vps-nexaoffice.md`.
+Menu **Pengaturan AI** di Workspace: tiga sambungan (Server ini, API key lokal, Server VPS). Server memakai key dari header `x-llm-*` hanya untuk permintaan itu (`api/ai.js`, `konfigDari`), kunci akses tetap wajib. Matikan dengan `NEXA_KUNCI_PENGGUNA=off`. `dev-server.mjs` sekaligus server VPS (`HOST`, `NEXA_CORS_ORIGIN`, `NEXA_SERVER`). Pasang di VPS: `tools/vps/pasang-vps.sh`, panduan lengkap `docs/vps-nexaoffice.md`.
