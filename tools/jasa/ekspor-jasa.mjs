@@ -8,7 +8,7 @@
 //
 // Setiap penanda harus ditemukan tepat satu kali. Bila Zuno berubah dan penanda hilang,
 // ekspor BERHENTI dengan pesan jelas: perbaiki penandanya, jangan dilewati.
-import { pasang } from '../../web/merek.mjs';
+import { bangunRuangKerja } from '../../web/bangun.mjs';
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -30,8 +30,8 @@ function swapIn(name, text, find, repl) {
 }
 
 // ---------- halaman ----------
-// Ruang kerja ada di web/studio.html (web/index.html = halaman utama Nexaoffice, tidak ikut). Merek Nexaoffice dilepas: jasa tetap white-label.
-let page = pasang(readFileSync(join(web, 'studio.html'), 'utf8'), 'mundur');
+// Ruang kerja edisi jasa dibangun langsung dengan tampilan HUD (white-label), bukan dari web/studio.html (tampilan Nexaoffice).
+let page = bangunRuangKerja('jasa');
 const P = (f, r) => { page = swapIn('index.html', page, f, r); };
 P('<meta name="author" content="Creative @nexamind.ai">', '<meta name="author" content="Zuno Studio">');
 P('<script src="/live.js"></script>', '<script src="/brand.js"></script>\n<script src="/live.js"></script>');

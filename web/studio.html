@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nexaoffice · Ruang Kerja</title>
-<meta name="description" content="Ruang kerja Nexaoffice: tim agen AI untuk riset, naskah, desain, dan build web app.">
+<meta name="description" content="Ruang kerja Nexaoffice: 18 agen AI untuk riset, naskah, desain, dan build web app.">
 <meta name="author" content="Creative @nexamind.ai">
-<meta name="theme-color" content="#03060b">
+<meta name="theme-color" content="#060b14">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;800&family=Permanent+Marker&family=Playfair+Display:ital,wght@0,700;1,700&family=Poppins:wght@600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f4f6f8;--surface:#fff;--surface-2:#eef1f5;--ink:#15202b;--muted:#566373;--line:#d6dce4;--accent:#0e6b62;--accent-soft:#dcefec;--warn:#a45f00;--warn-soft:#fbecd2;--bad:#b0261d;--bad-soft:#fbe2df;--info:#2a5bc6;--info-soft:#e0e8fa;--font:'Segoe UI',system-ui,-apple-system,Arial,sans-serif}
@@ -76,69 +76,46 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
 .bframe{width:100%;height:640px;border:1px solid var(--line);border-radius:10px;background:#fff}.bframe.hp{width:390px;max-width:100%}
 .uji td,.uji th{border-top:1px solid var(--line);padding:5px 8px;text-align:left;font-size:14px;vertical-align:top}.uji{border-collapse:collapse;width:100%}
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/hud.css">
+<link rel="preload" href="/assets/fonts/antonio-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/onest-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/studio-nexa.css">
 </head>
 <body>
-<a class="nexa-home" href="/" aria-label="Nexaoffice, beranda">Nexaoffice</a>
-<style>.nexa-home{position:fixed;left:18px;top:14px;z-index:60;font:700 22px/1 Orbitron,sans-serif;letter-spacing:.04em;color:#e8f1ff;text-decoration:none;padding:6px 10px;border-radius:8px;background:rgba(3,6,11,.72)}.nexa-home:hover{color:#8fd0ff}.nexa-home:focus-visible{outline:2px solid #3fb6ff;outline-offset:2px}.hud-title.nexa-title{font-size:clamp(40px,9vw,112px);letter-spacing:.06em}@media(max-width:700px){.nexa-home{position:static;display:inline-block;margin:12px 0 0 12px}}</style>
-<div class="hud-bg" aria-hidden="true"></div>
-<div class="scroll-bar" aria-hidden="true"><i id="hScroll"></i></div>
-<header class="hud hero" id="heroTop">
-  <div class="hero-fig" id="heroFig" aria-hidden="true"><img src="/assets/zuno-hero.webp" alt="" width="736" height="910" decoding="async" fetchpriority="high"><span class="hero-eye"></span><span class="hero-scan"></span></div>
-  <div class="hud-tag mv mv1">RISET · KONTEN · ENGINEERING</div>
-  <h1 class="hud-title mv mv3 nexa-title">NEXAOFFICE</h1>
-  <div class="hud-sub mv mv4">18 AGEN AI DALAM SATU TIM</div>
-  <div class="hud-sub2 mv mv5">RISET. NULIS. DESAIN. BUILD. <b>TERBIT SETELAH DISETUJUI.</b></div>
-  <a class="hero-cta mv mv6" href="/kantor.html">JELAJAHI KANTOR 3D ↗</a>
-  <a class="hero-cta mv mv6" href="#ruangKerja">MULAI DI RUANG KERJA</a>
-
-  <div class="hud-grid mv mv6">
-    <div class="hud-col">
-      <blockquote class="hud-quote">Satu perintah, tim agent bagi tugas sendiri.<b>Dari ide sampai paket siap tayang.</b></blockquote>
-      <div class="hud-card"><span class="lbl">STATUS SISTEM</span>
-        <svg class="wave" viewBox="0 0 120 24" aria-hidden="true"><path d="M0 12h10l3-7 4 14 4-10 3 6 3-3h8l3-8 4 16 4-12 3 5h10l3-6 4 12 3-9 3 4h10l3-5 3 10 4-8 3 3h12"/></svg>
-        <span class="val" id="hStat">CEK...</span></div>
-      <div class="hud-card"><span class="lbl">OTAK AI</span><span class="val small" id="hModel">-</span></div>
-      <div class="hud-card"><span class="lbl">PROSES</span><div class="bar"><i id="hBar"></i></div><span class="val" id="hPct">0%</span></div>
-    </div>
-
-    <div class="hud-core" id="hCore" data-run="0">
-      <svg viewBox="0 0 300 300" aria-hidden="true">
-        <defs><radialGradient id="cg" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#3fb6ff" stop-opacity=".55"/><stop offset=".55" stop-color="#0b4f9e" stop-opacity=".18"/><stop offset="1" stop-color="#04070d" stop-opacity="0"/></radialGradient></defs>
-        <circle cx="150" cy="150" r="148" fill="url(#cg)"/>
-        <g class="r1"><circle cx="150" cy="150" r="138" class="ring thin" stroke-dasharray="2 6"/></g>
-        <g class="r2"><circle cx="150" cy="150" r="122" class="ring" stroke-dasharray="120 30 40 30"/></g>
-        <g class="r3"><circle cx="150" cy="150" r="104" class="ring thin" stroke-dasharray="6 4"/></g>
-        <g class="r4"><circle cx="150" cy="150" r="88" class="ring bold" stroke-dasharray="200 40 60 253"/></g>
-        <circle cx="150" cy="150" r="70" class="ring glow"/>
-        <text x="150" y="152" text-anchor="middle" class="core-txt">ZUNO</text>
-        <text x="150" y="176" text-anchor="middle" class="core-sub" id="hCoreTxt">STANDBY</text>
-      </svg>
-    </div>
-
-    <div class="hud-col">
-      <div class="hud-card"><span class="lbl">STATUS</span>
-        <svg class="mini" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16"/><circle cx="20" cy="20" r="9"/><circle cx="20" cy="20" r="3" class="fill"/></svg>
-        <span class="val" id="hMode">SIAGA</span></div>
-      <div class="hud-card"><span class="lbl">DIVISI AKTIF</span><span class="val big" id="hAktif">0</span>
-        <div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-      <button class="hud-btn" id="hKey" type="button">KUNCI AKSES</button>
-    </div>
+<a class="skip" href="#ruangKerja">Langsung ke ruang kerja</a>
+<header class="nav">
+  <div class="container nav-row">
+    <a class="wordmark" href="/" aria-label="Nexaoffice, beranda">Nexaoffice</a>
+    <nav aria-label="Menu utama">
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#perintah">Beri perintah</a></li>
+        <li><a href="/studio.html" aria-current="page">Ruang kerja</a></li>
+        <li><a href="/kantor.html">Kantor 3D</a></li>
+        <li><a href="/#tim">Tim</a></li>
+        <li><a href="/#paket">Isi paket</a></li>
+        <li><a href="/#biaya">Biaya</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <button class="nx-btn nx-ghost nav-cta" type="button" id="hKey">Kunci akses</button>
+    <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu</button>
   </div>
-
-  <div class="hud-feat">
-    <div><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/></svg><b>RISET</b><span>Cari bahan, olah jadi sudut baru</span></div>
-    <div><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></svg><b>NASKAH</b><span>Hook kuat, nggak bertele-tele</span></div>
-    <div><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M10 9l5 2.5-5 2.5z"/></svg><b>DESAIN &amp; MOTION</b><span>Carousel dan paket video</span></div>
-    <div><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13 5l-2 14"/></svg><b>BUILD APP</b><span>Divisi Engineering standby</span></div>
-    <div><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><b>PERSETUJUAN</b><span>Terbit hanya setelah disetujui</span></div>
-  </div>
-
 </header>
+<section class="studio-head container" id="heroTop" aria-labelledby="judulRuang">
+  <div class="studio-title">
+    <h1 id="judulRuang">Ruang kerja</h1>
+    <p class="studio-lead">18 agen menjalankan perintahmu. Tidak ada yang terbit sebelum kamu setujui.</p>
+  </div>
+  <dl class="studio-status">
+    <div><dt>Server</dt><dd><span class="val" id="hStat">Cek…</span></dd></div>
+    <div><dt>Otak AI</dt><dd><span class="val small" id="hModel">-</span></dd></div>
+    <div><dt>Status</dt><dd id="hMode">SIAGA</dd></div>
+    <div><dt>Divisi aktif</dt><dd id="hAktif">0</dd></div>
+    <div class="status-bar"><dt>Proses</dt><dd><span class="bar"><i id="hBar"></i></span><span id="hPct">0%</span></dd></div>
+  </dl>
+  <span hidden id="hCore" data-run="0"><span id="hCoreTxt">STANDBY</span></span><span hidden id="hBrain"></span>
+</section>
 
-<div class="ws-title" id="ruangKerja">RUANG KERJA</div>
-<div class="ws-layout">
+<div class="ws-layout" id="ruangKerja">
 <div class="wrap">
 <div class="tabs ws" role="tablist" aria-label="Ruang kerja"><button class="tab" role="tab" id="wsK" aria-selected="true">Konten · divisi kreatif</button><button class="tab" role="tab" id="wsB" aria-selected="false">Build App · Divisi Engineering</button></div>
 <div id="wsKonten">
@@ -241,9 +218,9 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
 <div class="panel hidden" id="bresp"><h2>Hasil per tahap</h2><div id="bres"></div></div>
 </div><!-- /wsBuild -->
 </div>
-<aside class="hud-flow" id="hFlowBox" aria-label="Cara kerja Zuno">
+<aside class="hud-flow" id="hFlowBox" aria-label="Cara kerja tim">
   <button class="flow-head" id="hFlowTog" type="button" aria-expanded="false" aria-controls="hFlowBody">
-    <h2>CARA KERJA ZUNO</h2>
+    <h2>Cara kerja tim</h2>
     <span class="flow-now" id="hFlowNow">Siaga</span>
     <span class="flow-pct" id="hFlowPct">0%</span>
   </button>
@@ -253,29 +230,21 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
   </div>
 </aside>
 </div><!-- /ws-layout -->
-<section class="hud-bottom">
-  <div class="hud-quote2">Riset tren, naskah, visual, sampai web app.<b>Satu tim agent, satu alur kerja.</b></div>
-  <div class="hud-stack">
-    <h2>TEKNOLOGI</h2>
-    <div class="stack">
-      <div><b id="hBrain">OpenRouter</b><span>otak utama</span></div>
-      <div><b>Claude · OpenAI · Gemini · 9router/Ollama</b><span>bisa ganti lewat AI_PROVIDER</span></div>
-      <div><b>Vercel</b><span>web + server</span></div>
-      <div><b>Render video</b><span>HyperFrames, Remotion, atau manual, sesuai kebutuhan</span></div>
-      <div><b>Apify / Scrapelyfy</b><span>riset otomatis (segera)</span></div>
-    </div>
+<footer class="nx-footer">
+  <div class="container footer-row">
+    <a class="wordmark" href="/" aria-label="Nexaoffice, beranda">Nexaoffice</a>
+    <ul class="footer-links">
+      <li><a href="/">Beranda</a></li>
+      <li><a href="/kantor.html">Kantor 3D</a></li>
+      <li><a href="/office/karakter.html">Karakter agen</a></li>
+    </ul>
+    <p class="credit">Creative @nexamind.ai</p>
   </div>
-</section>
-<section class="hud-strip">
-  <div><b>GANTI LLM</b><span>OpenRouter, Claude, OpenAI, Gemini, lokal</span></div>
-  <div><b>3 GERBANG</b><span>Build app lewat 3 persetujuan</span></div>
-  <div><b>CREATIVE @NEXAMIND.AI</b><span>Dibangun Zulnan</span></div>
-</section>
-<footer class="hud-foot">RISET HARI INI. TAYANG BESOK. TUMBUH TERUS.</footer>
+</footer>
 
 <dialog id="keyDlg" class="hud-dlg">
   <form method="dialog" id="keyForm">
-    <h2>KUNCI AKSES ZUNO</h2>
+    <h2>Kunci akses Nexaoffice</h2>
     <p class="muted">Isi kunci akses yang disetel di Vercel (env <code>ZUNO_ACCESS_KEY</code>). Kunci disimpan di browser ini saja. API key AI tetap di server.</p>
     <input type="password" id="keyIn" autocomplete="current-password" placeholder="Kunci akses" aria-label="Kunci akses">
     <div class="btns"><button class="btn primary" id="keySave" value="ok">Simpan</button><button class="btn" value="cancel" formnovalidate>Batal</button><button class="btn" id="keyClear" type="button">Hapus kunci</button></div>
@@ -285,7 +254,7 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
 
 <script src="/live.js"></script>
 <script src="/hud.js"></script>
-<script src="/motion.js" defer></script>
+<script src="/studio-nexa.js" defer></script>
 <script src="/serah.js" defer></script>
 <script>
 /* =====================================================================
@@ -362,7 +331,7 @@ function P(k,kerja,data,format){
 var sample=null,downloads=null,ctl=null,aborted=false,fatal=null,running=false;
 var S=null,LOG=[],imagesOK=false,REFS=[];
 var FATAL=['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed','session_expired','rate_limited'];
-var COPY={not_granted:'Kunci akses Zuno salah atau belum diisi. Klik KUNCI AKSES di atas.',not_configured:'Server Zuno belum disetel (ZUNO_ACCESS_KEY di Vercel).',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.',sampling_disabled:'Claude tidak tersedia untuk akunmu di halaman ini.',not_declared:'Halaman ini belum diberi izin memanggil Claude.',capability_disabled:'Pemanggilan Claude tidak bisa dipakai di tampilan ini.',capability_removed:'Versi aplikasi belum mendukung fitur yang dibutuhkan. Perbarui lalu muat ulang.',session_expired:'Sesi berakhir. Masuk lagi lalu jalankan ulang.',rate_limited:'Batas pemakaian tercapai. Tunggu sebentar lalu jalankan lagi.',refused:'Claude menolak memproses bagian ini. Ubah bahan lalu coba lagi.',upstream_error:'Koneksi ke Claude terputus. Coba jalankan ulang.',invalid_json:'Salah satu agen menjawab dengan format yang tidak terbaca. Coba jalankan ulang.',no_recorder:'Browser ini tidak bisa merekam video. Coba buka di Chrome.',kode_terpotong:'Kode aplikasi belum lengkap (koneksi putus saat menulis). Klik "Coba lagi": Pengembang melanjutkan dari bagian terakhir, tidak mulai dari nol.'};
+var COPY={not_granted:'Kunci akses Nexaoffice salah atau belum diisi. Klik KUNCI AKSES di atas.',not_configured:'Server Nexaoffice belum disetel (ZUNO_ACCESS_KEY di Vercel).',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.',sampling_disabled:'Claude tidak tersedia untuk akunmu di halaman ini.',not_declared:'Halaman ini belum diberi izin memanggil Claude.',capability_disabled:'Pemanggilan Claude tidak bisa dipakai di tampilan ini.',capability_removed:'Versi aplikasi belum mendukung fitur yang dibutuhkan. Perbarui lalu muat ulang.',session_expired:'Sesi berakhir. Masuk lagi lalu jalankan ulang.',rate_limited:'Batas pemakaian tercapai. Tunggu sebentar lalu jalankan lagi.',refused:'Claude menolak memproses bagian ini. Ubah bahan lalu coba lagi.',upstream_error:'Koneksi ke Claude terputus. Coba jalankan ulang.',invalid_json:'Salah satu agen menjawab dengan format yang tidak terbaca. Coba jalankan ulang.',no_recorder:'Browser ini tidak bisa merekam video. Coba buka di Chrome.',kode_terpotong:'Kode aplikasi belum lengkap (koneksi putus saat menulis). Klik "Coba lagi": Pengembang melanjutkan dari bagian terakhir, tidak mulai dari nol.'};
 
 function errMsg(e){
   if(!e)return COPY.upstream_error;
@@ -2037,7 +2006,7 @@ $('breset').addEventListener('click',function(){aborted=true;try{ctl&&ctl.abort(
   var info=$('capinfo');
   try{if(window.claude&&typeof window.claude.use==='function'){sample=await window.claude.use('sample');try{downloads=await window.claude.use('downloads')}catch(e){downloads=null}}}catch(e){sample=null}
   if(sample){info.classList.add('hidden');$('run').disabled=false;$('brun').disabled=false}
-  else{info.className='banner warn';info.textContent='Server Zuno tidak bisa dihubungi. Muat ulang halaman.'}
+  else{info.className='banner warn';info.textContent='Server Nexaoffice tidak bisa dihubungi. Muat ulang halaman.'}
 })();
 })();
 </script>

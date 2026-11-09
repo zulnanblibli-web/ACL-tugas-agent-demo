@@ -7,7 +7,8 @@ Sejak 2026-11-09 Zuno Web jadi **Nexaoffice**: `/` = situs utama, `/studio.html`
 |---|---|
 | `index.html` | Halaman utama **Nexaoffice** (salinan `src/site/index.html` oleh `build.mjs`): menu ala lembur.id, konsol perintah AI, cara kerja (video Remotion), Kantor 3D, tim, isi paket, biaya, FAQ |
 | `src/site/` | Sumber halaman utama: `index.html`, `site.css` (+ `tokens.css`, `base.css` dari Hallmark), `site.js` (menu, tab, video, konsol). Disalin ke `site/` |
-| `studio.html` | Ruang kerja (hasil `build.mjs` dari `zuno-studio-v2.html`, jangan diedit langsung). Merek Nexaoffice dipasang lewat `merek.mjs`; ekspor jasa melepasnya lagi |
+| `studio.html` | Ruang kerja (hasil `build.mjs` dari `zuno-studio-v2.html`, jangan diedit langsung), tampilan Nexaoffice: `src/studio-hero.html` (menu + status), `src/studio-tail.html`, `src/studio-nexa.css`, `src/studio-nexa.js` |
+| `bangun.mjs` | `bangunRuangKerja('nexa')` untuk `studio.html`, `bangunRuangKerja('jasa')` untuk edisi jasa (tampilan HUD lama: `src/hero.html`, `src/tail.html`, `src/hud.css`, `motion.js`) |
 | `src/serah.js` | Serah terima: `/studio.html?perintah=...&divisi=konten\|build&jalan=1` mengisi perintah lalu langsung menjalankan tim |
 | `kantor.html`, `office/`, `assets/agents/`, `assets/themes/` | Kantor 3D, disalin dari repo jasa: `node tools/kantor/ambil-kantor.mjs <repo-jasa>` (sumbernya di repo jasa) |
 | `src/hero.html`, `src/tail.html`, `src/hud.css`, `src/hud.js` | Tampilan HUD: judul ZUNO, inti, panel status, diagram "Cara kerja" yang ikut proses asli |

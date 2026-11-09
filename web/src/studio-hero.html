@@ -1,0 +1,33 @@
+<a class="skip" href="#ruangKerja">Langsung ke ruang kerja</a>
+<header class="nav">
+  <div class="container nav-row">
+    <a class="wordmark" href="/" aria-label="Nexaoffice, beranda">Nexaoffice</a>
+    <nav aria-label="Menu utama">
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#perintah">Beri perintah</a></li>
+        <li><a href="/studio.html" aria-current="page">Ruang kerja</a></li>
+        <li><a href="/kantor.html">Kantor 3D</a></li>
+        <li><a href="/#tim">Tim</a></li>
+        <li><a href="/#paket">Isi paket</a></li>
+        <li><a href="/#biaya">Biaya</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <button class="nx-btn nx-ghost nav-cta" type="button" id="hKey">Kunci akses</button>
+    <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu</button>
+  </div>
+</header>
+<section class="studio-head container" id="heroTop" aria-labelledby="judulRuang">
+  <div class="studio-title">
+    <h1 id="judulRuang">Ruang kerja</h1>
+    <p class="studio-lead">18 agen menjalankan perintahmu. Tidak ada yang terbit sebelum kamu setujui.</p>
+  </div>
+  <dl class="studio-status">
+    <div><dt>Server</dt><dd><span class="val" id="hStat">Cek…</span></dd></div>
+    <div><dt>Otak AI</dt><dd><span class="val small" id="hModel">-</span></dd></div>
+    <div><dt>Status</dt><dd id="hMode">SIAGA</dd></div>
+    <div><dt>Divisi aktif</dt><dd id="hAktif">0</dd></div>
+    <div class="status-bar"><dt>Proses</dt><dd><span class="bar"><i id="hBar"></i></span><span id="hPct">0%</span></dd></div>
+  </dl>
+  <span hidden id="hCore" data-run="0"><span id="hCoreTxt">STANDBY</span></span><span hidden id="hBrain"></span>
+</section>

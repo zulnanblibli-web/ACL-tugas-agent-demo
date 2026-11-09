@@ -63,7 +63,7 @@ const MIME = {
   '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.json': 'application/json', '.mp4': 'video/mp4', '.webm': 'video/webm', '.woff2': 'font/woff2', '.glb': 'model/gltf-binary'
 };
 // Hanya berkas halaman yang disajikan (bukan .env.local, api/, node_modules, dll).
-const ALLOWED = /^(index\.html|studio\.html|kantor\.html|hud\.css|hud\.js|live\.js|motion\.js|serah\.js|site\/(site\.css|tokens\.css|base\.css|site\.js)|office\/(office\.bundle\.js|office\.css|karakter\.html)|assets\/[A-Za-z0-9._\/-]+)$/;
+const ALLOWED = /^(index\.html|studio\.html|kantor\.html|hud\.css|hud\.js|live\.js|motion\.js|serah\.js|studio-nexa\.(css|js)|site\/(site\.css|tokens\.css|base\.css|site\.js)|office\/(office\.bundle\.js|office\.css|karakter\.html)|assets\/[A-Za-z0-9._\/-]+)$/;
 
 async function toWebRequest(req) {
   const chunks = [];

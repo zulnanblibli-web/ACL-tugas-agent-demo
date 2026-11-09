@@ -585,4 +585,12 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Catatan: profil di `agents/` (18 profil: ada Perender, Pelapor Analitik, Strategis Iklan; belum ada Bima, Fira, Damar) belum diselaraskan dengan 18 agen kantor/ruang kerja. Menunggu keputusan Zulnan.
 - Tertunda: push Zuno dan repo jasa menunggu izin Zulnan.
 
-## 61. (entri berikutnya di sini)
+## 61. Push + deploy Nexaoffice, ruang kerja ikut tampilan Nexaoffice (2026-11-09)
+- Permintaan Zulnan: "push dua dua nya lalu deploy dan revisi tampilan ini udah gak dipakai https://zuno-studio-dusky.vercel.app/ pakai tampilan nexaoffice untuk web nya".
+- Push: Zuno `ebd1363`, jasa `main` `71b7188`. Push sebelumnya (`90567a9`) tidak memicu deploy Vercel (tanpa status di GitHub); push `ebd1363` memicu deploy dan READY. Dicek: https://zuno-studio-dusky.vercel.app/ menyajikan halaman Nexaoffice.
+- Ruang kerja `/studio.html` tidak lagi memakai HUD robot ZUNO: menu sama dengan halaman utama (Ruang kerja aktif, tombol Kunci akses), judul "Ruang kerja", status server/otak AI/status/divisi/proses, panel dan tombol berwarna Nexaoffice (Antonio, Onest, biru elektrik), diagram "Cara kerja tim", footer Nexaoffice.
+- `web/bangun.mjs` (baru) membangun dua varian dari prototipe yang sama: `nexa` (studio) dan `jasa` (HUD lama, white-label). `web/merek.mjs` dihapus; ekspor jasa memakai `bangunRuangKerja('jasa')`. Ekspor setelah perubahan: repo jasa tidak berubah sama sekali.
+- Bukti: `nexaoffice-situs-test` (cek baru: studio tanpa HUD, huruf Antonio) SEMUA LOLOS; web stub, dev-server, api, jasa lolos.
+- File berubah: `web/bangun.mjs` (baru), `web/build.mjs`, `web/merek.mjs` (dihapus), `web/src/studio-hero.html`, `web/src/studio-tail.html`, `web/src/studio-nexa.css`, `web/src/studio-nexa.js` (baru), `web/studio.html`, `web/dev-server.mjs`, `tools/jasa/ekspor-jasa.mjs`, `tests/nexaoffice-situs-test.js`, `tests/zuno-web-stub-test.js`, `web/README.md`, `docs/jasa-zuno.md`, `docs/memori-zuno.md`, `progress.md`.
+
+## 62. (entri berikutnya di sini)

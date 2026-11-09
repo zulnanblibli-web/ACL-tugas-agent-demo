@@ -100,7 +100,8 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     await p.waitForTimeout(1500);
     ok('ruang kerja: Build App langsung berjalan (Arsitek T.1 memanggil AI)', aiCalls.some((c) => /studio\.html/.test(c.page) && !/Kamu ZUNO, Lead/.test(c.input)));
     ok('alamat dibersihkan (muat ulang tidak menjalankan dua kali)', !/perintah=/.test(p.url()));
-    ok('ruang kerja: Nexaoffice di kiri atas mengarah ke /', (await p.getAttribute('.nexa-home', 'href')) === '/' && (await p.title()) === 'Nexaoffice · Ruang Kerja');
+    ok('ruang kerja: Nexaoffice di kiri atas mengarah ke /', (await p.getAttribute('header .wordmark', 'href')) === '/' && (await p.title()) === 'Nexaoffice · Ruang Kerja');
+    ok('ruang kerja: tampilan Nexaoffice (tanpa HUD lama, huruf Antonio)', !(await p.$('.hud-title')) && !(await p.$('link[href="/hud.css"]')) && (await p.$eval('h1', (e) => getComputedStyle(e).fontFamily)).includes('Antonio'));
 
     // ---------- 5. divisi Konten ----------
     modeAI = 'rencana-konten';

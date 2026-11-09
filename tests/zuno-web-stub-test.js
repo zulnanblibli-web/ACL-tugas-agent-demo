@@ -52,7 +52,7 @@ const args = process.argv.slice(2); const MODE = args.includes('--tampil') ? 'ta
   await new Promise(r=>srv.listen(0,r));
   await p.goto('http://127.0.0.1:'+srv.address().port+'/studio.html');
   await p.waitForTimeout(500);
-  console.log('HUD: judul',await p.$eval('.hud-title',e=>e.textContent),'| status',await p.$eval('#hStat',e=>e.textContent),'| dialog kunci terbuka?',await p.$eval('#keyDlg',e=>e.open));
+  console.log('judul',await p.$eval('h1',e=>e.textContent),'| status',await p.$eval('#hStat',e=>e.textContent),'| dialog kunci terbuka?',await p.$eval('#keyDlg',e=>e.open));
   console.log('alur awal:',await p.$$eval('#hFlow .node b',e=>e.map(x=>x.textContent).join(' > ')));
   await p.waitForTimeout(300);
   console.log('paket default:', await p.$eval('#count',e=>e.value));
