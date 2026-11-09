@@ -53,3 +53,4 @@ Draf lisensi bukan nasihat hukum. Cek ke ahli bila perlu.
 
 ## Riset otomatis untuk pembeli (2026-11-06)
 Pembeli bisa menyetel riset web sendiri lewat Environment Variables di Vercel mereka (`RISET_KATA_KUNCI`, `RISET_NEGARA`, `RISET_BAHASA`, `RISET_SUMBER`, `RISET_HARI_BERITA`, `RISET_HARI_DISKUSI`, `RISET_AKTIF`). Panduannya ada di `PANDUAN.md` edisi jasa bagian 6. Sumbernya gratis tanpa API key. Catatan ketentuan: feed Google News hanya untuk pemakaian pribadi.
+- Sejak 2026-11-09 (entri 62): ekspor juga membawa menu Pengaturan AI (`pengaturan-ai.js`, dialog di `index.html`), `server.mjs` (= `web/dev-server.mjs`, untuk laptop/VPS), `.env.local.example`, `tools/vps/`, `docs/vps-nexaoffice.md`. `vercel.json` jasa tanpa redirect `/kantor.html` (jasa tetap memakai kantor.html sendiri).

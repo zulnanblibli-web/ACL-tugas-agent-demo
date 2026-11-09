@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nexaoffice · Ruang Kerja</title>
-<meta name="description" content="Ruang kerja Nexaoffice: 18 agen AI untuk riset, naskah, desain, dan build web app.">
+<title>Nexaoffice · User Interface</title>
+<meta name="description" content="User Interface Nexaoffice: beri perintah, 18 agen AI bekerja di kantor 3D untuk riset, naskah, desain, dan build web app.">
 <meta name="author" content="Creative @nexamind.ai">
 <meta name="theme-color" content="#060b14">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;800&family=Permanent+Marker&family=Playfair+Display:ital,wght@0,700;1,700&family=Poppins:wght@600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -81,32 +81,65 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
 <link rel="stylesheet" href="/studio-nexa.css">
 </head>
 <body>
-<a class="skip" href="#ruangKerja">Langsung ke ruang kerja</a>
+<a class="skip" href="#perintah">Langsung ke kotak perintah</a>
 <header class="nav">
   <div class="container nav-row">
     <a class="wordmark" href="/" aria-label="Nexaoffice, beranda">Nexaoffice</a>
     <nav aria-label="Menu utama">
       <ul class="nav-links" id="navLinks">
-        <li><a href="/#perintah">Beri perintah</a></li>
-        <li><a href="/studio.html" aria-current="page">Ruang kerja</a></li>
-        <li><a href="/kantor.html">Kantor 3D</a></li>
+        <li><a href="/studio.html" aria-current="page">User Interface</a></li>
+        <li><a href="/#kantor">Kantor 3D</a></li>
+        <li><a href="/#alur">Cara kerja</a></li>
         <li><a href="/#tim">Tim</a></li>
         <li><a href="/#paket">Isi paket</a></li>
         <li><a href="/#biaya">Biaya</a></li>
         <li><a href="/#faq">FAQ</a></li>
       </ul>
     </nav>
-    <button class="nx-btn nx-ghost nav-cta" type="button" id="hKey">Kunci akses</button>
+    <button class="nx-btn nx-ghost nav-cta" type="button" id="hKey">Pengaturan AI</button>
     <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu</button>
   </div>
 </header>
-<section class="studio-head container" id="heroTop" aria-labelledby="judulRuang">
-  <div class="studio-title">
-    <h1 id="judulRuang">Ruang kerja</h1>
-    <p class="studio-lead">18 agen menjalankan perintahmu. Tidak ada yang terbit sebelum kamu setujui.</p>
+<section class="ui-head container" id="heroTop" aria-labelledby="judulRuang">
+  <div class="ui-perintah" id="perintah">
+    <h1 id="judulRuang">User Interface</h1>
+    <p class="studio-lead">Beri perintah, lihat agennya bekerja di kantor. Tidak ada yang terbit sebelum kamu setujui.</p>
+    <form class="console" id="uiKonsol" autocomplete="off">
+      <label class="console-label" for="uiPerintah">Perintah untuk tim</label>
+      <textarea id="uiPerintah" name="perintah" rows="3" required placeholder="Contoh: bikin carousel 5 slide soal AI untuk laporan kantor"></textarea>
+      <fieldset class="divisi">
+        <legend class="visually-hidden">Divisi</legend>
+        <label><input type="radio" name="uiDivisi" value="otomatis" checked> Otomatis</label>
+        <label><input type="radio" name="uiDivisi" value="konten"> Konten</label>
+        <label><input type="radio" name="uiDivisi" value="build"> Build App</label>
+      </fieldset>
+      <div class="console-actions">
+        <button class="nx-btn nx-primary" type="submit" id="uiKirim">Kirim ke tim</button>
+        <a class="text-link" href="#ruangKerja">Isi lengkap di ruang kerja</a>
+      </div>
+      <div class="dispatch" id="uiDispatch" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+  <div class="ui-kantor">
+    <div class="ui-kantor-bar">
+      <div class="seg" role="group" aria-label="Tema kantor">
+        <button type="button" data-tema="senja" aria-pressed="true">Menara Senja</button>
+        <button type="button" data-tema="langit" aria-pressed="false">Griya Langit</button>
+      </div>
+      <div class="seg" role="group" aria-label="Tampilan">
+        <button type="button" data-lihat="luar" aria-pressed="false">Gedung</button>
+        <button type="button" data-lihat="dalam" aria-pressed="true">Dalam studio</button>
+      </div>
+      <label class="ikuti"><input type="checkbox" id="uiIkuti" checked> Kamera ikut agen yang bekerja</label>
+    </div>
+    <div class="ui-kantor-frame">
+      <iframe id="kantorIframe" src="/office/ruang.html?awal=dalam&amp;ringkas=1&amp;kualitas=ringan" title="Kantor 3D: agen bergerak sesuai tugas yang sedang dikerjakan" allow="fullscreen"></iframe>
+    </div>
+    <p class="ui-aktif" id="uiAktif" aria-live="polite">Siaga. Agen bekerja di kantor begitu perintah jalan.</p>
   </div>
   <dl class="studio-status">
     <div><dt>Server</dt><dd><span class="val" id="hStat">Cek…</span></dd></div>
+    <div><dt>Sambungan</dt><dd><span class="val small" id="hKoneksi">-</span></dd></div>
     <div><dt>Otak AI</dt><dd><span class="val small" id="hModel">-</span></dd></div>
     <div><dt>Status</dt><dd id="hMode">SIAGA</dd></div>
     <div><dt>Divisi aktif</dt><dd id="hAktif">0</dd></div>
@@ -235,26 +268,61 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
     <a class="wordmark" href="/" aria-label="Nexaoffice, beranda">Nexaoffice</a>
     <ul class="footer-links">
       <li><a href="/">Beranda</a></li>
-      <li><a href="/kantor.html">Kantor 3D</a></li>
+      <li><a href="/#kantor">Kantor 3D</a></li>
       <li><a href="/office/karakter.html">Karakter agen</a></li>
     </ul>
     <p class="credit">Creative @nexamind.ai</p>
   </div>
 </footer>
 
-<dialog id="keyDlg" class="hud-dlg">
+
+<dialog id="keyDlg" class="hud-dlg ai-dlg" aria-labelledby="aiJudul">
   <form method="dialog" id="keyForm">
-    <h2>Kunci akses Nexaoffice</h2>
-    <p class="muted">Isi kunci akses yang disetel di Vercel (env <code>ZUNO_ACCESS_KEY</code>). Kunci disimpan di browser ini saja. API key AI tetap di server.</p>
+    <h2 id="aiJudul">Pengaturan AI</h2>
+    <p class="muted">Pilih dari mana agen memakai otak AI. Semua isian disimpan di browser ini saja.</p>
+    <fieldset class="ai-mode">
+      <legend>Sambungan</legend>
+      <label><input type="radio" name="aiMode" value="server" checked> <span><b>Server ini</b><small>API key di pengaturan server (env Vercel atau VPS yang membuka halaman ini)</small></span></label>
+      <label><input type="radio" name="aiMode" value="lokal"> <span><b>API key lokal</b><small>Key penyedia AI-mu, disimpan di browser perangkat ini dan dikirim per permintaan</small></span></label>
+      <label><input type="radio" name="aiMode" value="vps"> <span><b>Server VPS</b><small>Server Nexaoffice di VPS-mu sendiri, key tersimpan di VPS</small></span></label>
+    </fieldset>
+    <div class="ai-blok" data-blok="lokal" hidden>
+      <label for="aiProv">Penyedia AI</label>
+      <select id="aiProv">
+        <option value="gemini">Google Gemini</option>
+        <option value="claude">Anthropic Claude</option>
+        <option value="openai">OpenAI</option>
+        <option value="openrouter">OpenRouter</option>
+        <option value="openai-compatible">Endpoint kompatibel OpenAI (9router, LM Studio, dll.)</option>
+      </select>
+      <label for="aiKunci">API key penyedia</label>
+      <input type="password" id="aiKunci" autocomplete="off" spellcheck="false" placeholder="Tempel API key di sini">
+      <label for="aiModel">Model <small>(kosongkan untuk otomatis bila penyedia mendukung)</small></label>
+      <input type="text" id="aiModel" autocomplete="off" spellcheck="false" placeholder="Contoh: nama model dari dasbor penyedia">
+      <div data-prov="openai-compatible" hidden>
+        <label for="aiBase">Alamat endpoint</label>
+        <input type="url" id="aiBase" autocomplete="off" spellcheck="false" placeholder="https://alamat-endpoint/v1">
+      </div>
+    </div>
+    <div class="ai-blok" data-blok="vps" hidden>
+      <label for="aiVps">Alamat server VPS</label>
+      <input type="url" id="aiVps" autocomplete="off" spellcheck="false" placeholder="https://ai.domainmu.com">
+      <p class="muted">Pasang dulu dengan skrip <code>tools/vps/pasang-vps.sh</code> (panduan: <code>docs/vps-nexaoffice.md</code>). Alamat situs ini harus masuk <code>NEXA_CORS_ORIGIN</code> di VPS.</p>
+    </div>
+    <label for="keyIn">Kunci akses server <small>(ZUNO_ACCESS_KEY di server yang dipakai)</small></label>
     <input type="password" id="keyIn" autocomplete="current-password" placeholder="Kunci akses" aria-label="Kunci akses">
-    <div class="btns"><button class="btn primary" id="keySave" value="ok">Simpan</button><button class="btn" value="cancel" formnovalidate>Batal</button><button class="btn" id="keyClear" type="button">Hapus kunci</button></div>
+    <p class="ai-cek" id="aiCek" role="status" aria-live="polite"></p>
+    <div class="btns"><button class="btn primary" id="keySave" value="ok">Simpan</button><button class="btn" id="aiTes" type="button">Tes sambungan</button><button class="btn" value="cancel" formnovalidate>Batal</button><button class="btn" id="keyClear" type="button">Hapus semua</button></div>
   </form>
 </dialog>
 
 
 <script src="/live.js"></script>
 <script src="/hud.js"></script>
+<script src="/pengaturan-ai.js"></script>
+<script src="/office/kendali.js"></script>
 <script src="/studio-nexa.js" defer></script>
+<script src="/ui.js" defer></script>
 <script src="/serah.js" defer></script>
 <script>
 /* =====================================================================
@@ -331,7 +399,7 @@ function P(k,kerja,data,format){
 var sample=null,downloads=null,ctl=null,aborted=false,fatal=null,running=false;
 var S=null,LOG=[],imagesOK=false,REFS=[];
 var FATAL=['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed','session_expired','rate_limited'];
-var COPY={not_granted:'Kunci akses Nexaoffice salah atau belum diisi. Klik KUNCI AKSES di atas.',not_configured:'Server Nexaoffice belum disetel (ZUNO_ACCESS_KEY di Vercel).',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.',sampling_disabled:'Claude tidak tersedia untuk akunmu di halaman ini.',not_declared:'Halaman ini belum diberi izin memanggil Claude.',capability_disabled:'Pemanggilan Claude tidak bisa dipakai di tampilan ini.',capability_removed:'Versi aplikasi belum mendukung fitur yang dibutuhkan. Perbarui lalu muat ulang.',session_expired:'Sesi berakhir. Masuk lagi lalu jalankan ulang.',rate_limited:'Batas pemakaian tercapai. Tunggu sebentar lalu jalankan lagi.',refused:'Claude menolak memproses bagian ini. Ubah bahan lalu coba lagi.',upstream_error:'Koneksi ke Claude terputus. Coba jalankan ulang.',invalid_json:'Salah satu agen menjawab dengan format yang tidak terbaca. Coba jalankan ulang.',no_recorder:'Browser ini tidak bisa merekam video. Coba buka di Chrome.',kode_terpotong:'Kode aplikasi belum lengkap (koneksi putus saat menulis). Klik "Coba lagi": Pengembang melanjutkan dari bagian terakhir, tidak mulai dari nol.'};
+var COPY={not_granted:'Kunci akses Nexaoffice salah atau belum diisi. Buka Pengaturan AI di atas.',not_configured:'Server Nexaoffice belum disetel (ZUNO_ACCESS_KEY di server).',user_key:'API key di Pengaturan AI ditolak penyedia. Periksa key dan modelnya, lalu simpan ulang.',byok_off:'Server ini tidak menerima API key dari halaman. Pakai mode Server di Pengaturan AI.',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.',sampling_disabled:'Claude tidak tersedia untuk akunmu di halaman ini.',not_declared:'Halaman ini belum diberi izin memanggil Claude.',capability_disabled:'Pemanggilan Claude tidak bisa dipakai di tampilan ini.',capability_removed:'Versi aplikasi belum mendukung fitur yang dibutuhkan. Perbarui lalu muat ulang.',session_expired:'Sesi berakhir. Masuk lagi lalu jalankan ulang.',rate_limited:'Batas pemakaian tercapai. Tunggu sebentar lalu jalankan lagi.',refused:'Claude menolak memproses bagian ini. Ubah bahan lalu coba lagi.',upstream_error:'Koneksi ke Claude terputus. Coba jalankan ulang.',invalid_json:'Salah satu agen menjawab dengan format yang tidak terbaca. Coba jalankan ulang.',no_recorder:'Browser ini tidak bisa merekam video. Coba buka di Chrome.',kode_terpotong:'Kode aplikasi belum lengkap (koneksi putus saat menulis). Klik "Coba lagi": Pengembang melanjutkan dari bagian terakhir, tidak mulai dari nol.'};
 
 function errMsg(e){
   if(!e)return COPY.upstream_error;
@@ -1371,7 +1439,7 @@ function renderCoverPrev(){var b=$('coverprev');if(!COVER){b.textContent='';retu
 $('coverfile').addEventListener('change',function(){var f=(this.files||[])[0];if(!f){COVER=null;renderCoverPrev();return}coverFromFile(f).then(function(cv){COVER=cv;renderCoverPrev()},function(){COVER=null;$('coverprev').textContent='Gambar tidak bisa dipakai (pilih JPG, PNG, atau WebP, maks. 25 MB).'})});
 
 /* ---------------- Bagian 3: UI ---------------- */
-var TRACKS=[['lead','Lead','Orkestraror Agen · Juru Kabar'],['riset','Riset','Peneliti Tren · Ahli Strategi Media Sosial'],['prod','Produksi','Kreator Konten · Spesialis Optimasi Video'],['desain','Desain','Pencerita Visual'],['edit','Editing','Pelatih Editing · Bima (Remotion) · Fira (Google Flow) · Perender'],['mutu','Mutu','Penjaga Merek · Pengumpul Bukti (penasihat, tanpa veto)'],['mkt','Marketing','Kurator Instagram (setelah kamu setuju)']];
+var TRACKS=[['lead','Lead','Orkestraror Agen · Juru Kabar'],['riset','Riset','Peneliti Tren · Ahli Strategi Media Sosial'],['prod','Produksi','Kreator Konten · Spesialis Optimasi Video'],['desain','Desain','Pencerita Visual'],['edit','Editing','Pelatih Editing · Bima (Remotion) · Fira (Google Flow) · render PNG'],['mutu','Mutu','Penjaga Merek · Pengumpul Bukti (penasihat, tanpa veto)'],['mkt','Marketing','Kurator Instagram (setelah kamu setuju)']];
 var tstate={};
 var UI={
   start:function(){

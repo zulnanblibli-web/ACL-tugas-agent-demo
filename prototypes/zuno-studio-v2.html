@@ -1294,7 +1294,7 @@ function renderCoverPrev(){var b=$('coverprev');if(!COVER){b.textContent='';retu
 $('coverfile').addEventListener('change',function(){var f=(this.files||[])[0];if(!f){COVER=null;renderCoverPrev();return}coverFromFile(f).then(function(cv){COVER=cv;renderCoverPrev()},function(){COVER=null;$('coverprev').textContent='Gambar tidak bisa dipakai (pilih JPG, PNG, atau WebP, maks. 25 MB).'})});
 
 /* ---------------- Bagian 3: UI ---------------- */
-var TRACKS=[['lead','Lead','Orkestraror Agen · Juru Kabar'],['riset','Riset','Peneliti Tren · Ahli Strategi Media Sosial'],['prod','Produksi','Kreator Konten · Spesialis Optimasi Video'],['desain','Desain','Pencerita Visual'],['edit','Editing','Pelatih Editing · Bima (Remotion) · Fira (Google Flow) · Perender'],['mutu','Mutu','Penjaga Merek · Pengumpul Bukti (penasihat, tanpa veto)'],['mkt','Marketing','Kurator Instagram (setelah kamu setuju)']];
+var TRACKS=[['lead','Lead','Orkestraror Agen · Juru Kabar'],['riset','Riset','Peneliti Tren · Ahli Strategi Media Sosial'],['prod','Produksi','Kreator Konten · Spesialis Optimasi Video'],['desain','Desain','Pencerita Visual'],['edit','Editing','Pelatih Editing · Bima (Remotion) · Fira (Google Flow) · render PNG'],['mutu','Mutu','Penjaga Merek · Pengumpul Bukti (penasihat, tanpa veto)'],['mkt','Marketing','Kurator Instagram (setelah kamu setuju)']];
 var tstate={};
 var UI={
   start:function(){

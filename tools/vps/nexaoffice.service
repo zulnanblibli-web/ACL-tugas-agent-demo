@@ -1,0 +1,21 @@
+# Nexaoffice: layanan systemd. Dipasang oleh tools/vps/pasang-vps.sh (__APP__ dan __ENTRY__ diganti otomatis).
+[Unit]
+Description=Nexaoffice (server agen AI)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=nexaoffice
+WorkingDirectory=__APP__
+ExecStart=/usr/bin/env node __ENTRY__
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=__APP__
+
+[Install]
+WantedBy=multi-user.target

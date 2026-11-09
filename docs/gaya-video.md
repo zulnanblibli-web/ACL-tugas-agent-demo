@@ -63,10 +63,10 @@ Usulan aturan: satu font display dan satu font isi per video. Gerak teks dipilih
 
 | Bentuk | Alat yang dipertimbangkan | Siapa yang mengerjakan |
 |---|---|---|
-| Tanpa Wajah | HyperFrames (Apache 2.0) atau Remotion (cek lisensi bila jadi produk) | Perender, memakai arahan Pelatih Editing Video Pendek |
-| Mode Tampil | claude-video-effects (lokal di komputer Zulnan, ffmpeg dan Python 3.12) | Zulnan merekam; Pelatih Editing menulis rencana efek (`<nama-video>_effects.json`); Perender menjalankan |
+| Tanpa Wajah | HyperFrames (Apache 2.0) atau Remotion (cek lisensi bila jadi produk) | Editor Remotion (E.2 Bima) menyusun rencananya; render di komputer Zulnan, memakai arahan Pelatih Editing Video Pendek |
+| Mode Tampil | claude-video-effects (lokal di komputer Zulnan, ffmpeg dan Python 3.12) | Zulnan merekam; Pelatih Editing menulis rencana efek (`<nama-video>_effects.json`); Divisi Editing menjalankan |
 | Subtitle | `ffmpeg-skill` (`caption.py`, dari teks naskah atau `--transcribe` bila mesin transkripsi terpasang), Remotion captions, atau manual di editor (CapCut) | Pelatih Editing Video Pendek |
-| Potong, rasio 9:16, volume, ekspor, cek sebelum unggah | `ffmpeg-skill` (`.claude/skills/ffmpeg-skill`, lokal tanpa API key; `check.py --platform reels` wajib sebelum masuk Antrian Posting) | Perender |
+| Potong, rasio 9:16, volume, ekspor, cek sebelum unggah | `ffmpeg-skill` (`.claude/skills/ffmpeg-skill`, lokal tanpa API key; `check.py --platform reels` wajib sebelum masuk Antrian Posting) | Divisi Editing (Pelatih Editing) |
 | Pratinjau di browser | Canvas di Zuno Studio v2 (sudah ada) | Zuno Studio |
 
 Status jujur: `ffmpeg-skill` sudah diuji pada video uji di sesi cloud 2026-11-04 (ubah 16:9 ke Reels 1080x1920 dan cek format lolos); alat lain belum diuji. Bila Remotion dipilih, pasang skill resminya di laptop (`npx skills add remotion-dev/skills`) dan cek lisensi Remotion dulu. Sampai satu file video konten benar-benar dirender, status tetap "Prompt siap generate", bukan "selesai".

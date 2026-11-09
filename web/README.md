@@ -1,16 +1,16 @@
 # Nexaoffice Web (Vercel)
 
-Sejak 2026-11-09 Zuno Web jadi **Nexaoffice**: `/` = situs utama, `/studio.html` = ruang kerja agen, `/kantor.html` = Kantor 3D. Ruang kerja adalah versi live Zuno Studio v2 dengan tampilan HUD. Logika agen tetap dari `prototypes/zuno-studio-v2.html`. Di artifact, halaman memanggil Claude lewat `window.claude`; di web, panggilan itu lewat server sendiri (`/api/ai`), dan API key hanya disimpan di Vercel.
+Sejak 2026-11-09 Zuno Web jadi **Nexaoffice**: `/` = situs utama (hero simulasi kerja agen + Kantor 3D tertanam langsung), `/studio.html` = menu **User Interface** (kotak perintah + Kantor 3D yang ikut status kerja asli + ruang kerja + menu Pengaturan AI). `/kantor.html` tidak dipakai lagi (dialihkan ke `/#kantor`). User Interface adalah versi live Zuno Studio v2. Logika agen tetap dari `prototypes/zuno-studio-v2.html`. Di artifact, halaman memanggil Claude lewat `window.claude`; di web, panggilan itu lewat server sendiri (`/api/ai`), dan API key hanya disimpan di Vercel.
 
 ## Isi folder
 | File | Fungsi |
 |---|---|
-| `index.html` | Halaman utama **Nexaoffice** (salinan `src/site/index.html` oleh `build.mjs`): menu ala lembur.id, konsol perintah AI, cara kerja (video Remotion), Kantor 3D, tim, isi paket, biaya, FAQ |
-| `src/site/` | Sumber halaman utama: `index.html`, `site.css` (+ `tokens.css`, `base.css` dari Hallmark), `site.js` (menu, tab, video, konsol). Disalin ke `site/` |
-| `studio.html` | Ruang kerja (hasil `build.mjs` dari `zuno-studio-v2.html`, jangan diedit langsung), tampilan Nexaoffice: `src/studio-hero.html` (menu + status), `src/studio-tail.html`, `src/studio-nexa.css`, `src/studio-nexa.js` |
+| `index.html` | Halaman utama **Nexaoffice** (salinan `src/site/index.html` oleh `build.mjs`): menu ala lembur.id, hero simulasi kerja agen (demo berlabel), Kantor 3D tertanam (iframe `office/ruang.html`, tema dan tampilan bisa diganti), cara kerja (video Remotion), tim, isi paket, biaya, FAQ |
+| `src/site/` | Sumber halaman utama: `index.html`, `site.css` (+ `tokens.css`, `base.css` dari Hallmark), `site.js` (menu, simulasi hero, kendali kantor 3D, tab, video). Disalin ke `site/` |
+| `studio.html` | Ruang kerja (hasil `build.mjs` dari `zuno-studio-v2.html`, jangan diedit langsung), tampilan Nexaoffice: `src/studio-hero.html` (menu, kotak perintah, kantor 3D, status), `src/studio-tail.html`, `src/studio-nexa.css`, `src/studio-nexa.js`, `src/ui.js` (perintah ke Lead + kantor 3D ikut panel Proses), `src/pengaturan-ai.html` + `src/pengaturan-ai.js` (menu Pengaturan AI: server / API key lokal / VPS, dipakai juga edisi jasa) |
 | `bangun.mjs` | `bangunRuangKerja('nexa')` untuk `studio.html`, `bangunRuangKerja('jasa')` untuk edisi jasa (tampilan HUD lama: `src/hero.html`, `src/tail.html`, `src/hud.css`, `motion.js`) |
 | `src/serah.js` | Serah terima: `/studio.html?perintah=...&divisi=konten\|build&jalan=1` mengisi perintah lalu langsung menjalankan tim |
-| `kantor.html`, `office/`, `assets/agents/`, `assets/themes/` | Kantor 3D, disalin dari repo jasa: `node tools/kantor/ambil-kantor.mjs <repo-jasa>` (sumbernya di repo jasa) |
+| `office/ruang.html`, `office/`, `assets/agents/`, `assets/themes/` | Kantor 3D, disalin dari repo jasa: `node tools/kantor/ambil-kantor.mjs <repo-jasa>` (sumbernya di repo jasa). `ruang.html` = DOM kantor + `src/kantor/sematan.css/js` (versi tertanam); `src/kantor/kendali.js` mengendalikannya dari halaman induk |
 | `src/hero.html`, `src/tail.html`, `src/hud.css`, `src/hud.js` | Tampilan HUD: judul ZUNO, inti, panel status, diagram "Cara kerja" yang ikut proses asli |
 | `src/live.js` | Jembatan: `window.claude.use('sample')` diarahkan ke `/api/ai` (streaming) |
 | `api/ai.js` | Server AI. Penyedia bisa diganti lewat `AI_PROVIDER` |
@@ -26,7 +26,7 @@ Sejak 2026-11-09 Zuno Web jadi **Nexaoffice**: `/` = situs utama, `/studio.html`
 
 | Nama | Isi | Wajib |
 |---|---|---|
-| `ZUNO_ACCESS_KEY` | Kunci akses halaman (acak, min. 16 karakter). Diisi sekali di tombol KUNCI AKSES | Ya |
+| `ZUNO_ACCESS_KEY` | Kunci akses halaman (acak, min. 16 karakter). Diisi sekali di menu Pengaturan AI | Ya |
 | `AI_PROVIDER` | `openrouter` (dipakai sekarang), `claude` (bawaan kode), `openai`, `gemini`, `openai-compatible` (9router, Ollama, LM Studio) | Tidak |
 | `ANTHROPIC_API_KEY` | API key Claude (bila `claude`) | Ya untuk Claude |
 | `OPENROUTER_API_KEY` / `OPENAI_API_KEY` / `GEMINI_API_KEY` | Key penyedia yang dipakai | Sesuai penyedia |
@@ -57,7 +57,7 @@ copy .env.local.example .env.local   # Mac/Linux: cp .env.local.example .env.loc
 # isi web/.env.local, lalu:
 node dev-server.mjs --buka      # --buka = buka browser otomatis
 ```
-Buka alamat yang tertulis di layar (biasanya http://127.0.0.1:3000), klik KUNCI AKSES dan masukkan isi `ZUNO_ACCESS_KEY` dari `.env.local`. Panel STATUS SISTEM harus ONLINE. Butuh Node 20 ke atas.
+Buka alamat yang tertulis di layar (biasanya http://127.0.0.1:3000), klik Pengaturan AI dan masukkan isi `ZUNO_ACCESS_KEY` dari `.env.local` di kolom Kunci akses server. Panel STATUS SISTEM harus ONLINE. Butuh Node 20 ke atas.
 
 - API key hanya ditaruh di `web/.env.local` (tidak ikut ke GitHub). Jangan tempel ke chat.
 - Setelah `prototypes/zuno-studio-v2.html` berubah: `node build.mjs` (di folder `web`), lalu muat ulang halaman. Server tidak perlu dimulai ulang untuk perubahan halaman; perubahan di `.env.local` atau `api/` butuh mulai ulang (Ctrl+C lalu jalankan lagi).
@@ -69,3 +69,7 @@ Buka alamat yang tertulis di layar (biasanya http://127.0.0.1:3000), klik KUNCI 
 - `node tests/zuno-web-dev-server-test.mjs` (server lokal: halaman, aset, status, kunci akses, streaming, berkas yang tidak boleh disajikan; butuh `npm install` di folder `web`)
 - `cd web && npm install && node ../tests/zuno-web-api-test.mjs && node ../tests/zuno-web-gemini-test.mjs && node ../tests/zuno-web-openrouter-test.mjs` (server AI dengan Claude, Gemini, dan OpenRouter tiruan)
 - `node tests/zuno-web-stub-test.js` (halaman web + HUD dengan AI tiruan, butuh Playwright)
+
+## Pengaturan AI dan VPS (2026-11-09)
+
+Menu **Pengaturan AI** di User Interface: tiga sambungan (Server ini, API key lokal, Server VPS). Server memakai key dari header `x-llm-*` hanya untuk permintaan itu (`api/ai.js`, `konfigDari`), kunci akses tetap wajib. Matikan dengan `NEXA_KUNCI_PENGGUNA=off`. `dev-server.mjs` sekaligus server VPS (`HOST`, `NEXA_CORS_ORIGIN`, `NEXA_SERVER`). Pasang di VPS: `tools/vps/pasang-vps.sh`, panduan lengkap `docs/vps-nexaoffice.md`.

@@ -1,0 +1,39 @@
+<dialog id="keyDlg" class="hud-dlg ai-dlg" aria-labelledby="aiJudul">
+  <form method="dialog" id="keyForm">
+    <h2 id="aiJudul">Pengaturan AI</h2>
+    <p class="muted">Pilih dari mana agen memakai otak AI. Semua isian disimpan di browser ini saja.</p>
+    <fieldset class="ai-mode">
+      <legend>Sambungan</legend>
+      <label><input type="radio" name="aiMode" value="server" checked> <span><b>Server ini</b><small>API key di pengaturan server (env Vercel atau VPS yang membuka halaman ini)</small></span></label>
+      <label><input type="radio" name="aiMode" value="lokal"> <span><b>API key lokal</b><small>Key penyedia AI-mu, disimpan di browser perangkat ini dan dikirim per permintaan</small></span></label>
+      <label><input type="radio" name="aiMode" value="vps"> <span><b>Server VPS</b><small>Server Nexaoffice di VPS-mu sendiri, key tersimpan di VPS</small></span></label>
+    </fieldset>
+    <div class="ai-blok" data-blok="lokal" hidden>
+      <label for="aiProv">Penyedia AI</label>
+      <select id="aiProv">
+        <option value="gemini">Google Gemini</option>
+        <option value="claude">Anthropic Claude</option>
+        <option value="openai">OpenAI</option>
+        <option value="openrouter">OpenRouter</option>
+        <option value="openai-compatible">Endpoint kompatibel OpenAI (9router, LM Studio, dll.)</option>
+      </select>
+      <label for="aiKunci">API key penyedia</label>
+      <input type="password" id="aiKunci" autocomplete="off" spellcheck="false" placeholder="Tempel API key di sini">
+      <label for="aiModel">Model <small>(kosongkan untuk otomatis bila penyedia mendukung)</small></label>
+      <input type="text" id="aiModel" autocomplete="off" spellcheck="false" placeholder="Contoh: nama model dari dasbor penyedia">
+      <div data-prov="openai-compatible" hidden>
+        <label for="aiBase">Alamat endpoint</label>
+        <input type="url" id="aiBase" autocomplete="off" spellcheck="false" placeholder="https://alamat-endpoint/v1">
+      </div>
+    </div>
+    <div class="ai-blok" data-blok="vps" hidden>
+      <label for="aiVps">Alamat server VPS</label>
+      <input type="url" id="aiVps" autocomplete="off" spellcheck="false" placeholder="https://ai.domainmu.com">
+      <p class="muted">Pasang dulu dengan skrip <code>tools/vps/pasang-vps.sh</code> (panduan: <code>docs/vps-nexaoffice.md</code>). Alamat situs ini harus masuk <code>NEXA_CORS_ORIGIN</code> di VPS.</p>
+    </div>
+    <label for="keyIn">Kunci akses server <small>(ZUNO_ACCESS_KEY di server yang dipakai)</small></label>
+    <input type="password" id="keyIn" autocomplete="current-password" placeholder="Kunci akses" aria-label="Kunci akses">
+    <p class="ai-cek" id="aiCek" role="status" aria-live="polite"></p>
+    <div class="btns"><button class="btn primary" id="keySave" value="ok">Simpan</button><button class="btn" id="aiTes" type="button">Tes sambungan</button><button class="btn" value="cancel" formnovalidate>Batal</button><button class="btn" id="keyClear" type="button">Hapus semua</button></div>
+  </form>
+</dialog>

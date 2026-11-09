@@ -1,4 +1,4 @@
-// Zuno: status server untuk panel HUD. Tidak membocorkan kunci apa pun.
+// Zuno / Nexaoffice: status server untuk panel status dan menu Pengaturan AI. Tidak membocorkan kunci apa pun.
 import { pickGemini } from './ai.js';
 import { setelan } from './riset.js';
 export async function GET() {
@@ -13,6 +13,9 @@ export async function GET() {
     model_quick: process.env.AI_MODEL_QUICK || null,
     ai_key_set: !!(keyEnv && process.env[keyEnv]),
     access_set: !!process.env.ZUNO_ACCESS_KEY,
+    // Menu Pengaturan AI: apakah server menerima API key dari halaman (mode lokal), dan server ini jalan di mana.
+    kunci_pengguna: process.env.NEXA_KUNCI_PENGGUNA !== 'off',
+    server: process.env.NEXA_SERVER || (process.env.VERCEL ? 'vercel' : 'lokal'),
     riset: (() => { const c = setelan(); return { aktif: c.aktif, sumber: c.sumber, negara: c.negara, bahasa: c.bahasa, kata_kunci_tetap: c.kata_kunci }; })()
   }, { headers: { 'cache-control': 'no-store' } });
 }

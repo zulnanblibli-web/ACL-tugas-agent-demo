@@ -1,6 +1,11 @@
-// Zuno: perantara AI di server (Vercel Function).
-// Halaman tidak pernah memegang API key. Penyedia bisa diganti lewat env AI_PROVIDER
-// tanpa mengubah kode halaman: "claude" (bawaan) | "openrouter" | "openai" | "gemini" | "openai-compatible" (9router, Ollama, LM Studio; isi AI_BASE_URL).
+// Zuno / Nexaoffice: perantara AI di server (Vercel Function, atau server VPS lewat dev-server.mjs).
+// Penyedia bawaan diatur lewat env AI_PROVIDER tanpa mengubah kode halaman:
+// "claude" (bawaan) | "openrouter" | "openai" | "gemini" | "openai-compatible" (9router, Ollama, LM Studio; isi AI_BASE_URL).
+//
+// Mode "API key lokal" (menu Pengaturan AI): halaman boleh mengirim API key milik pemakai per permintaan lewat header
+// x-llm-provider, x-llm-key, x-llm-model, x-llm-base. Key itu hanya dipakai untuk permintaan ini: tidak disimpan,
+// tidak dicatat. Kunci akses (x-zuno-key) tetap wajib, supaya server ini tidak jadi perantara terbuka.
+// Matikan dengan env NEXA_KUNCI_PENGGUNA=off.
 //
 // Masuk : POST JSON {input: string | [{role, content}], images?: [{media_type, data}], tier?: "quick"|"default", effort?: "low"|"medium"|"high"}
 //         header x-zuno-key: kunci akses (env ZUNO_ACCESS_KEY)
@@ -9,9 +14,34 @@
 //         {"t":"done","stop":"end_turn|max_tokens|refusal","model":"..."}
 //         {"t":"error","code":"...","message":"..."}
 import Anthropic from '@anthropic-ai/sdk';
-import { timingSafeEqual } from 'node:crypto';
+import { timingSafeEqual, createHash } from 'node:crypto';
 
 const PROVIDER = (process.env.AI_PROVIDER || 'claude').toLowerCase();
+export const PENYEDIA = ['claude', 'gemini', 'openai', 'openrouter', 'openai-compatible'];
+const ENV_KEY = { claude: 'ANTHROPIC_API_KEY', openai: 'OPENAI_API_KEY', gemini: 'GEMINI_API_KEY', openrouter: 'OPENROUTER_API_KEY', 'openai-compatible': 'AI_API_KEY' };
+
+// Setelan satu permintaan: dari env server (bawaan) atau dari header mode "API key lokal".
+export function konfigServer() {
+  return { provider: PROVIDER, key: process.env[ENV_KEY[PROVIDER]] || '', model: process.env.AI_MODEL || '', modelQuick: process.env.AI_MODEL_QUICK || '', base: process.env.AI_BASE_URL || '', pengguna: false };
+}
+function alamatAman(u) {
+  let url; try { url = new URL(u); } catch { return false; }
+  const lokal = /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|169\.254\.|0\.|\[::1\]$|\[f[cd])/i.test(url.hostname);
+  if (process.env.NEXA_IZINKAN_LOKAL === '1') return ['http:', 'https:'].includes(url.protocol);
+  return url.protocol === 'https:' && !lokal;
+}
+export function konfigDari(request) {
+  const key = String(request.headers.get('x-llm-key') || '').trim();
+  if (!key) return konfigServer();
+  if (process.env.NEXA_KUNCI_PENGGUNA === 'off') throw { status: 403, code: 'byok_off', message: 'Server ini tidak menerima API key dari halaman. Pakai mode Server di Pengaturan AI.' };
+  const provider = String(request.headers.get('x-llm-provider') || '').toLowerCase();
+  if (!PENYEDIA.includes(provider)) throw { status: 400, code: 'invalid_request', message: 'Penyedia di Pengaturan AI tidak dikenal.' };
+  if (key.length > 400 || /\s/.test(key)) throw { status: 400, code: 'invalid_request', message: 'API key di Pengaturan AI tidak valid.' };
+  const model = String(request.headers.get('x-llm-model') || '').trim().slice(0, 120);
+  const base = String(request.headers.get('x-llm-base') || '').trim().replace(/\/+$/, '');
+  if (provider === 'openai-compatible' && (!base || !alamatAman(base))) throw { status: 400, code: 'invalid_request', message: 'Alamat endpoint harus https:// dan bukan alamat jaringan lokal.' };
+  return { provider, key, model, modelQuick: '', base, pengguna: true };
+}
 const MODEL_DEFAULT = {
   claude: 'claude-opus-5-5',
   openai: 'ISI_NAMA_MODEL',
@@ -19,9 +49,9 @@ const MODEL_DEFAULT = {
   openrouter: 'openrouter/auto', // router otomatis OpenRouter; ganti lewat AI_MODEL untuk model tetap
   'openai-compatible': 'ISI_NAMA_MODEL'
 };
-function modelFor(tier) {
-  if (tier === 'quick' && process.env.AI_MODEL_QUICK) return process.env.AI_MODEL_QUICK;
-  return process.env.AI_MODEL || MODEL_DEFAULT[PROVIDER] || 'ISI_NAMA_MODEL';
+function modelFor(cfg, tier) {
+  if (tier === 'quick' && cfg.modelQuick) return cfg.modelQuick;
+  return cfg.model || MODEL_DEFAULT[cfg.provider] || 'ISI_NAMA_MODEL';
 }
 const MAX_OUT = Number(process.env.AI_MAX_TOKENS || 64000);
 
@@ -50,8 +80,8 @@ function cleanImages(images) {
 }
 
 // ---------- Claude (SDK resmi) ----------
-async function* streamClaude({ turns, images, tier, effort, signal }) {
-  const client = new Anthropic(); // ANTHROPIC_API_KEY dari env Vercel
+async function* streamClaude({ cfg, turns, images, tier, effort, signal }) {
+  const client = new Anthropic(cfg.key ? { apiKey: cfg.key } : {}); // key dari env server, atau dari Pengaturan AI (mode lokal)
   const messages = turns.map((m) => ({ role: m.role, content: m.content }));
   if (images.length) {
     const first = messages.findIndex((m) => m.role === 'user');
@@ -63,7 +93,7 @@ async function* streamClaude({ turns, images, tier, effort, signal }) {
       ]
     };
   }
-  const model = modelFor(tier);
+  const model = modelFor(cfg, tier);
   const body = {
     model,
     max_tokens: MAX_OUT,
@@ -85,25 +115,29 @@ async function* streamClaude({ turns, images, tier, effort, signal }) {
 // Bila AI_MODEL kosong, server memilih sendiri dari daftar model Google:
 // model stabil (tanpa "preview"/"exp") versi tertinggi; "pro" untuk tahap biasa, "flash" untuk tahap ringan.
 const GEMINI_BASE = process.env.GEMINI_BASE_URL || 'https://generativelanguage.googleapis.com';
-let geminiPick = null;
-export async function pickGemini(tier) {
-  if (tier === 'quick' && process.env.AI_MODEL_QUICK) return { name: process.env.AI_MODEL_QUICK, out: null };
-  if (process.env.AI_MODEL) return { name: process.env.AI_MODEL, out: null };
+const geminiPicks = new Map(); // per sidik key (sha256), bukan key itu sendiri
+export async function pickGemini(tier, cfg = konfigServer()) {
+  if (tier === 'quick' && cfg.modelQuick) return { name: cfg.modelQuick, out: null };
+  if (cfg.model) return { name: cfg.model, out: null };
+  const sidik = createHash('sha256').update(cfg.key || '').digest('hex');
+  let geminiPick = geminiPicks.get(sidik) || null;
   if (!geminiPick) {
-    const r = await fetch(GEMINI_BASE + '/v1beta/models?pageSize=200', { headers: { 'x-goog-api-key': process.env.GEMINI_API_KEY || '' } });
+    const r = await fetch(GEMINI_BASE + '/v1beta/models?pageSize=200', { headers: { 'x-goog-api-key': cfg.key || '' } });
     const j = await r.json().catch(() => ({}));
     if (!r.ok) throw { status: r.status, message: (j.error && j.error.message) || 'Daftar model Gemini gagal dibaca' };
     const ok = (j.models || []).filter((m) => (m.supportedGenerationMethods || []).includes('generateContent'))
       .map((m) => { const id = String(m.name || '').replace(/^models\//, ''); const v = /^gemini-(\d+(?:\.\d+)?)-(pro|flash)$/.exec(id); return v ? { name: id, ver: Number(v[1]), kind: v[2], out: m.outputTokenLimit || null } : null; })
       .filter(Boolean).sort((a, b) => b.ver - a.ver);
     geminiPick = { pro: ok.find((m) => m.kind === 'pro') || ok[0] || null, flash: ok.find((m) => m.kind === 'flash') || ok[0] || null };
-    if (!geminiPick.pro) { geminiPick = null; throw { status: 500, message: 'Tidak ada model Gemini stabil di daftar. Isi AI_MODEL di Vercel.' }; }
+    if (!geminiPick.pro) throw { status: 500, message: 'Tidak ada model Gemini stabil di daftar. Isi nama model (AI_MODEL atau kolom Model di Pengaturan AI).' };
+    if (geminiPicks.size > 50) geminiPicks.clear();
+    geminiPicks.set(sidik, geminiPick);
   }
   return tier === 'quick' ? geminiPick.flash : geminiPick.pro;
 }
 
-async function* streamGemini({ turns, images, tier, signal }) {
-  const m = await pickGemini(tier);
+async function* streamGemini({ cfg, turns, images, tier, signal }) {
+  const m = await pickGemini(tier, cfg);
   const contents = turns.map((t, i) => ({
     role: t.role === 'assistant' ? 'model' : 'user',
     parts: [...(i === 0 && images.length ? images.map((im) => ({ inline_data: { mime_type: im.media_type, data: im.data } })) : []), { text: t.content }]
@@ -112,7 +146,7 @@ async function* streamGemini({ turns, images, tier, signal }) {
   const limit = Number(process.env.AI_MAX_TOKENS || m.out || 0);
   if (limit) body.generationConfig = { maxOutputTokens: limit };
   const r = await fetchRetry(GEMINI_BASE + '/v1beta/models/' + encodeURIComponent(m.name) + ':streamGenerateContent?alt=sse', {
-    method: 'POST', signal, headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY || '' }, body: JSON.stringify(body)
+    method: 'POST', signal, headers: { 'content-type': 'application/json', 'x-goog-api-key': cfg.key || '' }, body: JSON.stringify(body)
   });
   if (!r.ok) { const j = await r.json().catch(() => ({})); throw { status: r.status, message: (j.error && j.error.message) || 'HTTP ' + r.status }; }
   const reader = r.body.getReader(), dec = new TextDecoder();
@@ -151,20 +185,20 @@ export async function fetchRetry(url, opts, tries = 3) {
 }
 
 // ---------- Format OpenAI (streaming SSE): OpenRouter, OpenAI, dan endpoint kompatibel (9router, Ollama, LM Studio) ----------
-function compatTarget() {
-  if (PROVIDER === 'openrouter') return { url: 'https://openrouter.ai/api/v1/chat/completions', key: process.env.OPENROUTER_API_KEY, extra: { 'X-Title': 'Zuno' } };
-  if (PROVIDER === 'openai') return { url: 'https://api.openai.com/v1/chat/completions', key: process.env.OPENAI_API_KEY, extra: {} };
-  if (PROVIDER === 'openai-compatible') {
-    const base = String(process.env.AI_BASE_URL || '').replace(/\/+$/, '');
+function compatTarget(cfg) {
+  if (cfg.provider === 'openrouter') return { url: 'https://openrouter.ai/api/v1/chat/completions', key: cfg.key, extra: { 'X-Title': 'Zuno' } };
+  if (cfg.provider === 'openai') return { url: 'https://api.openai.com/v1/chat/completions', key: cfg.key, extra: {} };
+  if (cfg.provider === 'openai-compatible') {
+    const base = String(cfg.base || '').replace(/\/+$/, '');
     if (!base) throw { status: 500, message: 'AI_BASE_URL belum diisi.' };
-    return { url: base + '/chat/completions', key: process.env.AI_API_KEY || '', extra: {} };
+    return { url: base + '/chat/completions', key: cfg.key || '', extra: {} };
   }
-  throw { status: 500, message: 'AI_PROVIDER tidak dikenal: ' + PROVIDER };
+  throw { status: 500, message: 'AI_PROVIDER tidak dikenal: ' + cfg.provider };
 }
-async function* streamCompat({ turns, images, tier, signal }) {
-  const model = modelFor(tier);
-  if (!model || model === 'ISI_NAMA_MODEL') throw { status: 500, message: 'AI_MODEL belum diisi di Vercel.' };
-  const tg = compatTarget();
+async function* streamCompat({ cfg, turns, images, tier, signal }) {
+  const model = modelFor(cfg, tier);
+  if (!model || model === 'ISI_NAMA_MODEL') throw { status: 500, message: cfg.pengguna ? 'Isi nama model di Pengaturan AI.' : 'AI_MODEL belum diisi di Vercel.' };
+  const tg = compatTarget(cfg);
   if (process.env.COMPAT_BASE_URL_TEST) tg.url = process.env.COMPAT_BASE_URL_TEST; // khusus uji
   const messages = turns.map((m, i) => (i === 0 && m.role === 'user' && images.length)
     ? { role: 'user', content: [...images.map((im) => ({ type: 'image_url', image_url: { url: 'data:' + im.media_type + ';base64,' + im.data } })), { type: 'text', text: m.content }] }
@@ -200,9 +234,9 @@ async function* streamCompat({ turns, images, tier, signal }) {
   yield { t: 'done', stop, model: used };
 }
 
-function errCode(e) {
+function errCode(e, cfg) {
   const s = e && (e.status || (e.error && e.error.status));
-  if (s === 401 || s === 403) return 'server_key';
+  if (s === 401 || s === 403) return cfg && cfg.pengguna ? 'user_key' : 'server_key';
   if (s === 402) return 'no_credit';
   if (s === 429) return 'rate_limited';
   if (s === 413) return 'prompt_too_large';
@@ -217,14 +251,17 @@ export async function POST(request) {
   try { body = await request.json(); } catch { return Response.json({ code: 'invalid_request', message: 'Body bukan JSON.' }, { status: 400 }); }
   const turns = toTurns(body && body.input);
   if (!turns || !turns.length) return Response.json({ code: 'invalid_request', message: 'input kosong.' }, { status: 400 });
+  let cfg;
+  try { cfg = konfigDari(request); } catch (e) { return Response.json({ code: e.code || 'invalid_request', message: e.message }, { status: e.status || 400 }); }
   const args = {
+    cfg,
     turns,
     images: cleanImages(body.images),
     tier: body.tier === 'quick' ? 'quick' : 'default',
     effort: ['low', 'medium', 'high'].includes(body.effort) ? body.effort : null,
     signal: request.signal
   };
-  const gen = PROVIDER === 'claude' ? streamClaude(args) : PROVIDER === 'gemini' ? streamGemini(args) : streamCompat(args);
+  const gen = cfg.provider === 'claude' ? streamClaude(args) : cfg.provider === 'gemini' ? streamGemini(args) : streamCompat(args);
   const enc = new TextEncoder();
   const stream = new ReadableStream({
     async start(ctrl) {
@@ -232,7 +269,7 @@ export async function POST(request) {
       try {
         for await (const ev of gen) send(ev);
       } catch (e) {
-        if (!request.signal.aborted) send({ t: 'error', code: errCode(e), message: String((e && e.message) || e).slice(0, 400) });
+        if (!request.signal.aborted) send({ t: 'error', code: errCode(e, cfg), message: String((e && e.message) || e).slice(0, 400) });
       }
       ctrl.close();
     }

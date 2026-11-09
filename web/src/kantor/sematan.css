@@ -1,0 +1,10 @@
+/* Nexaoffice: Kantor 3D versi sematan (dibuka di dalam iframe di halaman utama dan User Interface).
+   Halaman /office/ruang.html memakai DOM kantor yang sama; bagian header dan daftar samping disembunyikan,
+   tema dan tampilan diatur dari halaman induk lewat window.zunoOffice. */
+html.sematan, html.sematan body { height: 100%; overflow: hidden; background: #0b1422; }
+html.sematan body > header, html.sematan .sidebar, html.sematan .view-switch, html.sematan .gesture-hint, html.sematan .scene-caption, html.sematan #theme-dialog:not([open]) { display: none !important; }
+html.sematan main { display: block; height: 100vh; min-height: 0; }
+html.sematan .viewport { height: 100vh; min-height: 0; }
+html.sematan .scene-heading h2 { font-size: clamp(18px, 3vw, 28px); }
+html.sematan[data-ringkas] .demo-controls, html.sematan[data-ringkas] .scene-tools, html.sematan[data-ringkas] .scene-heading span#view-description { display: none !important; }
+html.sematan[data-ringkas] .view-switch, html.sematan[data-ringkas] .floor-switch { transform: scale(.9); transform-origin: left top; }

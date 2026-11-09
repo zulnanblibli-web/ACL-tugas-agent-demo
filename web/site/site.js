@@ -1,10 +1,7 @@
-/* Nexaoffice: menu, tab, video alur, dan konsol perintah.
-   Konsol: tanpa kunci akses -> pratinjau pembagian tugas (tanpa AI, ditandai jelas).
-   Dengan kunci akses -> Lead (lewat /api/ai) membagi tugas, lalu perintah diteruskan ke /studio.html
-   dan langsung dijalankan di ruang kerja. Kunci akses disimpan di browser ini (sama dengan ruang kerja). */
+/* Nexaoffice: menu, simulasi kerja agen di hero (demo, bukan AI), kantor 3D sematan, tab, video alur.
+   Perintah asli ke agen ada di menu User Interface (/studio.html), bukan di halaman ini. */
 (function () {
   'use strict';
-  var KEY_STORE = 'zuno-akses';
   var $ = function (id) { return document.getElementById(id); };
 
   /* ---------- menu HP ---------- */
@@ -58,128 +55,67 @@
     }
   }
 
-  /* ---------- konsol perintah ---------- */
-  var AGEN = {
-    'L.0': ['ZUNO', 'Lead, membagi tugas'], 'L.1': ['Lia', 'Laporan ke kamu'],
-    'R.1': ['Raka', 'Riset tren dan sumber'], 'R.2': ['Nara', 'Strategi dan sudut konten'],
-    'P.1': ['Dika', 'Naskah'], 'P.2': ['Vino', 'Hook dan retensi video'],
-    'D.1': ['Sari', 'Desain visual dan carousel'], 'E.1': ['Edo', 'Arahan editing'],
-    'Q.1': ['Tara', 'Cek fakta dan suara brand'], 'Q.2': ['Nita', 'Cek format'],
-    'E.2': ['Bima', 'Rencana Remotion'], 'E.3': ['Fira', 'Prompt Google Flow'],
-    'M.1': ['Maya', 'Caption dan antrian posting'],
-    'T.1': ['Arga', 'PRD dan arsitektur'], 'T.2': ['Rani', 'Desain UI/UX'],
-    'T.3': ['Fajar', 'Menulis kode'], 'T.4': ['Tio', 'Uji dan paket rilis'], 'T.5': ['Damar', 'Audit bug dan keamanan']
-  };
-  var DIVISI = {
-    konten: { nama: 'Divisi Konten', tim: ['L.0', 'R.1', 'R.2', 'P.1', 'D.1', 'Q.1', 'M.1'] },
-    build: { nama: 'Divisi Build App', tim: ['L.0', 'T.1', 'T.2', 'T.3', 'T.4', 'T.5'] }
-  };
-  var POLA_BUILD = /\b(aplikasi|app|web ?app|website|situs|dashboard|sistem|login|absensi|database|crud|landing ?page|toko online|kasir|form(ulir)?)\b/i;
+  /* ---------- hero: simulasi kerja agen (demo, bukan AI asli) ---------- */
+  var SKENARIO = [
+    { cmd: 'bikin carousel 5 slide soal AI untuk laporan kantor', lead: 'membagi tugas ke divisi Konten', hasil: 'Carousel menunggu persetujuanmu', tombol: 'Setujui',
+      agen: [['R.1', 'Raka', 'Riset sumber'], ['R.2', 'Nara', 'Sudut dan hook'], ['P.1', 'Dika', 'Naskah'], ['D.1', 'Sari', 'Desain carousel'], ['Q.1', 'Tara', 'Catatan mutu']] },
+    { cmd: 'buatkan web absensi karyawan dengan login', lead: 'membagi tugas ke divisi Build App', hasil: 'Paket rilis menunggu izinmu', tombol: 'Izinkan rilis',
+      agen: [['T.1', 'Arga', 'PRD dan arsitektur'], ['T.2', 'Rani', 'Desain UI'], ['T.3', 'Fajar', 'Menulis kode'], ['T.4', 'Tio', 'Uji di HP dan laptop'], ['T.5', 'Damar', 'Audit keamanan']] },
+    { cmd: 'video 30 detik: cara pakai AI untuk rangkum rapat', lead: 'membagi tugas ke divisi Konten (video)', hasil: 'Rencana video menunggu persetujuanmu', tombol: 'Setujui',
+      agen: [['P.1', 'Dika', 'Naskah video'], ['P.2', 'Vino', 'Uji hook'], ['E.1', 'Edo', 'Arahan edit'], ['E.2', 'Bima', 'Rencana Remotion'], ['E.3', 'Fira', 'Prompt Google Flow']] }
+  ];
+  var LBL = { wait: 'Menunggu', run: 'Bekerja', done: 'Selesai' };
+  var sim = $('sim'), simCmd = $('simCmd'), simCmdBox = simCmd && simCmd.parentNode, simLeadTxt = $('simLeadTxt'), simAgen = $('simAgen'), simHasil = $('simHasil'), simHasilTxt = $('simHasilTxt');
+  var gerakDiam = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (sim && !gerakDiam) {
+    var jeda = false, terlihat = true, langkah = [], idx = 0, timer = null;
+    var simBtn = document.createElement('button');
+    simBtn.type = 'button'; simBtn.className = 'sim-jeda'; simBtn.id = 'simJeda'; simBtn.setAttribute('aria-pressed', 'false'); simBtn.textContent = 'Jeda simulasi';
+    sim.querySelector('.sim-bar').appendChild(simBtn);
+    simBtn.addEventListener('click', function () { jeda = !jeda; simBtn.setAttribute('aria-pressed', String(jeda)); simBtn.textContent = jeda ? 'Lanjut simulasi' : 'Jeda simulasi'; if (!jeda) jalan(); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { terlihat = es[0].isIntersecting; if (terlihat) jalan(); }, { threshold: 0.2 }).observe(sim);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) jalan(); });
 
-  var form = $('konsol'), out = $('dispatch'), kirim = $('kirim');
-  var kunciBox = $('kunciBox'), kunciInput = $('kunciInput');
-  var getKey = function () { try { return localStorage.getItem(KEY_STORE) || ''; } catch (e) { return ''; } };
-  var setKey = function (v) { try { localStorage.setItem(KEY_STORE, v); } catch (e) {} };
-  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
-
-  function divisiDipilih(teks) {
-    var v = (form.querySelector('input[name="divisi"]:checked') || {}).value || 'otomatis';
-    if (v !== 'otomatis') return v;
-    return POLA_BUILD.test(teks) ? 'build' : 'konten';
-  }
-
-  function tampilkan(rencana, catatan) {
-    var d = DIVISI[rencana.divisi] || DIVISI.konten;
-    var li = (rencana.tugas || []).filter(function (t) { return AGEN[t.id]; }).map(function (t, i) {
-      return '<li style="--i:' + i + '"><img src="assets/agents/' + esc(t.id) + '.png" alt="" width="40" height="48"><div><b>' + esc(AGEN[t.id][0]) + '</b> <span>' + esc(t.tugas || AGEN[t.id][1]) + '</span></div></li>';
-    }).join('');
-    out.innerHTML = '<p class="ringkas">' + esc(d.nama) + ': ' + esc(rencana.ringkasan || '') + '</p><ul class="tugas">' + li + '</ul>' + (catatan ? '<p class="catatan">' + catatan + '</p>' : '');
-  }
-
-  function rencanaLokal(teks, divisi) {
-    var d = DIVISI[divisi];
-    return { divisi: divisi, ringkasan: teks.length > 90 ? teks.slice(0, 88) + '…' : teks, tugas: d.tim.map(function (id) { return { id: id }; }) };
-  }
-
-  async function tanyaLead(teks, divisi, key, signal) {
-    var daftar = Object.keys(AGEN).map(function (id) { return id + ' ' + AGEN[id][0] + ' (' + AGEN[id][1] + ')'; }).join('; ');
-    var prompt = 'Kamu ZUNO, Lead di kantor AI Nexaoffice. Bagi perintah pemilik ke agen yang tepat.\n' +
-      'Agen: ' + daftar + '.\nDivisi Konten: ' + DIVISI.konten.tim.concat(['L.1', 'P.2', 'E.1', 'E.2', 'E.3', 'Q.2']).join(', ') + '. Divisi Build App: ' + DIVISI.build.tim.join(', ') + '.\n' +
-      'Divisi yang disarankan: ' + divisi + ' (ganti hanya bila perintah jelas milik divisi lain).\n' +
-      'PERINTAH: ' + teks + '\n' +
-      'Balas HANYA JSON tanpa teks lain: {"divisi":"konten|build","ringkasan":"satu kalimat apa yang akan dikerjakan tim","tugas":[{"id":"R.1","tugas":"tugas singkat maks 8 kata"}]} dengan 3 sampai 8 tugas, urut sesuai alur. Untuk video, Bima (E.2) dan Fira (E.3) ikut bekerja. Jangan mengarang angka, hasil, atau janji.';
-    var r = await fetch('/api/ai', { method: 'POST', headers: { 'content-type': 'application/json', 'x-zuno-key': key }, body: JSON.stringify({ input: prompt, tier: 'quick', effort: 'low' }), signal: signal });
-    if (r.status === 401 || r.status === 403) throw { code: 'kunci' };
-    if (r.status === 503) throw { code: 'belum' };
-    if (!r.ok || !r.body) throw { code: 'server', status: r.status };
-    var reader = r.body.getReader(), dec = new TextDecoder(), buf = '', teksAI = '';
-    for (;;) {
-      var c = await reader.read(); if (c.done) break;
-      buf += dec.decode(c.value, { stream: true });
-      var baris = buf.split('\n'); buf = baris.pop();
-      baris.forEach(function (b) {
-        if (!b.trim()) return;
-        var o; try { o = JSON.parse(b); } catch (e) { return; }
-        if (o.t === 'delta') teksAI += o.text;
-        else if (o.t === 'error') throw { code: o.code === 'not_granted' || o.code === 'forbidden' ? 'kunci' : 'ai', pesan: o.message };
+    function baris(a) {
+      return '<li data-s="wait" data-id="' + a[0] + '"><img src="assets/agents/' + a[0] + '.png" alt="" width="180" height="220"><b>' + a[1] + '</b><span class="sim-job">' + a[2] + '</span><span class="sim-bar-p"><i></i></span><em>' + LBL.wait + '</em></li>';
+    }
+    function setAgen(li, s, p) {
+      li.setAttribute('data-s', s); li.querySelector('em').textContent = LBL[s];
+      li.querySelector('i').style.setProperty('--p', String(p));
+    }
+    function susun(sk) {
+      var L = [];
+      L.push([0, function () { simCmd.textContent = ''; simCmdBox.setAttribute('data-ketik', ''); simLeadTxt.textContent = 'menunggu perintah'; simAgen.innerHTML = sk.agen.map(baris).join(''); simHasil.setAttribute('data-on', '0'); simHasilTxt.textContent = 'Belum ada hasil'; simHasil.querySelector('.sim-setujui').textContent = sk.tombol; }]);
+      for (var c = 1; c <= sk.cmd.length; c++) (function (n) { L.push([45, function () { simCmd.textContent = sk.cmd.slice(0, n); }]); })(c);
+      L.push([500, function () { simCmdBox.removeAttribute('data-ketik'); simLeadTxt.textContent = 'membaca perintah'; }]);
+      L.push([900, function () { simLeadTxt.textContent = sk.lead; }]);
+      sk.agen.forEach(function (a, k) {
+        L.push([k ? 350 : 700, function () { setAgen(simAgen.children[k], 'run', 0.15); }]);
+        L.push([450, function () { setAgen(simAgen.children[k], 'run', 0.5); }]);
+        L.push([450, function () { setAgen(simAgen.children[k], 'run', 0.85); }]);
+        L.push([350, function () { setAgen(simAgen.children[k], 'done', 1); }]);
       });
+      L.push([500, function () { simHasil.setAttribute('data-on', '1'); simHasilTxt.textContent = sk.hasil; simLeadTxt.textContent = 'melapor ke kamu'; }]);
+      L.push([3200, function () { idx = (idx + 1) % SKENARIO.length; langkah = susun(SKENARIO[idx]); }]);
+      return L;
     }
-    var m = teksAI.match(/\{[\s\S]*\}/);
-    if (!m) throw { code: 'ai', pesan: 'Lead tidak membalas rencana.' };
-    var j = JSON.parse(m[0]);
-    if (j.divisi !== 'konten' && j.divisi !== 'build') j.divisi = divisi;
-    return j;
+    function jalan() {
+      if (timer || jeda || !terlihat || document.hidden) return;
+      if (!langkah.length) langkah = susun(SKENARIO[idx]);
+      var l = langkah.shift();
+      timer = setTimeout(function () { timer = null; l[1](); jalan(); }, l[0]);
+    }
+    langkah = susun(SKENARIO[0]);
+    jalan();
   }
 
-  function serahkan(teks, divisi) {
-    var q = new URLSearchParams({ perintah: teks, divisi: divisi, jalan: '1' });
-    location.href = '/studio.html?' + q.toString() + '#ruangKerja';
-  }
-
-  var sedang = null;
-  async function jalankan() {
-    var teks = $('perintahInput').value.trim();
-    if (!teks) { $('perintahInput').focus(); return; }
-    var divisi = divisiDipilih(teks), key = getKey();
-    if (!key) {
-      tampilkan(rencanaLokal(teks, divisi), 'Pratinjau pembagian tugas, belum memakai AI. Isi kunci akses untuk menjalankannya.');
-      kunciBox.hidden = false; kunciInput.focus();
-      return;
-    }
-    if (sedang) sedang.abort();
-    sedang = new AbortController();
-    kirim.disabled = true; kirim.setAttribute('aria-busy', 'true'); kirim.textContent = 'Lead membagi tugas…';
-    out.innerHTML = '<p class="catatan">Perintah diterima. ZUNO sedang membagi tugas.</p>';
-    try {
-      var rencana = await tanyaLead(teks, divisi, key, sedang.signal);
-      tampilkan(rencana, 'Membuka ruang kerja, tim mulai bekerja…');
-      setTimeout(function () { serahkan(teks, rencana.divisi); }, 1600);
-    } catch (e) {
-      if (e && e.name === 'AbortError') return;
-      if (e && e.code === 'kunci') {
-        out.innerHTML = '<p class="galat">Kunci akses salah atau belum disetel di server. Periksa lalu simpan ulang.</p>';
-        kunciBox.hidden = false; kunciInput.focus();
-      } else if (e && e.code === 'belum') {
-        out.innerHTML = '<p class="galat">Server Nexaoffice belum disetel: isi ZUNO_ACCESS_KEY dan API key AI di Vercel.</p>';
-      } else {
-        tampilkan(rencanaLokal(teks, divisi), 'Lead belum bisa dihubungi' + (e && e.pesan ? ' (' + esc(e.pesan) + ')' : '') + '. Perintah tetap diteruskan ke ruang kerja.');
-        setTimeout(function () { serahkan(teks, divisi); }, 2200);
-      }
-    } finally {
-      kirim.disabled = false; kirim.removeAttribute('aria-busy'); kirim.textContent = 'Kirim ke tim';
-    }
-  }
-
-  if (form) {
-    form.addEventListener('submit', function (e) { e.preventDefault(); jalankan(); });
-    $('perintahInput').addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); jalankan(); }
-    });
-    $('kunciSimpan').addEventListener('click', function () {
-      var v = kunciInput.value.trim();
-      if (!v) { kunciInput.focus(); return; }
-      setKey(v); kunciInput.value = ''; kunciBox.hidden = true; jalankan();
-    });
-    kunciInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); $('kunciSimpan').click(); } });
+  /* ---------- kantor 3D sematan ---------- */
+  var kIframe = $('kantorIframe');
+  if (kIframe && window.NexaKantor) {
+    var kantor = window.NexaKantor(kIframe);
+    window.NexaKantor.pasangKontrol(kantor);
+    var penuh = $('kantorPenuh'), frame = $('kantorFrame');
+    if (penuh && frame && frame.requestFullscreen) penuh.addEventListener('click', function () { if (document.fullscreenElement) document.exitFullscreen(); else frame.requestFullscreen().catch(function () {}); });
+    else if (penuh) penuh.hidden = true;
   }
 })();

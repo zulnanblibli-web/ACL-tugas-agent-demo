@@ -1,6 +1,6 @@
 # Profil Agen Zuno
 
-Struktur dirampingkan 2026-11-02 atas permintaan Zulnan: dari 23 profil menjadi **14 agen kreatif dalam Lead + 6 divisi**, lalu ditambah **Divisi Engineering (4 agen)** sehingga total **18 agen**. Profil diambil dari 23 profil lama (nama dan isi tetap); tugas profil yang mirip digabung ke satu agen supaya serah-terima lebih sedikit, tanpa membuat satu agen terlalu berat. Profil lama tersimpan utuh di `agents/arsip-23-agen/`. Nama jabatan mengikuti katalog [agency-agents-id](https://github.com/jnMetaCode/agency-agents-id) (MIT).
+Struktur dirampingkan 2026-11-02 atas permintaan Zulnan: dari 23 profil menjadi 14 agen kreatif dalam Lead + 6 divisi, lalu ditambah Divisi Engineering. **Sejak 2026-11-09 disamakan dengan 18 agen di Nexaoffice (web, kantor 3D, ruang kerja): 13 agen kreatif termasuk Lead + Divisi Engineering 5 agen = 18.** Perender, Pelapor Analitik, dan Strategis Iklan Sosial Berbayar diarsipkan di `agents/arsip-2026-11-09/`; masuk Editor Remotion (Bima), Editor Google Flow (Fira), dan Auditor Bug & Security (Damar). Tiap agen punya nama di kantor (ZUNO, Lia, Raka, dst.) yang sama dengan web. Profil diambil dari 23 profil lama (nama dan isi tetap); tugas profil yang mirip digabung ke satu agen supaya serah-terima lebih sedikit, tanpa membuat satu agen terlalu berat. Profil lama tersimpan utuh di `agents/arsip-23-agen/`. Nama jabatan mengikuti katalog [agency-agents-id](https://github.com/jnMetaCode/agency-agents-id) (MIT).
 
 Tujuan tetap: Zulnan bisa ngonten pakai AI agent, dari ide sampai paket siap tayang, dengan keputusan akhir di tangan Zulnan.
 
@@ -14,10 +14,10 @@ Anggap ini satu kantor: **Lead** memimpin dua sayap, yaitu **sayap kreatif** (6 
 | **1. Riset** | Sumber, tren, umpan balik, arah konten | Peneliti Tren (R.1), Ahli Strategi Media Sosial (R.2) | + Penyintesis Umpan Balik |
 | **2. Produksi** | Naskah, caption, uji retensi | Kreator Konten (P.1), Spesialis Optimasi Video (P.2) | + Penulis Produk & Portofolio |
 | **3. Desain** | Template carousel, maskot, Kartu Gaya video, prompt gambar | Pencerita Visual (D.1) | + Insinyur Prompt Gambar |
-| **4. Editing** | Rencana edit video, VO, subtitle, file jadi | Pelatih Editing Video Pendek (E.1), Perender (E.2) | + Narator & Subtitle |
+| **4. Editing** | Rencana edit video, VO, subtitle, rencana Remotion, prompt Google Flow, file jadi | Pelatih Editing Video Pendek (E.1 Edo), Editor Remotion (E.2 Bima), Editor Google Flow (E.3 Fira) | + Narator & Subtitle; render PNG oleh mesin render Zuno Web |
 | **5. Mutu** (tambahan) | Catatan Mutu, tanpa veto | Penjaga Merek (Q.1), Pengumpul Bukti (Q.2) | + Pemeriksa Realitas, + Pemeriksa Kepatuhan Hukum |
-| **6. Marketing** | Paket posting, leads dan arsip, performa, iklan | Kurator Instagram (M.1), Pelapor Analitik (M.2), Strategis Iklan Sosial Berbayar (M.3) | + Operasional Studio, + Pelacak Eksperimen |
-| **7. Engineering** | Build web app: ruang lingkup, desain, kode, uji, rilis | Arsitek & Analis Kebutuhan (T.1), Desainer UI/UX (T.2), Pengembang Aplikasi (T.3), Penguji & Rilis (T.4) | profil baru (tidak ada padanan di 23 profil lama) |
+| **6. Marketing** | Paket posting, leads dan arsip, catatan performa | Kurator Instagram (M.1 Maya) | + Operasional Studio, + catatan performa (dulu Pelapor Analitik). Iklan: belum ada agen sampai Fase 4 |
+| **7. Engineering** | Build web app: ruang lingkup, desain, kode, uji, audit, rilis | Arsitek & Analis Kebutuhan (T.1 Arga), Desainer UI/UX (T.2 Rani), Pengembang Aplikasi (T.3 Fajar), Penguji & Rilis (T.4 Tio), Auditor Bug & Security (T.5 Damar) | profil baru (tidak ada padanan di 23 profil lama) |
 
 Divisi Mutu tetap ada sebagai divisi kecil karena pemeriksaan fakta, klaim, dan kepatuhan tetap perlu. Sifatnya penasihat: tidak menolak, tidak menahan, tidak ada revisi otomatis.
 
@@ -28,7 +28,7 @@ Zulnan memberi perintah (+ sumber berita/artikel/viral, + referensi gaya bila ad
    v
 LEAD      [01 Orkestraror Agen] rencana + Kartu Konten        [02 Juru Kabar] status sepanjang proses
    v
-RISET     [03 Peneliti Tren] sumber + sudut  ==paralel==  [13 Pelapor Analitik] pelajaran performa lama
+RISET     [03 Peneliti Tren] sumber + sudut (+ pelajaran performa dari 13 bila ada data)
           [04 Ahli Strategi Media Sosial] ide, funnel, platform, angle, hook
    v
 PRODUKSI  [05 Kreator Konten] naskah Killer Script, caption, Daftar Fakta & Klaim
@@ -37,61 +37,62 @@ PRODUKSI  [05 Kreator Konten] naskah Killer Script, caption, Daftar Fakta & Klai
 DESAIN    [07 Pencerita Visual] template carousel + maskot / Kartu Gaya video
    v
 EDITING   [08 Pelatih Editing Video Pendek] storyboard, efek, VO, subtitle (video)
-          [09 Perender] PNG carousel / paket render video
+          [09 Editor Remotion] rencana Remotion (video)   [10 Editor Google Flow] prompt adegan (video)
+          mesin render Zuno Web: PNG carousel (bukan agen)
    v
-MUTU      [10 Penjaga Merek] ==paralel== [11 Pengumpul Bukti]   Catatan Mutu, tanpa veto, satu putaran
+MUTU      [11 Penjaga Merek] ==paralel== [12 Pengumpul Bukti]   Catatan Mutu, tanpa veto, satu putaran
    v
 LEAD      [01 + 02] Ringkasan Sebelum Terbit: kualitas, kesesuaian dengan keinginan Zulnan, catatan penting
    v
 GERBANG   Zulnan: Setujui / revisi bagian tertentu (status Disetujui hanya dari Zulnan)
    v
-MARKETING [12 Kurator Instagram] paket posting -> Antrian Posting + leads/arsip
-          [13 Pelapor Analitik] baca performa setelah tayang -> pelajaran ke Riset
-          [14 Strategis Iklan Sosial Berbayar] Fase 4 saja (standby)
+MARKETING [13 Kurator Instagram] paket posting -> Antrian Posting + leads/arsip
+          + catatan performa setelah tayang (data nyata) -> pelajaran ke Riset
 ```
 
 Alur Engineering (standby; terpisah dari alur konten, di Zuno Studio v2 ada ruang kerja sendiri "Build App"):
 
 ```
 Permintaan build (+ PRD, + referensi desain)
-  -> [15 Arsitek & Analis Kebutuhan] ruang lingkup + mesin -> tinjauan [18] -> perbaiki
-  -> [16 Desainer UI/UX] wireframe + gaya + cek animasi -> tinjauan [18] -> perbaiki
-  -> [17 Pengembang Aplikasi] bangun (preview dulu) -> [18 Penguji & Rilis] uji + bukti -> [17] perbaiki temuan
+  -> [14 Arsitek & Analis Kebutuhan] ruang lingkup + mesin -> tinjauan [17] -> perbaiki
+  -> [15 Desainer UI/UX] wireframe + gaya + cek animasi -> tinjauan [17] -> perbaiki
+  -> [16 Pengembang Aplikasi] bangun (preview dulu) -> [17 Penguji & Rilis] uji + bukti
+  -> [18 Auditor Bug & Security] audit statis -> [16] perbaiki temuan
   -> paket rilis -> laptop: live -> link + bukti + catatan keputusan ke Zulnan
 (sejak 2026-11-06: alur superpowers, diputuskan sendiri berpatokan brief; tanpa gerbang persetujuan di tengah)
 ```
 
-Tugas paralel: antar kartu; Peneliti Tren dengan Pelapor Analitik; Penjaga Merek dengan Pengumpul Bukti.
+Tugas paralel: antar kartu; Editor Remotion dengan Editor Google Flow; Penjaga Merek dengan Pengumpul Bukti.
 
 ## Aturan tim
 
 - Otoritas konten ada di Zulnan; status Disetujui hanya dari Zulnan. Satu pemilik per output.
 - Divisi Mutu hanya memberi Catatan Mutu (Aman, Saran, Perlu keputusan Zulnan, Risiko nyata). Lead merangkumnya dan memberi tahu Zulnan sebelum konten terbit. Revisi hanya atas permintaan Zulnan.
 - Memori tentang Zulnan dipakai untuk suara dan gaya, bukan bahan konten. Bahan utama dari sumber luar yang diolah jadi karya sendiri dan disebut sumbernya.
-- Posting hanya lewat Antrian Posting (keputusan Zulnan 2026-11-04): konten yang Disetujui Zulnan masuk antrian dan dijadwalkan lewat Metricool (`docs/alur-posting.md`). Iklan belum aktif; Strategis Iklan Sosial Berbayar standby sampai Fase 4.
+- Posting hanya lewat Antrian Posting (keputusan Zulnan 2026-11-04): konten yang Disetujui Zulnan masuk antrian dan dijadwalkan lewat Metricool (`docs/alur-posting.md`). Iklan belum aktif; profil Strategis Iklan Sosial Berbayar diarsipkan sampai Fase 4.
 - Tidak ada angka, testimoni, sumber, atau pengalaman Zulnan yang dikarang. Harga: [HARGA BELUM DITENTUKAN].
 
 ## Daftar
 
-| # | Nama | Kode | Divisi | Status | Tanggung jawab |
-|---|---|---|---|---|---|
-| 1 | [Orkestraror Agen](01-orkestraror-agen.md) | L.0 | Lead | aktif harian | Memimpin tim, Kartu Konten, tata kelola otomasi, Ringkasan Sebelum Terbit bersama Juru Kabar |
-| 2 | [Juru Kabar](02-juru-kabar.md) | L.1 | Lead | aktif harian | Status per divisi dan Ringkasan Sebelum Terbit untuk Zulnan |
-| 3 | [Peneliti Tren](03-peneliti-tren.md) | R.1 | Riset | aktif harian | Berita, artikel, konten viral, umpan balik audiens jadi bahan dan sudut konten |
-| 4 | [Ahli Strategi Media Sosial](04-ahli-strategi-media-sosial.md) | R.2 | Riset | aktif harian | Ide, funnel, platform, angle, hook per kartu |
-| 5 | [Kreator Konten](05-kreator-konten.md) | P.1 | Produksi | aktif harian | Naskah Killer Script, teks carousel, caption, Daftar Fakta & Klaim, halaman produk bila ditugaskan |
-| 6 | [Spesialis Optimasi Video](06-spesialis-optimasi-video.md) | P.2 | Produksi | aktif harian | Uji retensi dan tulis ulang kalimat lemah sebelum desain |
-| 7 | [Pencerita Visual](07-pencerita-visual.md) | D.1 | Desain | aktif harian | Template carousel, maskot, Kartu Gaya video, prompt gambar |
-| 8 | [Pelatih Editing Video Pendek](08-pelatih-editing-video-pendek.md) | E.1 | Editing | aktif harian (video) | Storyboard, efek, VO, subtitle, ekspor |
-| 9 | [Perender](09-perender.md) | E.2 | Editing | aktif harian | PNG carousel dan paket render video |
-| 10 | [Penjaga Merek](10-penjaga-merek.md) | Q.1 | Mutu | aktif harian | Catatan suara, merek, fakta, klaim, sumber |
-| 11 | [Pengumpul Bukti](11-pengumpul-bukti.md) | Q.2 | Mutu | aktif harian | Catatan format file, platform, privasi, izin |
-| 12 | [Kurator Instagram](12-kurator-instagram.md) | M.1 | Marketing | setelah Disetujui | Paket posting per platform, leads, arsip, papan kerja |
-| 13 | [Pelapor Analitik](13-pelapor-analitik.md) | M.2 | Marketing | aktif harian (Fase 1: rencana ukur) | Performa, label Menang/Kalah, uji hook, pelajaran ke Riset |
-| 14 | [Strategis Iklan Sosial Berbayar](14-strategis-iklan-sosial-berbayar.md) | M.3 | Marketing | standby (Fase 4) | Draf iklan Meta dari konten Menang, dalam batas anggaran Zulnan |
-| 15 | [Arsitek & Analis Kebutuhan](15-arsitek-analis-kebutuhan.md) | T.1 | Engineering | standby (aktif saat ada build) | Kunci ruang lingkup, pilih mesin, PRD, kredit dan akses |
-| 16 | [Desainer UI/UX](16-desainer-ui-ux.md) | T.2 | Engineering | standby (aktif saat ada build) | Wireframe, gaya visual, cek animasi |
-| 17 | [Pengembang Aplikasi](17-pengembang-aplikasi.md) | T.3 | Engineering | standby (aktif saat ada build) | Bangun web app lengkap, akses acak + Reset Akses, AI fleksibel |
-| 18 | [Penguji & Rilis](18-penguji-rilis.md) | T.4 | Engineering | standby (aktif saat ada build) | Uji dengan bukti, perbaiki bug, rilis, panduan serah terima |
+| # | Nama | Kode | Nama di kantor | Divisi | Status | Tanggung jawab |
+|---|---|---|---|---|---|---|
+| 1 | [Orkestraror Agen](01-orkestraror-agen.md) | L.0 | ZUNO | Lead | aktif harian | Memimpin tim, Kartu Konten, tata kelola otomasi, Ringkasan Sebelum Terbit bersama Juru Kabar |
+| 2 | [Juru Kabar](02-juru-kabar.md) | L.1 | Lia | Lead | aktif harian | Status per divisi dan Ringkasan Sebelum Terbit untuk Zulnan |
+| 3 | [Peneliti Tren](03-peneliti-tren.md) | R.1 | Raka | Riset | aktif harian | Berita, artikel, konten viral, umpan balik audiens jadi bahan dan sudut konten |
+| 4 | [Ahli Strategi Media Sosial](04-ahli-strategi-media-sosial.md) | R.2 | Nara | Riset | aktif harian | Ide, funnel, platform, angle, hook per kartu |
+| 5 | [Kreator Konten](05-kreator-konten.md) | P.1 | Dika | Produksi | aktif harian | Naskah Killer Script, teks carousel, caption, Daftar Fakta & Klaim |
+| 6 | [Spesialis Optimasi Video](06-spesialis-optimasi-video.md) | P.2 | Vino | Produksi | aktif harian | Uji retensi dan tulis ulang kalimat lemah sebelum desain |
+| 7 | [Pencerita Visual](07-pencerita-visual.md) | D.1 | Sari | Desain | aktif harian | Template carousel, maskot, Kartu Gaya video, prompt gambar |
+| 8 | [Pelatih Editing Video Pendek](08-pelatih-editing-video-pendek.md) | E.1 | Edo | Editing | aktif harian (video) | Storyboard, efek, VO, subtitle, ekspor; memimpin Divisi Editing |
+| 9 | [Editor Remotion](09-editor-remotion.md) | E.2 | Bima | Editing | aktif harian (video) | Rencana Remotion: adegan, frame, komposisi, panduan render |
+| 10 | [Editor Google Flow](10-editor-google-flow.md) | E.3 | Fira | Editing | aktif harian (video) | Brief dan prompt adegan Google Flow, kesinambungan produk |
+| 11 | [Penjaga Merek](11-penjaga-merek.md) | Q.1 | Tara | Mutu | aktif harian | Catatan suara, merek, fakta, klaim, sumber |
+| 12 | [Pengumpul Bukti](12-pengumpul-bukti.md) | Q.2 | Nita | Mutu | aktif harian | Catatan format file, platform, privasi, izin |
+| 13 | [Kurator Instagram](13-kurator-instagram.md) | M.1 | Maya | Marketing | setelah Disetujui | Paket posting per platform, leads, arsip, catatan performa |
+| 14 | [Arsitek & Analis Kebutuhan](14-arsitek-analis-kebutuhan.md) | T.1 | Arga | Engineering | standby (aktif saat ada build) | Kunci ruang lingkup, pilih mesin, PRD, kredit dan akses |
+| 15 | [Desainer UI/UX](15-desainer-ui-ux.md) | T.2 | Rani | Engineering | standby (aktif saat ada build) | Wireframe, gaya visual, cek animasi |
+| 16 | [Pengembang Aplikasi](16-pengembang-aplikasi.md) | T.3 | Fajar | Engineering | standby (aktif saat ada build) | Bangun web app lengkap, akses acak + Reset Akses, AI fleksibel |
+| 17 | [Penguji & Rilis](17-penguji-rilis.md) | T.4 | Tio | Engineering | standby (aktif saat ada build) | Uji dengan bukti, perbaiki bug, rilis, panduan serah terima |
+| 18 | [Auditor Bug & Security](18-auditor-security.md) | T.5 | Damar | Engineering | standby (aktif saat ada build) | Audit statis bug dan keamanan, temuan dengan lokasi dan perbaikan |
 
 Versi gabungan semua profil: `agents/semua-agen.md`.

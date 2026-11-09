@@ -30,7 +30,7 @@ Alat tambahan untuk T.3 (dipasang di laptop lewat `pasang-tangan-komputer.bat` b
 
 Catatan skill superpowers (disalin utuh dengan LICENSE, 2026-11-06): rujukan `superpowers:<nama>` di dalamnya berarti skill `<nama>` di folder ini. Pesan "jangan berhenti bertanya, putuskan sendiri" sejalan dengan keputusan Zulnan 2026-11-06 untuk Engineering. Titik berhenti versi Zuno tetap berlaku: pembayaran, rahasia/API key, tindakan merusak, push/merge tanpa kata Zulnan. Yang sengaja tidak disalin: `using-superpowers` dan hook awal sesinya (memaksa skill di tiap jawaban), `brainstorming` (sudah ada `grilling` + `01-idea-to-scope-lock`), `verification-before-completion` (sudah ada `prove-it-ran`), `diagnosing-superpowers`, `dispatching-parallel-agents`, `receiving-code-review`.
 
-## Divisi Editing (Pelatih Editing, Perender)
+## Divisi Editing (Pelatih Editing, Editor Remotion, Editor Google Flow)
 
 | Skill | Gunanya | Sumber |
 |---|---|---|
@@ -44,15 +44,15 @@ Konteks bisnis untuk semua skill ini ada di `.claude/product-marketing.md` (menu
 
 | Skill | Agen | Gunanya |
 |---|---|---|
-| `social` | 04 Ahli Strategi Media Sosial, 12 Kurator Instagram | Konten dan jadwal per platform (Instagram, TikTok, Threads), hook, repurpose |
+| `social` | 04 Ahli Strategi Media Sosial, 13 Kurator Instagram | Konten dan jadwal per platform (Instagram, TikTok, Threads), hook, repurpose |
 | `content-strategy` | 04 Ahli Strategi | Rencana konten, pilar, kalender |
 | `copywriting` | 05 Kreator Konten | Copy halaman (landing page produk digital) |
 | `copy-editing` | 05 Kreator, Divisi Mutu | Merapikan copy yang sudah ada |
 | `marketing-psychology` | 04, 05 | Prinsip psikologi untuk hook dan CTA (tanpa manipulasi, tanpa klaim hasil) |
 | `customer-research` | 03 Peneliti Tren | Mengolah komentar, DM, dan riset audiens jadi bahan |
-| `ad-creative` | 14 Strategis Iklan | Variasi copy iklan |
-| `ads` | 14 Strategis Iklan | Strategi kampanye berbayar. Meta Ads **belum aktif**: hanya rencana, tidak menyentuh akun iklan |
-| `analytics` | 13 Pelapor Analitik | Rencana pelacakan dan UTM. Angka hanya dari data nyata |
+| `ad-creative` | belum ada pemilik (Strategis Iklan diarsipkan 2026-11-09, Fase 4) | Variasi copy iklan |
+| `ads` | belum ada pemilik (Fase 4) | Strategi kampanye berbayar. Meta Ads **belum aktif**: hanya rencana, tidak menyentuh akun iklan |
+| `analytics` | 13 Kurator Instagram (catatan performa) | Rencana pelacakan dan UTM. Angka hanya dari data nyata |
 
 ## Alat fondasi semua divisi (2026-11-06)
 

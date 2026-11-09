@@ -61,8 +61,18 @@ writeFileSync(join(out, 'index.html'), page);
 let live = readFileSync(join(web, 'live.js'), 'utf8');
 live = swapIn('live.js', live, 'JSON.stringify({ input: input,', 'JSON.stringify({ input: window.ZB ? window.ZB.repPrompt(input) : input,');
 writeFileSync(join(out, 'live.js'), live);
-for (const f of ['hud.css', 'hud.js', 'motion.js']) copyFileSync(join(web, f), join(out, f));
+for (const f of ['hud.css', 'hud.js', 'motion.js', 'pengaturan-ai.js']) copyFileSync(join(web, f), join(out, f));
 copyFileSync(join(here, 'files', 'brand.js'), join(out, 'brand.js'));
+
+// ---------- server Node untuk laptop/VPS (menu Pengaturan AI > Server VPS) ----------
+// Isi sama dengan web/dev-server.mjs; di repo jasa namanya server.mjs dan berada di folder utama.
+let srv = readFileSync(join(web, 'dev-server.mjs'), 'utf8').split('web\\').join('').split('folder web').join('folder repo ini');
+writeFileSync(join(out, 'server.mjs'), srv);
+copyFileSync(join(web, '.env.local.example'), join(out, '.env.local.example'));
+mkdirSync(join(out, 'tools', 'vps'), { recursive: true });
+for (const f of readdirSync(join(root, 'tools', 'vps'))) copyFileSync(join(root, 'tools', 'vps', f), join(out, 'tools', 'vps', f));
+mkdirSync(join(out, 'docs'), { recursive: true });
+copyFileSync(join(root, 'docs', 'vps-nexaoffice.md'), join(out, 'docs', 'vps-nexaoffice.md'));
 
 // ---------- server: penyedia otomatis dari key yang diisi pembeli ----------
 const AUTO = "(process.env.AI_PROVIDER || (process.env.GEMINI_API_KEY ? 'gemini' : process.env.OPENROUTER_API_KEY ? 'openrouter' : process.env.OPENAI_API_KEY ? 'openai' : 'claude'))";
@@ -118,7 +128,8 @@ if (jasaLokal) {
   lock.name = pkg.name; if (lock.packages && lock.packages['']) lock.packages[''].name = pkg.name;
   writeFileSync(join(out, 'package-lock.json'), JSON.stringify(lock, null, 2) + '\n');
 }
-copyFileSync(join(web, 'vercel.json'), join(out, 'vercel.json'));
+// vercel.json tanpa redirect /kantor.html: repo jasa masih memakai halaman kantor.html sendiri.
+{ const vj = JSON.parse(readFileSync(join(web, 'vercel.json'), 'utf8')); delete vj.redirects; writeFileSync(join(out, 'vercel.json'), JSON.stringify(vj, null, 2) + '\n'); }
 for (const f of readdirSync(join(here, 'files'))) if (f !== 'brand.js') copyFileSync(join(here, 'files', f), join(out, f.replace(/^dot-/, '.')));
 
 let ver = 'tidak diketahui';
@@ -127,7 +138,7 @@ writeFileSync(join(out, 'VERSI.txt'), 'Zuno Studio edisi jasa\nDiekspor: ' + new
 
 // ---------- cek akhir: tidak ada identitas Zulnan tersisa yang tidak terlindungi ----------
 const leaks = [];
-for (const f of ['index.html', 'live.js', 'hud.js', 'hud.css', 'api/ai.js', 'api/status.js', 'api/riset.js', 'api/gambar.js']) {
+for (const f of ['index.html', 'live.js', 'hud.js', 'hud.css', 'pengaturan-ai.js', 'server.mjs', 'api/ai.js', 'api/status.js', 'api/riset.js', 'api/gambar.js']) {
   const t = readFileSync(join(out, f), 'utf8');
   for (const bad of ['sales sekitar 12 tahun', 'FMCG', '6 web aktif', 'rambut hitam keriting', 'foto-zulnan', 'zuno-zulnan-percakapan']) if (t.includes(bad)) leaks.push(f + ': ' + bad);
 }

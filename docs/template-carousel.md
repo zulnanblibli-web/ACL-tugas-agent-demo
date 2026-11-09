@@ -30,7 +30,7 @@ Judul 5 kata (cover 8), subjudul 14, label 3, judul poin 6, isi poin 12, keteran
 Di layar perintah ada kolom **"Gambar cover carousel (slide 1)"**: unggah foto Zulnan atau gambar yang sesuai topik (JPG, PNG, WebP; maks. 25 MB; otomatis diperkecil ke sisi terpanjang 1600 px). Setelah hasil keluar, tombol **"Ganti gambar cover (slide 1)"** merender ulang hanya slide 1 dengan gambar lain. Kosong berarti memakai foto Zulnan bawaan (versi web) atau cover teks saja. Tata letak otomatis: gambar potret (tinggi minimal 1,1 kali lebar) ditaruh di kanan bawah dengan tepi kiri dan atas memudar; gambar lanskap atau persegi tampil sebagai kartu bersudut membulat di bawah judul. Gambar dengan latar polos atau sudah dipotong paling rapi.
 
 ## Gambar cover dari sumber pembahasan (Zuno Web, 2026-11-06)
-Bila Zulnan tidak mengunggah gambar cover, Perender mengambil gambar dari sumber yang jadi bahan naskah kartu itu (`sumber_utama` dari Ahli Strategi). Urutannya:
+Bila Zulnan tidak mengunggah gambar cover, mesin render Zuno Web (Divisi Editing) mengambil gambar dari sumber yang jadi bahan naskah kartu itu (`sumber_utama` dari Ahli Strategi). Urutannya:
 1. gambar utama artikel (og:image; tautan Google News dibuka dulu ke artikel asli);
 2. thumbnail berita dari Google Trends;
 3. foto berlisensi bebas Wikimedia Commons untuk tokoh, produk, perusahaan, atau tempat (`gambar_cari`). Hanya dicari bila nama itu benar-benar tertulis di naskah atau sumber;

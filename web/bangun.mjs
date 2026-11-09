@@ -26,7 +26,7 @@ export function bangunRuangKerja(varian) {
   };
   const nexa = varian === 'nexa';
   swap('<title>Zuno Studio v2</title>', nexa
-    ? '<title>Nexaoffice · Ruang Kerja</title>\n<meta name="description" content="Ruang kerja Nexaoffice: 18 agen AI untuk riset, naskah, desain, dan build web app.">\n<meta name="author" content="Creative @nexamind.ai">\n<meta name="theme-color" content="#060b14">'
+    ? '<title>Nexaoffice · User Interface</title>\n<meta name="description" content="User Interface Nexaoffice: beri perintah, 18 agen AI bekerja di kantor 3D untuk riset, naskah, desain, dan build web app.">\n<meta name="author" content="Creative @nexamind.ai">\n<meta name="theme-color" content="#060b14">'
     : '<title>ZUNO · Tim Agent AI</title>\n<meta name="description" content="Zuno: tim agent AI pribadi untuk riset, naskah, desain, dan build web app.">\n<meta name="author" content="Creative @nexamind.ai">\n<meta name="theme-color" content="#03060b">');
   swap('</style>\n</head>', nexa
     ? '</style>\n<link rel="preload" href="/assets/fonts/antonio-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="/assets/fonts/onest-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="/studio-nexa.css">\n</head>'
@@ -35,12 +35,12 @@ export function bangunRuangKerja(varian) {
   swap('<body>\n<div class="wrap">\n<h1>Zuno Studio</h1>', nexa
     ? '<body>\n' + part('studio-hero.html') + '\n<div class="ws-layout" id="ruangKerja">\n<div class="wrap">'
     : '<body>\n' + heroHud() + '\n<div class="ws-title" id="ruangKerja">RUANG KERJA</div>\n<div class="ws-layout">\n<div class="wrap">');
-  swap('</div><!-- /wsBuild -->\n</div>', '</div><!-- /wsBuild -->\n</div>\n' + part('flow.html') + '</div><!-- /ws-layout -->\n' + part(nexa ? 'studio-tail.html' : 'tail.html'));
+  swap('</div><!-- /wsBuild -->\n</div>', '</div><!-- /wsBuild -->\n</div>\n' + part('flow.html') + '</div><!-- /ws-layout -->\n' + part(nexa ? 'studio-tail.html' : 'tail.html') + '\n' + part('pengaturan-ai.html'));
   swap('\n<script>\n', nexa
-    ? '\n<script src="/live.js"></script>\n<script src="/hud.js"></script>\n<script src="/studio-nexa.js" defer></script>\n<script src="/serah.js" defer></script>\n<script>\n'
-    : '\n<script src="/live.js"></script>\n<script src="/hud.js"></script>\n<script src="/motion.js" defer></script>\n<script>\n');
+    ? '\n<script src="/live.js"></script>\n<script src="/hud.js"></script>\n<script src="/pengaturan-ai.js"></script>\n<script src="/office/kendali.js"></script>\n<script src="/studio-nexa.js" defer></script>\n<script src="/ui.js" defer></script>\n<script src="/serah.js" defer></script>\n<script>\n'
+    : '\n<script src="/live.js"></script>\n<script src="/hud.js"></script>\n<script src="/pengaturan-ai.js"></script>\n<script src="/motion.js" defer></script>\n<script>\n');
   // Pesan error disesuaikan untuk versi web.
-  swap("not_granted:'Izin Claude belum diberikan.'", "not_granted:'Kunci akses " + (nexa ? 'Nexaoffice' : 'Zuno') + " salah atau belum diisi. Klik KUNCI AKSES di atas.',not_configured:'Server " + (nexa ? 'Nexaoffice' : 'Zuno') + " belum disetel (ZUNO_ACCESS_KEY di Vercel).',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.'");
+  swap("not_granted:'Izin Claude belum diberikan.'", "not_granted:'Kunci akses " + (nexa ? 'Nexaoffice' : 'Zuno') + " salah atau belum diisi. Buka Pengaturan AI di atas.',not_configured:'Server " + (nexa ? 'Nexaoffice' : 'Zuno') + " belum disetel (ZUNO_ACCESS_KEY di server).',user_key:'API key di Pengaturan AI ditolak penyedia. Periksa key dan modelnya, lalu simpan ulang.',byok_off:'Server ini tidak menerima API key dari halaman. Pakai mode Server di Pengaturan AI.',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.'");
   swap("info.textContent='Halaman ini baru bisa menjalankan agen saat dibuka di claude.ai dan diberi izin memakai Claude.'", "info.textContent='Server " + (nexa ? 'Nexaoffice' : 'Zuno') + " tidak bisa dihubungi. Muat ulang halaman.'");
   if (nexa) {
     // Diagram cara kerja dan dialog kunci memakai nama Nexaoffice.

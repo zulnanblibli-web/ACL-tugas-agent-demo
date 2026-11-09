@@ -92,17 +92,29 @@
   };
 
   function status() {
-    fetch('/api/status', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (j) {
-      var ok = j.ai_key_set && j.access_set;
+    var ai = window.NexaAI ? window.NexaAI.get() : { mode: 'server' };
+    var base = window.NexaAI ? window.NexaAI.base() : '';
+    var lokal = ai.mode === 'lokal' && !!ai.kunci;
+    var NM = { claude: 'Claude', gemini: 'Gemini', openai: 'OpenAI', openrouter: 'OpenRouter', 'openai-compatible': '9router / lokal' };
+    var info = $('capinfo');
+    fetch(base + '/api/status', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (j) {
+      var tolak = lokal && j.kunci_pengguna === false;
+      var ok = (j.ai_key_set || lokal) && j.access_set && !tolak;
       $('hStat').textContent = ok ? 'ONLINE' : 'BELUM DISETEL';
       $('hStat').className = 'val ' + (ok ? 'ok' : 'warn');
-      $('hModel').textContent = j.provider + ' · ' + j.model;
-      var NM = { claude: 'Claude', gemini: 'Gemini', openai: 'OpenAI', openrouter: 'OpenRouter', 'openai-compatible': '9router / lokal' };
-      if ($('hBrain')) $('hBrain').textContent = NM[j.provider] || j.provider;
-      var info = $('capinfo');
-      if (info && !ok) { info.className = 'banner warn'; info.classList.remove('hidden'); info.textContent = 'Server belum lengkap: ' + (!j.ai_key_set ? 'API key penyedia AI belum diisi di Vercel. ' : '') + (!j.access_set ? 'ZUNO_ACCESS_KEY belum diisi di Vercel.' : ''); }
-    }).catch(function () { $('hStat').textContent = 'OFFLINE'; $('hStat').className = 'val bad'; });
+      $('hModel').textContent = lokal ? ai.provider + ' · ' + (ai.model || 'otomatis') + ' (key lokal)' : j.provider + ' · ' + j.model;
+      if ($('hBrain')) $('hBrain').textContent = NM[lokal ? ai.provider : j.provider] || j.provider;
+      if ($('hKoneksi')) $('hKoneksi').textContent = ai.mode === 'vps' ? 'Server VPS' : lokal ? 'API key lokal' : 'Server ' + (j.server === 'vercel' ? 'Vercel' : j.server === 'vps' ? 'VPS' : 'lokal');
+      if (info && !ok) {
+        info.className = 'banner warn'; info.classList.remove('hidden');
+        info.textContent = 'Server belum lengkap: ' + (tolak ? 'server ini menolak API key dari halaman (NEXA_KUNCI_PENGGUNA=off). ' : '') + (!j.ai_key_set && !lokal ? 'API key AI belum ada. Isi di Pengaturan AI (mode API key lokal) atau di env server. ' : '') + (!j.access_set ? 'ZUNO_ACCESS_KEY belum diisi di server.' : '');
+      } else if (info && ok && /^Server belum lengkap/.test(info.textContent)) { info.classList.add('hidden'); info.textContent = ''; }
+    }).catch(function () {
+      $('hStat').textContent = 'OFFLINE'; $('hStat').className = 'val bad';
+      if ($('hKoneksi')) $('hKoneksi').textContent = ai.mode === 'vps' ? 'Server VPS (tidak terjangkau)' : 'Server tidak terjangkau';
+    });
   }
+  window.ZunoHUD.status = status;
 
   document.addEventListener('DOMContentLoaded', function () {
     var form = $('keyForm');

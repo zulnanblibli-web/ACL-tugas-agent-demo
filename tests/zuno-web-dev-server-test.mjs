@@ -20,9 +20,9 @@ const PORT = 3917;
 const blocker = http.createServer(() => {}); await new Promise((r) => blocker.listen(PORT, '127.0.0.1', r));
 import fs from 'node:fs';
 const LOGF = path.join(root, 'web', 'server-lokal.log'); try { fs.unlinkSync(LOGF); } catch {}
-const child = spawn(process.execPath, ['dev-server.mjs'], { cwd: path.join(root, 'web'), env: { ...process.env, PORT: String(PORT), AI_PROVIDER: 'openrouter', OPENROUTER_API_KEY: 'kunci-tiruan', AI_MODEL: 'm-x', ZUNO_ACCESS_KEY: 'rahasia-lokal-1234567', COMPAT_BASE_URL_TEST: 'http://127.0.0.1:' + fake.address().port + '/v1/chat/completions' } });
+const child = spawn(process.execPath, ['dev-server.mjs'], { cwd: path.join(root, 'web'), env: { ...process.env, PORT: String(PORT), AI_PROVIDER: 'openrouter', OPENROUTER_API_KEY: 'kunci-tiruan', AI_MODEL: 'm-x', ZUNO_ACCESS_KEY: 'rahasia-lokal-1234567', NEXA_CORS_ORIGIN: 'https://situs.contoh', COMPAT_BASE_URL_TEST: 'http://127.0.0.1:' + fake.address().port + '/v1/chat/completions' } });
 let log = ''; child.stdout.on('data', (d) => (log += d)); child.stderr.on('data', (d) => (log += d));
-for (let i = 0; i < 50 && !/Zuno Web lokal jalan/.test(log); i++) await new Promise((r) => setTimeout(r, 100));
+for (let i = 0; i < 50 && !/Nexaoffice jalan/.test(log); i++) await new Promise((r) => setTimeout(r, 100));
 const m = log.match(/jalan di\s+(http:\/\/127\.0\.0\.1:(\d+))/);
 const U = m ? m[1] : 'http://127.0.0.1:' + (PORT + 1);
 const out = [];
@@ -32,7 +32,13 @@ try {
   const lg = fs.existsSync(LOGF) ? fs.readFileSync(LOGF, 'utf8') : '';
   ok('log diagnosa ditulis tanpa isi key', /jalan di http:\/\/127\.0\.0\.1:/.test(lg) && /key terisi/.test(lg) && !lg.includes('kunci-tiruan') && !lg.includes('rahasia-lokal'));
   let r = await fetch(U + '/'); let t = await r.text();
-  ok('halaman utama Nexaoffice 200 (konsol perintah)', r.status === 200 && /Nexaoffice/.test(t) && t.includes('id="konsol"'));
+  ok('halaman utama Nexaoffice 200 (simulasi agen + kantor 3D)', r.status === 200 && /Nexaoffice/.test(t) && t.includes('id="simulasi"') && t.includes('/office/ruang.html'));
+  r = await fetch(U + '/office/ruang.html'); t = await r.text(); ok('kantor 3D sematan /office/ruang.html 200', r.status === 200 && t.includes('class="sematan"'));
+  r = await fetch(U + '/kantor.html'); ok('/kantor.html tidak dipakai lagi (404)', r.status === 404);
+  r = await fetch(U + '/api/ai', { method: 'OPTIONS', headers: { origin: 'https://situs.contoh', 'access-control-request-method': 'POST' } });
+  ok('CORS: situs di NEXA_CORS_ORIGIN boleh (204 + header)', r.status === 204 && r.headers.get('access-control-allow-origin') === 'https://situs.contoh' && /x-llm-key/.test(r.headers.get('access-control-allow-headers')));
+  r = await fetch(U + '/api/ai', { method: 'OPTIONS', headers: { origin: 'https://lain.contoh' } }); ok('CORS: situs lain ditolak (403)', r.status === 403 && !r.headers.get('access-control-allow-origin'));
+  r = await fetch(U + '/api/status', { headers: { origin: 'https://situs.contoh' } }); ok('CORS: /api/status menyertakan izin asal', r.headers.get('access-control-allow-origin') === 'https://situs.contoh');
   r = await fetch(U + '/studio.html'); t = await r.text();
   ok('ruang kerja /studio.html 200 dan memuat ZUNO + input gambar cover', r.status === 200 && /ZUNO/.test(t) && t.includes('id="coverfile"'));
   r = await fetch(U + '/assets/foto-zulnan.webp'); ok('foto cover webp 200', r.status === 200 && r.headers.get('content-type') === 'image/webp' && (await r.arrayBuffer()).byteLength > 10000);
@@ -44,7 +50,7 @@ try {
   r = await fetch(U + '/api/ai', { method: 'POST', headers: { 'content-type': 'application/json', 'x-zuno-key': 'rahasia-lokal-1234567' }, body: JSON.stringify({ input: 'tes' }) });
   const L = (await r.text()).trim().split('\n').map((l) => JSON.parse(l));
   ok('streaming /api/ai lewat server lokal: teks utuh + done', r.status === 200 && L.filter((l) => l.t === 'delta').map((l) => l.text).join('') === '{"halo":"lokal"}' && L.at(-1).t === 'done');
-  for (const p of ['/.env.local', '/.env.local.example', '/api/ai.js', '/dev-server.mjs', '/package.json', '/src/hud.css', '/node_modules/x', '/%2e%2e/package.json', '/assets/../package.json', '/server-lokal.log']) { r = await fetch(U + p); ok('tidak disajikan: ' + p, r.status === 404); }
+  for (const p of ['/.env.local', '/.env.local.example', '/api/ai.js', '/dev-server.mjs', '/bangun.mjs', '/package.json', '/vercel.json', '/src/hud.css', '/src/site/index.html', '/node_modules/x', '/%2e%2e/package.json', '/assets/../package.json', '/server-lokal.log']) { r = await fetch(U + p); ok('tidak disajikan: ' + p, r.status === 404); }
   r = await fetch(U + '/', { method: 'DELETE' }); ok('metode DELETE ditolak (405)', r.status === 405);
 } finally { child.kill(); fake.close(); blocker.close(); try { fs.unlinkSync(LOGF); } catch {} }
 let bad = 0; for (const [n, c] of out) { console.log((c ? 'OK   ' : 'GAGAL') + ' ' + n); if (!c) bad++; }

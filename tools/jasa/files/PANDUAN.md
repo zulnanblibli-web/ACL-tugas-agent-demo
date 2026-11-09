@@ -30,7 +30,7 @@ Panduan ini untuk pemilik web Zuno Studio. Tidak perlu bisa coding.
    - **Slogan setelah hook video**: boleh kosong.
    - **Kredit aplikasi**: dipakai di web app buatan tab Build App.
 2. Klik **Simpan dan muat ulang**.
-3. Klik **KUNCI AKSES** di atas, lalu masukkan `ZUNO_ACCESS_KEY`. Status berubah jadi ONLINE.
+3. Klik **PENGATURAN AI** di atas, biarkan pilihan **Server ini**, lalu isi **Kunci akses server** dengan `ZUNO_ACCESS_KEY` dan klik Simpan. Status berubah jadi ONLINE.
 
 ## 3. Cara pakai
 
@@ -54,7 +54,7 @@ Panduan ini untuk pemilik web Zuno Studio. Tidak perlu bisa coding.
 Pengaturan brand tersimpan di browser.
 1. Di perangkat lama: **PENGATURAN BRAND** → **Ekspor (.json)**.
 2. Di perangkat baru: **PENGATURAN BRAND** → **Impor (.json)**.
-3. Isi **KUNCI AKSES** sekali di tiap perangkat.
+3. Isi kunci akses di **PENGATURAN AI** sekali di tiap perangkat (API key lokal juga diisi per perangkat).
 
 ## 5. Ganti penyedia AI (opsional)
 Gemini gratis punya batas harian. Kalau sering muncul "batas pemakaian tercapai", pakai penyedia lain:
@@ -69,6 +69,14 @@ Gemini gratis punya batas harian. Kalau sering muncul "batas pemakaian tercapai"
 
 3. Bila lebih dari satu key terisi, tulis penyedia yang dipakai di `AI_PROVIDER`: `gemini`, `openrouter`, `claude`, atau `openai`.
 4. Buka tab **Deployments**, klik titik tiga di deploy teratas, lalu pilih **Redeploy**.
+
+### 5b. Tanpa buka Vercel: menu PENGATURAN AI
+Klik **PENGATURAN AI** di atas. Ada tiga pilihan sambungan:
+- **Server ini**: memakai key di Environment Variables Vercel (cara di atas).
+- **API key lokal**: pilih penyedia, tempel API key, isi model bila perlu, klik **Tes sambungan** lalu **Simpan**. Key disimpan di browser perangkat itu saja dan dikirim per permintaan; server tidak menyimpannya. Klik **Hapus semua** sebelum meminjamkan perangkat.
+- **Server VPS**: bila kamu memasang Nexaoffice di VPS sendiri (lihat `docs/vps-nexaoffice.md`, skrip `tools/vps/pasang-vps.sh`), isi alamat https VPS dan kunci akses VPS.
+
+Kunci akses tetap wajib di semua pilihan.
 
 ## 6. Setel riset otomatis (opsional)
 Peneliti Tren mencari bahan sendiri dari Google Trends (pencarian yang sedang naik), Google News (berita terbaru), dan Hacker News (diskusi teknologi). Semuanya gratis, tanpa API key. Bawaannya untuk Indonesia. Setel sesuai bisnismu:
@@ -97,7 +105,8 @@ Catatan:
 
 | Tanda | Penyebab | Cara beres |
 |---|---|---|
-| "Kunci akses salah atau belum diisi" | Kata sandi web salah | Klik KUNCI AKSES, isi persis seperti `ZUNO_ACCESS_KEY` di Vercel |
+| "Kunci akses salah atau belum diisi" | Kata sandi web salah | Klik PENGATURAN AI, isi kunci akses persis seperti `ZUNO_ACCESS_KEY` di server |
+| "API key di Pengaturan AI ditolak penyedia" | Key lokal salah, habis, atau model tidak tersedia | PENGATURAN AI → periksa key dan nama model → Tes sambungan |
 | "Server Zuno belum disetel" | `ZUNO_ACCESS_KEY` belum diisi di Vercel | Isi di Environment Variables, lalu Redeploy |
 | "Batas pemakaian tercapai" | Kuota gratis penyedia AI habis | Tunggu besok, atau ganti penyedia (bagian 5) |
 | "Saldo penyedia AI habis" | Saldo OpenRouter atau penyedia lain habis | Isi saldo di akun penyedia |

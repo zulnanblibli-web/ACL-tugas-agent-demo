@@ -1,13 +1,38 @@
 /* Zuno live: jembatan halaman ke /api/ai (pengganti window.claude di artifact).
    Halaman Zuno Studio memanggil window.claude.use('sample') persis seperti di artifact,
-   jadi logika agen tidak perlu diubah. API key tetap di server; halaman hanya memegang
-   kunci akses Zuno (disimpan di browser ini). */
+   jadi logika agen tidak perlu diubah. Halaman memegang kunci akses (disimpan di browser ini).
+   Menu Pengaturan AI (window.NexaAI) memilih sambungan:
+     server : API key di env server ini (Vercel atau dev-server)          -> /api/*
+     lokal  : API key milik pemakai, disimpan di browser perangkat ini,
+              dikirim per permintaan ke server ini lewat header x-llm-*   -> /api/*
+     vps    : server Nexaoffice di VPS sendiri (key di env VPS)            -> https://alamat-vps/api/* */
 (function () {
   'use strict';
   var KEY_STORE = 'zuno-akses';
   function getKey() { try { return localStorage.getItem(KEY_STORE) || ''; } catch (e) { return ''; } }
   function setKey(v) { try { if (v) localStorage.setItem(KEY_STORE, v); else localStorage.removeItem(KEY_STORE); } catch (e) {} }
   window.ZunoKey = { get: getKey, set: setKey };
+
+  var AI_STORE = 'nexa-ai';
+  var PENYEDIA = ['gemini', 'claude', 'openai', 'openrouter', 'openai-compatible'];
+  function aiGet() {
+    var s = {}; try { s = JSON.parse(localStorage.getItem(AI_STORE) || '{}') || {}; } catch (e) { s = {}; }
+    if (['server', 'lokal', 'vps'].indexOf(s.mode) < 0) s.mode = 'server';
+    if (PENYEDIA.indexOf(s.provider) < 0) s.provider = 'gemini';
+    return { mode: s.mode, provider: s.provider, kunci: String(s.kunci || ''), model: String(s.model || ''), base: String(s.base || ''), vps: String(s.vps || '') };
+  }
+  function aiSet(s) { try { if (s) localStorage.setItem(AI_STORE, JSON.stringify(s)); else localStorage.removeItem(AI_STORE); } catch (e) {} }
+  function apiBase() { var s = aiGet(); return s.mode === 'vps' && /^https?:\/\//.test(s.vps) ? s.vps.replace(/\/+$/, '') : ''; }
+  function llmHeaders() {
+    var s = aiGet(), h = {};
+    if (s.mode === 'lokal' && s.kunci) {
+      h['x-llm-provider'] = s.provider; h['x-llm-key'] = s.kunci;
+      if (s.model) h['x-llm-model'] = s.model;
+      if (s.provider === 'openai-compatible' && s.base) h['x-llm-base'] = s.base;
+    }
+    return h;
+  }
+  window.NexaAI = { get: aiGet, set: aiSet, base: apiBase, headers: llmHeaders, penyedia: PENYEDIA };
 
   function blobToB64(b) {
     return new Promise(function (res, rej) {
@@ -33,10 +58,10 @@
     var body = JSON.stringify({ input: input, images: images, tier: opts.modelTier === 'default' ? 'default' : 'quick', effort: opts.effort || null });
     var r;
     try {
-      r = await fetch('/api/ai', { method: 'POST', headers: { 'content-type': 'application/json', 'x-zuno-key': key }, body: body, signal: opts.signal });
+      r = await fetch(apiBase() + '/api/ai', { method: 'POST', headers: Object.assign({ 'content-type': 'application/json', 'x-zuno-key': key }, llmHeaders()), body: body, signal: opts.signal });
     } catch (e) {
       if (opts.signal && opts.signal.aborted) throw { code: 'cancelled' };
-      throw { code: 'upstream_error', message: 'Koneksi ke server Zuno gagal.' };
+      throw { code: 'upstream_error', message: apiBase() ? 'Server VPS tidak bisa dihubungi. Cek alamatnya di Pengaturan AI.' : 'Koneksi ke server Zuno gagal.' };
     }
     if (!r.ok) {
       var j = {}; try { j = await r.json(); } catch (e) {}
@@ -63,7 +88,7 @@
       if (opts.signal && opts.signal.aborted) throw { code: 'cancelled' };
       throw { code: 'upstream_error', message: 'Aliran jawaban terputus.', text: text };
     }
-    if (err) throw { code: err.code === 'server_key' ? 'upstream_error' : err.code, message: err.message, text: text };
+    if (err) throw { code: err.code === 'server_key' ? 'upstream_error' : err.code, message: err.code === 'user_key' ? 'API key di Pengaturan AI ditolak penyedia: ' + err.message : err.message, text: text };
     if (!done) throw { code: 'upstream_error', message: 'Server berhenti sebelum jawaban selesai (batas waktu).', text: text };
     if (done.stop === 'refusal') throw { code: 'refused', message: 'Model menolak bagian ini.', text: text };
     if (window.ZunoHUD) window.ZunoHUD.model(done.model);
@@ -76,7 +101,7 @@
     var key = getKey();
     if (!key) throw { code: 'not_granted', message: 'Kunci akses belum diisi.' };
     var q = (queries || []).map(function (x) { return String(x).replace(/\|/g, ' ').trim(); }).filter(Boolean).slice(0, 4).join('|');
-    var r = await fetch('/api/riset?q=' + encodeURIComponent(q), { headers: { 'x-zuno-key': key } });
+    var r = await fetch(apiBase() + '/api/riset?q=' + encodeURIComponent(q), { headers: { 'x-zuno-key': key } });
     if (!r.ok) { var j = {}; try { j = await r.json(); } catch (e) {} throw { code: j.code || (r.status === 401 ? 'not_granted' : 'upstream_error'), message: j.message || ('Riset web gagal (HTTP ' + r.status + ').') }; }
     return r.json();
   };
@@ -86,7 +111,7 @@
     var key = getKey();
     if (!key) throw { code: 'not_granted', message: 'Kunci akses belum diisi.' };
     var qs = q && q.cari ? 'cari=' + encodeURIComponent(q.cari) : 'u=' + encodeURIComponent((q && q.u) || '');
-    var r = await fetch('/api/gambar?' + qs, { headers: { 'x-zuno-key': key } });
+    var r = await fetch(apiBase() + '/api/gambar?' + qs, { headers: { 'x-zuno-key': key } });
     if (!r.ok) { var j = {}; try { j = await r.json(); } catch (e) {} throw { code: j.code || 'no_image', message: j.message || ('HTTP ' + r.status) }; }
     var dec = function (v) { try { return decodeURIComponent(v || ''); } catch (e) { return v || ''; } };
     return { blob: await r.blob(), sumber: dec(r.headers.get('x-zuno-sumber')), asal: dec(r.headers.get('x-zuno-asal')) };

@@ -1,0 +1,7 @@
+# Nexaoffice di belakang Caddy: HTTPS otomatis. Dipasang oleh tools/vps/pasang-vps.sh (__DOMAIN__ dan __PORT__ diganti).
+__DOMAIN__ {
+	encode gzip
+	reverse_proxy 127.0.0.1:__PORT__ {
+		flush_interval -1
+	}
+}

@@ -24,5 +24,12 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/kantor.html",
+      "destination": "/#kantor",
+      "permanent": false
+    }
   ]
 }

@@ -22,7 +22,7 @@ Setiap agen atau skill baru menghasilkan empat hal ini, tidak kurang:
    - frontmatter `name` dan `description`; `description` hanya berisi kapan dipakai, diawali "Use when...";
    - isi dalam Bahasa Indonesia.
 
-   Agen baru juga mendapat **`agents/NN-<nama>.md`** dengan format profil yang sama seperti `agents/18-penguji-rilis.md` (frontmatter `name`, `description`, `kode`, `divisi`, `urutan`, `status`, `acuan`).
+   Agen baru juga mendapat **`agents/NN-<nama>.md`** dengan format profil yang sama seperti `agents/17-penguji-rilis.md` (frontmatter `name`, `description`, `kode`, `divisi`, `urutan`, `status`, `acuan`).
 3. **`docs/uji-agen/<nama>.md`** berisi:
    - skenario uji;
    - hasil RED (kutipan pelanggaran persis);
