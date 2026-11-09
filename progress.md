@@ -78,6 +78,8 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
+000020. **Kantor 3D jasa di main + ekspor jasa aman (2026-11-09, entri 58).** Repo jasa `main` sampai `7396e18`: Kantor 3D dua tema (Menara Senja, Griya Langit) + agen E.2/E.3/T.5 tetap ada setelah ekspor. Berikutnya: Zulnan coba `preview/Nexa-Office-Preview.zip` atau `/kantor.html` di Vercel jasa; uji performa di laptop. Fitur baru langsung di `index.html` jasa harus masuk `tools/jasa/tambahan-jasa.mjs`.
+
 000019. **Build App aplikasi besar tidak tertahan lagi di T.3 (2026-11-06, entri 57).** T.3 menulis per bagian, jawaban kosong ditangani, Tinjauan kuning bila masih ada catatan. Berikutnya: Zulnan coba lagi build 46 fitur di artifact (versi baru); bila tertahan, kirim screenshot + log (tombol log di bawah hasil).
 
 000018. **Rilis tanpa disentuh di laptop: Claude Desktop + agent-desktop + rilis.mjs (2026-11-06, entri 55).** Berikutnya (Zulnan, sekali): `git pull`, klik `pasang-tangan-komputer.bat` (login clasp, nyalakan Apps Script API), Claude Desktop > Settings > Claude Code > Remote Control > tambah `C:\zuno-proyek`, lokasi download Chrome = `C:\zuno-proyek\unduhan`. Lalu build satu aplikasi Apps Script di Build App, unduh paket, bilang "rilis proyek <nama>". Bila gagal: kirim `LAPORAN-RILIS.md`. Push menunggu kata Zulnan.

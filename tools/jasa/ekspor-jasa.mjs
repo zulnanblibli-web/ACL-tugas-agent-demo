@@ -12,6 +12,7 @@ import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync, readd
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
+import { tambahanJasa } from './tambahan-jasa.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..', '..');
@@ -47,6 +48,11 @@ P("var TV_IMG={A:['zuno-zulnan-percakapan.webp'],B:['zuno-tim-orkestrasi.webp']}
 P("im.src='/assets/foto-zulnan.webp'", "if(!ZB.foto)return res(null);im.src=ZB.foto");
 P("(assets/foto-zulnan.webp)", "(assets/foto-brand.webp)");
 P("(web/assets/foto-zulnan.webp)", "(assets/foto-brand.webp, opsional)");
+// Fitur yang dibuat langsung di repo jasa (agen E.2/E.3/T.5, tombol Kantor 3D): ditempel ulang tiap ekspor.
+for (const t of tambahanJasa) {
+  if (t.syarat && !existsSync(join(out, t.syarat))) continue;
+  page = swapIn('index.html (tambahan jasa: ' + t.nama + ')', page, t.cari, t.ganti);
+}
 writeFileSync(join(out, 'index.html'), page);
 
 // ---------- jembatan dan tampilan ----------
@@ -77,14 +83,32 @@ function copyDir(a, b) {
     else if (!SKIP_ASSET.test(f)) copyFileSync(s, join(b, f));
   }
 }
-if (existsSync(join(out, 'assets'))) rmSync(join(out, 'assets'), { recursive: true, force: true });
+// Folder aset milik repo jasa sendiri (Kantor 3D: 18 GLB agen, preview tema) tidak ikut dihapus.
+const KEEP_ASSETS = ['agents', 'themes'];
+if (existsSync(join(out, 'assets'))) for (const f of readdirSync(join(out, 'assets'))) if (!KEEP_ASSETS.includes(f)) rmSync(join(out, 'assets', f), { recursive: true, force: true });
 copyDir(join(web, 'assets'), join(out, 'assets'));
 
 // ---------- paket, konfigurasi, dokumen ----------
+// package.json digabung: dependensi Zuno + dependensi/script/devDependencies milik repo jasa (Kantor 3D) tetap ada.
 const pkg = JSON.parse(readFileSync(join(web, 'package.json'), 'utf8'));
 pkg.name = 'zuno-studio-jasa'; delete pkg.scripts;
-writeFileSync(join(out, 'package.json'), JSON.stringify(pkg, null, 2) + '\n');
-if (existsSync(join(web, 'package-lock.json'))) {
+const outPkgFile = join(out, 'package.json');
+const old = existsSync(outPkgFile) ? JSON.parse(readFileSync(outPkgFile, 'utf8')) : {};
+const extraDeps = Object.keys(old.dependencies || {}).filter(d => !(d in (pkg.dependencies || {})));
+const jasaLokal = extraDeps.length || old.devDependencies || old.scripts;
+if (jasaLokal) {
+  pkg.dependencies = { ...(old.dependencies || {}), ...(pkg.dependencies || {}) };
+  if (old.devDependencies) pkg.devDependencies = old.devDependencies;
+  if (old.scripts) pkg.scripts = old.scripts;
+}
+writeFileSync(outPkgFile, JSON.stringify(pkg, null, 2) + '\n');
+if (jasaLokal) {
+  // package-lock repo jasa dipertahankan; pastikan dependensi Zuno sudah ada di dalamnya.
+  const lockFile = join(out, 'package-lock.json');
+  const lock = existsSync(lockFile) ? JSON.parse(readFileSync(lockFile, 'utf8')) : {};
+  const missing = Object.keys(pkg.dependencies || {}).filter(d => !(lock.packages && lock.packages['node_modules/' + d]));
+  if (missing.length) throw new Error('package-lock.json repo jasa belum memuat: ' + missing.join(', ') + '. Jalankan "npm install" di repo jasa lalu ekspor lagi.');
+} else if (existsSync(join(web, 'package-lock.json'))) {
   const lock = JSON.parse(readFileSync(join(web, 'package-lock.json'), 'utf8'));
   lock.name = pkg.name; if (lock.packages && lock.packages['']) lock.packages[''].name = pkg.name;
   writeFileSync(join(out, 'package-lock.json'), JSON.stringify(lock, null, 2) + '\n');

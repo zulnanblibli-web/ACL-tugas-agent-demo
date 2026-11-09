@@ -554,4 +554,11 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Perbaikan di `prototypes/zuno-studio-v2.html`: `bagianHtml`/`bagianBackend`/`tulisBertahap`/`ringkasKode`/`editKode`, `BEng.bertahap` (lanjut dari bagian terakhir saat "Coba lagi"); `askText` berhenti pada `empty_completion`; `ask` mencoba sekali di tier quick; Tinjauan tier default dengan `kurang` wajib + `saran`, tinjauan ulang membawa catatan sebelumnya; status baru `warn` ("Lanjut + catatan").
 - Tes: build stub mode baru `--besar` (20 fitur: 8 bagian html + 4 bagian Code.gs, revisi lewat edit) dan `--kosong` (fallback + pecah 6 -> 3+3), 9 mode lama tetap lolos; v2, web stub, web api, rilis laptop, jasa lolos.
 
-## 58. (entri berikutnya di sini)
+## 58. Kantor 3D jasa: revisi dua tema, ekspor jasa diamankan, merge ke main (2026-11-09)
+- Permintaan Zulnan: cek task kantor 3D di repo jasa; revisi desain jadi seperti 4 gambar referensi (bukan sekadar beda warna); lalu "amanin repo jasa terus push ke main".
+- Repo jasa branch `feat/kantor-3d-voxel` (7 commit sesi agent lain). Revisi sebelumnya terpotong dan tidak pernah di-push; dikerjakan ulang: `1f06a8f` dua tema dengan bangunan sendiri (Menara Senja, Griya Langit), tes kantor/tema/aktivitas/siklus agen/simulasi/preview lolos.
+- Ekspor jasa diamankan: `tools/jasa/tambahan-jasa.mjs` (E.2/E.3/T.5 dari commit `main` jasa 2026-11-08 + tombol Kantor 3D), aset `agents`/`themes` dipertahankan, `package.json` digabung dan lock jasa dipertahankan. Bug kecil ikut dibetulkan: prompt audit T.5 memakai "\\n" mentah.
+- Bukti: ekspor di atas `main` jasa yang sudah di-merge hanya mengubah `VERSI.txt` dan satu baris `index.html` (perbaikan di atas); `tests/zuno-jasa-test.js` HASIL: SEMUA LOLOS; `test:office`, `test:themes`, `test:preview` lolos di `main`.
+- Commit: jasa `main` sampai `7396e18`; Zuno: skrip ekspor + dokumen. P11 dipindah ke Selesai.
+
+## 59. (entri berikutnya di sini)

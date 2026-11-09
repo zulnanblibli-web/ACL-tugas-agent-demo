@@ -17,7 +17,6 @@ Daftar tugas yang ditahan Zulnan. Aturan (Zulnan 2026-11-04):
 | P8 | Footage karakter video tipe A/B (butuh generator) dan render di VPS | 2026-11-03 | |
 | P10 | Isi untuk edisi jasa: [ISI kontak penjual], [ISI masa dukungan] di LISENSI, harga jasa | 2026-11-04 | `docs/jasa-zuno.md` |
 | P9 | Kontras tombol Zuno Web (hasil cek hallmark 2.14:1, standar 4.5:1) | 2026-11-04 | Keputusan tampilan di Zulnan |
-| P11 | Kantor 3D di repo jasa (branch `feat/kantor-3d-voxel`, 7 commit 2026-11-09 dari sesi agent lain, sampai `3717c8f`): putuskan diamankan dari ekspor, dipindah jadi fitur Zuno, atau dibiarkan. Revisi desain yang sempat terpotong sudah dikerjakan ulang 2026-11-09 (commit `1f06a8f`: dua tema Menara Senja + Griya Langit dengan bangunan sendiri, semua tes kantor lolos); branch belum di-merge ke `main` | 2026-11-09 | Risiko: `tools/jasa/ekspor-jasa.mjs` menimpa `index.html` dan menghapus `assets/` di repo jasa. Bila branch di-merge ke `main`, ekspor berikutnya menghapus 18 GLB agen, gambar tema, dan link "JELAJAHI KANTOR 3D". Sama untuk 4 commit langsung di `main` 2026-11-08 (`AGENTS-18.md`, perubahan `index.html`). Jangan jalankan ekspor jasa sebelum ini diputuskan |
 
 ## Selesai / dibatalkan
-(belum ada)
+- **P11 selesai 2026-11-09** (Zulnan: "amanin repo jasa terus push ke main"): kantor 3D di-merge ke `main` jasa (sampai `1f06a8f`), ekspor jasa diamankan (`tools/jasa/tambahan-jasa.mjs`, `assets/agents` + `assets/themes` dipertahankan, `package.json` digabung), sinkron `7396e18`. Catatan asli: Kantor 3D di repo jasa (branch `feat/kantor-3d-voxel`, 7 commit 2026-11-09 dari sesi agent lain, sampai `3717c8f`): putuskan diamankan dari ekspor, dipindah jad...
