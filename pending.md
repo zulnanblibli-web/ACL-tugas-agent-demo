@@ -7,7 +7,7 @@ Daftar tugas yang ditahan Zulnan. Aturan (Zulnan 2026-11-04):
 
 | # | Tugas | Sejak | Catatan |
 |---|---|---|---|
-| P1 | Auto posting dari web lewat Google Drive + API Metricool. Isinya: jadwal tanggal/jam dipilih Zulnan per konten; hapus skill `antrian-posting` versi laptop dan tombol zip | 2026-11-04 | Perlu: menu API Metricool ada atau tidak; sambungkan IG/TikTok/Threads + Google Drive di Metricool. Lihat `docs/alur-posting.md` |
+| P1 | Auto posting dari web lewat Google Drive + API Metricool. Isinya: jadwal tanggal/jam dipilih Zulnan per konten; hapus skill `antrian-posting` versi laptop dan tombol zip | 2026-11-04 | Perlu: menu API Metricool ada atau tidak; sambungkan IG/TikTok/Threads + Google Drive di Metricool. Lihat `docs/alur-posting.md`. 2026-11-09: aturannya diubah Zulnan, agen boleh unggah sendiri dari antrian yang sudah disetujui; yang menunggu tinggal sambungan dari sisi Zulnan |
 | P2 | Isi [ISI] brief: handle akun | 2026-11-04 | Dipasang di slide carousel |
 | P3 | Isi [ISI] brief: tayangan minimal (batas view konten "menang") | 2026-11-04 | Angka dari Zulnan |
 | P4 | Isi [ISI]: tanda konten AI di Instagram/TikTok (semua atau hanya visual AI) | 2026-11-04 | Ikut P1 |

@@ -1,5 +1,7 @@
 # Alur Posting Zuno (Antrian Posting)
 
+> **Revisi 2026-11-09 (Zulnan):** agen **boleh mengunggah sendiri** konten dari Antrian Posting yang sudah Disetujui Zulnan, tanpa perintah tambahan. Konten yang belum disetujui tidak pernah diunggah. Yang masih menahan hanya jalur kirim dari sisi Zulnan (sambungan Metricool dan Google Drive). Sampai jalur itu selesai, hasil disimpan di laptop Zulnan lewat menu Chat ZUNO di Workspace: satu folder per tugas, isinya bernama sesuai judul hasil.
+>
 > **Status 2026-11-04: pengiriman PENDING (ditahan Zulnan).** Bagian yang sudah jalan: kartu yang Disetujui masuk panel Antrian Posting di Zuno Studio. Rencana pengganti bagian "Pengiriman" di bawah: semua dari web. Zulnan memilih tanggal dan jam per konten (video: unggah file final). Tombol "Kirim ke Metricool" mengunggah media ke Google Drive Zulnan, lalu menjadwalkan lewat API Metricool. Bagian laptop (skill `antrian-posting`, zip) akan dihapus saat itu dikerjakan.
 
 Keputusan Zulnan 2026-11-04: posting otomatis boleh, **asal semua hasil sudah dicek dan disetujui Zulnan lebih dulu**. Yang disetujui masuk antrian; hanya isi antrian yang dikirim. Tidak ada jalur lain.

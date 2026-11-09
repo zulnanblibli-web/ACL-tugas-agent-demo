@@ -7,6 +7,7 @@
         <li><a href="/#hasil">Contoh hasil</a></li>
         <li><a href="/#tema">Pilihan tema</a></li>
         <li><a href="/studio.html" aria-current="page">Workspace</a></li>
+        <li><a href="/studio.html#chat" data-buka="chat">Chat</a></li>
         <li><a href="/#paket">Isi kit</a></li>
         <li><a href="/#panduan">Panduan</a></li>
         <li><a href="/#biaya">Harga</a></li>
@@ -47,3 +48,26 @@
 <div class="ws-kanan" id="perintah">
   <h1 id="judulRuang">Workspace</h1>
   <p class="studio-lead">Tulis perintah, pilih format, lalu jalankan. Agen bekerja di kantor dan hasilnya muncul di bawah saat itu juga.</p>
+  <div class="seg ws-pilih" role="group" aria-label="Tampilan kolom kanan">
+    <button type="button" id="lihatKerja" aria-pressed="true">Kerja</button>
+    <button type="button" id="lihatChat" aria-pressed="false">Chat ZUNO <span class="chat-baru" id="chatBaru" hidden></span></button>
+  </div>
+  <section class="chat" id="chat" aria-labelledby="chatJudul" hidden>
+    <header class="chat-head">
+      <img src="/assets/agents/L.0.png" alt="" width="44" height="50">
+      <div><h2 id="chatJudul">ZUNO</h2><p>Pelapor tim. Aku kabari kerja tiap agen dari awal sampai selesai, lalu tunjukkan hasil yang siap kamu review.</p></div>
+    </header>
+    <ol class="chat-log" id="chatLog" aria-live="polite" aria-relevant="additions"></ol>
+    <div class="chat-cepat" role="group" aria-label="Pertanyaan cepat">
+      <button type="button" class="btn" data-cepat="status">Status sekarang</button>
+      <button type="button" class="btn" data-cepat="laporan">Laporan kinerja agen</button>
+      <button type="button" class="btn" data-cepat="hasil">Lihat hasil</button>
+      <button type="button" class="btn" data-cepat="simpan">Simpan ke folder lokal</button>
+    </div>
+    <form class="chat-form" id="chatForm" autocomplete="off">
+      <label class="visually-hidden" for="chatIn">Pesan untuk ZUNO</label>
+      <textarea id="chatIn" rows="2" placeholder="Tanya ZUNO, mis. sampai mana kerjaan Dika?"></textarea>
+      <button class="btn primary" type="submit" id="chatKirim">Kirim</button>
+    </form>
+    <p class="chat-folder"><span id="chatFolder">Folder hasil: belum dipilih.</span> <button type="button" class="btn" id="chatPilihFolder">Pilih folder</button></p>
+  </section>

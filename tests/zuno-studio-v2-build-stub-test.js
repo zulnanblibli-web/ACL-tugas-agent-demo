@@ -129,5 +129,8 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   await p.screenshot({path:'/tmp/v2-build.png',fullPage:true});
   { const tr=await p.$$eval('#btracks .track',e=>e.map(x=>x.querySelector('.tname').textContent+'='+x.dataset.s)); const r=(await p.evaluate(()=>window.__calls)).map(c=>c.role);
     assert(tr.some(t=>/^T\.5 Damar/.test(t)),'jalur T.5 Damar tampil di papan Build App'); if(process.argv.length<=2) assert(r.includes('T.5')&&tr.some(t=>/^T\.5 Damar.*=(done|warn)$/.test(t)),'T.5 Damar mengaudit kode setelah uji'); console.log('T.5 Damar: OK'); }
+  { const r=await p.evaluate(async()=>{const h=window.ZunoHasil;if(!h)return null;const f=await h.berkas('build');return {rk:h.ringkas().build,f:f.map(x=>x.folder+'/'+x.nama+':'+x.data.size)}});
+    console.log('kait hasil build:',JSON.stringify(r));
+    assert(r&&r.rk&&r.rk.id&&r.f.length>=2&&r.f.every(x=>/^Aplikasi - [^/]+\/[^/]+ - (paket-rilis\.zip|index\.html|ruang-lingkup\.json):[1-9]/.test(x))&&r.f.some(x=>/paket-rilis\.zip/.test(x)),'kait hasil (Workspace: simpan ke folder lokal): Build App jadi folder "Aplikasi - <nama>" berisi paket rilis, index.html, ruang lingkup'); }
   console.log('ERRORS',errs); assert(!errs.filter(e=>!(BURUK&&/undefinedFn/.test(e))).length,'tanpa error halaman (error dari aplikasi buruk di pratinjau sandbox diabaikan)'); await b.close();
 })().catch(e=>{console.error('FAIL',e);process.exit(1)});

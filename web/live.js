@@ -54,6 +54,8 @@
   }
   async function sample(input, opts) {
     opts = opts || {};
+    // opts.diam: panggilan yang bukan kerja agen (mis. obrolan chat ZUNO) tidak dikabarkan ke pratinjau.
+    if (opts.diam) return sampleInti(input, opts);
     var id = ++nomorPanggilan, agen = agenDari(input), asli = opts.onText;
     kabar({ id: id, jenis: 'mulai', agen: agen, teks: '' });
     var o = Object.assign({}, opts, { onText: function (u) { kabar({ id: id, jenis: 'teks', agen: agen, teks: u.text }); if (asli) asli(u); } });
