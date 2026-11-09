@@ -1,4 +1,5 @@
-// Uji Nexaoffice: halaman utama (simulasi agen, kantor 3D sematan), Workspace (/studio.html: perintah, kantor 3D ikut status asli,
+// Uji Nexaoffice: halaman utama (simulasi agen, kantor 3D sematan), Workspace (/studio.html: kantor 3D kiri ikut status asli,
+// perintah + format kanan, hasil kerja agen live,
 // menu Pengaturan AI: server / API key lokal / VPS), 18 agen sama di semua tempat termasuk agents/. /api tiruan.
 //   node web/build.mjs && NODE_PATH=$(npm root -g) node tests/nexaoffice-situs-test.js
 const { chromium } = require('playwright');
@@ -110,30 +111,48 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     await p.waitForFunction(() => document.getElementById('keyDlg').open, null, { timeout: 5000 }).catch(() => {});
     ok('tanpa kunci: Pengaturan AI terbuka sendiri, 3 pilihan sambungan', await p.$eval('#keyDlg', (d) => d.open) && (await p.$$eval('input[name="aiMode"]', (r) => r.map((x) => x.value).join())) === 'server,lokal,vps');
     await p.click('#keyDlg button[value="cancel"]');
-    await p.fill('#uiPerintah', 'bikin aplikasi absensi siswa untuk guru');
-    await p.click('#uiKirim');
-    await p.waitForSelector('#uiDispatch .tugas li');
-    ok('tanpa kunci: pratinjau Divisi Build App (otomatis dari kata "aplikasi"), tanpa AI', /Divisi Build App/.test(await p.textContent('#uiDispatch')) && /belum memakai AI/.test(await p.textContent('#uiDispatch')) && aiCalls.length === 0);
-
-    // ---------- 5. kunci salah lalu benar: Lead membagi tugas, Build App langsung jalan, agen bekerja di kantor ----------
-    await p.fill('#keyIn', 'salah'); await p.click('#keySave');
-    await p.click('#uiKirim');
-    await p.waitForSelector('#uiDispatch .galat', { timeout: 10000 }).catch(() => {});
-    ok('kunci salah: pesan jelas', /Kunci akses salah/.test(await p.textContent('#uiDispatch')));
+    { // satu tempat kerja: kantor 3D di kiri, perintah + format di kanan, hasil live di bawah format; tanpa Cara kerja dan bar Proses
+      const kiri = await p.$eval('#kantorIframe', (e) => e.getBoundingClientRect().right);
+      const kanan = await p.$eval('#cmd', (e) => e.getBoundingClientRect().left);
+      ok('Workspace: kantor 3D di kiri, perintah di kanan', kiri <= kanan);
+      ok('Workspace: pilihan format (Paket, Mode, Tipe, Gaya video) di kolom perintah', (await Promise.all(['#count', '#mode', '#tv', '#pre'].map((s) => p.isVisible(s)))).every(Boolean) && (await p.textContent('#wsK')).trim() === 'Konten' && (await p.textContent('#wsB')).trim() === 'Build App');
+      ok('Workspace: "Cara kerja tim", bar Proses, dan kotak perintah lama tidak ada', !(await p.$('#hFlowBox')) && !(await p.isVisible('#hBar')) && !(await p.$('#uiKonsol')) && !(await p.isVisible('#tracks')));
+      const yForm = await p.$eval('#run', (e) => e.getBoundingClientRect().bottom), yLive = await p.$eval('#procp', (e) => e.getBoundingClientRect().top);
+      ok('Workspace: "Hasil kerja agen" tampil di bawah format sebelum jalan', (await p.isVisible('#procp')) && yLive > yForm && /Belum ada pekerjaan/.test(await p.textContent('#liveKonten')));
+      ok('kantor 3D Workspace: mode status asli, panel demo "Simulasi visual" disembunyikan', /asli=1/.test(await p.getAttribute('#kantorIframe', 'src')));
+    }
+    await p.fill('#cmd', 'bikin konten viral soal CEO Nvidia');
+    await p.click('#run');
+    await p.waitForFunction(() => !document.getElementById('errbox').classList.contains('hidden'), null, { timeout: 10000 }).catch(() => {});
+    ok('tanpa kunci: Jalankan memberi pesan Pengaturan AI, tidak ada panggilan AI', /Pengaturan AI/.test(await p.textContent('#errbox')) && aiCalls.length === 0);
     await p.waitForFunction(() => document.getElementById('keyDlg').open, null, { timeout: 5000 }).catch(() => {});
+
+    // ---------- 5. kunci salah lalu benar: Build App jalan live, agen bekerja di kantor, tulisan agen tampil ----------
+    if (!(await p.$eval('#keyDlg', (d) => d.open))) await p.click('#hKey');
+    await p.fill('#keyIn', 'salah'); await p.click('#keySave');
+    await p.waitForFunction(() => !document.getElementById('run').disabled, null, { timeout: 10000 }).catch(() => {});
+    await p.click('#run');
+    await p.waitForFunction(() => document.getElementById('keyDlg').open, null, { timeout: 10000 }).catch(() => {});
+    ok('kunci salah: pesan jelas', /Kunci akses Nexaoffice salah/.test(await p.textContent('#errbox')));
     ok('kunci salah: Pengaturan AI terbuka lagi untuk diperbaiki', await p.$eval('#keyDlg', (d) => d.open));
     if (!(await p.$eval('#keyDlg', (d) => d.open))) await p.click('#hKey');
     await p.fill('#keyIn', KUNCI); await p.click('#keySave');
     const kantorUI = await p.waitForFunction(() => { const f = document.getElementById('kantorIframe'); try { return !!(f.contentWindow.zunoOffice && f.contentWindow.zunoOffice.state.ready); } catch (e) { return false; } }, null, { timeout: 60000 }).then(() => true).catch(() => false);
-    await p.click('#uiKirim');
-    await p.waitForFunction(() => document.getElementById('breq') && document.getElementById('breq').value.length > 0, null, { timeout: 15000 }).catch(() => {});
-    ok('Lead dipanggil dengan kunci akses', aiCalls.some((c) => c.key === KUNCI && /Kamu ZUNO, Lead/.test(c.input)));
-    ok('ruang kerja: permintaan build terisi dan tab Build App aktif', (await p.inputValue('#breq')) === 'bikin aplikasi absensi siswa untuk guru' && (await p.getAttribute('#wsB', 'aria-selected')) === 'true');
+    const siaga = await p.evaluate(() => JSON.stringify(window.NexaUI.keadaan) + ' ' + [...document.querySelectorAll('#tracks .track')].map((t) => t.getAttribute('data-s')).join(',') + ' stop=' + document.getElementById('stop').disabled);
+    ok('kantor 3D siaga: semua agen santai sebelum ada perintah (' + siaga + ')', kantorUI && (await p.evaluate(() => Object.keys(window.NexaUI.keadaan).length === 18 && Object.values(window.NexaUI.keadaan).every((v) => v === false))));
+    await p.click('#wsB');
+    await p.fill('#breq', 'bikin aplikasi absensi siswa untuk guru');
+    await p.waitForFunction(() => !document.getElementById('brun').disabled, null, { timeout: 10000 }).catch(() => {});
+    const nB = aiCalls.length;
+    await p.click('#brun');
     await p.waitForFunction(() => window.NexaUI && Object.keys(window.NexaUI.keadaan).some((k) => /^T\./.test(k) && window.NexaUI.keadaan[k]), null, { timeout: 15000 }).catch(() => {});
-    ok('ruang kerja: Build App langsung berjalan (agen Engineering memanggil AI)', aiCalls.some((c) => /studio\.html/.test(c.page) && !/Kamu ZUNO, Lead/.test(c.input)));
-    const kerjaT = await p.evaluate(() => Object.keys(window.NexaUI.keadaan).filter((k) => window.NexaUI.keadaan[k]));
+    ok('Build App jalan dari kotak perintah yang sama (agen Engineering memanggil AI dengan kunci)', aiCalls.slice(nB).some((c) => c.key === KUNCI && /PERAN ANDA: T\./.test(c.input)));
+    const [kerjaT, teksAktif] = await p.evaluate(() => [Object.keys(window.NexaUI.keadaan).filter((k) => window.NexaUI.keadaan[k]), document.getElementById('uiAktif').textContent]);
     ok('kantor 3D ikut status asli: agen Engineering yang jalan pergi bekerja (' + kerjaT.join(',') + ')', kantorUI && kerjaT.some((k) => /^T\./.test(k)) && (await p.evaluate(() => document.getElementById('kantorIframe').contentWindow.zunoOffice.demo.running)));
-    ok('kantor 3D: daftar "Sedang bekerja" tampil', /Sedang bekerja|Tim bekerja/.test(await p.textContent('#uiAktif')));
+    ok('kantor 3D: daftar "Sedang bekerja" tampil (' + teksAktif + ')', /Sedang bekerja|Tim bekerja/.test(teksAktif));
+    await p.waitForSelector('#liveBuild .live-item', { timeout: 15000 }).catch(() => {});
+    const live = await p.$$eval('#liveBuild .live-item', (li) => li.map((l) => l.querySelector('b').textContent + ':' + l.getAttribute('data-s')));
+    ok('Hasil kerja agen live: tulisan agen Engineering tampil per agen (' + live.slice(0, 4).join(', ') + ')', live.length > 0 && live.some((x) => /^(Arga|Rani|Fajar|Tio|Damar):/.test(x)) && (await p.isVisible('#bprocp')));
     await p.click('[data-tema="senja"]'); await p.waitForTimeout(400);
     ok('Workspace: tema kantor bisa diganti', kantorUI && (await p.evaluate(() => document.getElementById('kantorIframe').contentWindow.zunoOffice.state.theme)) === 'senja');
     if (await p.$('#bstop:not([disabled])')) await p.click('#bstop');
@@ -151,13 +170,13 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     await p3.waitForFunction(() => /key lokal/.test(document.getElementById('hModel').textContent), null, { timeout: 5000 }).catch(() => {});
     ok('Pengaturan AI: status menampilkan "API key lokal"', /API key lokal/.test(await p3.textContent('#hKoneksi')) && /claude · model-uji \(key lokal\)/.test(await p3.textContent('#hModel')));
     const n0 = aiCalls.length;
-    await p3.check('input[name="uiDivisi"][value="konten"]');
-    await p3.fill('#uiPerintah', 'carousel 5 slide soal AI untuk laporan kantor');
-    await p3.click('#uiKirim');
-    await p3.waitForFunction(() => document.getElementById('cmd').value.length > 0, null, { timeout: 15000 }).catch(() => {});
+    await p3.fill('#cmd', 'carousel 5 slide soal AI untuk laporan kantor');
+    await p3.waitForFunction(() => !document.getElementById('run').disabled, null, { timeout: 10000 }).catch(() => {});
+    await p3.click('#run');
+    await p3.waitForSelector('#liveKonten .live-item', { timeout: 15000 }).catch(() => {});
     const lok = aiCalls.slice(n0);
     ok('mode lokal: header x-llm-* ikut di setiap panggilan AI', lok.length > 0 && lok.every((c) => c.h['x-llm-provider'] === 'claude' && c.h['x-llm-key'] === 'sk-uji-lokal' && c.h['x-llm-model'] === 'model-uji'));
-    ok('konten: perintah masuk ke ruang kerja Konten', (await p3.inputValue('#cmd')) === 'carousel 5 slide soal AI untuk laporan kantor');
+    ok('Konten: agen divisi kreatif tampil di Hasil kerja agen', (await p3.$$eval('#liveKonten .live-item b', (b) => b.map((x) => x.textContent))).some((n) => /^(ZUNO|Lia|Raka|Nara|Dika|Vino|Sari|Edo|Bima|Fira|Tara|Nita|Maya)$/.test(n)));
     ok('Pengaturan AI: key tidak ditampilkan ulang saat dibuka', await (async () => { await p3.click('#hKey'); const v = await p3.inputValue('#aiKunci'); const ph = await p3.getAttribute('#aiKunci', 'placeholder'); await p3.click('#keyDlg button[value="cancel"]'); return v === '' && /Tersimpan/.test(ph); })());
     if (await p3.$('#stop:not([disabled])')) await p3.click('#stop');
 

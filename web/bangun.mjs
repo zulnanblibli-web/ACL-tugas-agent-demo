@@ -32,10 +32,15 @@ export function bangunRuangKerja(varian) {
     ? '</style>\n<link rel="preload" href="/assets/fonts/antonio-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="/assets/fonts/onest-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="/studio-nexa.css">\n</head>'
     : '</style>\n<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">\n<link rel="stylesheet" href="/hud.css">\n</head>');
   // Ruang kerja dan diagram "Cara kerja" (menurun) berdampingan, supaya proses terlihat tanpa scroll.
+  // Nexaoffice: satu tempat kerja. Kantor 3D di kiri (agen ikut status kerja asli), perintah + format di kanan,
+  // di bawahnya hasil kerja agen yang tampil live (menggantikan diagram "Cara kerja" dan panel Proses).
+  // Jasa: tampilan HUD lama, ruang kerja dan diagram "Cara kerja" berdampingan.
   swap('<body>\n<div class="wrap">\n<h1>Zuno Studio</h1>', nexa
-    ? '<body>\n' + part('studio-hero.html') + '\n<div class="ws-layout" id="ruangKerja">\n<div class="wrap">'
+    ? '<body>\n' + part('studio-hero.html') + '<div class="wrap">'
     : '<body>\n' + heroHud() + '\n<div class="ws-title" id="ruangKerja">RUANG KERJA</div>\n<div class="ws-layout">\n<div class="wrap">');
-  swap('</div><!-- /wsBuild -->\n</div>', '</div><!-- /wsBuild -->\n</div>\n' + part('flow.html') + '</div><!-- /ws-layout -->\n' + part(nexa ? 'studio-tail.html' : 'tail.html') + '\n' + part('pengaturan-ai.html'));
+  swap('</div><!-- /wsBuild -->\n</div>', nexa
+    ? '</div><!-- /wsBuild -->\n</div>\n</div><!-- /ws-kanan -->\n</main>\n' + part('studio-tail.html') + '\n' + part('pengaturan-ai.html')
+    : '</div><!-- /wsBuild -->\n</div>\n' + part('flow.html') + '</div><!-- /ws-layout -->\n' + part('tail.html') + '\n' + part('pengaturan-ai.html'));
   swap('\n<script>\n', nexa
     ? '\n<script src="/live.js"></script>\n<script src="/hud.js"></script>\n<script src="/pengaturan-ai.js"></script>\n<script src="/office/kendali.js"></script>\n<script src="/studio-nexa.js" defer></script>\n<script src="/ui.js" defer></script>\n<script src="/serah.js" defer></script>\n<script>\n'
     : '\n<script src="/live.js"></script>\n<script src="/hud.js"></script>\n<script src="/pengaturan-ai.js"></script>\n<script src="/motion.js" defer></script>\n<script>\n');
@@ -43,9 +48,17 @@ export function bangunRuangKerja(varian) {
   swap("not_granted:'Izin Claude belum diberikan.'", "not_granted:'Kunci akses " + (nexa ? 'Nexaoffice' : 'Zuno') + " salah atau belum diisi. Buka Pengaturan AI di atas.',not_configured:'Server " + (nexa ? 'Nexaoffice' : 'Zuno') + " belum disetel (ZUNO_ACCESS_KEY di server).',user_key:'API key di Pengaturan AI ditolak penyedia. Periksa key dan modelnya, lalu simpan ulang.',byok_off:'Server ini tidak menerima API key dari halaman. Pakai mode Server di Pengaturan AI.',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.'");
   swap("info.textContent='Halaman ini baru bisa menjalankan agen saat dibuka di claude.ai dan diberi izin memakai Claude.'", "info.textContent='Server " + (nexa ? 'Nexaoffice' : 'Zuno') + " tidak bisa dihubungi. Muat ulang halaman.'");
   if (nexa) {
-    // Diagram cara kerja dan dialog kunci memakai nama Nexaoffice.
-    swap('<aside class="hud-flow" id="hFlowBox" aria-label="Cara kerja Zuno">', '<aside class="hud-flow" id="hFlowBox" aria-label="Cara kerja tim">');
-    swap('<h2>CARA KERJA ZUNO</h2>', '<h2>Cara kerja tim</h2>');
+    // Tab format: Konten / Build App.
+    swap('id="wsK" aria-selected="true">Konten · divisi kreatif</button>', 'id="wsK" aria-selected="true">Konten</button>');
+    swap('id="wsB" aria-selected="false">Build App · Divisi Engineering</button>', 'id="wsB" aria-selected="false">Build App</button>');
+    swap('<label for="cmd" class="muted">Perintah atau bahan konten</label>', '<label for="cmd" class="muted">Perintah untuk tim</label>');
+    // Panel Proses diganti tempat hasil kerja agen yang tampil live (ui.js). Daftar tahap tetap ada tapi tersembunyi:
+    // dibaca ui.js untuk menggerakkan agen di kantor 3D.
+    swap('<div class="panel hidden" id="noticep" aria-live="polite"><h2>Pemberitahuan <span class="muted">dari Juru Kabar</span></h2><div id="notices"></div></div>\n\n<div class="panel hidden" id="procp">\n  <h2>Proses</h2>\n  <div id="tracks"></div>\n  <div class="cards" id="cardlist"></div>\n</div>',
+      '<section class="panel live-panel hidden" id="procp" aria-labelledby="liveJudulK">\n  <h2 id="liveJudulK">Hasil kerja agen</h2>\n  <div class="live" id="liveKonten" data-ws="konten"></div>\n  <div id="tracks" hidden></div>\n  <div class="cards" id="cardlist"></div>\n</section>\n\n<div class="panel hidden" id="noticep" aria-live="polite"><h2>Pemberitahuan <span class="muted">dari Juru Kabar</span></h2><div id="notices"></div></div>');
+    swap('<div class="panel hidden" id="bprocp">\n  <h2>Proses build <span class="muted">dipantau Juru Kabar</span></h2>\n  <div id="btracks"></div>',
+      '<section class="panel live-panel hidden" id="bprocp" aria-labelledby="liveJudulB">\n  <h2 id="liveJudulB">Hasil kerja agen</h2>\n  <div class="live" id="liveBuild" data-ws="build"></div>\n  <div id="btracks" hidden></div>');
+    swap('  <div class="cards" id="bcard"></div>\n</div>\n<div class="panel hidden" id="bresp">', '  <div class="cards" id="bcard"></div>\n</section>\n<div class="panel hidden" id="bresp">');
   }
   return out;
 }

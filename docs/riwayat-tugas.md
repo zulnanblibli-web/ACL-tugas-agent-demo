@@ -619,4 +619,16 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Push (izin Zulnan "oke push dan deploy"): `83eda7d`, deploy Vercel `dpl_3JSPBCg39j5oSkkomNFMFDW89ocD` READY; dicek live: menu baru, hero kantor 3D (zoom dekat), Workspace.
 - Tertunda: isi harga, kontak, produk lain (P10); contoh hasil nyata.
 
-## 64. (entri berikutnya di sini)
+## 64. Workspace satu tempat kerja, hasil kerja agen live (2026-11-09)
+- Permintaan Zulnan (3 tangkapan layar Workspace): kotak perintah jangan cuma simulasi, harus bekerja live sesuai perintah; gambar (kantor) di kiri, tulisan di kanan; bagian bawah (form ruang kerja) cukup jadi pilihan format supaya perintah dilakukan di satu tempat; "Cara kerja tim" dihapus (diganti kantor 3D yang jalan live); "Proses" di bawah format diganti tempat pratinjau hasil kerja agen secara live.
+- Hasil:
+  - `/studio.html` = satu tempat kerja. Kiri: kantor 3D (menempel saat discroll), tema/tampilan, "Kamera ikut agen", status Server/Sambungan/Otak AI/Status. Kanan: judul Workspace, tab **Konten / Build App**, kotak "Perintah untuk tim" + pilihan format (form ruang kerja asli, jadi perintah langsung menjalankan pipeline asli lewat `/api/ai`), lalu panel **Hasil kerja agen**.
+  - Hasil kerja agen (live): `live.js` mengirim event `nexa:ai` (mulai/teks/selesai/gagal + kode agen dari "PERAN ANDA" di prompt); `ui.js` menampilkan kartu per panggilan agen (foto, nama, peran, tulisan yang sedang ditulis, lalu "Selesai, n karakter" + tulisan lengkap), plus tahap yang sedang jalan dan "x dari y tahap selesai". Hasil akhir (carousel, video, naskah .docx, antrian) tetap di bawahnya seperti sebelumnya.
+  - Kantor 3D: siaga = semua agen santai; agen ke meja hanya saat tahapnya jalan atau sedang menulis jawaban AI; tahap yang tertinggal "Bekerja" setelah galat tidak dihitung lagi; sinkron dibatasi tiap 200 ms (sebelumnya debounce bisa tidak pernah jalan selama proses). Panel demo dan detail agen ("Simulasi visual") disembunyikan di Workspace (`?asli=1`).
+  - Dihapus dari Workspace: kotak perintah terpisah (Lead membagi tugas tambahan), diagram "Cara kerja tim", bar Proses. Edisi jasa tetap tampilan HUD lama (hanya `live.js` ikut berubah, tanpa efek tampilan).
+- Bukti: `nexaoffice-situs-test` SEMUA LOLOS (66 cek; baru: kantor kiri/perintah kanan, format di kolom perintah, tanpa Cara kerja/bar Proses, panel Hasil kerja agen di bawah format, siaga semua santai, Build App dari kotak yang sama, kartu agen Engineering dan agen kreatif tampil live); pengaturan-ai, api, dev-server, gambar, gemini, openrouter, riset, rilis-laptop, web stub, studio-v2 stub, build stub lolos; ekspor jasa + `zuno-jasa-test` SEMUA LOLOS.
+- File berubah: `web/src/studio-hero.html`, `web/src/studio-nexa.css`, `web/src/ui.js`, `web/src/live.js`, `web/bangun.mjs`, `web/src/kantor/sematan.js`, `web/src/kantor/sematan.css`, `web/studio.html`, `web/office/*` (hasil build), `tests/nexaoffice-situs-test.js`, `web/README.md`, `docs/vps-nexaoffice.md`, `progress.md`, `docs/memori-zuno.md`; jasa: `live.js`, `docs/vps-nexaoffice.md`, `VERSI.txt`.
+- Belum di-push (menunggu izin Zulnan).
+- Tertunda: coba dengan API key asli; harga, kontak, produk lain (P10).
+
+## 65. (entri berikutnya di sini)

@@ -1,4 +1,4 @@
-<a class="skip" href="#perintah">Langsung ke kotak perintah</a>
+<a class="skip" href="#cmd">Langsung ke kotak perintah</a>
 <header class="nav">
   <div class="container nav-row">
     <a class="wordmark" href="/" aria-label="Nexaoffice, beranda">Nexaoffice</a>
@@ -18,50 +18,31 @@
     <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu</button>
   </div>
 </header>
-<section class="ui-head container" id="heroTop" aria-labelledby="judulRuang">
-  <div class="ui-perintah" id="perintah">
-    <h1 id="judulRuang">Workspace</h1>
-    <p class="studio-lead">Beri perintah, lihat agennya bekerja di kantor. Tidak ada yang terbit sebelum kamu setujui.</p>
-    <form class="console" id="uiKonsol" autocomplete="off">
-      <label class="console-label" for="uiPerintah">Perintah untuk tim</label>
-      <textarea id="uiPerintah" name="perintah" rows="3" required placeholder="Contoh: bikin carousel 5 slide soal AI untuk laporan kantor"></textarea>
-      <fieldset class="divisi">
-        <legend class="visually-hidden">Divisi</legend>
-        <label><input type="radio" name="uiDivisi" value="otomatis" checked> Otomatis</label>
-        <label><input type="radio" name="uiDivisi" value="konten"> Konten</label>
-        <label><input type="radio" name="uiDivisi" value="build"> Build App</label>
-      </fieldset>
-      <div class="console-actions">
-        <button class="nx-btn nx-primary" type="submit" id="uiKirim">Kirim ke tim</button>
-        <a class="text-link" href="#ruangKerja">Isi lengkap di ruang kerja</a>
-      </div>
-      <div class="dispatch" id="uiDispatch" role="status" aria-live="polite"></div>
-    </form>
-  </div>
-  <div class="ui-kantor">
-    <div class="ui-kantor-bar">
-      <div class="seg" role="group" aria-label="Tema kantor">
-        <button type="button" data-tema="senja" aria-pressed="true">Menara Senja</button>
-        <button type="button" data-tema="langit" aria-pressed="false">Griya Langit</button>
-      </div>
-      <div class="seg" role="group" aria-label="Tampilan">
-        <button type="button" data-lihat="luar" aria-pressed="false">Gedung</button>
-        <button type="button" data-lihat="dalam" aria-pressed="true">Dalam studio</button>
-      </div>
-      <label class="ikuti"><input type="checkbox" id="uiIkuti" checked> Kamera ikut agen yang bekerja</label>
+<main class="ws-main container" id="ruangKerja">
+<aside class="ws-kantor" aria-label="Kantor 3D: agen bergerak sesuai pekerjaan yang sedang jalan">
+  <div class="ui-kantor-bar">
+    <div class="seg" role="group" aria-label="Tema kantor">
+      <button type="button" data-tema="senja" aria-pressed="true">Menara Senja</button>
+      <button type="button" data-tema="langit" aria-pressed="false">Griya Langit</button>
     </div>
-    <div class="ui-kantor-frame">
-      <iframe id="kantorIframe" src="/office/ruang.html?awal=dalam&amp;ringkas=1&amp;kualitas=ringan" title="Kantor 3D: agen bergerak sesuai tugas yang sedang dikerjakan" allow="fullscreen"></iframe>
+    <div class="seg" role="group" aria-label="Tampilan">
+      <button type="button" data-lihat="luar" aria-pressed="false">Gedung</button>
+      <button type="button" data-lihat="dalam" aria-pressed="true">Dalam studio</button>
     </div>
-    <p class="ui-aktif" id="uiAktif" aria-live="polite">Siaga. Agen bekerja di kantor begitu perintah jalan.</p>
+    <label class="ikuti"><input type="checkbox" id="uiIkuti" checked> Kamera ikut agen</label>
   </div>
+  <div class="ui-kantor-frame">
+    <iframe id="kantorIframe" src="/office/ruang.html?awal=dalam&amp;ringkas=1&amp;kualitas=ringan&amp;asli=1" title="Kantor 3D: agen bergerak sesuai tugas yang sedang dikerjakan" tabindex="-1" allow="fullscreen"></iframe>
+  </div>
+  <p class="ui-aktif" id="uiAktif" aria-live="polite">Siaga. Agen ke meja kerja begitu perintahmu jalan.</p>
   <dl class="studio-status">
     <div><dt>Server</dt><dd><span class="val" id="hStat">Cek…</span></dd></div>
     <div><dt>Sambungan</dt><dd><span class="val small" id="hKoneksi">-</span></dd></div>
     <div><dt>Otak AI</dt><dd><span class="val small" id="hModel">-</span></dd></div>
     <div><dt>Status</dt><dd id="hMode">SIAGA</dd></div>
-    <div><dt>Divisi aktif</dt><dd id="hAktif">0</dd></div>
-    <div class="status-bar"><dt>Proses</dt><dd><span class="bar"><i id="hBar"></i></span><span id="hPct">0%</span></dd></div>
   </dl>
-  <span hidden id="hCore" data-run="0"><span id="hCoreTxt">STANDBY</span></span><span hidden id="hBrain"></span>
-</section>
+  <span hidden><span id="hAktif"></span><i id="hBar"></i><span id="hPct"></span><span id="hCore" data-run="0"><span id="hCoreTxt">STANDBY</span></span><span id="hBrain"></span></span>
+</aside>
+<div class="ws-kanan" id="perintah">
+  <h1 id="judulRuang">Workspace</h1>
+  <p class="studio-lead">Tulis perintah, pilih format, lalu jalankan. Agen bekerja di kantor dan hasilnya muncul di bawah saat itu juga.</p>

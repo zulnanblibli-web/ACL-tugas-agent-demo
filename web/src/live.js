@@ -43,8 +43,30 @@
     });
   }
 
+  /* Kabar aliran jawaban untuk pratinjau live di Workspace (event 'nexa:ai' di window):
+     {id, jenis: mulai|teks|selesai|gagal, agen: 'R.1' dari "PERAN ANDA" di prompt (atau null), teks}. */
+  var nomorPanggilan = 0;
+  function kabar(d) { try { window.dispatchEvent(new CustomEvent('nexa:ai', { detail: d })); } catch (e) {} }
+  function agenDari(input) {
+    var t = typeof input === 'string' ? input : (Array.isArray(input) && input[0] && typeof input[0].content === 'string' ? input[0].content : '');
+    var m = /PERAN ANDA: ([A-Z]\.\d)/.exec(t);
+    return m ? m[1] : null;
+  }
   async function sample(input, opts) {
     opts = opts || {};
+    var id = ++nomorPanggilan, agen = agenDari(input), asli = opts.onText;
+    kabar({ id: id, jenis: 'mulai', agen: agen, teks: '' });
+    var o = Object.assign({}, opts, { onText: function (u) { kabar({ id: id, jenis: 'teks', agen: agen, teks: u.text }); if (asli) asli(u); } });
+    try {
+      var h = await sampleInti(input, o);
+      kabar({ id: id, jenis: 'selesai', agen: agen, teks: h.text });
+      return h;
+    } catch (e) {
+      kabar({ id: id, jenis: 'gagal', agen: agen, teks: (e && e.text) || '', pesan: (e && (e.message || e.code)) || '' });
+      throw e;
+    }
+  }
+  async function sampleInti(input, opts) {
     var key = getKey();
     if (!key) { if (window.ZunoHUD) window.ZunoHUD.askKey(); throw { code: 'not_granted', message: 'Kunci akses belum diisi.' }; }
     var images = [];

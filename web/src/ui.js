@@ -1,9 +1,9 @@
-/* Nexaoffice Workspace (/studio.html): kotak perintah di atas + Kantor 3D yang ikut status kerja asli.
-   1. Perintah -> Lead (ZUNO) membagi tugas lewat window.claude (live.js), jadi ikut menu Pengaturan AI
-      (server, API key lokal, atau VPS).
-   2. Perintah langsung dijalankan di ruang kerja di bawah (#cmd + #run untuk Konten, #breq + #brun untuk Build App).
-   3. Panel Proses (#tracks / #btracks) dibaca terus: agen pada tahap yang JALAN pergi ke meja dan bekerja di kantor 3D,
-      agen lain istirahat. Ini status pekerjaan asli, bukan demo. */
+/* Nexaoffice Workspace (/studio.html): satu tempat kerja.
+   Kiri: Kantor 3D. Agen yang tahapnya sedang JALAN pergi ke meja dan bekerja, agen lain santai. Ini status asli
+   dari panel tahap (#tracks / #btracks, tersembunyi), bukan demo.
+   Kanan: perintah + pilihan format (form ruang kerja asli: #cmd/#run untuk Konten, #breq/#brun untuk Build App),
+   lalu "Hasil kerja agen": tulisan tiap agen tampil saat itu juga dari aliran jawaban AI (event 'nexa:ai' dari live.js),
+   ikut menu Pengaturan AI (server, API key lokal, atau VPS). */
 (function () {
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
@@ -20,13 +20,8 @@
     'T.3': ['Fajar', 'Menulis kode'], 'T.4': ['Tio', 'Uji dan paket rilis'], 'T.5': ['Damar', 'Audit bug dan keamanan']
   };
   var SEMUA = Object.keys(AGEN);
-  var DIVISI = {
-    konten: { nama: 'Divisi Konten', tim: ['L.0', 'R.1', 'R.2', 'P.1', 'D.1', 'Q.1', 'M.1'] },
-    build: { nama: 'Divisi Build App', tim: ['L.0', 'T.1', 'T.2', 'T.3', 'T.4', 'T.5'] }
-  };
-  var POLA_BUILD = /\b(aplikasi|app|web ?app|website|situs|dashboard|sistem|login|absensi|database|crud|landing ?page|toko online|kasir|form(ulir)?)\b/i;
 
-  /* ---------- Kantor 3D ---------- */
+  /* ---------- Kantor 3D ikut status kerja asli ---------- */
   var iframe = $('kantorIframe'), kantor = iframe && window.NexaKantor ? window.NexaKantor(iframe) : null;
   if (kantor) window.NexaKantor.pasangKontrol(kantor);
 
@@ -48,10 +43,16 @@
   function tahap() {
     var box = $(isBuild() ? 'btracks' : 'tracks');
     return box ? Array.prototype.map.call(box.querySelectorAll('.track'), function (r) {
-      return { nama: ((r.querySelector('.tname') || {}).textContent || '').trim(), s: r.getAttribute('data-s') || 'wait' };
+      return {
+        nama: ((r.querySelector('.tname') || {}).textContent || '').trim(),
+        aksi: ((r.querySelector('.tact') || {}).textContent || '').trim(),
+        s: r.getAttribute('data-s') || 'wait'
+      };
     }) : [];
   }
 
+  // Agen yang sedang menulis jawaban AI (dari aliran live.js) ikut dihitung bekerja.
+  var menulis = {};
   var keadaan = {}, tadiJalan = false, aktifLalu = '';
   window.NexaUI = { keadaan: keadaan, agenUntuk: agenUntuk };
   function setAgen(id, kerja) {
@@ -62,7 +63,14 @@
   function sinkron() {
     var jalan = berjalan(), langkah = tahap();
     var aktif = [], namaAktif = [];
-    langkah.forEach(function (t) { if (t.s === 'run') { namaAktif.push(t.nama); agenUntuk(t.nama).forEach(function (id) { if (aktif.indexOf(id) < 0) aktif.push(id); }); } });
+    // Tahap berstatus JALAN hanya dihitung selama tim benar-benar berjalan (tombol Berhenti aktif):
+    // setelah galat fatal panel tahap bisa tertinggal "Bekerja" padahal proses sudah berhenti.
+    langkah.forEach(function (t) {
+      if (t.s !== 'run' || !jalan) return;
+      namaAktif.push(t.nama);
+      agenUntuk(t.nama).forEach(function (id) { if (aktif.indexOf(id) < 0) aktif.push(id); });
+    });
+    Object.keys(menulis).forEach(function (id) { if (menulis[id] > 0 && aktif.indexOf(id) < 0) aktif.push(id); });
     var out = $('uiAktif');
     if (jalan || aktif.length) {
       SEMUA.forEach(function (id) { setAgen(id, aktif.indexOf(id) > -1); });
@@ -73,7 +81,7 @@
       }
       aktifLalu = sig;
       if (out) out.innerHTML = aktif.length
-        ? 'Sedang bekerja: ' + aktif.map(function (id) { return '<b>' + esc(AGEN[id][0]) + '</b>'; }).join(', ') + ' (' + esc(namaAktif.join(', ')) + ')'
+        ? 'Sedang bekerja: ' + aktif.map(function (id) { return '<b>' + esc(AGEN[id][0]) + '</b>'; }).join(', ') + (namaAktif.length ? ' (' + esc(namaAktif.join(', ')) + ')' : '')
         : 'Tim bekerja. Menunggu tahap berikutnya.';
     } else if (tadiJalan) {
       SEMUA.forEach(function (id) { setAgen(id, false); });
@@ -81,97 +89,116 @@
       if (out) out.textContent = 'Tahap selesai atau menunggu persetujuanmu. Agen istirahat sebentar.';
     }
     tadiJalan = jalan || aktif.length > 0;
+    gambarTahap(langkah, jalan);
   }
+  // Dibatasi paling sering tiap 200 ms, tapi selalu jalan: panel tahap bisa berubah terus selama proses
+  // (debounce murni bisa tidak pernah sempat menyinkronkan kantor).
   var tunda = null;
-  function jadwal() { clearTimeout(tunda); tunda = setTimeout(sinkron, 250); }
-  document.addEventListener('DOMContentLoaded', function () {
-    var mo = new MutationObserver(jadwal);
-    ['tracks', 'btracks', 'wsBuild', 'stop', 'bstop'].forEach(function (id) { var el = $(id); if (el) mo.observe(el, { childList: true, subtree: true, attributes: true, characterData: true }); });
-    sinkron();
-  });
+  function jadwal() { if (!tunda) tunda = setTimeout(function () { tunda = null; sinkron(); }, 200); }
 
-  /* ---------- Kotak perintah ---------- */
-  var form = $('uiKonsol'), out = $('uiDispatch'), kirim = $('uiKirim');
-  function divisiDipilih(teks) {
-    var v = (form.querySelector('input[name="uiDivisi"]:checked') || {}).value || 'otomatis';
-    if (v !== 'otomatis') return v;
-    return POLA_BUILD.test(teks) ? 'build' : 'konten';
+  /* ---------- Hasil kerja agen (live) ---------- */
+  var MAKS_ITEM = 16, item = {}, urutan = [];
+  function panelAktif() { return $(isBuild() ? 'liveBuild' : 'liveKonten'); }
+  function siapkanPanel(box) {
+    if (!box || box.firstChild) return;
+    box.innerHTML = '<div class="live-tahap" data-kosong="1"></div>' +
+      '<p class="live-kosong">Belum ada pekerjaan. Tulis perintah, pilih format, lalu jalankan. Tulisan tiap agen muncul di sini saat itu juga.</p>' +
+      '<ol class="live-list" reversed></ol>';
   }
-  function tampilkan(rencana, catatan) {
-    var d = DIVISI[rencana.divisi] || DIVISI.konten;
-    var li = (rencana.tugas || []).filter(function (t) { return AGEN[t.id]; }).map(function (t) {
-      return '<li><img src="/assets/agents/' + esc(t.id) + '.png" alt="" width="36" height="42"><div><b>' + esc(AGEN[t.id][0]) + '</b> <span>' + esc(t.tugas || AGEN[t.id][1]) + '</span></div></li>';
-    }).join('');
-    out.innerHTML = '<p class="ringkas">' + esc(d.nama) + ': ' + esc(rencana.ringkasan || '') + '</p><ul class="tugas">' + li + '</ul>' + (catatan ? '<p class="catatan">' + catatan + '</p>' : '');
+  function gambarTahap(langkah, jalan) {
+    var box = panelAktif(); if (!box) return;
+    siapkanPanel(box);
+    var el = box.querySelector('.live-tahap');
+    var run = langkah.filter(function (t) { return (t.s === 'run' && jalan) || t.s === 'bad'; });
+    var selesai = langkah.filter(function (t) { return t.s === 'done'; }).length;
+    if (!run.length && !jalan) { el.setAttribute('data-kosong', '1'); el.innerHTML = ''; return; }
+    el.removeAttribute('data-kosong');
+    el.innerHTML = '<p class="live-ringkas">' + (jalan ? 'Tim bekerja' : 'Menunggu keputusanmu') + '<span>' + selesai + ' dari ' + langkah.length + ' tahap selesai</span></p>' +
+      (run.length ? '<ul>' + run.map(function (t) { return '<li data-s="' + t.s + '"><b>' + esc(t.nama) + '</b><span>' + esc(t.aksi && t.aksi !== '—' ? t.aksi : 'Bekerja') + '</span></li>'; }).join('') + '</ul>' : '');
   }
-  function rencanaLokal(teks, divisi) {
-    return { divisi: divisi, ringkasan: teks.length > 90 ? teks.slice(0, 88) + '…' : teks, tugas: DIVISI[divisi].tim.map(function (id) { return { id: id }; }) };
+  function nama(id) { return id && AGEN[id] ? AGEN[id] : ['Tim', 'Agen yang sedang bertugas']; }
+  function buatItem(d) {
+    var box = panelAktif(); if (!box) return null;
+    siapkanPanel(box);
+    box.querySelector('.live-kosong').hidden = true;
+    var n = nama(d.agen);
+    var li = document.createElement('li');
+    li.className = 'live-item'; li.setAttribute('data-s', 'jalan');
+    li.innerHTML = (d.agen && AGEN[d.agen] ? '<img src="/assets/agents/' + esc(d.agen) + '.png" alt="" width="40" height="46" loading="lazy" decoding="async">' : '<span class="live-ava" aria-hidden="true"></span>') +
+      '<div class="live-isi"><p class="live-kepala"><b>' + esc(n[0]) + '</b> <span class="live-peran">' + esc(n[1]) + '</span></p>' +
+      '<p class="live-st">Sedang menulis</p><pre class="live-teks"></pre></div>';
+    var list = box.querySelector('.live-list');
+    list.insertBefore(li, list.firstChild);
+    var it = { el: li, st: li.querySelector('.live-st'), teks: li.querySelector('.live-teks'), isi: '', baru: false, agen: d.agen };
+    item[d.id] = it; urutan.push(d.id);
+    while (urutan.length > MAKS_ITEM) { var lama = item[urutan.shift()]; if (lama && lama.el.parentNode) lama.el.parentNode.removeChild(lama.el); }
+    return it;
   }
-  async function tanyaLead(teks, divisi) {
-    var daftar = SEMUA.map(function (id) { return id + ' ' + AGEN[id][0] + ' (' + AGEN[id][1] + ')'; }).join('; ');
-    var prompt = 'Kamu ZUNO, Lead di kantor AI Nexaoffice. Bagi perintah pemilik ke agen yang tepat.\n' +
-      'Agen: ' + daftar + '.\nDivisi Konten: ' + DIVISI.konten.tim.concat(['L.1', 'P.2', 'E.1', 'E.2', 'E.3', 'Q.2']).join(', ') + '. Divisi Build App: ' + DIVISI.build.tim.join(', ') + '.\n' +
-      'Divisi yang disarankan: ' + divisi + ' (ganti hanya bila perintah jelas milik divisi lain).\n' +
-      'PERINTAH: ' + teks + '\n' +
-      'Balas HANYA JSON tanpa teks lain: {"divisi":"konten|build","ringkasan":"satu kalimat apa yang akan dikerjakan tim","tugas":[{"id":"R.1","tugas":"tugas singkat maks 8 kata"}]} dengan 3 sampai 8 tugas, urut sesuai alur. Untuk video, Bima (E.2) dan Fira (E.3) ikut bekerja. Jangan mengarang angka, hasil, atau janji.';
-    var sample = await window.claude.use('sample');
-    var h = await sample(prompt, { modelTier: 'quick', effort: 'low' });
-    var m = String(h.text || '').match(/\{[\s\S]*\}/);
-    if (!m) throw { code: 'ai', message: 'Lead tidak membalas rencana.' };
-    var j = JSON.parse(m[0]);
-    if (j.divisi !== 'konten' && j.divisi !== 'build') j.divisi = divisi;
-    return j;
+  var antri = {}, bingkai = 0;
+  function gambarTeks() {
+    bingkai = 0;
+    Object.keys(antri).forEach(function (id) {
+      var it = item[id]; if (!it) return;
+      var t = it.isi;
+      it.teks.textContent = t.length > 1600 ? '…' + t.slice(-1600) : t;
+      it.teks.scrollTop = it.teks.scrollHeight;
+    });
+    antri = {};
   }
-  function serahkan(teks, divisi) {
-    var mulai = Date.now();
-    (function tunggu() {
-      var tombol = divisi === 'build' ? $('brun') : $('run');
-      var isian = divisi === 'build' ? $('breq') : $('cmd');
-      if (divisi === 'build' && $('wsB') && !isBuild()) $('wsB').click();
-      if (divisi !== 'build' && $('wsK') && isBuild()) $('wsK').click();
-      if (isian && isian.value !== teks) { isian.value = teks; isian.dispatchEvent(new Event('input', { bubbles: true })); }
-      if (!tombol || !isian || tombol.disabled) {
-        if (Date.now() - mulai < 15000) return setTimeout(tunggu, 200);
-        out.insertAdjacentHTML('beforeend', '<p class="galat">Ruang kerja masih sibuk. Perintah sudah diisi di bawah; jalankan setelah proses sekarang selesai.</p>');
-        return;
-      }
-      tombol.click();
-    })();
+  function selesaiItem(it, d) {
+    var gagal = d.jenis === 'gagal', batal = gagal && /cancel/i.test(d.pesan || '');
+    it.el.setAttribute('data-s', gagal ? (batal ? 'batal' : 'gagal') : 'selesai');
+    var panjang = (it.isi || '').length;
+    it.st.textContent = batal ? 'Dihentikan' : gagal ? 'Gagal: ' + (d.pesan || 'jawaban AI terputus') : 'Selesai, ' + panjang.toLocaleString('id-ID') + ' karakter';
+    if (panjang) {
+      var det = document.createElement('details');
+      det.innerHTML = '<summary>Lihat tulisan lengkap</summary>';
+      var pre = document.createElement('pre'); pre.className = 'live-teks penuh';
+      pre.textContent = it.isi.length > 40000 ? it.isi.slice(0, 40000) + '\n…(dipotong di pratinjau, lengkapnya ada di hasil dan paket unduhan)' : it.isi;
+      det.appendChild(pre);
+      it.teks.replaceWith(det);
+    } else it.teks.remove();
   }
-  var sedang = false;
-  async function jalankan() {
-    var teks = $('uiPerintah').value.trim();
-    if (!teks) { $('uiPerintah').focus(); return; }
-    if (sedang) return;
-    var divisi = divisiDipilih(teks);
-    if (!window.ZunoKey || !window.ZunoKey.get()) {
-      tampilkan(rencanaLokal(teks, divisi), 'Pratinjau pembagian tugas, belum memakai AI. Isi kunci akses di Pengaturan AI untuk menjalankannya.');
-      if (window.ZunoHUD) window.ZunoHUD.askKey();
+  window.addEventListener('nexa:ai', function (e) {
+    var d = e.detail || {};
+    var it = item[d.id];
+    if (d.jenis === 'mulai') {
+      if (d.agen) { menulis[d.agen] = (menulis[d.agen] || 0) + 1; jadwal(); }
+      buatItem(d);
       return;
     }
-    sedang = true;
-    kirim.disabled = true; kirim.setAttribute('aria-busy', 'true'); kirim.textContent = 'Lead membagi tugas…';
-    out.innerHTML = '<p class="catatan">Perintah diterima. ZUNO sedang membagi tugas.</p>';
-    if (kantor) { setAgen('L.0', true); if ($('uiIkuti') && $('uiIkuti').checked) kantor.fokus('L.0'); }
-    var rencana, catatan;
-    try {
-      rencana = await tanyaLead(teks, divisi);
-      catatan = 'Tim mulai bekerja. Lihat agennya di kantor, detail dan persetujuan ada di ruang kerja di bawah.';
-    } catch (e) {
-      if (e && e.code === 'not_granted') {
-        out.innerHTML = '<p class="galat">Kunci akses salah atau belum disetel di server. Periksa di Pengaturan AI.</p>';
-        sedang = false; kirim.disabled = false; kirim.removeAttribute('aria-busy'); kirim.textContent = 'Kirim ke tim';
-        return;
-      }
-      rencana = rencanaLokal(teks, divisi);
-      catatan = 'Lead belum bisa dihubungi' + (e && e.message ? ' (' + esc(e.message) + ')' : '') + '. Perintah tetap dijalankan di ruang kerja.';
+    if (!it) it = buatItem(d);
+    if (!it) return;
+    if (d.jenis === 'teks') {
+      it.isi = d.teks || '';
+      antri[d.id] = 1;
+      if (!bingkai) bingkai = window.requestAnimationFrame ? window.requestAnimationFrame(gambarTeks) : setTimeout(gambarTeks, 50);
+      return;
     }
-    tampilkan(rencana, catatan);
-    serahkan(teks, rencana.divisi);
-    sedang = false; kirim.disabled = false; kirim.removeAttribute('aria-busy'); kirim.textContent = 'Kirim ke tim';
+    if (d.teks) it.isi = d.teks;
+    if (d.agen && menulis[d.agen]) { menulis[d.agen]--; jadwal(); }
+    delete antri[d.id];
+    selesaiItem(it, d);
+  });
+  function kosongkan(ws) {
+    var box = $(ws === 'build' ? 'liveBuild' : 'liveKonten'); if (!box) return;
+    urutan = urutan.filter(function (id) { var it = item[id]; if (it && box.contains(it.el)) { delete item[id]; return false; } return true; });
+    box.innerHTML = ''; siapkanPanel(box);
   }
-  if (form) {
-    form.addEventListener('submit', function (e) { e.preventDefault(); jalankan(); });
-    $('uiPerintah').addEventListener('keydown', function (e) { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); jalankan(); } });
-  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    siapkanPanel($('liveKonten')); siapkanPanel($('liveBuild'));
+    // Siaga: semua agen santai. Begitu perintah jalan, agen yang mendapat tugas pergi ke mejanya.
+    if (kantor) SEMUA.forEach(function (id) { setAgen(id, false); });
+    var mo = new MutationObserver(jadwal);
+    ['tracks', 'btracks', 'wsBuild', 'stop', 'bstop'].forEach(function (id) { var el = $(id); if (el) mo.observe(el, { childList: true, subtree: true, attributes: true, characterData: true }); });
+    if ($('reset')) $('reset').addEventListener('click', function () { kosongkan('konten'); });
+    if ($('breset')) $('breset').addEventListener('click', function () { kosongkan('build'); });
+    // Ctrl/Cmd + Enter di kotak perintah = Jalankan.
+    [['cmd', 'run'], ['breq', 'brun']].forEach(function (p) {
+      var t = $(p[0]); if (!t) return;
+      t.addEventListener('keydown', function (e) { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); var b = $(p[1]); if (b && !b.disabled) b.click(); } });
+    });
+    sinkron();
+  });
 })();

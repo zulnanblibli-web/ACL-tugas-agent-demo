@@ -1,6 +1,7 @@
 /* Nexaoffice: pengatur Kantor 3D sematan (di dalam iframe).
    ?awal=dalam masuk interior · ?demo=1 aktivitas demo · ?ringkas=1 sembunyikan kontrol kecil · ?kualitas=ringan tanpa bayangan, pixel ratio 1
-   ?tema=langit tema awal bila pemakai belum pernah memilih · ?zoom=dekat kamera mendekat ke lantai studio (seperti hero) */
+   ?tema=langit tema awal bila pemakai belum pernah memilih · ?zoom=dekat kamera mendekat ke lantai studio (seperti hero)
+   ?asli=1 agen digerakkan status kerja asli dari Workspace: panel detail agen (tombol demo) disembunyikan */
 (function () {
   'use strict';
   var q = new URLSearchParams(location.search);
@@ -19,6 +20,7 @@
     for (var i = 0; i < Math.abs(n); i++) c.dispatchEvent(new WheelEvent('wheel', { deltaY: n > 0 ? -100 : 100, deltaMode: 0, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2, bubbles: true, cancelable: true }));
   };
   if (q.get('ringkas') === '1') document.documentElement.setAttribute('data-ringkas', '');
+  if (q.get('asli') === '1') document.documentElement.setAttribute('data-asli', '');
   var mulai = Date.now();
   (function tunggu() {
     var o = window.zunoOffice;
