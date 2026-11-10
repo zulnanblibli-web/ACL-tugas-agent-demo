@@ -739,4 +739,12 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Push (izin Zulnan "oke push dan deploy"): Zuno `741c587` + `eec9454` (ekspor jasa tidak membawa `agen-profil.json`), jasa `main` `5b6d8b8`. Deploy Vercel `dpl_2TuErcADQSby9okD35ttwz4WAdza` READY (alias zuno-studio-dusky.vercel.app); `/tim-agen.js` live dicek.
 - Batas: agen tambahan belum ikut alur konten/build otomatis dan belum tampil di kantor 3D; ia bekerja saat diberi tugas langsung, dan tersimpan per browser (profil .md diunduh untuk dimasukkan ke repo lewat `perakit-agen`).
 
-## 73. (entri berikutnya di sini)
+## 73. Halaman utama tanpa daftar 18 agen + gerak di tiap halaman (2026-11-10)
+- Permintaan Zulnan (tangkapan layar bagian "18 agen, satu tugas masing-masing"): keterangan 18 agen di halaman utama dihapus saja, sudah cukup di Workspace, supaya lebih simpel; tambah motion di tiap halaman supaya tidak kaku.
+- Hasil:
+  - `web/src/site/index.html`: bagian `#tim` (18 kartu agen) dihapus beserta CSS `.tim-grid` dan pemicunya di `gerak.js`. Agen tetap terlihat di kantor 3D, Workspace, dan galeri karakter (`/office/karakter.html`, ditautkan dari Panduan).
+  - `web/src/site/gerak.css` (dipakai halaman utama, Workspace, galeri karakter): tiap halaman masuk dengan pudar halus saat dibuka (view transition lintas halaman sempat dicoba lalu dilepas: Chromium membatalkannya dengan galat JS bila halaman tujuan lambat karena kantor 3D); kepala halaman turun pelan; halaman utama: tombol hero dan kantor 3D menyusul judul, jawaban FAQ yang dibuka masuk halus; Workspace: kolom kantor masuk bergantian, ganti Kerja/Chat dan Konten/Build App, panel yang baru terbuka, pesan chat (pesan Zulnan dari kanan), tulisan agen live, dialog Pengaturan + latar, dan pindah bagian di Tambah agen. Semua sekali jalan 300-500 ms, geser 8-12 px, hanya opacity/transform, mati saat gerak dikurangi.
+- Bukti: cek animasi di browser (halaman utama: nav, judul, tombol hero, kantor; Workspace: kolom kantor, pilihan tampilan, panel, chat, dialog; galeri karakter: kepala dan kartu; nol galat JS, juga saat pindah dari halaman utama yang berat ke Workspace). `nexaoffice-tim-agen-test` dan `nexaoffice-chat-test` SEMUA LOLOS; `nexaoffice-situs-test` (cek 18 agen kini ruang kerja = kantor 3D = galeri karakter = profil, dan `#timGrid` tidak ada) SEMUA LOLOS.
+- Belum di-push: permintaan ini tidak menyebut push; menunggu kata Zulnan.
+
+## 74. (entri berikutnya di sini)

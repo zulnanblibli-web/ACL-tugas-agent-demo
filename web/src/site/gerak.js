@@ -81,7 +81,6 @@
     ['.alur-copy', 'nx-kiri', 0],
     ['.alur-video', 'nx-kanan', 0],
     ['.tema-kartu', 'nx-zoom', 60],
-    ['.tim-grid > li', '', 40],
     ['.isi > div', '', 50],
     ['.biaya tbody tr', '', 50],
     ['.biaya .note', '', 0],

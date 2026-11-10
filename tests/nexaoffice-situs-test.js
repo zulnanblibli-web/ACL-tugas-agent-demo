@@ -59,7 +59,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     // Bahasa visual The Grotto (2026-11-10): judul Georgia gading, isi Arial, latar hijau hutan, aksen emas.
     const gaya = await p.evaluate(() => { const cs = (q) => getComputedStyle(document.querySelector(q)); return { h1: cs('h1').fontFamily, h1warna: cs('h1').color, body: cs('body').fontFamily, latar: cs('body').backgroundColor, tombol: cs('.btn-primary').backgroundColor, tombolTeks: cs('.btn-primary').color }; });
     ok('palet The Grotto: judul serif gading, isi Arial, latar hijau, tombol emas (' + JSON.stringify(gaya) + ')', /Georgia/.test(gaya.h1) && gaya.h1warna === 'rgb(251, 240, 220)' && /^Arial/.test(gaya.body) && gaya.latar === 'rgb(20, 36, 31)' && gaya.tombol === 'rgb(214, 182, 123)' && gaya.tombolTeks === 'rgb(20, 36, 31)');
-    ok('gambar karakter termuat', await p.evaluate(async () => { const im = [...document.images]; im.forEach((i) => { i.loading = 'eager'; }); await Promise.all(im.map((i) => i.decode().catch(() => null))); return im.length >= 20 && im.every((i) => i.naturalWidth > 0); }));
+    ok('gambar di halaman utama termuat', await p.evaluate(async () => { const im = [...document.images]; im.forEach((i) => { i.loading = 'eager'; }); await Promise.all(im.map((i) => i.decode().catch(() => null))); return im.length >= 1 && im.every((i) => i.naturalWidth > 0); }));
     for (const a of ['/office/ruang.html', '/office/kendali.js', '/office/sematan.js', '/office/sematan.css', '/office/office.bundle.js', '/office/karakter.html', '/assets/agents/T.5.glb', '/assets/themes/senja.png', '/assets/nexaoffice-alur.webm', '/studio.html', '/ui.js', '/pengaturan-ai.js', '/serah.js']) {
       const r = await p.request.get(U + a); ok('aset ' + a + ' 200', r.status() === 200);
     }
@@ -68,11 +68,12 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
       const studio = fs.readFileSync(path.join(root, 'studio.html'), 'utf8');
       const roles = [...new Set([...studio.matchAll(/\n '([LRPDEQMT]\.\d)':\['/g)].map((m) => m[1]))].sort();
       const kantor = [...new Set([...fs.readFileSync(path.join(root, 'office', 'karakter.html'), 'utf8').matchAll(/<span class="code">([A-Z]\.\d) /g)].map((m) => m[1]))].sort();
-      const situs = await p.$$eval('#timGrid li', (li) => li.map((l) => [l.querySelector('img').getAttribute('src').match(/agents\/(.+)\.png/)[1], l.querySelector('b').textContent.trim()]));
+      // Daftar 18 agen di halaman utama dihapus (Zulnan 2026-11-10: cukup di Workspace); nama di kantor dicek dari galeri karakter.
+      const situs = [...fs.readFileSync(path.join(root, 'office', 'karakter.html'), 'utf8').matchAll(/<span class="code">([A-Z]\.\d) [^<]*<\/span><img[^>]*><h2>([^<]+)<\/h2>/g)].map((m) => [m[1], m[2].trim()]);
       const dirAgen = path.join(__dirname, '..', 'agents');
       const profil = fs.readdirSync(dirAgen).filter((f) => /^\d\d-.*\.md$/.test(f)).map((f) => { const x = fs.readFileSync(path.join(dirAgen, f), 'utf8'); return [x.match(/^kode: "([A-Z]\.\d)"/m)[1], (x.match(/^panggilan: (.+)$/m) || [])[1]]; });
       const kodeSitus = situs.map((s) => s[0]).sort();
-      ok('18 agen sama di ruang kerja (' + roles.length + '), kantor 3D (' + kantor.length + '), halaman utama (' + situs.length + ')', roles.length === 18 && roles.join() === kantor.join() && kantor.join() === kodeSitus.join());
+      ok('18 agen sama di ruang kerja (' + roles.length + '), kantor 3D (' + kantor.length + '), galeri karakter (' + situs.length + ')', roles.length === 18 && situs.length === 18 && !(await p.$('#timGrid')) && roles.join() === kantor.join() && kantor.join() === kodeSitus.join());
       // 19 profil = 18 agen kantor + H.1 Hana (Divisi HRD, menu Tambah agen; belum punya meja di kantor 3D)
       const kantorProfil = profil.filter((x) => x[0] !== 'H.1');
       ok('profil agents/: 18 agen kantor + H.1 Hana, kode dan nama di kantor sama dengan web', profil.length === 19 && profil.some((x) => x[0] === 'H.1' && x[1] === 'Hana') && kantorProfil.map((x) => x[0]).sort().join() === kodeSitus.join() && kantorProfil.every((x) => situs.some((s) => s[0] === x[0] && s[1] === x[1])));

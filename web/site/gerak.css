@@ -46,6 +46,40 @@ main > article img { transition: translate 200ms var(--nx-ease); }
   main > article:hover img { translate: 0 -4px; }
 }
 
+/* ---------- Gerak tiap halaman (Zulnan 2026-11-10: "biar gak kaku") ----------
+   Semua masuk sekali, 300-500 ms, geser 8-12 px, hanya opacity dan transform; tanpa gerak berulang. */
+
+/* Tiap halaman (utama, Workspace, galeri karakter) masuk dengan pudar halus saat dibuka.
+   Bukan view transition lintas halaman: Chromium membatalkannya dengan galat bila halaman tujuan lambat (kantor 3D). */
+.nx-gerak body { animation: nx-pudar-masuk 320ms var(--nx-ease) backwards; }
+
+/* Kepala halaman turun pelan saat halaman dibuka */
+.nx-gerak body > header { animation: nx-turun 420ms var(--nx-ease) backwards; }
+
+/* Halaman utama: tombol hero dan kantor 3D menyusul judul */
+.nx-gerak .hero-actions { animation: nx-naik 450ms var(--nx-ease) 220ms backwards; }
+.nx-gerak .hero-stage { animation: nx-naik 500ms var(--nx-ease) 300ms backwards; }
+.nx-gerak .faq-list details[open] > :not(summary) { animation: nx-naik 320ms var(--nx-ease) backwards; }
+
+/* Workspace: kolom kantor masuk bergantian, kolom kanan menyusul */
+.nx-gerak .ws-kantor > * { animation: nx-naik 450ms var(--nx-ease) backwards; }
+.nx-gerak .ws-kantor > :nth-child(2) { animation-delay: 60ms; }
+.nx-gerak .ws-kantor > :nth-child(3) { animation-delay: 120ms; }
+.nx-gerak .ws-kantor > :nth-child(n+4) { animation-delay: 180ms; }
+.nx-gerak .ws-pilih { animation: nx-naik 420ms var(--nx-ease) 200ms backwards; }
+/* Ganti tampilan (Kerja / Chat ZUNO, Konten / Build App) dan panel yang baru terbuka */
+.nx-gerak :is(.ws-kanan > .wrap, #chat, #wsKonten, #wsBuild):not([hidden]):not(.hidden) { animation: nx-naik 340ms var(--nx-ease) backwards; }
+.nx-gerak .wrap .panel:not(.hidden) { animation: nx-naik 360ms var(--nx-ease) backwards; }
+/* Pesan chat dan tulisan agen yang baru masuk */
+.nx-gerak .chat-msg, .nx-gerak .live-item { animation: nx-naik 320ms var(--nx-ease) backwards; }
+.nx-gerak .chat-msg[data-dari="kamu"] { animation-name: nx-dari-kanan; }
+/* Dialog Pengaturan (Sambungan AI, Tambah agen) dan pindah bagian di dalamnya */
+.nx-gerak dialog[open] { animation: nx-naik 300ms var(--nx-ease) backwards; }
+.nx-gerak dialog[open]::backdrop { animation: nx-pudar-masuk 300ms var(--nx-ease) backwards; }
+.nx-gerak .agen-view:not([hidden]), .nx-gerak .agen-item { animation: nx-naik 300ms var(--nx-ease) backwards; }
+
+@keyframes nx-pudar-masuk { from { opacity: 0; } }
+@keyframes nx-dari-kanan { from { opacity: 0; transform: translateX(10px); } }
 @keyframes nx-naik-kecil { from { opacity: 0; transform: translateY(10px); } }
 @keyframes nx-kata { from { opacity: 0; transform: translateY(8px); } }
 @keyframes nx-naik { from { opacity: 0; transform: translateY(10px); } }
