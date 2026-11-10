@@ -19,5 +19,5 @@ for (const f of ['site.css', 'tokens.css', 'base.css', 'gerak.css', 'gerak.js', 
 copyFileSync(join(here, 'src', 'site', 'index.html'), join(here, 'index.html'));
 // Kantor 3D sematan: pengatur di dalam iframe (sematan.*) dan kendali dari halaman induk (kendali.js).
 mkdirSync(join(here, 'office'), { recursive: true });
-for (const f of ['sematan.css', 'sematan.js', 'kendali.js']) copyFileSync(join(here, 'src', 'kantor', f), join(here, 'office', f));
+for (const f of ['sematan.css', 'sematan.js', 'kendali.js', 'nexa-sematan.css', 'nexa-sematan.js']) copyFileSync(join(here, 'src', 'kantor', f), join(here, 'office', f));
 console.log('web/studio.html dibuat (' + studio.length + ' karakter), web/index.html = halaman utama Nexaoffice');

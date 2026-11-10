@@ -1,0 +1,7 @@
+/* Nexaoffice: The Grotto (tema ketiga) versi sematan, dibuka di iframe kantor halaman utama dan Workspace.
+   Header, intro, dan menu tema halaman The Grotto disembunyikan; tema dipilih dari halaman induk (office/kendali.js). */
+html[data-sematan], html[data-sematan] body { height: 100%; overflow: hidden; }
+html[data-sematan] body > header, html[data-sematan] .intro, html[data-sematan] #nexa-themes:not([open]) { display: none !important; }
+html[data-sematan] main { height: 100vh; height: 100dvh; }
+html[data-sematan][data-ringkas] #explorer, html[data-sematan][data-ringkas] #explore-open, html[data-sematan][data-ringkas] .controls, html[data-sematan][data-ringkas] .hint, html[data-sematan][data-ringkas] #detail { display: none !important; }
+html[data-sematan][data-ringkas] .activity-bar { display: none !important; }

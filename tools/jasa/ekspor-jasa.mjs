@@ -88,7 +88,7 @@ for (const f of readdirSync(join(web, 'api'))) if (!['ai.js', 'status.js'].inclu
 // ---------- aset: tanpa foto dan avatar Zulnan ----------
 const SKIP_ASSET = /foto-zulnan|zulnan|README/i;
 // Aset khusus situs Nexaoffice dan salinan Kantor 3D (sumbernya repo jasa sendiri) tidak ikut ke jasa.
-const SKIP_TOP = new Set(['agents', 'themes', 'site', 'fonts', 'nexaoffice-alur.mp4', 'nexaoffice-alur.webm', 'nexaoffice-alur.webp']);
+const SKIP_TOP = new Set(['agents', 'themes', 'nexa', 'site', 'fonts', 'nexaoffice-alur.mp4', 'nexaoffice-alur.webm', 'nexaoffice-alur.webp']);
 function copyDir(a, b, top = false) {
   mkdirSync(b, { recursive: true });
   for (const f of readdirSync(a)) {

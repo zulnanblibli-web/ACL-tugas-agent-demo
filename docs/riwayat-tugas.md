@@ -693,4 +693,18 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Push (izin Zulnan "push dan deploy" di permintaan ini): Zuno `9b4b638`, jasa `main` `29bdb49`. Deploy Vercel `dpl_2nhoDAYEPkFRFyuuvWJ93xpqM7rv` READY (alias zuno-studio-dusky.vercel.app); dicek live: `/site/tokens.css` berisi palet The Grotto.
 - Batas: video alur Remotion dan gambar robot HUD masih bernuansa biru (aset konten/ilustrasi asli, tidak diubah). The Grotto belum jadi pilihan tema di situs Zuno (handoff melarang menambah kartu tema; kantor Zuno masih bundel tanpa Grotto).
 
-## 70. (entri berikutnya di sini)
+## 70. Tema The Grotto di situs Nexaoffice (2026-11-10)
+- Permintaan Zulnan: "ya tambahin pilihan tema the grotto ke situs."
+- Hasil:
+  - The Grotto (scene satu lantai buatan sesi lain di repo jasa: `nexa.html`, `nexa/`, `assets/nexa`, 5,4 MB) ikut disalin ke `web/` oleh `tools/kantor/ambil-kantor.mjs`; tautan "Buka workspace" ke `/studio.html`, menu tema di halaman itu kembali ke `/office/ruang.html` (bukan `/kantor.html` yang di Zuno dialihkan ke beranda).
+  - Halaman utama: kartu ketiga **The Grotto** di "Pilih suasana kantornya" (gambar `assets/site/kantor-grotto.webp` dari render tema repo jasa), keterangan kartu kini di bawah gambar, tombol di bawah teks. "Isi kit": "Tiga tema kantor".
+  - Workspace: tombol **The Grotto** di samping Menara Senja / Griya Langit.
+  - `web/src/kantor/kendali.js`: The Grotto = ganti `src` iframe ke `/nexa.html?sematan=1&...` (parameter sematan ikut), kembali ke tema lain = `/office/ruang.html?...&theme=<id>`; pilihan disimpan di `nexa-office-theme`. Gedung/Dalam studio = Atap The Grotto nyala/mati.
+  - `web/src/kantor/nexa-sematan.*`: mode tertanam (header, intro, panel samping, kontrol, tombol simulasi disembunyikan), jeda render saat tidak terlihat, kualitas Ringan di Workspace dan HP, kirim pesan siap.
+  - Repo jasa `office/themes.js` + `theme-picker.js`: pindah ke The Grotto membawa parameter halaman (`themeHref`), jadi pilihan tersimpan "grotto" tetap membuka versi tertanam yang benar.
+  - Jujur soal batas: The Grotto belum bisa menggerakkan agen per tahap. Di Workspace agennya diam saat siaga dan bergerak selama ada tahap yang jalan; catatan ini tampil di bawah kantor hanya saat The Grotto dipilih.
+- Bukti: uji Playwright khusus (hero ke The Grotto dan kembali, Workspace ke The Grotto: tanpa tombol simulasi, diam saat siaga, bergerak saat kerja, diam lagi saat santai, Atap; muat ulang dengan pilihan tersimpan membuka The Grotto dengan parameter Workspace; kembali ke Griya Langit dengan parameter sematan; `nexa.html` langsung tetap utuh; HP tanpa geser samping; nol galat JS). Tes otomatis: `nexaoffice-situs-test` SEMUA LOLOS (cek baru: tiga kartu, hero ke The Grotto tertanam lalu kembali ke Griya Langit, tombol The Grotto di Workspace), `nexaoffice-chat-test` SEMUA LOLOS, tiga tes stub lolos, `zuno-jasa-test` SEMUA LOLOS; repo jasa `test:simulation`, `test:office`, `test:themes`, `test:layar`, `test:nexa`, `test:nexa-seating` lolos.
+- Belum di-push: permintaan ini tidak menyebut push; menunggu kata Zulnan.
+- Tertunda: kendali per agen di The Grotto (perlu `setWork` di `nexa/animation.js` repo jasa).
+
+## 71. (entri berikutnya di sini)

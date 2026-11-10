@@ -1,7 +1,7 @@
 // Menyalin Kantor 3D (hasil build) dari repo jasa ke Nexaoffice Web (web/), supaya tampil di /office/ruang.html (disematkan).
 // Sumber tetap di repo jasa (office/*.js, npm run build:office). Jalankan ulang setelah kantor diubah di sana:
 //   node tools/kantor/ambil-kantor.mjs /home/user/zuno-studio-app
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync, readdirSync, existsSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, readdirSync, existsSync, rmSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -44,4 +44,28 @@ for (const d of ['agents', 'themes']) {
   mkdirSync(out, { recursive: true });
   for (const f of readdirSync(join(jasa, 'assets', d))) copyFileSync(join(jasa, 'assets', d, f), join(out, f));
 }
-console.log('Kantor 3D disalin ke web/ (office/ruang.html, office/, assets/agents, assets/themes)');
+
+// The Grotto (tema ketiga): scene satu lantai sendiri di repo jasa (nexa.html + nexa/ + assets/nexa).
+// Di Nexaoffice tampil di iframe kantor yang sama (hero dan Workspace) lewat web/src/kantor/nexa-sematan.*;
+// pilihan tema dikendalikan web/src/kantor/kendali.js (ganti src iframe), bukan oleh halaman The Grotto sendiri.
+let nexa = readFileSync(join(jasa, 'nexa.html'), 'utf8');
+nexa = swap(nexa, '<link rel="stylesheet" href="/nexa/style.css">', '<link rel="stylesheet" href="/nexa/style.css"><link rel="stylesheet" href="/office/nexa-sematan.css">', 'nexa.html');
+nexa = swap(nexa, '<script type="module" src="/nexa/studio.bundle.js"></script>', '<script src="/office/nexa-sematan.js" defer></script><script type="module" src="/nexa/studio.bundle.js"></script>', 'nexa.html');
+nexa = swap(nexa, 'href="/#ruangKerja"', 'href="/studio.html"', 'nexa.html');
+writeFileSync(join(web, 'nexa.html'), nexa);
+mkdirSync(join(web, 'nexa'), { recursive: true });
+copyFileSync(join(jasa, 'nexa', 'style.css'), join(web, 'nexa', 'style.css'));
+// Menu tema di halaman The Grotto kembali ke kantor tertanam (bukan /kantor.html, yang di Nexaoffice dialihkan ke beranda).
+let bundel = readFileSync(join(jasa, 'nexa', 'studio.bundle.js'), 'utf8');
+bundel = swap(bundel, '/kantor.html?theme=', '/office/ruang.html?awal=dalam&theme=', 'nexa/studio.bundle.js');
+writeFileSync(join(web, 'nexa', 'studio.bundle.js'), bundel);
+function salinFolder(a, b) {
+  rmSync(b, { recursive: true, force: true });
+  mkdirSync(b, { recursive: true });
+  for (const f of readdirSync(a)) {
+    const s = join(a, f);
+    if (statSync(s).isDirectory()) salinFolder(s, join(b, f)); else copyFileSync(s, join(b, f));
+  }
+}
+salinFolder(join(jasa, 'assets', 'nexa'), join(web, 'assets', 'nexa'));
+console.log('Kantor 3D disalin ke web/ (office/ruang.html, office/, assets/agents, assets/themes, nexa.html, nexa/, assets/nexa)');

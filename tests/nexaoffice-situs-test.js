@@ -5,7 +5,7 @@
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..', 'web');
-const MIME = { '.json': 'application/json', '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.webp': 'image/webp', '.png': 'image/png', '.mp4': 'video/mp4', '.webm': 'video/webm', '.woff2': 'font/woff2', '.glb': 'model/gltf-binary' };
+const MIME = { '.json': 'application/json', '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.webp': 'image/webp', '.png': 'image/png', '.mp4': 'video/mp4', '.webm': 'video/webm', '.woff2': 'font/woff2', '.glb': 'model/gltf-binary', '.jpg': 'image/jpeg' };
 let gagal = 0;
 const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama); if (!syarat) gagal++; };
 
@@ -98,6 +98,14 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     ok('Pilihan tema: Menara Senja dipakai di kantor hero', siap && (await office()).theme === 'senja' && (await p.getAttribute('.tema-kartu [data-tema="senja"]', 'aria-pressed')) === 'true');
     await p.click('.tema-kartu [data-tema="langit"]'); await p.waitForTimeout(500);
     ok('Pilihan tema: kembali ke Griya Langit', siap && (await office()).theme === 'langit');
+    // Tema ketiga The Grotto: scene sendiri (/nexa.html) di iframe yang sama, versi sematan, lalu bisa kembali.
+    ok('Pilihan tema: tiga kartu (Menara Senja, Griya Langit, The Grotto)', (await p.$$eval('.tema-kartu [data-tema]', (b) => b.map((x) => x.dataset.tema).join(','))) === 'senja,langit,grotto');
+    await p.click('.tema-kartu [data-tema="grotto"]');
+    const grotto = await p.waitForFunction(() => { try { return !!document.getElementById('kantorIframe').contentWindow.nexaStudio; } catch (e) { return false; } }, null, { timeout: 120000 }).then(() => true).catch(() => false);
+    ok('Pilihan tema: The Grotto tampil di kantor hero (tertanam, tanpa header halaman sendiri)', grotto && await p.evaluate(() => { const f = document.getElementById('kantorIframe'); const d = f.contentDocument; return f.contentWindow.location.pathname === '/nexa.html' && d.documentElement.hasAttribute('data-sematan') && getComputedStyle(d.querySelector('body > header')).display === 'none'; }));
+    await p.click('.tema-kartu [data-tema="langit"]');
+    const balik = await p.waitForFunction(() => { try { const o = document.getElementById('kantorIframe').contentWindow.zunoOffice; return o && o.state.theme === 'langit'; } catch (e) { return false; } }, null, { timeout: 120000 }).then(() => true).catch(() => false);
+    ok('Pilihan tema: dari The Grotto kembali ke Griya Langit', balik);
 
     ok('tab Cara kerja: Build App bisa dibuka', await (async () => { await p.click('#tab-build'); return !(await p.$eval('#panel-build', (e) => e.hidden)) && (await p.$eval('#panel-konten', (e) => e.hidden)); })());
     await p.$eval('#alurVideo', (v) => v.scrollIntoView({ block: 'center' }));
@@ -158,6 +166,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     ok('Hasil kerja agen live: tulisan agen Engineering tampil per agen (' + live.slice(0, 4).join(', ') + ')', live.length > 0 && live.some((x) => /^(Arga|Rani|Fajar|Tio|Damar):/.test(x)) && (await p.isVisible('#bprocp')));
     await p.click('[data-tema="senja"]'); await p.waitForTimeout(400);
     ok('Workspace: tema kantor bisa diganti', kantorUI && (await p.evaluate(() => document.getElementById('kantorIframe').contentWindow.zunoOffice.state.theme)) === 'senja');
+    ok('Workspace: pilihan tema The Grotto ada, catatannya tersembunyi saat tema lain', (await p.$$('.ws-kantor [data-tema="grotto"]')).length === 1 && !(await p.isVisible('.ui-grotto')));
     if (await p.$('#bstop:not([disabled])')) await p.click('#bstop');
 
     // ---------- 6. Pengaturan AI: API key lokal dikirim per permintaan ----------

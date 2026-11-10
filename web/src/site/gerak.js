@@ -16,7 +16,7 @@
     };
     window.addEventListener('message', function (e) { if (e.origin === location.origin && e.data && e.data.nexaKantor === 'siap') selesai(); });
     // Cadangan bila pesan 'siap' terkirim sebelum skrip ini jalan.
-    cek = setInterval(function () { try { if (iframe.contentWindow.zunoOffice) selesai(); } catch (e) {} }, 400);
+    cek = setInterval(function () { try { if (iframe.contentWindow.zunoOffice || iframe.contentWindow.nexaStudio) selesai(); } catch (e) {} }, 400);
     setTimeout(selesai, 30000);
   }
 
