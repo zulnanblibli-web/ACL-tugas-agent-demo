@@ -668,6 +668,7 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - Tes situs: halaman lama ditutup sebelum bagian HP; dengan banyak halaman kantor 3D terbuka, render perangkat lunak di cloud membuat navigasi HP habis waktu (terjadi juga dengan bundel kantor lama).
 - Biaya render: +13 draw call (223), segitiga ~143 ribu.
 - File berubah: repo jasa `office/data.js`, `office/scene.js`, `office/architecture.js`, `office/amenities.js`, `office/simulation.js`, `office/activity-view.js`, `office/app.js`, `office/screens.js` (baru), `office/office.bundle.js`, `office/README.md`, `tests/layar-owner.test.cjs` (baru), `package.json`, `preview/*`, `artifacts/office/*`; Zuno `web/src/site/index.html`, `web/index.html`, `web/office/office.bundle.js`, `tests/nexaoffice-situs-test.js`, catatan.
-- Tertunda: push menunggu kata Zulnan; performa di GPU laptop belum diuji.
+- Push (izin Zulnan "oke push dan deploy"): Zuno `cddc9b5`, jasa `main` `fa04f44`. Deploy Vercel `dpl_J87QxEK1eWYbDjPYJdWSe5dNbCmY` READY (alias zuno-studio-dusky.vercel.app); dicek live: tulisan simulasi di hero sudah hilang.
+- Tertunda: performa di GPU laptop belum diuji; FAQ halaman utama "Agen bisa posting sendiri? Tidak." belum mengikuti aturan unggah baru (entri 66).
 
 ## 68. (entri berikutnya di sini)
