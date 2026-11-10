@@ -7,13 +7,16 @@ import { writeFileSync, copyFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { bangunRuangKerja } from './bangun.mjs';
+import { tulisProfilWeb } from '../tools/agen/profil-web.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const studio = bangunRuangKerja('nexa');
 bangunRuangKerja('jasa'); // ikut dicek supaya penanda edisi jasa tidak rusak diam-diam
 writeFileSync(join(here, 'studio.html'), studio);
 // hud.* dan motion.js tetap disalin: dipakai edisi jasa (diambil ekspor dari web/) dan diagram cara kerja.
-for (const f of ['hud.css', 'hud.js', 'live.js', 'motion.js', 'serah.js', 'studio-nexa.css', 'studio-nexa.js', 'ui.js', 'pengaturan-ai.js']) copyFileSync(join(here, 'src', f), join(here, f));
+for (const f of ['hud.css', 'hud.js', 'live.js', 'motion.js', 'serah.js', 'studio-nexa.css', 'studio-nexa.js', 'ui.js', 'pengaturan-ai.js', 'tim-agen.js']) copyFileSync(join(here, 'src', f), join(here, f));
+// Profil agents/ untuk menu Tambah agen (contoh isian + bahan pelatihan HRD).
+tulisProfilWeb(join(here, 'assets', 'agen-profil.json'));
 mkdirSync(join(here, 'site'), { recursive: true });
 for (const f of ['site.css', 'tokens.css', 'base.css', 'gerak.css', 'gerak.js', 'site.js']) copyFileSync(join(here, 'src', 'site', f), join(here, 'site', f));
 copyFileSync(join(here, 'src', 'site', 'index.html'), join(here, 'index.html'));

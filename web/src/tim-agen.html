@@ -1,0 +1,83 @@
+<dialog id="agenDlg" class="hud-dlg ai-dlg agen-dlg" aria-labelledby="agenJudul">
+  <div class="seg set-tab" role="group" aria-label="Menu pengaturan">
+    <button type="button" data-set="ai" aria-pressed="false">Sambungan AI</button>
+    <button type="button" data-set="agen" aria-pressed="true">Tambah agen</button>
+  </div>
+  <h2 id="agenJudul">Tambah agen</h2>
+
+  <div class="agen-view" data-view="daftar">
+    <p class="muted">Tambah agen saat tugas bertambah. Isiannya mengikuti struktur 18 agen tim: peran, tugas, masukan, keluaran, larangan, sampai memori. Hana (Divisi HRD) memberi kode, lalu melatih agen baru dengan aturan tim, memori, dan riwayat pekerjaan sebelumnya. Agen tambahan tersimpan di browser ini.</p>
+    <ol class="agen-daftar" id="agenDaftar" aria-label="Agen tambahan"></ol>
+    <p class="agen-kosong" id="agenKosong">Belum ada agen tambahan.</p>
+    <p class="ai-cek" id="agenKabar" role="status" aria-live="polite"></p>
+    <div class="btns"><button class="btn primary" type="button" id="agenBaru">Tambah agen baru</button><button class="btn" type="button" data-tutup>Tutup</button></div>
+  </div>
+
+  <form class="agen-view" data-view="form" id="agenForm" novalidate hidden>
+    <label for="agMulai">Mulai dari struktur agen <small>(isian contoh dari profil yang ada, ubah sesuai kebutuhan)</small></label>
+    <select id="agMulai"><option value="">Formulir kosong</option></select>
+    <fieldset class="agen-set">
+      <legend>Identitas</legend>
+      <label for="agNama">Nama jabatan <small>(wajib)</small></label>
+      <input type="text" id="agNama" maxlength="60" autocomplete="off" placeholder="Contoh: Penulis Thread" required>
+      <label for="agPanggilan">Nama di kantor <small>(wajib, satu atau dua kata)</small></label>
+      <input type="text" id="agPanggilan" maxlength="20" autocomplete="off" placeholder="Contoh: Bayu" required>
+      <label for="agDivisi">Divisi <small>(menentukan kode agen)</small></label>
+      <select id="agDivisi"></select>
+      <label for="agStatus">Status</label>
+      <select id="agStatus"><option value="standby">Standby (aktif saat diberi tugas)</option><option value="aktif harian">Aktif harian</option></select>
+      <label for="agDeskripsi">Deskripsi singkat <small>(wajib, satu kalimat)</small></label>
+      <input type="text" id="agDeskripsi" maxlength="220" autocomplete="off" required>
+    </fieldset>
+    <fieldset class="agen-set">
+      <legend>Peran</legend>
+      <label for="agPeran">Definisi peran <small>(wajib)</small></label>
+      <textarea id="agPeran" rows="3" maxlength="1200" required></textarea>
+      <label for="agKemampuan">Kemampuan inti <small>(satu per baris)</small></label>
+      <textarea id="agKemampuan" rows="3" maxlength="2000"></textarea>
+      <label for="agTugas">Tugas di Zuno <small>(wajib, satu per baris)</small></label>
+      <textarea id="agTugas" rows="3" maxlength="2000" required></textarea>
+    </fieldset>
+    <fieldset class="agen-set">
+      <legend>Alur kerja dan output</legend>
+      <label for="agMasukan">Masukan <small>(satu per baris)</small></label>
+      <textarea id="agMasukan" rows="2" maxlength="1200"></textarea>
+      <label for="agKeluaran">Keluaran / output <small>(wajib, satu per baris)</small></label>
+      <textarea id="agKeluaran" rows="2" maxlength="1200" required></textarea>
+      <label for="agMenerima">Menerima dari</label>
+      <input type="text" id="agMenerima" maxlength="200" autocomplete="off">
+      <label for="agMenyerahkan">Menyerahkan ke</label>
+      <input type="text" id="agMenyerahkan" maxlength="200" autocomplete="off">
+      <label for="agEskalasi">Mengeskalasi ke</label>
+      <input type="text" id="agEskalasi" maxlength="200" autocomplete="off">
+    </fieldset>
+    <fieldset class="agen-set">
+      <legend>Batas dan mutu</legend>
+      <label for="agDilarang">Dilarang <small>(wajib, satu per baris; aturan dasar tim tetap berlaku)</small></label>
+      <textarea id="agDilarang" rows="3" maxlength="1200" required></textarea>
+      <label for="agMetrik">Metrik keberhasilan <small>(satu per baris)</small></label>
+      <textarea id="agMetrik" rows="2" maxlength="1200"></textarea>
+      <label for="agGaya">Gaya komunikasi <small>(satu per baris)</small></label>
+      <textarea id="agGaya" rows="2" maxlength="800"></textarea>
+    </fieldset>
+    <fieldset class="agen-set">
+      <legend>Memori</legend>
+      <label for="agMemori">Pembelajaran dan memori <small>(yang perlu selalu diingat agen ini, satu per baris)</small></label>
+      <textarea id="agMemori" rows="2" maxlength="1200"></textarea>
+      <p class="muted agen-catatan">Riwayat pekerjaan tim, memori agen sedivisi, dan aturan tim ditambahkan Hana saat pelatihan.</p>
+    </fieldset>
+    <p class="ai-cek" id="agenCek" role="status" aria-live="polite"></p>
+    <div class="btns"><button class="btn primary" type="submit" id="agenBuat">Buat dan latih agen</button><button class="btn" type="button" data-ke="daftar">Kembali</button></div>
+  </form>
+
+  <section class="agen-view" data-view="tugas" aria-labelledby="agTugasJudul" hidden>
+    <h3 id="agTugasJudul">Beri tugas</h3>
+    <p class="muted" id="agTugasPeran"></p>
+    <label for="agTugasIn">Tugas untuk agen ini</label>
+    <textarea id="agTugasIn" rows="4" maxlength="4000" placeholder="Tulis tugasnya. Tempel bahan atau tautan sumber bila ada."></textarea>
+    <div class="btns"><button class="btn primary" type="button" id="agTugasJalan">Jalankan</button><button class="btn" type="button" id="agTugasStop" disabled>Berhenti</button><button class="btn" type="button" data-ke="daftar">Kembali</button></div>
+    <p class="ai-cek" id="agTugasSt" role="status" aria-live="polite"></p>
+    <pre class="agen-hasil" id="agTugasOut" hidden></pre>
+    <div class="btns" id="agTugasAksi" hidden><button class="btn" type="button" id="agTugasSimpan">Simpan ke folder lokal</button><button class="btn" type="button" id="agTugasUnduh">Unduh .md</button></div>
+  </section>
+</dialog>

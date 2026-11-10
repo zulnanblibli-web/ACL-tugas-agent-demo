@@ -1,7 +1,7 @@
 /* Nexaoffice: kendali Kantor 3D sematan dari halaman induk (situs dan Workspace).
    Kantor jalan di iframe (asal yang sama): /office/ruang.html (Menara Senja, Griya Langit; window.zunoOffice)
    atau /nexa.html (tema ketiga The Grotto, scene sendiri; window.nexaStudio). Ganti ke/dari The Grotto = ganti src iframe.
-   Pakai: var k = NexaKantor(iframe); k.tema('grotto'); k.dalam(); k.kerja(['R.1']); k.santai(['R.1']); k.fokus('R.1') */
+   Pakai: var k = NexaKantor(iframe); k.tema('grotto'); k.dalam(); k.kerja(['R.1']); k.santai(['R.1']); k.fokus('R.1'); k.ikuti(true) */
 (function () {
   'use strict';
   var KUNCI = 'nexa-office-theme';
@@ -12,7 +12,7 @@
   function temaTersimpan() { try { return localStorage.getItem(KUNCI); } catch (e) { return null; } }
 
   window.NexaKantor = function (iframe) {
-    var antre = [], office = null, nexa = null, sibuk = {};
+    var antre = [], office = null, nexa = null, sibuk = {}, ikut = true; // ikut: centang "Kamera ikut agen" di halaman induk
     // Alamat kantor bawaan halaman ini (dengan parameter sematannya), dipakai untuk kembali dari The Grotto.
     var asal = iframe.getAttribute('src') || iframe.getAttribute('data-src') || '/office/ruang.html';
     var asli = /[?&]asli=1(&|$)/.test(asal); // Workspace: agen mengikuti status kerja asli
@@ -32,6 +32,8 @@
       try { office = w && w.zunoOffice && w.zunoOffice.demo ? w.zunoOffice : null; } catch (e) { office = null; }
       try { nexa = w && w.nexaStudio && w.nexaStudio.animation ? w.nexaStudio : null; } catch (e) { nexa = null; }
       if (office || nexa) {
+        // Pilihan kamera ikut agen dibawa ke tiap halaman kantor yang baru dimuat (ganti tema = iframe baru).
+        try { if (office && office.follow) office.follow(ikut); if (nexa && nexa.follow) nexa.follow(ikut); } catch (e) {}
         // The Grotto baru dimuat: samakan gerak agen dengan status kerja yang sudah tercatat (siaga = diam).
         if (nexa && asli) { try { terapkanGrotto(nexa); } catch (e) {} }
         var a = antre; antre = []; a.forEach(function (fn) { try { fn(); } catch (e) {} }); return true;
@@ -80,6 +82,7 @@
       demo: function (jalan) { lakukan(function (o) { if (jalan) o.demo.start(false); else o.demo.pause(); }, function (n) { if (jalan) n.animation.start(); else n.animation.pause(); }); },
       kerja: function (ids) { ids.forEach(function (id) { sibuk[id] = true; }); lakukan(function (o) { if (!o.demo.running) o.demo.start(false); ids.forEach(function (id) { o.demo.setWork(id, true); }); }, function (n) { grottoKerja(n, ids, true); }); },
       santai: function (ids) { ids.forEach(function (id) { sibuk[id] = false; }); lakukan(function (o) { if (!o.demo.running) o.demo.start(false); ids.forEach(function (id) { o.demo.setWork(id, false); }); }, function (n) { grottoKerja(n, ids, false); }); },
+      ikuti: function (on) { ikut = !!on; lakukan(function (o) { if (o.follow) o.follow(ikut); }, function (n) { if (n.follow) n.follow(ikut); }); },
       fokus: function (id) { lakukan(function (o) { o.selectAgent(id); }, function (n) { var i = KODE.indexOf(id); if (i > -1 && n.focusActor) n.focusActor(i); }); },
       lantai: function (n) { lakukan(function (o) { o.floor(String(n)); }); }
     };

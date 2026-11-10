@@ -202,6 +202,31 @@ textarea { font-family: var(--font-outlier); }
 .ai-cek:empty { display: none; }
 .ai-cek { margin: var(--space-xs) 0 0; font-size: var(--text-sm); color: var(--color-ink); }
 
+/* ---------- Pengaturan > Tambah agen (tim-agen.js) ---------- */
+.set-tab { display: flex; flex-wrap: wrap; margin: 0 0 var(--space-sm); }
+.agen-dlg { max-width: 640px; }
+.agen-view { display: grid; gap: var(--space-xs); }
+.agen-view[hidden] { display: none; }
+.agen-dlg textarea { width: 100%; box-sizing: border-box; resize: vertical; font-family: var(--font-body); font-size: var(--text-md); border: 1px solid var(--color-muted); border-radius: var(--radius-control); padding: var(--space-xs) var(--space-sm); }
+.agen-dlg [aria-invalid=true] { border-color: var(--color-accent); box-shadow: 0 0 0 1px var(--color-accent); }
+.agen-set { border: 1px solid var(--color-rule); border-radius: var(--radius-control); padding: var(--space-2xs) var(--space-md) var(--space-sm); margin: var(--space-xs) 0 0; display: grid; gap: var(--space-2xs); min-width: 0; }
+.agen-set legend { font-size: var(--text-sm); color: var(--color-muted); padding: 0 var(--space-2xs); }
+.agen-catatan { margin: 0; font-size: var(--text-sm); }
+.agen-daftar { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-sm); }
+.agen-item { border: 1px solid var(--color-rule); border-radius: var(--radius-control); padding: var(--space-sm) var(--space-md); display: grid; gap: var(--space-2xs); min-width: 0; }
+.agen-item p { margin: 0; overflow-wrap: break-word; }
+.agen-kepala b { font-family: var(--font-display); font-weight: 400; font-size: var(--text-lg); color: var(--color-heading); }
+.agen-kode, .agen-st { font-size: var(--text-sm); color: var(--color-muted); }
+.agen-jabatan { color: var(--color-ink-2); }
+.agen-warn { font-size: var(--text-sm); color: var(--color-accent); }
+.agen-aksi { display: flex; flex-wrap: wrap; gap: var(--space-2xs); margin-top: var(--space-2xs); }
+.agen-aksi .btn { min-height: 36px; padding: 0 var(--space-sm); }
+.agen-kosong { margin: 0; color: var(--color-muted); }
+.agen-kosong[hidden] { display: none; }
+.agen-hasil { margin: 0; max-height: 46vh; overflow: auto; white-space: pre-wrap; overflow-wrap: break-word; font-family: var(--font-body); font-size: var(--text-sm); background: var(--color-paper); border: 1px solid var(--color-rule); border-radius: var(--radius-control); padding: var(--space-sm); }
+.agen-hasil[hidden], .agen-dlg .btns[hidden] { display: none; }
+#agenKabar[data-jenis=warn], #agenKabar[data-jenis=bad] { color: var(--color-accent); }
+
 /* tepi halaman di HP sama dengan halaman utama (site/base.css) */
 @media (max-width: 60rem) { :root { --gutter: 24px; } }
 @media (max-width: 68rem) { .nav-links { gap: var(--space-md); } }

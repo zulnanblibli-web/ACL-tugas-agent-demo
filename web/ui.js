@@ -19,11 +19,15 @@
     'T.1': ['Arga', 'PRD dan arsitektur'], 'T.2': ['Rani', 'Desain UI/UX'],
     'T.3': ['Fajar', 'Menulis kode'], 'T.4': ['Tio', 'Uji dan paket rilis'], 'T.5': ['Damar', 'Audit bug dan keamanan']
   };
-  var SEMUA = Object.keys(AGEN);
+  var SEMUA = Object.keys(AGEN); // 18 agen kantor 3D
+  // Di luar kantor 3D: Hana (Divisi HRD) dan agen tambahan dari menu Tambah agen (tim-agen.js). Namanya tetap tampil di hasil live dan laporan.
+  AGEN['H.1'] = ['Hana', 'Melatih agen baru'];
 
   /* ---------- Kantor 3D ikut status kerja asli ---------- */
   var iframe = $('kantorIframe'), kantor = iframe && window.NexaKantor ? window.NexaKantor(iframe) : null;
   if (kantor) window.NexaKantor.pasangKontrol(kantor);
+  // Centang "Kamera ikut agen": klik nama agen di kantor = kamera mengikuti agen itu (bukan pindah ke ruangnya).
+  if (kantor && $('uiIkuti')) { kantor.ikuti($('uiIkuti').checked); $('uiIkuti').addEventListener('change', function () { kantor.ikuti($('uiIkuti').checked); }); }
 
   function agenUntuk(nama) {
     nama = String(nama || '').trim();
@@ -54,7 +58,12 @@
   // Agen yang sedang menulis jawaban AI (dari aliran live.js) ikut dihitung bekerja.
   var menulis = {};
   var keadaan = {}, tadiJalan = false, aktifLalu = '';
-  window.NexaUI = { keadaan: keadaan, agenUntuk: agenUntuk };
+  window.NexaUI = {
+    keadaan: keadaan, agenUntuk: agenUntuk,
+    daftarAgen: function (kode, nama, peran) { if (SEMUA.indexOf(kode) < 0 && kode !== 'H.1') AGEN[kode] = [String(nama), String(peran)]; },
+    hapusAgen: function (kode) { if (SEMUA.indexOf(kode) < 0 && kode !== 'H.1') delete AGEN[kode]; },
+    agen: function () { return Object.keys(AGEN).map(function (k) { return { kode: k, nama: AGEN[k][0], peran: AGEN[k][1], kantor: SEMUA.indexOf(k) > -1 }; }); }
+  };
   function setAgen(id, kerja) {
     if (keadaan[id] === kerja || !kantor) return;
     keadaan[id] = kerja;
@@ -76,8 +85,10 @@
       SEMUA.forEach(function (id) { setAgen(id, aktif.indexOf(id) > -1); });
       var sig = aktif.join(',');
       if (sig && sig !== aktifLalu && kantor && $('uiIkuti') && $('uiIkuti').checked) {
-        var baru = aktif.filter(function (id) { return aktifLalu.split(',').indexOf(id) < 0; })[0] || aktif[0];
-        kantor.fokus(baru);
+        // Kamera hanya ke agen yang punya meja di kantor 3D (Hana dan agen tambahan belum punya).
+        var diKantor = aktif.filter(function (id) { return SEMUA.indexOf(id) > -1; });
+        var baru = diKantor.filter(function (id) { return aktifLalu.split(',').indexOf(id) < 0; })[0] || diKantor[0];
+        if (baru) kantor.fokus(baru);
       }
       aktifLalu = sig;
       if (out) out.innerHTML = aktif.length
@@ -124,7 +135,7 @@
     var n = nama(d.agen);
     var li = document.createElement('li');
     li.className = 'live-item'; li.setAttribute('data-s', 'jalan');
-    li.innerHTML = (d.agen && AGEN[d.agen] ? '<img src="/assets/agents/' + esc(d.agen) + '.png" alt="" width="40" height="46" loading="lazy" decoding="async">' : '<span class="live-ava" aria-hidden="true"></span>') +
+    li.innerHTML = (d.agen && SEMUA.indexOf(d.agen) > -1 ? '<img src="/assets/agents/' + esc(d.agen) + '.png" alt="" width="40" height="46" loading="lazy" decoding="async">' : '<span class="live-ava" aria-hidden="true"></span>') +
       '<div class="live-isi"><p class="live-kepala"><b>' + esc(n[0]) + '</b> <span class="live-peran">' + esc(n[1]) + '</span></p>' +
       '<p class="live-st">Sedang menulis</p><pre class="live-teks"></pre></div>';
     var list = box.querySelector('.live-list');
@@ -243,7 +254,7 @@
     }
   }
   function dataKinerja() {
-    return Object.keys(kinerja).sort(function (a, b) { return SEMUA.indexOf(a) - SEMUA.indexOf(b); }).map(function (id) {
+    return Object.keys(kinerja).sort(function (a, b) { var u = function (k) { var i = SEMUA.indexOf(k); return i < 0 ? 99 : i; }; return u(a) - u(b); }).map(function (id) {
       var k = kinerja[id]; return { id: id, nama: AGEN[id][0], peran: AGEN[id][1], tugas: k.tugas, selesai: k.selesai, gagal: k.gagal, karakter: k.karakter, detik: Math.round(k.ms / 1000) };
     });
   }
@@ -416,26 +427,31 @@
     var nama = namaTugas(jenis, info), indeks = daftarIsi(jenis, info, files);
     var sig = nama + '|' + files.map(function (f) { return f.folder + '/' + f.nama + ':' + f.data.size; }).join(',');
     if (!minta && simpanTerakhir[jenis] === sig) return;
+    if (!window.showDirectoryPicker && !minta) { lapor('Hasil siap disimpan. Klik tombolnya untuk mengunduh .zip berisi folder tugas ini.', { aksi: [{ a: 'simpan', ws: jenis }] }); return; }
+    if (await tulisTugas(nama, indeks, files, minta, [{ a: 'simpan', ws: jenis }])) simpanTerakhir[jenis] = sig;
+  }
+  // Tulis satu folder tugas (daftar-hasil.md + subfolder per hasil) ke folder hasil di laptop, atau unduh .zip bila browser tidak bisa.
+  // Dipakai juga agen tambahan (tim-agen.js) lewat NexaChat.simpanBerkas.
+  async function tulisTugas(nama, indeks, files, minta, aksi) {
     if (!window.showDirectoryPicker) {
-      if (!minta) { lapor('Hasil siap disimpan. Klik tombolnya untuk mengunduh .zip berisi folder tugas ini.', { aksi: [{ a: 'simpan', ws: jenis }] }); return; }
       var isi = [{ name: nama + '/daftar-hasil.md', data: new TextEncoder().encode(indeks) }];
       for (var i = 0; i < files.length; i++) isi.push({ name: nama + '/' + files[i].folder + '/' + files[i].nama, data: new Uint8Array(await files[i].data.arrayBuffer()) });
       var a = document.createElement('a'); a.href = URL.createObjectURL(window.ZunoHasil.zip(isi)); a.download = nama + '.zip'; document.body.appendChild(a); a.click(); a.remove();
-      simpanTerakhir[jenis] = sig;
-      return lapor('Folder tugas diunduh sebagai ' + nama + '.zip (' + files.length + ' file). Ekstrak ke folder hasilmu.', { jenis: 'ok' });
+      lapor('Folder tugas diunduh sebagai ' + nama + '.zip (' + files.length + ' file). Ekstrak ke folder hasilmu.', { jenis: 'ok' });
+      return true;
     }
     var h = await ambilFolder();
     if (!h && minta) h = await pilihFolder();
-    if (!h) { if (!minta) lapor('Hasil siap disimpan ke laptopmu. Pilih folder hasil sekali, setelah itu aku simpan otomatis tiap tugas selesai.', { aksi: [{ a: 'simpan', ws: jenis }] }); return; }
-    if (!(await izin(h, minta))) { lapor('Aku perlu izinmu untuk menulis ke folder ' + h.name + '. Klik tombolnya, lalu pilih Izinkan.', { aksi: [{ a: 'simpan', ws: jenis }] }); return; }
+    if (!h) { if (!minta) lapor('Hasil siap disimpan ke laptopmu. Pilih folder hasil sekali, setelah itu aku simpan otomatis tiap tugas selesai.', { aksi: aksi }); return false; }
+    if (!(await izin(h, minta))) { lapor('Aku perlu izinmu untuk menulis ke folder ' + h.name + '. Klik tombolnya, lalu pilih Izinkan.', { aksi: aksi }); return false; }
     try {
       var dir = await h.getDirectoryHandle(nama, { create: true });
       async function tulis(d, n, data) { var fh = await d.getFileHandle(n, { create: true }), w = await fh.createWritable(); await w.write(data); await w.close(); }
       await tulis(dir, 'daftar-hasil.md', new Blob([indeks], { type: 'text/markdown' }));
       for (var j = 0; j < files.length; j++) { var sub = await dir.getDirectoryHandle(files[j].folder, { create: true }); await tulis(sub, files[j].nama, files[j].data); }
-      simpanTerakhir[jenis] = sig;
       lapor('Tersimpan di laptopmu: ' + h.name + '/' + nama + ' (' + files.length + ' file, tiap hasil di foldernya sendiri sesuai judul).', { jenis: 'ok' });
-    } catch (e) { lapor('Gagal menyimpan ke folder ' + h.name + ': ' + ((e && e.message) || 'galat') + '. Coba pilih folder lain.', { jenis: 'bad', aksi: [{ a: 'folder' }] }); }
+      return true;
+    } catch (e) { lapor('Gagal menyimpan ke folder ' + h.name + ': ' + ((e && e.message) || 'galat') + '. Coba pilih folder lain.', { jenis: 'bad', aksi: [{ a: 'folder' }] }); return false; }
   }
 
   /* -- tanya ZUNO (AI, ikut Pengaturan AI) -- */
@@ -514,7 +530,12 @@
       }
       lapor('Perintah diterima' + (d.perintah ? ': "' + (d.perintah.length > 140 ? d.perintah.slice(0, 138) + '…' : d.perintah) + '".' : ' tanpa bahan, tim cari ide sendiri dari tren.') + opsi + ' Aku bagi tugasnya ke ' + (d.jenis === 'build' ? 'Divisi Engineering' : 'divisi kreatif') + ' sekarang dan kabari tiap langkahnya di sini.');
     });
-    window.NexaChat = { lapor: lapor, pesan: function () { return pesan; }, tampilan: setTampilan, simpan: simpanTugas, kinerja: dataKinerja };
+    window.NexaChat = {
+      lapor: lapor, pesan: function () { return pesan; }, tampilan: setTampilan, simpan: simpanTugas, kinerja: dataKinerja,
+      // files: [{folder, nama, data(Blob|string)}]; nama = nama folder tugas (tanggal + jenis + judul).
+      simpanBerkas: function (nama, indeks, files) { return tulisTugas(window.ZunoHasil.aman(nama), indeks, files.map(function (f) { return { folder: f.folder, nama: f.nama, data: f.data instanceof Blob ? f.data : new Blob([String(f.data)], { type: 'text/markdown' }) }; }), true, null); },
+      namaTugas: function (jenis, judul) { return window.ZunoHasil.aman(tanggal() + ' ' + jenis + ' - ' + String(judul || '').slice(0, 60)); }
+    };
   }
 
   document.addEventListener('DOMContentLoaded', function () {

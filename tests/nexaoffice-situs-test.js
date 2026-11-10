@@ -1,6 +1,6 @@
 // Uji Nexaoffice: halaman utama (simulasi agen, kantor 3D sematan), Workspace (/studio.html: kantor 3D kiri ikut status asli,
 // perintah + format kanan, hasil kerja agen live,
-// menu Pengaturan AI: server / API key lokal / VPS), 18 agen sama di semua tempat termasuk agents/. /api tiruan.
+// menu Pengaturan AI: server / API key lokal / VPS), 18 agen sama di semua tempat termasuk agents/ (+ H.1 Hana HRD). /api tiruan.
 //   node web/build.mjs && NODE_PATH=$(npm root -g) node tests/nexaoffice-situs-test.js
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
@@ -73,7 +73,9 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
       const profil = fs.readdirSync(dirAgen).filter((f) => /^\d\d-.*\.md$/.test(f)).map((f) => { const x = fs.readFileSync(path.join(dirAgen, f), 'utf8'); return [x.match(/^kode: "([A-Z]\.\d)"/m)[1], (x.match(/^panggilan: (.+)$/m) || [])[1]]; });
       const kodeSitus = situs.map((s) => s[0]).sort();
       ok('18 agen sama di ruang kerja (' + roles.length + '), kantor 3D (' + kantor.length + '), halaman utama (' + situs.length + ')', roles.length === 18 && roles.join() === kantor.join() && kantor.join() === kodeSitus.join());
-      ok('profil agents/: 18 file, kode dan nama di kantor sama dengan web', profil.length === 18 && profil.map((x) => x[0]).sort().join() === kodeSitus.join() && profil.every((x) => situs.some((s) => s[0] === x[0] && s[1] === x[1])));
+      // 19 profil = 18 agen kantor + H.1 Hana (Divisi HRD, menu Tambah agen; belum punya meja di kantor 3D)
+      const kantorProfil = profil.filter((x) => x[0] !== 'H.1');
+      ok('profil agents/: 18 agen kantor + H.1 Hana, kode dan nama di kantor sama dengan web', profil.length === 19 && profil.some((x) => x[0] === 'H.1' && x[1] === 'Hana') && kantorProfil.map((x) => x[0]).sort().join() === kodeSitus.join() && kantorProfil.every((x) => situs.some((s) => s[0] === x[0] && s[1] === x[1])));
       ok('ruang kerja: Bima (E.2), Fira (E.3), Damar (T.5) benar-benar dipanggil', /ask\('E\.2'/.test(studio) && /ask\('E\.3'/.test(studio) && /ask\('T\.5'/.test(studio));
     }
 
@@ -103,6 +105,9 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     await p.click('.tema-kartu [data-tema="grotto"]');
     const grotto = await p.waitForFunction(() => { try { return !!document.getElementById('kantorIframe').contentWindow.nexaStudio; } catch (e) { return false; } }, null, { timeout: 120000 }).then(() => true).catch(() => false);
     ok('Pilihan tema: The Grotto tampil di kantor hero (tertanam, tanpa header halaman sendiri)', grotto && await p.evaluate(() => { const f = document.getElementById('kantorIframe'); const d = f.contentDocument; return f.contentWindow.location.pathname === '/nexa.html' && d.documentElement.hasAttribute('data-sematan') && getComputedStyle(d.querySelector('body > header')).display === 'none'; }));
+    // Klik nama agen = kamera mengikuti agen itu (bukan pindah ke zona kerjanya); memilih zona menghentikannya.
+    const ikutGrotto = await p.evaluate(() => { const w = document.getElementById('kantorIframe').contentWindow, n = w.nexaStudio, t = w.document.querySelector('.agent-tag[data-agent="2"]'); t.click(); const r = [n.followed(), t.getAttribute('aria-pressed'), n.state.selected]; n.select(3); r.push(n.followed()); return r; });
+    ok('The Grotto: klik nama Raka = kamera mengikuti Raka, pilih zona = berhenti (' + JSON.stringify(ikutGrotto) + ')', grotto && ikutGrotto[0] === 'Raka' && ikutGrotto[1] === 'true' && ikutGrotto[2] === null && ikutGrotto[3] === null);
     await p.click('.tema-kartu [data-tema="langit"]');
     const balik = await p.waitForFunction(() => { try { const o = document.getElementById('kantorIframe').contentWindow.zunoOffice; return o && o.state.theme === 'langit'; } catch (e) { return false; } }, null, { timeout: 120000 }).then(() => true).catch(() => false);
     ok('Pilihan tema: dari The Grotto kembali ke Griya Langit', balik);
@@ -135,7 +140,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     await p.fill('#cmd', 'bikin konten viral soal CEO Nvidia');
     await p.click('#run');
     await p.waitForFunction(() => !document.getElementById('errbox').classList.contains('hidden'), null, { timeout: 10000 }).catch(() => {});
-    ok('tanpa kunci: Jalankan memberi pesan Pengaturan AI, tidak ada panggilan AI', /Pengaturan AI/.test(await p.textContent('#errbox')) && aiCalls.length === 0);
+    ok('tanpa kunci: Jalankan mengarahkan ke tombol Pengaturan, tidak ada panggilan AI', /Buka Pengaturan di atas/.test(await p.textContent('#errbox')) && aiCalls.length === 0);
     await p.waitForFunction(() => document.getElementById('keyDlg').open, null, { timeout: 5000 }).catch(() => {});
 
     // ---------- 5. kunci salah lalu benar: Build App jalan live, agen bekerja di kantor, tulisan agen tampil ----------
@@ -166,6 +171,11 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     ok('Hasil kerja agen live: tulisan agen Engineering tampil per agen (' + live.slice(0, 4).join(', ') + ')', live.length > 0 && live.some((x) => /^(Arga|Rani|Fajar|Tio|Damar):/.test(x)) && (await p.isVisible('#bprocp')));
     await p.click('[data-tema="senja"]'); await p.waitForTimeout(400);
     ok('Workspace: tema kantor bisa diganti', kantorUI && (await p.evaluate(() => document.getElementById('kantorIframe').contentWindow.zunoOffice.state.theme)) === 'senja');
+    { // centang "Kamera ikut agen" dibawa ke kantor 3D (tanpa terlihat di kantor sematan, seret kamera tidak mematikannya untuk klik berikutnya)
+      const ikut = async (on) => { await p.evaluate((v) => { const c = document.getElementById('uiIkuti'); if (c.checked !== v) c.click(); }, on); return p.evaluate(() => document.getElementById('kantorIframe').contentWindow.document.getElementById('follow-agent').checked); };
+      const mati = await ikut(false), hidup = await ikut(true);
+      ok('Workspace: centang Kamera ikut agen dibawa ke kantor 3D (lepas=' + mati + ', centang=' + hidup + ')', mati === false && hidup === true);
+    }
     ok('Workspace: pilihan tema The Grotto ada', (await p.$$('.ws-kantor [data-tema="grotto"]')).length === 1);
     if (await p.$('#bstop:not([disabled])')) await p.click('#bstop');
 

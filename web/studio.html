@@ -97,7 +97,7 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
         <li><a href="/#produk">Produk lain</a></li>
       </ul>
     </nav>
-    <button class="nx-btn nx-ghost nav-cta" type="button" id="hKey">Pengaturan AI</button>
+    <button class="nx-btn nx-ghost nav-cta" type="button" id="hKey">Pengaturan</button>
     <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu</button>
   </div>
 </header>
@@ -313,6 +313,90 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
   </form>
 </dialog>
 
+<dialog id="agenDlg" class="hud-dlg ai-dlg agen-dlg" aria-labelledby="agenJudul">
+  <div class="seg set-tab" role="group" aria-label="Menu pengaturan">
+    <button type="button" data-set="ai" aria-pressed="false">Sambungan AI</button>
+    <button type="button" data-set="agen" aria-pressed="true">Tambah agen</button>
+  </div>
+  <h2 id="agenJudul">Tambah agen</h2>
+
+  <div class="agen-view" data-view="daftar">
+    <p class="muted">Tambah agen saat tugas bertambah. Isiannya mengikuti struktur 18 agen tim: peran, tugas, masukan, keluaran, larangan, sampai memori. Hana (Divisi HRD) memberi kode, lalu melatih agen baru dengan aturan tim, memori, dan riwayat pekerjaan sebelumnya. Agen tambahan tersimpan di browser ini.</p>
+    <ol class="agen-daftar" id="agenDaftar" aria-label="Agen tambahan"></ol>
+    <p class="agen-kosong" id="agenKosong">Belum ada agen tambahan.</p>
+    <p class="ai-cek" id="agenKabar" role="status" aria-live="polite"></p>
+    <div class="btns"><button class="btn primary" type="button" id="agenBaru">Tambah agen baru</button><button class="btn" type="button" data-tutup>Tutup</button></div>
+  </div>
+
+  <form class="agen-view" data-view="form" id="agenForm" novalidate hidden>
+    <label for="agMulai">Mulai dari struktur agen <small>(isian contoh dari profil yang ada, ubah sesuai kebutuhan)</small></label>
+    <select id="agMulai"><option value="">Formulir kosong</option></select>
+    <fieldset class="agen-set">
+      <legend>Identitas</legend>
+      <label for="agNama">Nama jabatan <small>(wajib)</small></label>
+      <input type="text" id="agNama" maxlength="60" autocomplete="off" placeholder="Contoh: Penulis Thread" required>
+      <label for="agPanggilan">Nama di kantor <small>(wajib, satu atau dua kata)</small></label>
+      <input type="text" id="agPanggilan" maxlength="20" autocomplete="off" placeholder="Contoh: Bayu" required>
+      <label for="agDivisi">Divisi <small>(menentukan kode agen)</small></label>
+      <select id="agDivisi"></select>
+      <label for="agStatus">Status</label>
+      <select id="agStatus"><option value="standby">Standby (aktif saat diberi tugas)</option><option value="aktif harian">Aktif harian</option></select>
+      <label for="agDeskripsi">Deskripsi singkat <small>(wajib, satu kalimat)</small></label>
+      <input type="text" id="agDeskripsi" maxlength="220" autocomplete="off" required>
+    </fieldset>
+    <fieldset class="agen-set">
+      <legend>Peran</legend>
+      <label for="agPeran">Definisi peran <small>(wajib)</small></label>
+      <textarea id="agPeran" rows="3" maxlength="1200" required></textarea>
+      <label for="agKemampuan">Kemampuan inti <small>(satu per baris)</small></label>
+      <textarea id="agKemampuan" rows="3" maxlength="2000"></textarea>
+      <label for="agTugas">Tugas di Zuno <small>(wajib, satu per baris)</small></label>
+      <textarea id="agTugas" rows="3" maxlength="2000" required></textarea>
+    </fieldset>
+    <fieldset class="agen-set">
+      <legend>Alur kerja dan output</legend>
+      <label for="agMasukan">Masukan <small>(satu per baris)</small></label>
+      <textarea id="agMasukan" rows="2" maxlength="1200"></textarea>
+      <label for="agKeluaran">Keluaran / output <small>(wajib, satu per baris)</small></label>
+      <textarea id="agKeluaran" rows="2" maxlength="1200" required></textarea>
+      <label for="agMenerima">Menerima dari</label>
+      <input type="text" id="agMenerima" maxlength="200" autocomplete="off">
+      <label for="agMenyerahkan">Menyerahkan ke</label>
+      <input type="text" id="agMenyerahkan" maxlength="200" autocomplete="off">
+      <label for="agEskalasi">Mengeskalasi ke</label>
+      <input type="text" id="agEskalasi" maxlength="200" autocomplete="off">
+    </fieldset>
+    <fieldset class="agen-set">
+      <legend>Batas dan mutu</legend>
+      <label for="agDilarang">Dilarang <small>(wajib, satu per baris; aturan dasar tim tetap berlaku)</small></label>
+      <textarea id="agDilarang" rows="3" maxlength="1200" required></textarea>
+      <label for="agMetrik">Metrik keberhasilan <small>(satu per baris)</small></label>
+      <textarea id="agMetrik" rows="2" maxlength="1200"></textarea>
+      <label for="agGaya">Gaya komunikasi <small>(satu per baris)</small></label>
+      <textarea id="agGaya" rows="2" maxlength="800"></textarea>
+    </fieldset>
+    <fieldset class="agen-set">
+      <legend>Memori</legend>
+      <label for="agMemori">Pembelajaran dan memori <small>(yang perlu selalu diingat agen ini, satu per baris)</small></label>
+      <textarea id="agMemori" rows="2" maxlength="1200"></textarea>
+      <p class="muted agen-catatan">Riwayat pekerjaan tim, memori agen sedivisi, dan aturan tim ditambahkan Hana saat pelatihan.</p>
+    </fieldset>
+    <p class="ai-cek" id="agenCek" role="status" aria-live="polite"></p>
+    <div class="btns"><button class="btn primary" type="submit" id="agenBuat">Buat dan latih agen</button><button class="btn" type="button" data-ke="daftar">Kembali</button></div>
+  </form>
+
+  <section class="agen-view" data-view="tugas" aria-labelledby="agTugasJudul" hidden>
+    <h3 id="agTugasJudul">Beri tugas</h3>
+    <p class="muted" id="agTugasPeran"></p>
+    <label for="agTugasIn">Tugas untuk agen ini</label>
+    <textarea id="agTugasIn" rows="4" maxlength="4000" placeholder="Tulis tugasnya. Tempel bahan atau tautan sumber bila ada."></textarea>
+    <div class="btns"><button class="btn primary" type="button" id="agTugasJalan">Jalankan</button><button class="btn" type="button" id="agTugasStop" disabled>Berhenti</button><button class="btn" type="button" data-ke="daftar">Kembali</button></div>
+    <p class="ai-cek" id="agTugasSt" role="status" aria-live="polite"></p>
+    <pre class="agen-hasil" id="agTugasOut" hidden></pre>
+    <div class="btns" id="agTugasAksi" hidden><button class="btn" type="button" id="agTugasSimpan">Simpan ke folder lokal</button><button class="btn" type="button" id="agTugasUnduh">Unduh .md</button></div>
+  </section>
+</dialog>
+
 
 <script src="/live.js"></script>
 <script src="/hud.js"></script>
@@ -322,6 +406,7 @@ video{width:230px;max-width:100%;border-radius:10px;background:#000;display:bloc
 <script src="/site/gerak.js" defer></script>
 <script src="/ui.js" defer></script>
 <script src="/serah.js" defer></script>
+<script src="/tim-agen.js" defer></script>
 <script>
 /* =====================================================================
    ZUNO STUDIO v2 (mengikuti agents/ dan docs/brief-gaya-konten.md)
@@ -387,7 +472,8 @@ var ROLES={
  'Q.1':['Penjaga Merek (Divisi Mutu: merek dan fakta)','Penasihat suara, merek, fakta, dan sumber. Catat kecocokan suara dan gaya Zulnan, slogan setelah hook pada video, kata berlebihan, relevansi niche, tahap funnel dan CTA. Periksa Daftar Fakta & Klaim dan semua teks yang tampil: klaim hasil atau penghasilan tanpa bukti ditandai dengan saran versi yang aman; bila ada cerita pribadi, cocokkan dengan fakta yang diizinkan (konten tanpa cerita pribadi tidak perlu dicatat); sumber harus berasal dari bahan riset; hal tak terverifikasi diberi awalan "[Perlu keputusan Zulnan]". Topik dari berita atau konten viral adalah hal yang diharapkan.','menulis ulang konten; menolak atau menahan konten; menyatakan klaim terverifikasi padahal tidak; mempermasalahkan konten karena tidak memuat cerita pribadi Zulnan.'],
  'Q.2':['Pengumpul Bukti (Divisi Mutu: format dan kepatuhan)','Penasihat format file dan kepatuhan. Format: urutan slide/adegan, hook di awal, CTA di akhir, teks terbaca, satu poin per slide, tiap adegan video maks 2 detik, wajah (Mode Tampil) mengikuti batas tipe video (maks 3 detik berurutan; tipe C boleh lebih lama selama overlay berganti) lalu motion, latar tidak pernah diam, babak hook-problem-twist-solusi-cta berurutan, caption cocok dengan visual, asal aset jelas; batas platform yang diragukan ditandai, jangan menebak angka. Kepatuhan: CTA pengumpul kontak jelas tujuannya, tidak ada kata sandi/token/data pembayaran/data pribadi orang lain, tidak ada pesan otomatis atas nama Zulnan, testimoni dan studi kasus berizin. Risiko ditakar proporsional; bukan nasihat hukum.','menulis ulang konten; menolak atau menahan konten; menebak batas platform; menyatakan aman tanpa data file jadi; memberi nasihat hukum final.'],
  'L.1':['Juru Kabar (bersama Orkestraror Agen)','Juru bicara tim. Merangkum Catatan Mutu Divisi Mutu menjadi Ringkasan Sebelum Terbit untuk Zulnan: kualitas naskah dan visual, kesesuaian dengan keinginan Zulnan (perintah, mode, gaya, referensi), dan catatan penting. Bahasa ringan; catatan adalah saran, bukan vonis.','menolak atau menyatakan konten gagal; mengubah isi konten; menyembunyikan catatan penting.'],
- 'M.1':['Kurator Instagram','Menyusun paket posting per platform untuk konten berstatus Disetujui (caption final, hashtag, cover, saran jadwal bertanda asumsi); paket itu masuk Antrian Posting.','mengirim posting sendiri, mengubah isi konten, memasukkan konten yang belum Disetujui ke antrian, menyatakan sudah tayang tanpa bukti.']
+ 'M.1':['Kurator Instagram','Menyusun paket posting per platform untuk konten berstatus Disetujui (caption final, hashtag, cover, saran jadwal bertanda asumsi); paket itu masuk Antrian Posting.','mengirim posting sendiri, mengubah isi konten, memasukkan konten yang belum Disetujui ke antrian, menyatakan sudah tayang tanpa bukti.'],
+ 'H.1':['Perekrut & Pelatih Agen (Divisi HRD)','Membuat agen baru dari formulir Zulnan dengan struktur yang sama seperti agen lain, lalu melatihnya: menyusun Paket Pelatihan dari aturan tim, struktur tim, memori agen sedivisi, dan riwayat pekerjaan tim, supaya agen baru langsung bisa bekerja. Menandai agen lain yang keluarannya mirip (satu pemilik per output); keputusan tetap di Zulnan.','mengarang riwayat, pelajaran, angka, testimoni, atau pengalaman yang tidak ada di DATA; mengubah agen lain; memberi status Disetujui; mengirim posting.']
 };
 function P(k,kerja,data,format){
   var r=ROLES[k];
@@ -397,7 +483,7 @@ function P(k,kerja,data,format){
 var sample=null,downloads=null,ctl=null,aborted=false,fatal=null,running=false;
 var S=null,LOG=[],imagesOK=false,REFS=[];
 var FATAL=['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed','session_expired','rate_limited'];
-var COPY={not_granted:'Kunci akses Nexaoffice salah atau belum diisi. Buka Pengaturan AI di atas.',not_configured:'Server Nexaoffice belum disetel (ZUNO_ACCESS_KEY di server).',user_key:'API key di Pengaturan AI ditolak penyedia. Periksa key dan modelnya, lalu simpan ulang.',byok_off:'Server ini tidak menerima API key dari halaman. Pakai mode Server di Pengaturan AI.',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.',sampling_disabled:'Claude tidak tersedia untuk akunmu di halaman ini.',not_declared:'Halaman ini belum diberi izin memanggil Claude.',capability_disabled:'Pemanggilan Claude tidak bisa dipakai di tampilan ini.',capability_removed:'Versi aplikasi belum mendukung fitur yang dibutuhkan. Perbarui lalu muat ulang.',session_expired:'Sesi berakhir. Masuk lagi lalu jalankan ulang.',rate_limited:'Batas pemakaian tercapai. Tunggu sebentar lalu jalankan lagi.',refused:'Claude menolak memproses bagian ini. Ubah bahan lalu coba lagi.',upstream_error:'Koneksi ke Claude terputus. Coba jalankan ulang.',invalid_json:'Salah satu agen menjawab dengan format yang tidak terbaca. Coba jalankan ulang.',no_recorder:'Browser ini tidak bisa merekam video. Coba buka di Chrome.',kode_terpotong:'Kode aplikasi belum lengkap (koneksi putus saat menulis). Klik "Coba lagi": Pengembang melanjutkan dari bagian terakhir, tidak mulai dari nol.'};
+var COPY={not_granted:'Kunci akses Nexaoffice salah atau belum diisi. Buka Pengaturan di atas.',not_configured:'Server Nexaoffice belum disetel (ZUNO_ACCESS_KEY di server).',user_key:'API key di Pengaturan AI ditolak penyedia. Periksa key dan modelnya, lalu simpan ulang.',byok_off:'Server ini tidak menerima API key dari halaman. Pakai mode Server di Pengaturan AI.',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.',sampling_disabled:'Claude tidak tersedia untuk akunmu di halaman ini.',not_declared:'Halaman ini belum diberi izin memanggil Claude.',capability_disabled:'Pemanggilan Claude tidak bisa dipakai di tampilan ini.',capability_removed:'Versi aplikasi belum mendukung fitur yang dibutuhkan. Perbarui lalu muat ulang.',session_expired:'Sesi berakhir. Masuk lagi lalu jalankan ulang.',rate_limited:'Batas pemakaian tercapai. Tunggu sebentar lalu jalankan lagi.',refused:'Claude menolak memproses bagian ini. Ubah bahan lalu coba lagi.',upstream_error:'Koneksi ke Claude terputus. Coba jalankan ulang.',invalid_json:'Salah satu agen menjawab dengan format yang tidak terbaca. Coba jalankan ulang.',no_recorder:'Browser ini tidak bisa merekam video. Coba buka di Chrome.',kode_terpotong:'Kode aplikasi belum lengkap (koneksi putus saat menulis). Klik "Coba lagi": Pengembang melanjutkan dari bagian terakhir, tidak mulai dari nol.'};
 
 function errMsg(e){
   if(!e)return COPY.upstream_error;
@@ -1648,6 +1734,8 @@ function rilisZip(B){
 }
 /* Kait uji: tes edisi jasa memeriksa isi paket rilis tanpa menjalankan Build App penuh. */
 window.ZunoUji=window.ZunoUji||{};window.ZunoUji.rilisZip=rilisZip;
+/* Aturan tim untuk menu Tambah agen (Workspace Nexaoffice): Hana (H.1, Divisi HRD) dan agen tambahan memakai aturan dan susunan prompt yang sama. */
+window.ZunoTim={aturan:BASE,prompt:P};
 /* Kait hasil untuk halaman induk (Workspace Nexaoffice: chat ZUNO dan simpan ke folder lokal). Hanya membaca keadaan. */
 function nmAman(t){return String(t==null?'':t).replace(/[\\\/:*?"<>|\x00-\x1f]+/g,' ').replace(/\s+/g,' ').trim().replace(/[. ]+$/,'').slice(0,80)||'hasil'}
 window.ZunoHasil={

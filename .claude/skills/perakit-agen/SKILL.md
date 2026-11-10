@@ -7,6 +7,8 @@ description: Use when Zulnan asks for a new AI agent or skill that Zuno does not
 
 Diadaptasi dari skill `writing-skills` milik obra/superpowers (MIT, lisensi di `.claude/skills/writing-skills/LICENSE`). Intinya sama: **agen baru diuji seperti kode**. Lihat dulu agen gagal tanpa aturan baru (RED), tulis aturan yang menutup kegagalan itu (GREEN), lalu tambal celah (REFACTOR). Aturan Zuno selalu menang atas isi skill ini.
 
+**Pemilik:** H.1 Perekrut & Pelatih Agen (Hana, Divisi HRD; `agents/19-pelatih-agen-hrd.md`). Agen tambahan yang dibuat Zulnan lewat menu Pengaturan > Tambah agen di Workspace bisa diunduh profilnya (.md, format `agents/`); bila mau dijadikan agen tetap di repo, skill ini yang dipakai (penempatan, uji, pendaftaran).
+
 **Prinsip:** kalau belum melihat agen gagal tanpa skill, kamu tidak tahu skill itu mengajarkan hal yang benar. Cek kata kunci (grep, regex) bukan uji perilaku.
 
 ## Keluaran wajib (urut)

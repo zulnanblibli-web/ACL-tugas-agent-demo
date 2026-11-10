@@ -39,13 +39,13 @@ export function bangunRuangKerja(varian) {
     ? '<body>\n' + part('studio-hero.html') + '<div class="wrap">'
     : '<body>\n' + heroHud() + '\n<div class="ws-title" id="ruangKerja">RUANG KERJA</div>\n<div class="ws-layout">\n<div class="wrap">');
   swap('</div><!-- /wsBuild -->\n</div>', nexa
-    ? '</div><!-- /wsBuild -->\n</div>\n</div><!-- /ws-kanan -->\n</main>\n' + part('studio-tail.html') + '\n' + part('pengaturan-ai.html')
+    ? '</div><!-- /wsBuild -->\n</div>\n</div><!-- /ws-kanan -->\n</main>\n' + part('studio-tail.html') + '\n' + part('pengaturan-ai.html') + '\n' + part('tim-agen.html')
     : '</div><!-- /wsBuild -->\n</div>\n' + part('flow.html') + '</div><!-- /ws-layout -->\n' + part('tail.html') + '\n' + part('pengaturan-ai.html'));
   swap('\n<script>\n', nexa
-    ? '\n<script src="/live.js"></script>\n<script src="/hud.js"></script>\n<script src="/pengaturan-ai.js"></script>\n<script src="/office/kendali.js"></script>\n<script src="/studio-nexa.js" defer></script>\n<script src="/site/gerak.js" defer></script>\n<script src="/ui.js" defer></script>\n<script src="/serah.js" defer></script>\n<script>\n'
+    ? '\n<script src="/live.js"></script>\n<script src="/hud.js"></script>\n<script src="/pengaturan-ai.js"></script>\n<script src="/office/kendali.js"></script>\n<script src="/studio-nexa.js" defer></script>\n<script src="/site/gerak.js" defer></script>\n<script src="/ui.js" defer></script>\n<script src="/serah.js" defer></script>\n<script src="/tim-agen.js" defer></script>\n<script>\n'
     : '\n<script src="/live.js"></script>\n<script src="/hud.js"></script>\n<script src="/pengaturan-ai.js"></script>\n<script src="/motion.js" defer></script>\n<script>\n');
   // Pesan error disesuaikan untuk versi web.
-  swap("not_granted:'Izin Claude belum diberikan.'", "not_granted:'Kunci akses " + (nexa ? 'Nexaoffice' : 'Zuno') + " salah atau belum diisi. Buka Pengaturan AI di atas.',not_configured:'Server " + (nexa ? 'Nexaoffice' : 'Zuno') + " belum disetel (ZUNO_ACCESS_KEY di server).',user_key:'API key di Pengaturan AI ditolak penyedia. Periksa key dan modelnya, lalu simpan ulang.',byok_off:'Server ini tidak menerima API key dari halaman. Pakai mode Server di Pengaturan AI.',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.'");
+  swap("not_granted:'Izin Claude belum diberikan.'", "not_granted:'Kunci akses " + (nexa ? 'Nexaoffice' : 'Zuno') + " salah atau belum diisi. Buka " + (nexa ? 'Pengaturan' : 'Pengaturan AI') + " di atas.',not_configured:'Server " + (nexa ? 'Nexaoffice' : 'Zuno') + " belum disetel (ZUNO_ACCESS_KEY di server).',user_key:'API key di Pengaturan AI ditolak penyedia. Periksa key dan modelnya, lalu simpan ulang.',byok_off:'Server ini tidak menerima API key dari halaman. Pakai mode Server di Pengaturan AI.',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.'");
   swap("info.textContent='Halaman ini baru bisa menjalankan agen saat dibuka di claude.ai dan diberi izin memakai Claude.'", "info.textContent='Server " + (nexa ? 'Nexaoffice' : 'Zuno') + " tidak bisa dihubungi. Muat ulang halaman.'");
   if (nexa) {
     // Tab format: Konten / Build App.
