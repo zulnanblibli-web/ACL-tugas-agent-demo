@@ -717,7 +717,7 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - Situs (`nexa-sematan.*`): pratinjau selalu Ringan, kamera lebih dekat dari sisi kolam (lebar/kotak/tinggi), label zona cukup nomor (nama saat disorot) supaya nama agen terbaca.
   - `kendali.js`: Workspace The Grotto kini per agen seperti tema lain (agen tahap jalan ke meja, yang lain istirahat), "Kamera ikut agen" mendekati agen yang baru bekerja; catatan "belum per agen" dihapus.
 - Bukti: tes baru repo jasa `test:nexa-kendali` (siaga 17/18 istirahat, Raka + Fajar kembali dan tetap bekerja 400 detik, yang lain tetap santai, santai lagi meninggalkan meja, status, reset); `test:nexa-animation` sesi lain tetap lolos; uji Playwright situs (19 label terlihat dengan kegiatan, demo jalan, kualitas Ringan, Workspace siaga 17/18 istirahat, kerja R.1 + T.3 ke meja, label "Riset tren", nol galat JS). Tes lengkap lolos: Zuno tiga tes stub, `nexaoffice-chat-test` dan `nexaoffice-situs-test` SEMUA LOLOS, `zuno-jasa-test` SEMUA LOLOS; repo jasa `test:simulation`, `test:office`, `test:themes`, `test:layar`, `test:nexa`, `test:nexa-seating`, `test:nexa-animation`, `test:nexa-kendali`.
-- Belum di-push: permintaan ini tidak menyebut push; menunggu kata Zulnan.
+- Push (izin Zulnan "oke push dan deploy"): Zuno `2139d02`, jasa `main` `c683fb8`. Deploy Vercel `dpl_Ev9Cu2wPEAuKNWLy3sBaAbjp93eR` READY (alias zuno-studio-dusky.vercel.app); dicek live: `/office/nexa-sematan.js` versi baru (Ringan + kamera dekat).
 - Batas: render di cloud tanpa GPU sangat lambat (sekitar 2 detik simulasi per 27 detik nyata), jadi kelancaran di laptop belum terukur dari sini; label di ruangan yang ramai (pantry saat semua santai) masih bisa saling menempel.
 
 ## 72. (entri berikutnya di sini)
