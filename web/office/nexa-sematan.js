@@ -22,10 +22,16 @@
     var s = window.nexaStudio;
     if (!s) { if (Date.now() - mulai < 30000) setTimeout(tunggu, 150); return; }
     var kual = document.getElementById('quality');
-    if ((q.get('kualitas') === 'ringan' || window.innerWidth < 760) && kual) { kual.value = 'low'; kual.dispatchEvent(new Event('change')); }
+    // Pratinjau di situs selalu Ringan (tanpa efek pascaproses dan bayangan) supaya gerak agen lancar di laptop biasa.
+    if (kual) { kual.value = 'low'; kual.dispatchEvent(new Event('change')); }
     var diam = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // Workspace (?asli=1): agen diam sampai halaman induk bilang ada tahap yang jalan.
-    if (q.get('asli') === '1' && s.animation && s.animation.running) s.animation.pause();
+    // Pratinjau di situs: kamera lebih dekat dari depan (sisi kolam) supaya studio memenuhi bingkai.
+    if (q.get('ringkas') === '1' && s.view) {
+      var c = document.getElementById('canvas'), r = c ? c.clientWidth / Math.max(1, c.clientHeight) : 1.6;
+      if (r >= 1.3) s.view([0, 44, 64], [0, 0, 8], true);
+      else if (r >= 0.85) s.view([0, 46, 62], [0, 0, 6], true);
+      else s.view([0, 78, 104], [0, 0, 8], true);
+    }
     if (q.get('demo') === '1' && !diam && s.animation && !s.animation.running) { var play = document.getElementById('play'); if (play) play.click(); else s.animation.start(); }
     try { parent.postMessage({ nexaKantor: 'siap' }, location.origin); } catch (e) {}
   })();

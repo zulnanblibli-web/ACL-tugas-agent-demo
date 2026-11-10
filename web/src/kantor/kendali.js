@@ -5,6 +5,9 @@
 (function () {
   'use strict';
   var KUNCI = 'nexa-office-theme';
+  // Urutan 18 agen di The Grotto (nexa/data.js team) sama dengan urutan agen Nexaoffice.
+  var KODE = ['L.0', 'L.1', 'R.1', 'R.2', 'P.1', 'P.2', 'D.1', 'E.1', 'E.2', 'E.3', 'Q.1', 'Q.2', 'M.1', 'T.1', 'T.2', 'T.3', 'T.4', 'T.5'];
+  var diam = function () { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; };
   function simpanTema(id) { try { localStorage.setItem(KUNCI, id); } catch (e) {} }
   function temaTersimpan() { try { return localStorage.getItem(KUNCI); } catch (e) { return null; } }
 
@@ -30,7 +33,7 @@
       try { nexa = w && w.nexaStudio && w.nexaStudio.animation ? w.nexaStudio : null; } catch (e) { nexa = null; }
       if (office || nexa) {
         // The Grotto baru dimuat: samakan gerak agen dengan status kerja yang sudah tercatat (siaga = diam).
-        if (nexa && asli) { try { gerakGrotto(nexa); } catch (e) {} }
+        if (nexa && asli) { try { terapkanGrotto(nexa); } catch (e) {} }
         var a = antre; antre = []; a.forEach(function (fn) { try { fn(); } catch (e) {} }); return true;
       }
       return false;
@@ -60,8 +63,9 @@
       if (office || nexa) { try { jalan(); } catch (e) {} } else antre.push(jalan);
     }
     function pindah(src) { office = null; nexa = null; iframe.setAttribute('src', src); tunggu(); }
-    // The Grotto belum punya kendali per agen: agen bergerak selama ada agen yang bekerja, diam saat semua siaga.
-    function gerakGrotto(n) { var ada = Object.keys(sibuk).some(function (k) { return sibuk[k]; }); if (ada && !n.animation.running) n.animation.start(); else if (!ada && n.animation.running) n.animation.pause(); }
+    // The Grotto: agen yang tahapnya jalan kembali dan tetap di mejanya, yang lain istirahat (kendali per agen, seperti tema lain).
+    function grottoKerja(n, ids, kerja) { ids.forEach(function (id) { var i = KODE.indexOf(id); if (i > -1 && n.setWork) n.setWork(i, kerja); }); if (!n.animation.running && !diam()) n.animation.start(); }
+    function terapkanGrotto(n) { Object.keys(sibuk).forEach(function (id) { var i = KODE.indexOf(id); if (i > -1 && n.setWork) n.setWork(i, !!sibuk[id]); }); if (!n.animation.running && !diam()) n.animation.start(); }
     return {
       get siap() { return !!(office || nexa); },
       get grotto() { return !!nexa; },
@@ -74,9 +78,9 @@
       luar: function () { lakukan(function (o) { o.exterior(); }, function (n) { n.roof(true); }); },
       dalam: function () { lakukan(function (o) { o.interior(); }, function (n) { n.roof(false); }); },
       demo: function (jalan) { lakukan(function (o) { if (jalan) o.demo.start(false); else o.demo.pause(); }, function (n) { if (jalan) n.animation.start(); else n.animation.pause(); }); },
-      kerja: function (ids) { ids.forEach(function (id) { sibuk[id] = true; }); lakukan(function (o) { if (!o.demo.running) o.demo.start(false); ids.forEach(function (id) { o.demo.setWork(id, true); }); }, gerakGrotto); },
-      santai: function (ids) { ids.forEach(function (id) { sibuk[id] = false; }); lakukan(function (o) { if (!o.demo.running) o.demo.start(false); ids.forEach(function (id) { o.demo.setWork(id, false); }); }, gerakGrotto); },
-      fokus: function (id) { lakukan(function (o) { o.selectAgent(id); }); },
+      kerja: function (ids) { ids.forEach(function (id) { sibuk[id] = true; }); lakukan(function (o) { if (!o.demo.running) o.demo.start(false); ids.forEach(function (id) { o.demo.setWork(id, true); }); }, function (n) { grottoKerja(n, ids, true); }); },
+      santai: function (ids) { ids.forEach(function (id) { sibuk[id] = false; }); lakukan(function (o) { if (!o.demo.running) o.demo.start(false); ids.forEach(function (id) { o.demo.setWork(id, false); }); }, function (n) { grottoKerja(n, ids, false); }); },
+      fokus: function (id) { lakukan(function (o) { o.selectAgent(id); }, function (n) { var i = KODE.indexOf(id); if (i > -1 && n.focusActor) n.focusActor(i); }); },
       lantai: function (n) { lakukan(function (o) { o.floor(String(n)); }); }
     };
   };

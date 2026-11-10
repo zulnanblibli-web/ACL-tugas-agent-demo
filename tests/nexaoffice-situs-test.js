@@ -166,7 +166,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     ok('Hasil kerja agen live: tulisan agen Engineering tampil per agen (' + live.slice(0, 4).join(', ') + ')', live.length > 0 && live.some((x) => /^(Arga|Rani|Fajar|Tio|Damar):/.test(x)) && (await p.isVisible('#bprocp')));
     await p.click('[data-tema="senja"]'); await p.waitForTimeout(400);
     ok('Workspace: tema kantor bisa diganti', kantorUI && (await p.evaluate(() => document.getElementById('kantorIframe').contentWindow.zunoOffice.state.theme)) === 'senja');
-    ok('Workspace: pilihan tema The Grotto ada, catatannya tersembunyi saat tema lain', (await p.$$('.ws-kantor [data-tema="grotto"]')).length === 1 && !(await p.isVisible('.ui-grotto')));
+    ok('Workspace: pilihan tema The Grotto ada', (await p.$$('.ws-kantor [data-tema="grotto"]')).length === 1);
     if (await p.$('#bstop:not([disabled])')) await p.click('#bstop');
 
     // ---------- 6. Pengaturan AI: API key lokal dikirim per permintaan ----------
