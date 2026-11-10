@@ -84,7 +84,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     await p.waitForTimeout(4000);
     const pos2 = siap ? await p.evaluate(() => JSON.stringify(document.getElementById('kantorIframe').contentWindow.zunoOffice.sceneAgents().map((a) => a.position.map((x) => x.toFixed(2))))) : '';
     ok('hero: agen benar-benar bergerak (posisi berubah)', siap && pos1 !== pos2);
-    ok('hero: ditandai simulasi, bukan pekerjaan AI asli', /Simulasi gerak agen, bukan pekerjaan AI asli/.test(await p.textContent('#beranda')));
+    ok('hero: tanpa tulisan simulasi di bawah kantor (permintaan Zulnan 2026-11-10)', !/Simulasi gerak agen/.test(await p.textContent('#beranda')));
     ok('hero: kantor tidak menahan scroll sebelum Jelajahi diklik', (await p.$eval('#kantorIframe', (f) => getComputedStyle(f).pointerEvents)) === 'none');
     await p.click('#heroJelajah');
     ok('hero: Jelajahi kantor mengaktifkan putar/zoom', (await p.$eval('#kantorIframe', (f) => getComputedStyle(f).pointerEvents)) === 'auto' && (await p.getAttribute('#heroJelajah', 'aria-pressed')) === 'true');
@@ -202,6 +202,8 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     ok('tautan lama ?perintah= mengisi ruang kerja dan alamat dibersihkan', (await p4.inputValue('#cmd')) === 'tes tautan lama' && !/perintah=/.test(p4.url()));
 
     // ---------- 9. HP ----------
+    // Tutup halaman sebelumnya: tiap halaman menjalankan kantor 3D (render perangkat lunak di cloud), yang masih terbuka berebut CPU.
+    for (const lama of [p, p3, p4]) await lama.close().catch(() => {});
     const m = await browser.newPage({ viewport: { width: 375, height: 800 } });
     await m.goto(U + '/');
     ok('HP: tautan menu tersembunyi sebelum Menu diklik', !(await m.isVisible('.nav-links a[href="#biaya"]')));
