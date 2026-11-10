@@ -678,4 +678,19 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File berubah: `web/src/site/index.html`, `web/index.html`, `tests/nexaoffice-situs-test.js`, catatan.
 - Push (izin Zulnan "push dan deploy"): `692d371`. Deploy Vercel `dpl_Fq3rovDN2E1nRhxzDfHWzpz39GaY` READY (alias zuno-studio-dusky.vercel.app).
 
-## 69. (entri berikutnya di sini)
+## 69. Visual The Grotto di situs live dan HUD jasa (2026-11-10)
+- Permintaan Zulnan: baca `docs/HANDOFF_CLAUDE_GROTTO_VISUAL.md` dan `docs/PROMPT_CLAUDE_GROTTO_VISUAL.md` di repo jasa (ditulis sesi lain), jalankan, lalu push dan deploy ke zuno-studio-dusky.vercel.app.
+- Temuan sebelum mengedit:
+  - Handoff menunjuk `index.html`/`hud.css` repo jasa, padahal zuno-studio-dusky dibangun dari repo Zuno (halaman Nexaoffice: `web/src/site/*`, `web/src/studio-nexa.css`). Revisi diterapkan ke situs live **dan** HUD jasa, dari sumber Zuno (file jasa itu ditimpa tiap ekspor).
+  - Ekspor jasa akan **menghapus `assets/nexa`** (aset The Grotto) dan menimpa perubahan sesi lain di `index.html` (tombol "JELAJAHI NEXA STUDIO 3D") dan `server.mjs` (berkas `.hdr`). Diamankan: `KEEP_ASSETS` + `nexa`, `.hdr` masuk `web/dev-server.mjs`, teks tombol di `web/src/hero.html`.
+- Hasil (hanya presentasi; layout, teks, ID/kelas, alur tetap):
+  - Token `web/src/site/tokens.css`: palet The Grotto (latar #14241f, header #12221e, surface #132720/#1f3229, teks #f1eadb, judul #fbf0dc, muted #c0bba9, aksen #d6b67b, hover #e1c595, garis rgba(229,203,148,.19)), judul Georgia, isi Arial. Warna status error/peringatan/sukses/info tetap berbeda.
+  - Halaman utama + Workspace: judul serif gading tanpa gradient, tombol utama emas dengan teks hijau gelap, cahaya emas tipis diam, font Antonio/Onest/Space Grotesk tidak dimuat lagi.
+  - Gerak: masuk sekali 8-12 px / 350-500 ms, jeda per item 40-60 ms dengan total maks. 300 ms (`gerak.js`, `motion.js`), hover 160-220 ms, tekan 0,99. Dihapus: kilau judul berulang, aurora bergerak, kilau per huruf berulang, putaran cincin inti HUD saat siaga, robot melayang/kedip/scanline. Yang tersisa berulang hanya penanda status asli (kantor 3D sedang dimuat, inti HUD saat agen bekerja). Reduced-motion tetap mematikan semuanya.
+  - HUD jasa (`web/src/hud.css`, `motion.js`, string CSS `tools/jasa/files/brand.js`, gradient SVG inti di `web/src/hero.html`): biru neon jadi hijau-gading-emas, judul ZUNO serif, label tanpa tracking lebar, Orbitron tidak dimuat. Font alat pembuat konten (Anton, Archivo, dll.) tetap.
+  - Tiga tema kantor, scene The Grotto, pose agen: tidak disentuh.
+- Bukti: kontras dihitung (terendah 5,23:1, teks utama 13,47:1, tombol emas 8,32:1); screenshot sebelum/sesudah desktop 1440 + HP 390 (situs, Workspace, HUD jasa, dialog Pengaturan AI dan brand), tanpa geser samping. Tes Zuno: `zuno-web-stub-test`, `zuno-studio-v2-stub-test`, `zuno-studio-v2-build-stub-test` lolos; `nexaoffice-chat-test` dan `nexaoffice-situs-test` SEMUA LOLOS (cek baru: judul Georgia gading, isi Arial, latar hijau, tombol emas); `zuno-jasa-test` SEMUA LOLOS. Repo jasa: `test:themes` (tiga tema), `test:nexa` (The Grotto 15 zona, pilih tema 3 lalu kembali; sekali habis waktu saat scroll, lolos saat diulang), `test:nexa-animation`, `test:nexa-seating` lolos; `server.mjs` hasil ekspor menyajikan `nexa.html` dan `.hdr` (200).
+- Push (izin Zulnan "push dan deploy" di permintaan ini).
+- Batas: video alur Remotion dan gambar robot HUD masih bernuansa biru (aset konten/ilustrasi asli, tidak diubah). The Grotto belum jadi pilihan tema di situs Zuno (handoff melarang menambah kartu tema; kantor Zuno masih bundel tanpa Grotto).
+
+## 70. (entri berikutnya di sini)

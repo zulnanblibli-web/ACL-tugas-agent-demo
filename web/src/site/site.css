@@ -1,19 +1,16 @@
 /* Hallmark · shape: reception desk (the live building is the hero) · genre: atmospheric · theme: custom · job: try · idea: "The site is the front desk of an AI office: the hero is the office itself with the team moving; you give your own order in Workspace." · vibe: "night office, electric blue, condensed, calm"
- * paper: oklch(14% 0.022 250) · accent: oklch(70% 0.16 238) · display: Antonio 700 · body: Onest 400/700 · outlier: JetBrains Mono (unused on this page) · hero: headline left, one sentence and two actions right, then the real 3D office zoomed to the studio floor with agents walking (labelled simulation) · nav: wordmark left, anchors centre, one quiet action · footer: one row, wordmark, links, credit · imagery: the product (the live 3D office embedded, agent portraits, Remotion animation of the flow) · signature: the live 3D office in the hero, explorable on demand
- * axes: dark/display-condensed/chromatic-blue · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
-/* Hallmark · pre-emit critique: P3 H3 E2 S3 R2 V3 · weakest: E (dark ground with one blue accent is the reference the owner asked for), kept the blue to controls, focus and progress only, no glow */
+ * paper: #14241f (The Grotto) · accent: #d6b67b warm gold · display: Georgia 400 · body: Arial 400/700 · outlier: JetBrains Mono (unused on this page) · hero: headline left, one sentence and two actions right, then the real 3D office zoomed to the studio floor with agents walking (labelled simulation) · nav: wordmark left, anchors centre, one quiet action · footer: one row, wordmark, links, credit · imagery: the product (the live 3D office embedded, agent portraits, Remotion animation of the flow) · signature: the live 3D office in the hero, explorable on demand
+ * axes: dark/display-serif/chromatic-gold · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P3 H3 E3 S3 R2 V3 · weakest: R (owner-specified palette and pairing from The Grotto 3D theme, 2026-11-10: forest green, ivory, one warm gold accent, Georgia heads, Arial UI); gold kept to actions, focus and progress */
 /* waive 79: the hero visual is the live 3D office inside an iframe (the render tier counts it as empty); it fills the screen below the head */
-/* waive 2a/29-adjacent: near-black with one blue accent is the owner's reference image (JumpBot screenshot), applied without glows or gradients */
+/* waive 2a/29-adjacent: dark forest ground with one gold accent is the owner's The Grotto palette, applied without glows or gradients on text */
 @import url("./tokens.css");
 @import url("./base.css");
 @import url("./gerak.css");
 
-@font-face { font-family: "Antonio"; src: url("../assets/fonts/antonio-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "Onest"; src: url("../assets/fonts/onest-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "Onest"; src: url("../assets/fonts/onest-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 
 body { font-size: 1.0625rem; }
-h1, h2, h3 { font-weight: 700; letter-spacing: var(--tracking-display); line-height: 1.02; color: var(--color-ink); }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; letter-spacing: var(--tracking-display); line-height: 1.08; color: var(--color-heading); }
 h2 { font-size: var(--text-section); max-width: 22ch; }
 .skip { position: absolute; left: var(--space-md); top: calc(var(--space-2xl) * -1); z-index: var(--z-toast); background: var(--color-accent); color: var(--color-accent-ink); padding: var(--space-xs) var(--space-md); border-radius: var(--radius-control); }
 .skip:focus-visible { top: var(--space-md); }
@@ -21,10 +18,10 @@ h2 { font-size: var(--text-section); max-width: 22ch; }
 /* ---------- controls ---------- */
 .btn { white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--space-lg); border-radius: var(--radius-pill); font-weight: 700; font-size: var(--text-md); text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
 .btn-primary { background: var(--color-accent); color: var(--color-accent-ink); }
-.btn-primary:hover { background: var(--color-focus); }
+.btn-primary:hover { background: var(--color-accent-hover); }
 .btn-ghost { background: transparent; color: var(--color-ink); border-color: var(--color-rule-strong); }
 .btn-ghost:hover { border-color: var(--color-accent); color: var(--color-ink); }
-.btn:active { transform: translateY(1px); }
+.btn:active { transform: scale(0.99); }
 .btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; transition: none; }
 .btn[disabled] { opacity: 0.55; cursor: not-allowed; }
 .btn[aria-busy="true"] { cursor: progress; }
@@ -32,10 +29,10 @@ h2 { font-size: var(--text-section); max-width: 22ch; }
 .text-link:hover { color: var(--color-ink); text-decoration-color: var(--color-accent); }
 
 /* ---------- nav ---------- */
-.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-paper) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-rule); }
+.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-header) 94%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-rule); }
 .nav-row { display: flex; align-items: center; gap: var(--space-xl); min-height: 64px; }
-.wordmark { font-family: var(--font-display); font-weight: 700; font-size: 1.75rem; letter-spacing: 0.01em; text-decoration: none; color: var(--color-ink); }
-.wordmark:hover { color: var(--color-ink-2); }
+.wordmark { font-family: var(--font-display); font-weight: 400; font-size: 1.75rem; letter-spacing: -0.02em; text-decoration: none; color: var(--color-heading); }
+.wordmark:hover { color: var(--color-accent-hover); }
 .nav nav { flex: 1; min-width: 0; }
 .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--space-lg); justify-content: center; }
 .nav-links a { white-space: nowrap; color: var(--color-ink-2); text-decoration: none; font-size: var(--text-sm); padding: var(--space-xs) 0; transition: color var(--dur-short) var(--ease-out); }
@@ -79,7 +76,7 @@ main > section + section { border-top: 1px solid var(--color-rule); }
 .tabs button:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
 .steps { list-style: none; counter-reset: s; margin: var(--space-lg) 0 0; padding: 0; display: grid; gap: var(--space-lg); }
 .steps li { counter-increment: s; display: grid; grid-template-columns: 3rem minmax(0, 1fr); column-gap: var(--space-sm); color: var(--color-ink-2); }
-.steps li::before { content: counter(s, decimal-leading-zero); grid-row: span 2; font-family: var(--font-display); font-weight: 700; font-size: var(--text-2xl); color: var(--color-accent); line-height: 1; }
+.steps li::before { content: counter(s, decimal-leading-zero); grid-row: span 2; font-family: var(--font-display); font-weight: 400; font-size: var(--text-2xl); color: var(--color-accent); line-height: 1; }
 .steps strong { display: block; color: var(--color-ink); }
 .alur-video { margin: 0; position: relative; }
 .alur-video video { width: 100%; border-radius: var(--radius-card); border: 1px solid var(--color-rule); background: var(--color-paper-2); }
@@ -90,7 +87,7 @@ main > section + section { border-top: 1px solid var(--color-rule); }
 .tim-grid { list-style: none; margin: var(--space-xl) 0 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-lg) var(--gap-columns); }
 .tim-grid li { display: grid; gap: var(--space-2xs); }
 .tim-grid img { width: 100%; height: 132px; object-fit: contain; background: var(--color-paper-2); border-radius: var(--radius-card); padding: var(--space-sm) 0; }
-.tim-grid b { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 700; color: var(--color-ink); margin-top: var(--space-xs); }
+.tim-grid b { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; color: var(--color-heading); margin-top: var(--space-xs); }
 .tim-grid span { font-size: var(--text-sm); color: var(--color-ink-2); }
 
 .paket-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--space-2xl); }
@@ -155,28 +152,26 @@ td { color: var(--color-ink-2); }
 
 /* ---------- gerak halaman utama (modul bersama: gerak.css, gerak.js) ---------- */
 .stage-penuh { z-index: 2; }
-.nx-gerak .nav { animation: nx-turun 600ms var(--ease-out) backwards; }
-.nx-gerak .hero-actions { animation: nx-naik 800ms var(--ease-out) 620ms backwards; }
-.nx-gerak .hero-stage { animation: nx-naik 900ms var(--ease-out) 760ms backwards; }
-.nx-gerak .steps li { animation: nx-naik 520ms var(--ease-out) backwards; }
-.nx-gerak .steps li:nth-child(2) { animation-delay: 90ms; }
-.nx-gerak .steps li:nth-child(3) { animation-delay: 180ms; }
-.nx-gerak .faq-list details[open] p { animation: nx-naik 420ms var(--ease-out) backwards; }
-.nav-links a { background: linear-gradient(90deg, #fff, var(--nx-biru)) 0 100% / 0 2px no-repeat; transition: color var(--dur-short) var(--ease-out), background-size 320ms var(--ease-out); }
-.nav-links a:hover, .nav-links a[aria-current="true"] { background-size: 100% 2px; }
-.btn-primary { position: relative; overflow: hidden; }
-.btn-primary::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(105deg, transparent 35%, oklch(100% 0 0 / 0.55) 50%, transparent 65%); translate: -120% 0; transition: translate 700ms var(--ease-out); }
-.tema-kartu img, .tim-grid img { transition: scale 420ms var(--ease-out), translate 420ms var(--ease-out); }
-.tim-grid b, .isi dt { transition: color var(--dur-short) var(--ease-out), translate 320ms var(--ease-out); }
+.nx-gerak .nav { animation: nx-turun 400ms var(--ease-out) backwards; }
+.nx-gerak .hero-actions { animation: nx-naik 450ms var(--ease-out) 240ms backwards; }
+.nx-gerak .hero-stage { animation: nx-naik 500ms var(--ease-out) 300ms backwards; }
+.nx-gerak .steps li { animation: nx-naik 400ms var(--ease-out) backwards; }
+.nx-gerak .steps li:nth-child(2) { animation-delay: 50ms; }
+.nx-gerak .steps li:nth-child(3) { animation-delay: 100ms; }
+.nx-gerak .faq-list details[open] p { animation: nx-naik 220ms var(--ease-out) backwards; }
+.nav-links a { background: linear-gradient(var(--color-accent), var(--color-accent)) 0 100% / 0 1px no-repeat; transition: color var(--dur-short) var(--ease-out), background-size var(--dur-short) var(--ease-out); }
+.nav-links a:hover, .nav-links a[aria-current="true"] { background-size: 100% 1px; }
+.btn-primary { box-shadow: 0 8px 24px -16px var(--color-accent); }
+.tema-kartu img, .tim-grid img { transition: scale var(--dur-short) var(--ease-out), translate var(--dur-short) var(--ease-out); }
+.tim-grid b, .isi dt { transition: color var(--dur-short) var(--ease-out), translate var(--dur-short) var(--ease-out); }
 .isi dt { display: block; }
 @media (hover: hover) {
-  .btn-primary:hover::after { translate: 120% 0; }
-  .tema-kartu:hover img { scale: 1.02; }
-  .tim-grid li:hover img { translate: 0 -6px; scale: 1.06; }
+  .tema-kartu:hover img { scale: 1.01; }
+  .tim-grid li:hover img { translate: 0 -3px; }
   .tim-grid li:hover b { color: var(--color-accent); }
-  .isi > div:hover dt { translate: 6px 0; color: var(--color-accent); }
+  .isi > div:hover dt { translate: 3px 0; color: var(--color-accent); }
 }
 @supports (animation-timeline: view()) {
   .nx-gerak .tema-kartu img { animation: nx-apung linear both; animation-timeline: view(); }
-  @keyframes nx-apung { from { translate: 0 12px; } to { translate: 0 -12px; } }
+  @keyframes nx-apung { from { translate: 0 6px; } to { translate: 0 -6px; } }
 }

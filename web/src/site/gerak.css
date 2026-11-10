@@ -1,70 +1,60 @@
 /* Nexaoffice: gerak bersama semua halaman (utama, Workspace, galeri karakter). Kelas dipasang site/gerak.js.
-   Semua gerak hanya aktif bila html punya kelas nx-gerak, yang tidak dipasang saat pemakai meminta gerak dikurangi. */
+   Semua gerak hanya aktif bila html punya kelas nx-gerak, yang tidak dipasang saat pemakai meminta gerak dikurangi.
+   Bahasa visual The Grotto (2026-11-10): emas hangat yang tenang, masuk sekali (8-12 px, 350-500 ms), tanpa kilau berulang. */
 :root {
   --nx-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --nx-biru: oklch(72% 0.17 240);
-  --nx-biru-muda: oklch(90% 0.06 232);
-  --nx-gradient: linear-gradient(95deg, #fff 0%, var(--nx-biru-muda) 30%, var(--nx-biru) 50%, var(--nx-biru-muda) 75%, #fff 100%);
+  --nx-emas: var(--color-accent, #d6b67b);
+  --nx-emas-muda: var(--color-accent-hover, #e1c595);
 }
 
-/* Penanda muat kantor 3D, hilang saat kantor siap */
-.kantor-muat { position: absolute; inset: 0; z-index: 1; display: grid; place-content: center; justify-items: center; gap: 12px; pointer-events: none; background: radial-gradient(60% 60% at 50% 45%, oklch(66% 0.17 242 / 0.18), transparent 75%), var(--color-paper-2); transition: opacity 450ms var(--nx-ease); }
+/* Penanda muat kantor 3D, hilang saat kantor siap (ikut status muat asli, bukan progres palsu) */
+.kantor-muat { position: absolute; inset: 0; z-index: 1; display: grid; place-content: center; justify-items: center; gap: 12px; pointer-events: none; background: radial-gradient(60% 60% at 50% 45%, var(--color-glow), transparent 75%), var(--color-paper-2); transition: opacity 400ms var(--nx-ease); }
 .kantor-muat.selesai { opacity: 0; }
 .kantor-muat[hidden] { display: none; }
-.kantor-muat b { font: 600 1.25rem var(--font-display); background: var(--nx-gradient) 0 0 / 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: nx-sapu 1600ms ease-in-out infinite alternate; }
-.kantor-muat i { position: relative; width: 160px; height: 3px; overflow: hidden; border-radius: 999px; background: var(--color-rule); }
-.kantor-muat i::after { content: ""; position: absolute; inset: 0; width: 40%; background: linear-gradient(90deg, transparent, #fff, var(--nx-biru)); animation: nx-geser 1200ms ease-in-out infinite; }
+.kantor-muat b { font: 400 1.25rem var(--font-display); color: var(--color-heading); }
+.kantor-muat i { position: relative; width: 160px; height: 2px; overflow: hidden; border-radius: 999px; background: var(--color-rule); }
+.kantor-muat i::after { content: ""; position: absolute; inset: 0; width: 40%; background: linear-gradient(90deg, transparent, var(--nx-emas)); animation: nx-geser 1400ms ease-in-out infinite; }
 
 /* Garis kemajuan scroll di tepi atas (browser tanpa dukungan scroll timeline cukup tanpa garis ini) */
 @supports (animation-timeline: scroll()) {
-  html.nx-gerak::before { content: ""; position: fixed; inset: 0 0 auto; height: 2px; z-index: 1000; pointer-events: none; transform-origin: 0 50%; background: linear-gradient(90deg, var(--nx-biru-muda), var(--nx-biru)); animation: nx-progres linear both; animation-timeline: scroll(root block); }
+  html.nx-gerak::before { content: ""; position: fixed; inset: 0 0 auto; height: 2px; z-index: 1000; pointer-events: none; transform-origin: 0 50%; background: var(--nx-emas); opacity: 0.7; animation: nx-progres linear both; animation-timeline: scroll(root block); }
 }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
 /* Teks yang dipecah per kata: disembunyikan sampai siap, supaya tidak berkedip. Cadangan 3 detik bila skrip gagal. */
 .nx-gerak :is(#judul, #judulRuang, .hero .lead, .studio-lead, body > header h1, body > header p):not(.nx-siap) { opacity: 0; animation: nx-tunjuk 1ms 3s forwards; }
-.nx-kata { display: inline-block; animation: nx-kata 600ms var(--nx-ease) var(--d, 0ms) backwards; }
+.nx-kata { display: inline-block; animation: nx-kata 450ms var(--nx-ease) var(--d, 0ms) backwards; }
 
-/* Judul halaman utama: warna tetap, kilau biru-putih lewat berkala */
-.nx-judul-kata, .nx-k {
-  --nx-lewat: linear-gradient(90deg, var(--color-ink) 0 40%, var(--nx-biru-muda) 46%, var(--nx-biru) 50%, #fff 54%, var(--color-ink) 60% 100%);
-  display: inline-block; padding-bottom: 0.12em; margin-bottom: -0.12em;
-  background: var(--nx-lewat) 100% 0 / 300% 100%;
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent;
-}
-.nx-judul-kata { animation: nx-huruf-naik 900ms var(--nx-ease) var(--d, 0ms) backwards, nx-lewat-ulang 8s ease-in-out calc(var(--i) * 140ms + 1400ms) infinite; }
-.nx-k { transition: opacity 700ms var(--nx-ease) var(--d, 0ms), translate 700ms var(--nx-ease) var(--d, 0ms); }
-.nx-judul:not(.nx-tampak) .nx-k { opacity: 0; translate: 0 0.7em; }
-.nx-judul.nx-tampak .nx-k { animation: nx-lewat 1500ms ease-out calc(var(--d, 0ms) + 250ms); }
+/* Judul: warna gading tetap, masuk sekali per kata */
+.nx-judul-kata, .nx-k { display: inline-block; }
+.nx-judul-kata { animation: nx-naik-kecil 480ms var(--nx-ease) var(--d, 0ms) backwards; }
+.nx-k { transition: opacity 450ms var(--nx-ease) var(--d, 0ms), translate 450ms var(--nx-ease) var(--d, 0ms); }
+.nx-judul:not(.nx-tampak) .nx-k { opacity: 0; translate: 0 10px; }
 
-/* Muncul saat discroll; item yang terlihat bersamaan masuk bergantian (--d) */
-.nx-muncul { transition: opacity 800ms var(--nx-ease) var(--d, 0ms), translate 800ms var(--nx-ease) var(--d, 0ms), scale 800ms var(--nx-ease) var(--d, 0ms); }
-.nx-muncul:not(.nx-tampak) { opacity: 0; translate: 0 28px; }
-.nx-muncul.nx-kiri:not(.nx-tampak) { translate: -36px 0; }
-.nx-muncul.nx-kanan:not(.nx-tampak) { translate: 36px 0; }
-.nx-muncul.nx-zoom:not(.nx-tampak) { translate: 0 20px; scale: 0.96; }
+/* Muncul saat discroll; item yang terlihat bersamaan masuk bergantian (--d, total maks. 300 ms) */
+.nx-muncul { transition: opacity 450ms var(--nx-ease) var(--d, 0ms), translate 450ms var(--nx-ease) var(--d, 0ms); }
+.nx-muncul:not(.nx-tampak) { opacity: 0; translate: 0 10px; }
+.nx-muncul.nx-kiri:not(.nx-tampak) { translate: -10px 0; }
+.nx-muncul.nx-kanan:not(.nx-tampak) { translate: 10px 0; }
+.nx-muncul.nx-zoom:not(.nx-tampak) { translate: 0 10px; }
 
 /* Galeri karakter */
-main > article { transition: translate 320ms var(--nx-ease), box-shadow 320ms var(--nx-ease); }
-main > article img { transition: translate 420ms var(--nx-ease), scale 420ms var(--nx-ease); }
+main > article { transition: translate 200ms var(--nx-ease), box-shadow 200ms var(--nx-ease); }
+main > article img { transition: translate 200ms var(--nx-ease); }
 @media (hover: hover) {
-  main > article:hover { translate: 0 -4px; box-shadow: 0 16px 30px -22px rgb(30 60 45 / 0.55); }
-  main > article:hover img { translate: 0 -6px; scale: 1.05; }
+  main > article:hover { translate: 0 -3px; box-shadow: 0 16px 30px -22px rgb(30 60 45 / 0.55); }
+  main > article:hover img { translate: 0 -4px; }
 }
 
-@keyframes nx-huruf-naik { from { opacity: 0; transform: translateY(0.55em) rotate(4deg); filter: blur(6px); } }
-@keyframes nx-kata { from { opacity: 0; transform: translateY(0.5em); filter: blur(4px); } }
-@keyframes nx-naik { from { opacity: 0; transform: translateY(18px); } }
-@keyframes nx-turun { from { opacity: 0; transform: translateY(-12px); } }
-@keyframes nx-sapu { from { background-position: 100% 0; } to { background-position: 0 0; } }
-@keyframes nx-lewat { from { background-position: 100% 0; } to { background-position: 0 0; } }
-@keyframes nx-lewat-ulang { 0% { background-position: 100% 0; } 26%, 100% { background-position: 0 0; } }
+@keyframes nx-naik-kecil { from { opacity: 0; transform: translateY(10px); } }
+@keyframes nx-kata { from { opacity: 0; transform: translateY(8px); } }
+@keyframes nx-naik { from { opacity: 0; transform: translateY(10px); } }
+@keyframes nx-turun { from { opacity: 0; transform: translateY(-8px); } }
 @keyframes nx-geser { from { transform: translateX(-100%); } to { transform: translateX(350%); } }
 @keyframes nx-progres { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes nx-tunjuk { to { opacity: 1; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .kantor-muat b, .kantor-muat i::after { animation: none; }
+  .kantor-muat i::after { animation: none; }
   main > article, main > article img { transition: none; }
 }

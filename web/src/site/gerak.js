@@ -50,10 +50,11 @@
   }
   var q = function (s) { return document.querySelector(s); };
   if ($('judulRuang')) perHuruf($('judulRuang'));
-  perKata($('judul'), 'nx-judul-kata', 110, 120);
-  perKata(q('.studio-lead, .hero .lead'), 'nx-kata', 26, 420);
-  perKata(q('body > header h1'), 'nx-kata', 70, 80);
-  perKata(q('body > header p'), 'nx-kata', 22, 320);
+  // Jeda per kata kecil supaya seluruh teks masuk dalam sekitar 300 ms (bahasa gerak The Grotto).
+  perKata($('judul'), 'nx-judul-kata', 50, 60);
+  perKata(q('.studio-lead, .hero .lead'), 'nx-kata', 12, 160);
+  perKata(q('body > header h1'), 'nx-kata', 45, 40);
+  perKata(q('body > header p'), 'nx-kata', 12, 140);
 
   /* ---------- muncul saat discroll ---------- */
   if (!('IntersectionObserver' in window)) return;
@@ -61,17 +62,17 @@
     var n = 0;
     es.forEach(function (e) {
       if (!e.isIntersecting) return;
-      var el = e.target, d = Math.min(n++, 10) * Number(el.getAttribute('data-nx-jeda') || 0);
+      var el = e.target, d = Math.min(n++ * Number(el.getAttribute('data-nx-jeda') || 0), 300);
       io.unobserve(el);
       el.style.setProperty('--d', d + 'ms');
       el.classList.add('nx-tampak');
       // Lepas transisi masuk supaya efek hover setelahnya tidak ikut tertunda.
-      setTimeout(function () { el.classList.remove('nx-muncul'); el.style.removeProperty('--d'); }, d + 950);
+      setTimeout(function () { el.classList.remove('nx-muncul'); el.style.removeProperty('--d'); }, d + 600);
     });
   }, { rootMargin: '0px 0px -6% 0px' });
 
   document.querySelectorAll('main > section h2').forEach(function (h) {
-    perKata(h, 'nx-k', 55, 0);
+    perKata(h, 'nx-k', 40, 0);
     h.classList.add('nx-judul');
     io.observe(h);
   });
@@ -79,12 +80,12 @@
     ['.wrap .panel', '', 0],
     ['.alur-copy', 'nx-kiri', 0],
     ['.alur-video', 'nx-kanan', 0],
-    ['.tema-kartu', 'nx-zoom', 110],
-    ['.tim-grid > li', '', 45],
-    ['.isi > div', '', 60],
-    ['.biaya tbody tr', '', 70],
+    ['.tema-kartu', 'nx-zoom', 60],
+    ['.tim-grid > li', '', 40],
+    ['.isi > div', '', 50],
+    ['.biaya tbody tr', '', 50],
     ['.biaya .note', '', 0],
-    ['.faq-list > details', '', 70],
+    ['.faq-list > details', '', 50],
     ['.footer', '', 0],
     ['main > article', 'nx-zoom', 40]
   ].forEach(function (g) {

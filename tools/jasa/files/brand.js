@@ -134,11 +134,11 @@
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
   function ui() {
     var css = document.createElement('style');
-    css.textContent = '#zbBtn{position:fixed;left:14px;bottom:14px;z-index:60;font:700 12px/1 var(--hud,system-ui);letter-spacing:.14em;padding:11px 14px;border-radius:6px;border:1px solid var(--glow,#3fb6ff);background:rgba(6,16,30,.92);color:var(--ink,#dcebff);cursor:pointer}' +
-      '#zbDlg{max-width:640px;width:calc(100% - 32px);border:1px solid var(--line,#1c3a60);border-radius:12px;background:var(--surface-2,#0c1b31);color:var(--ink,#dcebff);padding:18px}' +
-      '#zbDlg::backdrop{background:rgba(0,0,0,.6)}#zbDlg label{display:block;font-weight:600;margin:12px 0 4px}#zbDlg small{display:block;color:var(--muted,#8ea7c7);margin-bottom:4px}' +
-      '#zbDlg input,#zbDlg textarea{width:100%;box-sizing:border-box;font:inherit;color:inherit;background:var(--bg,#050a12);border:1px solid var(--line,#1c3a60);border-radius:8px;padding:9px 11px}#zbDlg textarea{min-height:76px}' +
-      '#zbDlg .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}#zbDlg button{font:600 14px system-ui;padding:9px 14px;border-radius:8px;border:1px solid var(--line,#1c3a60);background:var(--surface,#09141f);color:inherit;cursor:pointer}#zbDlg button.p{background:var(--accent,#2f9bff);border-color:var(--accent,#2f9bff);color:#fff}' +
+    css.textContent = '#zbBtn{position:fixed;left:14px;bottom:14px;z-index:60;font:700 12px/1 var(--hud,system-ui);letter-spacing:.08em;padding:11px 14px;border-radius:6px;border:1px solid var(--glow,#d6b67b);background:rgba(18,34,30,.94);color:var(--ink,#f1eadb);cursor:pointer}' +
+      '#zbDlg{max-width:640px;width:calc(100% - 32px);border:1px solid var(--line,#3c4435);border-radius:12px;background:var(--surface-2,#1f3229);color:var(--ink,#f1eadb);padding:18px}' +
+      '#zbDlg h2{font:400 22px Georgia,"Times New Roman",serif;color:#fbf0dc}#zbDlg::backdrop{background:rgba(7,17,13,.85)}#zbDlg label{display:block;font-weight:600;margin:12px 0 4px}#zbDlg small{display:block;color:var(--muted,#c0bba9);margin-bottom:4px}' +
+      '#zbDlg input,#zbDlg textarea{width:100%;box-sizing:border-box;font:inherit;color:inherit;background:var(--bg,#14241f);border:1px solid var(--line,#3c4435);border-radius:8px;padding:9px 11px}#zbDlg textarea{min-height:76px}' +
+      '#zbDlg .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}#zbDlg button{font:600 14px Arial,Helvetica,sans-serif;padding:9px 14px;border-radius:8px;border:1px solid var(--line,#3c4435);background:var(--surface,#132720);color:inherit;cursor:pointer}#zbDlg button.p{background:var(--accent,#d6b67b);border-color:var(--accent,#d6b67b);color:#14241f}' +
       '@media(max-width:860px){#zbBtn{bottom:auto;top:12px;left:12px}}';
     document.head.appendChild(css);
     var btn = document.createElement('button');
@@ -146,7 +146,7 @@
     var d = document.createElement('dialog');
     d.id = 'zbDlg';
     d.setAttribute('aria-labelledby', 'zbTitle');
-    var raw = B, h = '<h2 id="zbTitle" style="margin:0 0 6px">Pengaturan brand</h2><p style="margin:0;color:var(--muted,#8ea7c7)">Isi sekali. Semua agen memakai data ini. Tersimpan di browser ini; pakai Ekspor/Impor untuk memindahkan ke perangkat lain.</p>';
+    var raw = B, h = '<h2 id="zbTitle" style="margin:0 0 6px">Pengaturan brand</h2><p style="margin:0;color:var(--muted,#c0bba9)">Isi sekali. Semua agen memakai data ini. Tersimpan di browser ini; pakai Ekspor/Impor untuk memindahkan ke perangkat lain.</p>';
     FIELDS.forEach(function (f) {
       var v = raw[f[0]];
       if (f[0] === 'pilar') v = (raw.pilar || []).join('\n');

@@ -98,8 +98,8 @@ function copyDir(a, b, top = false) {
     else if (!SKIP_ASSET.test(f)) copyFileSync(s, join(b, f));
   }
 }
-// Folder aset milik repo jasa sendiri (Kantor 3D: 18 GLB agen, preview tema) tidak ikut dihapus.
-const KEEP_ASSETS = ['agents', 'themes'];
+// Folder aset milik repo jasa sendiri (Kantor 3D: 18 GLB agen, preview tema; The Grotto: assets/nexa) tidak ikut dihapus.
+const KEEP_ASSETS = ['agents', 'themes', 'nexa'];
 if (existsSync(join(out, 'assets'))) for (const f of readdirSync(join(out, 'assets'))) if (!KEEP_ASSETS.includes(f)) rmSync(join(out, 'assets', f), { recursive: true, force: true });
 copyDir(join(web, 'assets'), join(out, 'assets'), true);
 

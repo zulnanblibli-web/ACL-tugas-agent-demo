@@ -1,10 +1,8 @@
-/* Nexaoffice: tampilan ruang kerja (/studio.html). Warna dan huruf sama dengan halaman utama (web/src/site/tokens.css).
+/* Nexaoffice: tampilan ruang kerja (/studio.html). Warna dan huruf sama dengan halaman utama (web/src/site/tokens.css, palet The Grotto).
    Logika dan kelas berasal dari prototypes/zuno-studio-v2.html; file ini hanya menimpa variabel dan gaya. */
 @import url("/site/tokens.css");
 @import url("/site/gerak.css");
 
-@font-face { font-family: "Onest"; src: url("/assets/fonts/onest-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "Onest"; src: url("/assets/fonts/onest-latin-700-normal.woff2") format("woff2"); font-weight: 500 700; font-display: swap; }
 @font-face { font-family: "JetBrains Mono"; src: url("/assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 
 /* ---------- variabel prototipe -> palet Nexaoffice (terang/gelap sistem diabaikan: Nexaoffice selalu gelap) ---------- */
@@ -15,7 +13,7 @@ html:root {
   --accent: var(--color-accent); --accent-soft: var(--color-accent-soft);
   --warn: oklch(82% 0.13 78); --warn-soft: oklch(30% 0.06 78);
   --bad: oklch(74% 0.15 25); --bad-soft: oklch(29% 0.07 25);
-  --info: oklch(80% 0.11 236); --info-soft: oklch(27% 0.05 245);
+  --info: oklch(82% 0.07 215); --info-soft: oklch(30% 0.04 200);
   --font: var(--font-body);
 }
 html, body { overflow-x: clip; }
@@ -31,7 +29,7 @@ body { font-family: var(--font-body); color: var(--color-ink); -webkit-font-smoo
 /* ---------- menu (sama dengan halaman utama) ---------- */
 .nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-paper) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-rule); }
 .nav-row { display: flex; align-items: center; gap: var(--space-xl); min-height: 64px; }
-.wordmark { font-family: var(--font-display); font-weight: 700; font-size: 1.75rem; letter-spacing: 0.01em; text-decoration: none; color: var(--color-ink); }
+.wordmark { font-family: var(--font-display); font-weight: 400; font-size: 1.75rem; letter-spacing: -0.02em; text-decoration: none; color: var(--color-heading); }
 .wordmark:hover { color: var(--color-ink-2); }
 .nav nav { flex: 1; min-width: 0; }
 .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--space-lg); justify-content: center; }
@@ -79,7 +77,6 @@ textarea { font-family: var(--font-outlier); }
 .wrap a { color: var(--info); }
 
 .hud-dlg { max-width: 440px; width: calc(100% - 32px); border: 1px solid var(--color-rule-strong); border-radius: var(--radius-card); background: var(--color-paper-2); color: var(--color-ink); padding: var(--space-lg); }
-.hud-dlg::backdrop { background: oklch(8% 0.02 250 / 0.75); }
 .hud-dlg input { width: 100%; font: inherit; border: 1px solid var(--color-muted); border-radius: var(--radius-control); padding: 10px 12px; margin-top: var(--space-sm); }
 
 .nx-footer { border-top: 1px solid var(--color-rule); padding-block: var(--space-xl); }
@@ -238,85 +235,58 @@ textarea { font-family: var(--font-outlier); }
 }
 @media (prefers-reduced-motion: reduce) { .studio-status .bar i, .nx-btn, .btn, .nav-links a { transition: none; } }
 
-/* ---------- Sentuhan tipografi dan gerak Workspace: gradient putih-biru ---------- */
-html:root {
-  --font-display: "Space Grotesk", "Onest", ui-sans-serif, system-ui, sans-serif;
-  --tracking-display: -0.035em;
-  --nx-kilau: linear-gradient(90deg, #fff 0%, #fff 12%, var(--nx-biru-muda) 32%, var(--nx-biru) 52%, var(--nx-biru-muda) 72%, #fff 92%, #fff 100%);
-  --nx-gradient-tombol: linear-gradient(100deg, #fff 0%, oklch(88% 0.08 232) 42%, oklch(72% 0.16 240) 100%);
-}
+/* ---------- Tipografi dan gerak Workspace: bahasa visual The Grotto (2026-11-10) ----------
+   Hijau hutan, gading, satu aksen emas; judul serif, kontrol sans-serif; gerak masuk sekali, hover 160-220 ms. */
 
-/* Cahaya biru-putih di belakang halaman, latar tetap gelap supaya gradient teks kebaca. */
+/* Cahaya emas tipis (cove glow) di belakang halaman, diam. */
 body::before {
-  content: ""; position: fixed; inset: -18vmax; z-index: -1; pointer-events: none;
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(42vmax 30vmax at 78% 18%, oklch(97% 0.02 235 / 0.1), transparent 70%),
-    radial-gradient(60vmax 44vmax at 14% 8%, oklch(66% 0.17 242 / 0.2), transparent 72%),
-    radial-gradient(50vmax 40vmax at 62% 88%, oklch(58% 0.16 250 / 0.14), transparent 70%);
-  animation: nx-aurora 26s ease-in-out infinite alternate;
-  will-change: transform;
+    radial-gradient(60vmax 40vmax at 80% 0%, var(--color-glow), transparent 70%),
+    radial-gradient(50vmax 36vmax at 10% 100%, rgba(41, 63, 48, 0.55), transparent 70%);
 }
-.nav { border-bottom-color: transparent; }
-.nav::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--nx-biru) 30%, #fff 55%, var(--nx-biru) 78%, transparent); opacity: 0.45; }
+.nav { background: color-mix(in oklab, var(--color-header) 94%, transparent); }
 
-/* Judul dan tulisan bergradient */
-.wordmark, .wrap h2, .hud-dlg h2, #judulRuang {
-  width: fit-content;
-  background: var(--nx-gradient) 0 0 / 200% 100%;
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent;
-}
-.wordmark { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; transition: background-position 700ms var(--ease-out); }
-.wordmark:hover { color: transparent; background-position: 60% 0; }
-.wrap h2, .hud-dlg h2 { font-weight: 600; letter-spacing: -0.02em; padding-bottom: 0.08em; }
-#judulRuang { padding-bottom: 0.12em; }
-.nx-gerak #judulRuang { background: none; color: var(--color-ink); }
-.nx-huruf {
-  --t: 6s;
-  display: inline-block; padding: 0 0.02em 0.14em; margin: 0 -0.02em -0.14em;
-  background: var(--nx-kilau) 0 0 / calc(var(--n) * 100%) 100%;
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent;
-  animation:
-    nx-huruf-naik 800ms var(--ease-out) calc(var(--i) * 45ms + 120ms) backwards,
-    nx-kilau var(--t) linear calc(var(--i) * var(--t) / var(--n) - var(--t)) infinite;
-}
-.nx-tampak h2 { animation: nx-sapu 1400ms var(--ease-out) backwards; }
+/* Judul serif gading */
+.wordmark, .wrap h2, .hud-dlg h2, #judulRuang { color: var(--color-heading); }
+.wrap h2, .hud-dlg h2, .ws-kanan h2, .chat-head h2 { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.01em; }
+.wordmark { font-size: 1.5rem; transition: color var(--dur-short) var(--ease-out); }
+.wordmark:hover { color: var(--color-accent-hover); }
+#judulRuang { font-family: var(--font-display); font-weight: 400; }
+.nx-huruf { display: inline-block; animation: nx-naik 450ms var(--ease-out) calc(var(--i) * 30ms) backwards; }
 
-.studio-status dt { font: 400 0.75rem var(--font-outlier); letter-spacing: 0.08em; text-transform: uppercase; }
-.nav-links a { background: linear-gradient(90deg, #fff, var(--nx-biru)) 0 100% / 0 2px no-repeat; transition: color var(--dur-short) var(--ease-out), background-size 320ms var(--ease-out); }
-.nav-links a:hover, .nav-links a[aria-current="page"] { background-size: 100% 2px; }
-.nav-links a[aria-current="page"] { text-decoration: none; }
+.studio-status dt { font: 400 0.75rem var(--font-body); letter-spacing: 0.04em; color: var(--color-muted); }
+.nav-links a { background: linear-gradient(var(--color-accent), var(--color-accent)) 0 100% / 0 1px no-repeat; transition: color var(--dur-short) var(--ease-out), background-size var(--dur-short) var(--ease-out); }
+.nav-links a:hover, .nav-links a[aria-current="page"] { background-size: 100% 1px; }
+.nav-links a[aria-current="page"] { text-decoration: none; color: var(--color-ink); }
 
-/* Tombol utama dan tab aktif */
+/* Tombol utama dan tab aktif: emas berisi, teks hijau gelap */
 .btn.primary, .btn.primary:hover:not(:disabled), .nx-primary, .nx-primary:hover, .tab[aria-selected=true] {
-  background-color: var(--nx-biru); background-image: var(--nx-gradient-tombol); background-size: 170% 100%; background-origin: border-box;
-  border-color: transparent; color: var(--color-accent-ink);
+  background: var(--color-accent); border-color: transparent; color: var(--color-accent-ink);
 }
-.btn.primary, .nx-primary { transition: background-position 420ms var(--ease-out), box-shadow 320ms var(--ease-out), translate 220ms var(--ease-out); }
-.btn.primary:hover:not(:disabled), .nx-primary:hover { background-position: 70% 0; box-shadow: 0 10px 30px -12px var(--nx-biru); translate: 0 -1px; }
+.btn.primary, .nx-primary, .btn, .tab { transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+.btn.primary:hover:not(:disabled), .nx-primary:hover { background: var(--color-accent-hover); box-shadow: 0 8px 24px -16px var(--color-accent); }
+.btn:active:not(:disabled), .tab:active, .nx-primary:active { transform: scale(0.99); }
 
 /* Panel dan kolom isian */
-.panel { background: linear-gradient(165deg, var(--color-paper-3), var(--color-paper-2) 55%); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.06); }
-textarea, select, input[type=text], input[type=password] { transition: border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out); }
-textarea:focus, select:focus, input[type=text]:focus, input[type=password]:focus { border-color: var(--nx-biru); box-shadow: 0 0 0 3px var(--color-accent-soft); }
-.live-item[data-s="jalan"] { box-shadow: 0 0 26px -12px var(--nx-biru); }
+.panel { background: var(--color-paper-2); box-shadow: inset 0 1px 0 rgba(241, 234, 219, 0.04), 0 18px 40px -30px rgba(0, 0, 0, 0.6); }
+textarea, select, input[type=text], input[type=password] { background-color: var(--color-paper-3); transition: border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out); }
+textarea:focus, select:focus, input[type=text]:focus, input[type=password]:focus { border-color: var(--color-accent); box-shadow: 0 0 0 3px var(--color-accent-soft); }
+.live-item[data-s="jalan"] { box-shadow: 0 0 24px -14px var(--color-accent); }
+.hud-dlg::backdrop { background: var(--color-backdrop); }
 
 /* Penanda muat kantor 3D, hilang saat kantor siap */
 .ui-kantor-frame { position: relative; }
-/* Gerak masuk halaman dan saat discroll (kelas dipasang studio-nexa.js) */
-.nx-gerak .nav { animation: nx-turun 600ms var(--ease-out) backwards; }
-.nx-gerak .ws-kantor > * { animation: nx-naik 800ms var(--ease-out) backwards; }
-.nx-gerak .ws-kantor > :nth-child(2) { animation-delay: 80ms; }
-.nx-gerak .ws-kantor > :nth-child(3) { animation-delay: 160ms; }
-.nx-gerak .ws-kantor > :nth-child(4) { animation-delay: 240ms; }
-.nx-gerak .ws-kanan > .wrap { animation: nx-naik 800ms var(--ease-out) 620ms backwards; }
-.nx-gerak .live-item { animation: nx-naik 500ms var(--ease-out) backwards; }
-
-@keyframes nx-aurora { to { transform: translate3d(4vmax, 3vmax, 0) scale(1.08); } }
-@keyframes nx-kilau { from { background-position: var(--akhir) 0; } to { background-position: 0 0; } }
+/* Gerak masuk halaman (kelas dipasang studio-nexa.js): sekali, total di bawah sekitar 300 ms jeda */
+.nx-gerak .nav { animation: nx-turun 400ms var(--ease-out) backwards; }
+.nx-gerak .ws-kantor > * { animation: nx-naik 450ms var(--ease-out) backwards; }
+.nx-gerak .ws-kantor > :nth-child(2) { animation-delay: 50ms; }
+.nx-gerak .ws-kantor > :nth-child(3) { animation-delay: 100ms; }
+.nx-gerak .ws-kantor > :nth-child(4) { animation-delay: 150ms; }
+.nx-gerak .ws-kanan > .wrap { animation: nx-naik 450ms var(--ease-out) 200ms backwards; }
+.nx-gerak .live-item { animation: nx-naik 350ms var(--ease-out) backwards; }
 
 @media (max-width: 40rem) { .nav-row .wordmark { font-size: 1.3rem; } }
 @media (prefers-reduced-motion: reduce) {
-  body::before, .wordmark, .wrap h2, .hud-dlg h2, .btn.primary, .nx-primary { animation: none; transition: none; }
+  .wordmark, .btn, .tab, .btn.primary, .nx-primary, .nx-huruf { animation: none; transition: none; }
 }

@@ -15,7 +15,7 @@
     var groups = new Map();
     els.forEach(function (el) {
       var p = el.parentElement, i = groups.get(p) || 0; groups.set(p, i + 1);
-      el.classList.add('rv'); el.style.setProperty('--d', Math.min(i, 8) * 70 + 'ms');
+      el.classList.add('rv'); el.style.setProperty('--d', Math.min(i * 50, 300) + 'ms');
     });
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });

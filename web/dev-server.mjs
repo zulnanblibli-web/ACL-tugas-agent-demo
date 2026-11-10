@@ -68,13 +68,13 @@ let PORT = Number(process.env.PORT || 3000);
 if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) PORT = 3000;
 const MIME = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
-  '.ico': 'image/x-icon', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.json': 'application/json', '.mp4': 'video/mp4', '.webm': 'video/webm', '.woff2': 'font/woff2', '.glb': 'model/gltf-binary'
+  '.ico': 'image/x-icon', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.json': 'application/json', '.mp4': 'video/mp4', '.webm': 'video/webm', '.woff2': 'font/woff2', '.hdr': 'application/octet-stream', '.glb': 'model/gltf-binary'
 };
 // Hanya berkas halaman yang disajikan: bukan .env.local, file bertitik, api/, node_modules, tools/, tes, .mjs, atau .json di luar assets/.
 function bolehDisajikan(rel) {
   if (!/^[A-Za-z0-9._\/-]+$/.test(rel) || rel.split('/').some((p) => !p || p.startsWith('.'))) return false;
   if (/^(api|node_modules|tools|tests|artifacts|preview|prototypes|docs|src)\//.test(rel)) return false;
-  return /\.(html|css|js|webp|png|jpe?g|svg|ico|glb|woff2|mp4|webm)$/.test(rel) || /^assets\/.+\.json$/.test(rel);
+  return /\.(html|css|js|webp|png|jpe?g|svg|ico|glb|hdr|woff2|mp4|webm)$/.test(rel) || /^assets\/.+\.json$/.test(rel);
 }
 function corsHeaders(req) {
   const o = String(req.headers.origin || '').replace(/\/+$/, '');

@@ -56,7 +56,9 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     const labels = await p.$$eval('.nav-links a', (as) => as.map((a) => a.textContent.trim()));
     ok('menu: 9 tautan berurutan (ala referensi + Chat), semua bagian ada (' + labels.join(' | ') + ')', labels.join('|') === 'Contoh hasil|Pilihan tema|Workspace|Chat|Isi kit|Panduan|Harga|Tanya jawab|Produk lain' && (await p.evaluate((a) => a.filter((h) => h[0] === '#').every((h) => !!document.querySelector(h)), anchors)));
     ok('menu: Workspace ke /studio.html, tombol Pesan kit ke Harga', (await p.getAttribute('.nav-links a:text-is("Workspace")', 'href')) === '/studio.html' && (await p.textContent('.nav-cta')).trim() === 'Pesan kit' && (await p.getAttribute('.nav-cta', 'href')) === '#biaya');
-    ok('font Antonio dan Onest termuat', await p.evaluate(async () => { await document.fonts.ready; return document.fonts.check('700 20px Antonio') && document.fonts.check('400 16px Onest'); }));
+    // Bahasa visual The Grotto (2026-11-10): judul Georgia gading, isi Arial, latar hijau hutan, aksen emas.
+    const gaya = await p.evaluate(() => { const cs = (q) => getComputedStyle(document.querySelector(q)); return { h1: cs('h1').fontFamily, h1warna: cs('h1').color, body: cs('body').fontFamily, latar: cs('body').backgroundColor, tombol: cs('.btn-primary').backgroundColor, tombolTeks: cs('.btn-primary').color }; });
+    ok('palet The Grotto: judul serif gading, isi Arial, latar hijau, tombol emas (' + JSON.stringify(gaya) + ')', /Georgia/.test(gaya.h1) && gaya.h1warna === 'rgb(251, 240, 220)' && /^Arial/.test(gaya.body) && gaya.latar === 'rgb(20, 36, 31)' && gaya.tombol === 'rgb(214, 182, 123)' && gaya.tombolTeks === 'rgb(20, 36, 31)');
     ok('gambar karakter termuat', await p.evaluate(async () => { const im = [...document.images]; im.forEach((i) => { i.loading = 'eager'; }); await Promise.all(im.map((i) => i.decode().catch(() => null))); return im.length >= 20 && im.every((i) => i.naturalWidth > 0); }));
     for (const a of ['/office/ruang.html', '/office/kendali.js', '/office/sematan.js', '/office/sematan.css', '/office/office.bundle.js', '/office/karakter.html', '/assets/agents/T.5.glb', '/assets/themes/senja.png', '/assets/nexaoffice-alur.webm', '/studio.html', '/ui.js', '/pengaturan-ai.js', '/serah.js']) {
       const r = await p.request.get(U + a); ok('aset ' + a + ' 200', r.status() === 200);
@@ -108,7 +110,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     await p.click('.nav-links a[href="/studio.html"]');
     await p.waitForURL(/studio\.html/);
     ok('Workspace: judul dan menu aktif', (await p.title()) === 'Nexaoffice · Workspace' && (await p.textContent('h1')).trim() === 'Workspace' && (await p.getAttribute('.nav-links a[href="/studio.html"]', 'aria-current')) === 'page');
-    ok('Workspace: tampilan Nexaoffice (tanpa HUD lama, huruf Space Grotesk)', !(await p.$('.hud-title')) && !(await p.$('link[href="/hud.css"]')) && (await p.$eval('h1', (e) => getComputedStyle(e).fontFamily)).includes('Space Grotesk'));
+    ok('Workspace: tampilan Nexaoffice (tanpa HUD lama, judul serif The Grotto)', !(await p.$('.hud-title')) && !(await p.$('link[href="/hud.css"]')) && (await p.$eval('h1', (e) => getComputedStyle(e).fontFamily)).includes('Georgia'));
     await p.waitForFunction(() => document.getElementById('keyDlg').open, null, { timeout: 5000 }).catch(() => {});
     ok('tanpa kunci: Pengaturan AI terbuka sendiri, 3 pilihan sambungan', await p.$eval('#keyDlg', (d) => d.open) && (await p.$$eval('input[name="aiMode"]', (r) => r.map((x) => x.value).join())) === 'server,lokal,vps');
     await p.click('#keyDlg button[value="cancel"]');

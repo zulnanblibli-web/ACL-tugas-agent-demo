@@ -26,11 +26,11 @@ export function bangunRuangKerja(varian) {
   };
   const nexa = varian === 'nexa';
   swap('<title>Zuno Studio v2</title>', nexa
-    ? '<title>Nexaoffice · Workspace</title>\n<meta name="description" content="Workspace Nexaoffice: beri perintah, 18 agen AI bekerja di kantor 3D untuk riset, naskah, desain, dan build web app.">\n<meta name="author" content="Creative @nexamind.ai">\n<meta name="theme-color" content="#060b14">'
-    : '<title>ZUNO · Tim Agent AI</title>\n<meta name="description" content="Zuno: tim agent AI pribadi untuk riset, naskah, desain, dan build web app.">\n<meta name="author" content="Creative @nexamind.ai">\n<meta name="theme-color" content="#03060b">');
+    ? '<title>Nexaoffice · Workspace</title>\n<meta name="description" content="Workspace Nexaoffice: beri perintah, 18 agen AI bekerja di kantor 3D untuk riset, naskah, desain, dan build web app.">\n<meta name="author" content="Creative @nexamind.ai">\n<meta name="theme-color" content="#12221e">'
+    : '<title>ZUNO · Tim Agent AI</title>\n<meta name="description" content="Zuno: tim agent AI pribadi untuk riset, naskah, desain, dan build web app.">\n<meta name="author" content="Creative @nexamind.ai">\n<meta name="theme-color" content="#12221e">');
   swap('</style>\n</head>', nexa
-    ? '</style>\n<script>if(!matchMedia(\'(prefers-reduced-motion: reduce)\').matches)document.documentElement.classList.add(\'nx-gerak\')</script>\n<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">\n<link rel="preload" href="/assets/fonts/onest-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="/studio-nexa.css">\n</head>'
-    : '</style>\n<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">\n<link rel="stylesheet" href="/hud.css">\n</head>');
+    ? '</style>\n<script>if(!matchMedia(\'(prefers-reduced-motion: reduce)\').matches)document.documentElement.classList.add(\'nx-gerak\')</script>\n<link rel="stylesheet" href="/studio-nexa.css">\n</head>'
+    : '</style>\n<link rel="stylesheet" href="/hud.css">\n</head>');
   // Ruang kerja dan diagram "Cara kerja" (menurun) berdampingan, supaya proses terlihat tanpa scroll.
   // Nexaoffice: satu tempat kerja. Kantor 3D di kiri (agen ikut status kerja asli), perintah + format di kanan,
   // di bawahnya hasil kerja agen yang tampil live (menggantikan diagram "Cara kerja" dan panel Proses).
