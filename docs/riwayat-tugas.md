@@ -690,7 +690,7 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - HUD jasa (`web/src/hud.css`, `motion.js`, string CSS `tools/jasa/files/brand.js`, gradient SVG inti di `web/src/hero.html`): biru neon jadi hijau-gading-emas, judul ZUNO serif, label tanpa tracking lebar, Orbitron tidak dimuat. Font alat pembuat konten (Anton, Archivo, dll.) tetap.
   - Tiga tema kantor, scene The Grotto, pose agen: tidak disentuh.
 - Bukti: kontras dihitung (terendah 5,23:1, teks utama 13,47:1, tombol emas 8,32:1); screenshot sebelum/sesudah desktop 1440 + HP 390 (situs, Workspace, HUD jasa, dialog Pengaturan AI dan brand), tanpa geser samping. Tes Zuno: `zuno-web-stub-test`, `zuno-studio-v2-stub-test`, `zuno-studio-v2-build-stub-test` lolos; `nexaoffice-chat-test` dan `nexaoffice-situs-test` SEMUA LOLOS (cek baru: judul Georgia gading, isi Arial, latar hijau, tombol emas); `zuno-jasa-test` SEMUA LOLOS. Repo jasa: `test:themes` (tiga tema), `test:nexa` (The Grotto 15 zona, pilih tema 3 lalu kembali; sekali habis waktu saat scroll, lolos saat diulang), `test:nexa-animation`, `test:nexa-seating` lolos; `server.mjs` hasil ekspor menyajikan `nexa.html` dan `.hdr` (200).
-- Push (izin Zulnan "push dan deploy" di permintaan ini).
+- Push (izin Zulnan "push dan deploy" di permintaan ini): Zuno `9b4b638`, jasa `main` `29bdb49`. Deploy Vercel `dpl_2nhoDAYEPkFRFyuuvWJ93xpqM7rv` READY (alias zuno-studio-dusky.vercel.app); dicek live: `/site/tokens.css` berisi palet The Grotto.
 - Batas: video alur Remotion dan gambar robot HUD masih bernuansa biru (aset konten/ilustrasi asli, tidak diubah). The Grotto belum jadi pilihan tema di situs Zuno (handoff melarang menambah kartu tema; kantor Zuno masih bundel tanpa Grotto).
 
 ## 70. (entri berikutnya di sini)
