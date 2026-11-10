@@ -669,6 +669,13 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Biaya render: +13 draw call (223), segitiga ~143 ribu.
 - File berubah: repo jasa `office/data.js`, `office/scene.js`, `office/architecture.js`, `office/amenities.js`, `office/simulation.js`, `office/activity-view.js`, `office/app.js`, `office/screens.js` (baru), `office/office.bundle.js`, `office/README.md`, `tests/layar-owner.test.cjs` (baru), `package.json`, `preview/*`, `artifacts/office/*`; Zuno `web/src/site/index.html`, `web/index.html`, `web/office/office.bundle.js`, `tests/nexaoffice-situs-test.js`, catatan.
 - Push (izin Zulnan "oke push dan deploy"): Zuno `cddc9b5`, jasa `main` `fa04f44`. Deploy Vercel `dpl_J87QxEK1eWYbDjPYJdWSe5dNbCmY` READY (alias zuno-studio-dusky.vercel.app); dicek live: tulisan simulasi di hero sudah hilang.
-- Tertunda: performa di GPU laptop belum diuji; FAQ halaman utama "Agen bisa posting sendiri? Tidak." belum mengikuti aturan unggah baru (entri 66).
+- Tertunda: performa di GPU laptop belum diuji.
 
-## 68. (entri berikutnya di sini)
+## 68. FAQ posting ikut aturan unggah baru (2026-11-10)
+- Permintaan Zulnan: "oke ubah FAQ nya" (FAQ halaman utama masih "Agen bisa posting sendiri? Tidak.", tidak sesuai aturan unggah entri 66).
+- Hasil: jawaban jadi "Bisa, hanya konten di Antrian Posting yang sudah kamu setujui. Yang belum disetujui tidak pernah diunggah. Unggah jalan setelah sambungan posting (Metricool) kamu aktifkan; sebelum itu hasil disimpan di folder laptopmu."
+- Bukti: `nexaoffice-situs-test` SEMUA LOLOS (+1 cek FAQ posting); ekspor jasa hanya mengubah VERSI.txt (dikembalikan), `zuno-jasa-test` SEMUA LOLOS.
+- File berubah: `web/src/site/index.html`, `web/index.html`, `tests/nexaoffice-situs-test.js`, catatan.
+- Tertunda: push menunggu kata Zulnan.
+
+## 69. (entri berikutnya di sini)

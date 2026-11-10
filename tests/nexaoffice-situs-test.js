@@ -84,6 +84,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     await p.waitForTimeout(4000);
     const pos2 = siap ? await p.evaluate(() => JSON.stringify(document.getElementById('kantorIframe').contentWindow.zunoOffice.sceneAgents().map((a) => a.position.map((x) => x.toFixed(2))))) : '';
     ok('hero: agen benar-benar bergerak (posisi berubah)', siap && pos1 !== pos2);
+    ok('FAQ posting ikut aturan unggah: hanya yang disetujui, sambungan dari sisi pemakai', /Agen bisa posting sendiri\?\s*Bisa, hanya konten di Antrian Posting yang sudah kamu setujui\. Yang belum disetujui tidak pernah diunggah\./.test(await p.textContent('#faq')));
     ok('hero: tanpa tulisan simulasi di bawah kantor (permintaan Zulnan 2026-11-10)', !/Simulasi gerak agen/.test(await p.textContent('#beranda')));
     ok('hero: kantor tidak menahan scroll sebelum Jelajahi diklik', (await p.$eval('#kantorIframe', (f) => getComputedStyle(f).pointerEvents)) === 'none');
     await p.click('#heroJelajah');
