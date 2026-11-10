@@ -704,7 +704,7 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - Repo jasa `office/themes.js` + `theme-picker.js`: pindah ke The Grotto membawa parameter halaman (`themeHref`), jadi pilihan tersimpan "grotto" tetap membuka versi tertanam yang benar.
   - Jujur soal batas: The Grotto belum bisa menggerakkan agen per tahap. Di Workspace agennya diam saat siaga dan bergerak selama ada tahap yang jalan; catatan ini tampil di bawah kantor hanya saat The Grotto dipilih.
 - Bukti: uji Playwright khusus (hero ke The Grotto dan kembali, Workspace ke The Grotto: tanpa tombol simulasi, diam saat siaga, bergerak saat kerja, diam lagi saat santai, Atap; muat ulang dengan pilihan tersimpan membuka The Grotto dengan parameter Workspace; kembali ke Griya Langit dengan parameter sematan; `nexa.html` langsung tetap utuh; HP tanpa geser samping; nol galat JS). Tes otomatis: `nexaoffice-situs-test` SEMUA LOLOS (cek baru: tiga kartu, hero ke The Grotto tertanam lalu kembali ke Griya Langit, tombol The Grotto di Workspace), `nexaoffice-chat-test` SEMUA LOLOS, tiga tes stub lolos, `zuno-jasa-test` SEMUA LOLOS; repo jasa `test:simulation`, `test:office`, `test:themes`, `test:layar`, `test:nexa`, `test:nexa-seating` lolos.
-- Belum di-push: permintaan ini tidak menyebut push; menunggu kata Zulnan.
+- Push (izin Zulnan "oke push dan deploy"): Zuno `4f07bea`, jasa `main` `c9adfad`. Deploy Vercel `dpl_8Fea2fzAwd41bbZKE4UmWTHbFHCd` READY (alias zuno-studio-dusky.vercel.app); dicek live: `/nexa.html` dan `/office/nexa-sematan.css` tersaji (200).
 - Tertunda: kendali per agen di The Grotto (perlu `setWork` di `nexa/animation.js` repo jasa).
 
 ## 71. (entri berikutnya di sini)
