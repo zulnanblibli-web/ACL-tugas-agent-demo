@@ -676,6 +676,6 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Hasil: jawaban jadi "Bisa, hanya konten di Antrian Posting yang sudah kamu setujui. Yang belum disetujui tidak pernah diunggah. Unggah jalan setelah sambungan posting (Metricool) kamu aktifkan; sebelum itu hasil disimpan di folder laptopmu."
 - Bukti: `nexaoffice-situs-test` SEMUA LOLOS (+1 cek FAQ posting); ekspor jasa hanya mengubah VERSI.txt (dikembalikan), `zuno-jasa-test` SEMUA LOLOS.
 - File berubah: `web/src/site/index.html`, `web/index.html`, `tests/nexaoffice-situs-test.js`, catatan.
-- Tertunda: push menunggu kata Zulnan.
+- Push (izin Zulnan "push dan deploy"): `692d371`. Deploy Vercel `dpl_Fq3rovDN2E1nRhxzDfHWzpz39GaY` READY (alias zuno-studio-dusky.vercel.app).
 
 ## 69. (entri berikutnya di sini)
