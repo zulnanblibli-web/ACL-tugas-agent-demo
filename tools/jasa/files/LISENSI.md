@@ -17,6 +17,11 @@ Dengan memasang atau memakai Zuno Studio, penerima lisensi setuju dengan ketentu
 3. Membuat repo salinan menjadi publik.
 4. Menghapus keterangan lisensi ini dari repo.
 
+## Komponen pihak ketiga
+- Folder `.claude/skills` dan `.claude/agents` berisi skill sumber terbuka milik pihak lain (MIT atau Apache-2.0). Bagian itu **tetap tunduk pada lisensi aslinya** (file LICENSE di tiap folder), bukan pada ketentuan "Yang tidak boleh" di atas. Daftar dan sumbernya: `.claude/skills/README.md`.
+- Skill yang lisensi sebagian isinya tidak bisa dipastikan untuk dijual ulang (taste-skill, ui-styling) tidak ikut paket. Cara memasangnya sendiri ada di `PANDUAN-LOKAL.md` bagian 6; pemakaiannya mengikuti lisensi sumber masing-masing.
+- Claude Code dipasang dari installer resmi Anthropic dan dipakai dengan akun Claude atau API key milik penerima lisensi sendiri, mengikuti ketentuan Anthropic.
+
 ## API key dan biaya
 - Penerima lisensi memakai API key AI, akun Vercel, dan akun GitHub miliknya sendiri.
 - Biaya pemakaian AI dan hosting menjadi tanggungan penerima lisensi.

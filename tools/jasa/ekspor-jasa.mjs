@@ -132,6 +132,41 @@ if (jasaLokal) {
 { const vj = JSON.parse(readFileSync(join(web, 'vercel.json'), 'utf8')); delete vj.redirects; writeFileSync(join(out, 'vercel.json'), JSON.stringify(vj, null, 2) + '\n'); }
 for (const f of readdirSync(join(here, 'files'))) if (f !== 'brand.js') copyFileSync(join(here, 'files', f), join(out, f.replace(/^dot-/, '.')));
 
+// ---------- pasang lokal: skill, subagent, pemasang satu perintah (Zulnan 2026-11-11) ----------
+// Skill pihak ketiga ikut (lisensi MIT/Apache, LICENSE di tiap folder). Tidak ikut:
+// - lisensi isi belum pasti untuk dijual ulang (disarankan dipasang sendiri, PANDUAN-LOKAL.md bagian 6);
+// - skill khusus Zuno/Zulnan (aturan dan data pribadi).
+const keb = JSON.parse(readFileSync(join(root, 'tools', 'pasang', 'kebutuhan-skill.json'), 'utf8'));
+const SKILL_TAK_IKUT = new Set([...Object.keys(keb.tidak_ikut_jasa), ...keb.khusus_zuno]);
+const salinBersih = (a, b) => { // tanpa __pycache__ dan berkas .pyc
+  mkdirSync(b, { recursive: true });
+  for (const f of readdirSync(a)) {
+    if (f === '__pycache__' || f.endsWith('.pyc')) continue;
+    const s = join(a, f);
+    if (statSync(s).isDirectory()) salinBersih(s, join(b, f)); else copyFileSync(s, join(b, f));
+  }
+};
+const skillOut = join(out, '.claude', 'skills');
+rmSync(skillOut, { recursive: true, force: true });
+for (const d of readdirSync(join(root, '.claude', 'skills'))) {
+  const s = join(root, '.claude', 'skills', d);
+  if (!statSync(s).isDirectory() || SKILL_TAK_IKUT.has(d)) continue;
+  salinBersih(s, join(skillOut, d));
+}
+copyFileSync(join(here, 'skills-README.md'), join(skillOut, 'README.md'));
+mkdirSync(join(out, '.claude', 'agents'), { recursive: true });
+for (const f of readdirSync(join(root, '.claude', 'agents'))) if (/^impeccable-.*\.md$/.test(f)) copyFileSync(join(root, '.claude', 'agents', f), join(out, '.claude', 'agents', f));
+salinBersih(join(root, 'tools', 'pasang'), join(out, 'tools', 'pasang'));
+for (const f of ['pasang.bat', 'pasang.sh']) copyFileSync(join(root, f), join(out, f));
+// jalankan-lokal.bat: di repo jasa server.mjs ada di folder utama (bukan web\dev-server.mjs).
+let bat = readFileSync(join(root, 'jalankan-lokal.bat'), 'utf8');
+for (const [a, b] of [['Zuno Web lokal', 'Zuno Studio lokal'], ['"%~dp0web\\dev-server.mjs"', '"%~dp0server.mjs"'], ['cd /d "%~dp0web"', 'cd /d "%~dp0"'], ['node dev-server.mjs --buka', 'node server.mjs --buka']]) {
+  if (!bat.includes(a)) throw new Error('[jalankan-lokal.bat] penanda tidak ditemukan: ' + a);
+  bat = bat.split(a).join(b);
+}
+bat = bat.split('web\\server-lokal.log').join('server-lokal.log').split('web\\.env.local').join('.env.local').split('(sejajar dengan folder web)').join('(sejajar dengan server.mjs)').split('Folder "web" tidak ditemukan').join('server.mjs tidak ditemukan').split('Kirim isi server-lokal.log ke Claude Code').join('Kirim isi server-lokal.log ke penjual');
+writeFileSync(join(out, 'jalankan-lokal.bat'), bat);
+
 let ver = 'tidak diketahui';
 try { ver = execSync('git rev-parse --short HEAD', { cwd: root }).toString().trim(); } catch (e) {}
 writeFileSync(join(out, 'VERSI.txt'), 'Zuno Studio edisi jasa\nDiekspor: ' + new Date().toISOString().slice(0, 10) + '\nSumber Zuno: ' + ver + '\n');

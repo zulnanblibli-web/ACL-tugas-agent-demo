@@ -1,0 +1,29 @@
+{
+  "_catatan": "Kebutuhan tiap skill di .claude/skills untuk cek-kesiapan.mjs. alat = wajib supaya skill jalan penuh; opsional = fitur tambahan. Skill yang tidak tercantum = panduan saja (tanpa alat). Nama alat: git node node22 python ffmpeg ffmpeg7 uv claude browser blender yt-dlp docling graphify py:google-api-python-client py:google-auth-oauthlib py:google-genai lemo-library blender-mcp.",
+  "skill": {
+    "hallmark": { "alat": ["node"], "opsional": ["browser"], "catatan": "sloplint --render butuh browser" },
+    "impeccable": { "alat": ["node"], "opsional": ["browser"], "catatan": "program mesinnya diunduh otomatis dari GitHub saat pertama dipakai; mode live/deteksi butuh browser" },
+    "ui-ux-pro-max": { "alat": ["python"], "catatan": "kueri database pakai bahasa Inggris" },
+    "design-system": { "alat": ["python"] },
+    "slides": { "alat": [] },
+    "brand": { "alat": ["node"] },
+    "banner-design": { "alat": [], "opsional": ["py:google-genai"], "catatan": "gambar AI butuh GEMINI_API_KEY (bisa berbayar)" },
+    "design": { "alat": ["python"], "opsional": ["py:google-genai"], "catatan": "generator logo/ikon/mockup butuh GEMINI_API_KEY atau ATLASCLOUD_API_KEY/MUAPI_API_KEY (bisa berbayar)" },
+    "ui-styling": { "alat": ["node", "python"] },
+    "design-taste-frontend": { "alat": ["node22", "browser"], "catatan": "taste-skill: dipakai hanya bila disebut; pemeriksa jalan di Chrome/Edge/Chromium" },
+    "hue": { "alat": ["node"], "catatan": "validator memanggil npx js-yaml (butuh internet)" },
+    "awwwards": { "alat": ["node", "browser"], "catatan": "Playwright dipasang sendiri oleh skill ke proyek saat dipakai" },
+    "jury": { "alat": ["node", "browser"], "catatan": "Playwright dipasang sendiri oleh skill ke ~/.cache/jury" },
+    "youtube": { "alat": ["python"], "opsional": ["py:google-api-python-client", "py:google-auth-oauthlib", "yt-dlp"], "catatan": "data channel butuh YOUTUBE_API_KEY atau OAuth milik pemilik channel; tanpa itu bekerja dari data yang ditempel" },
+    "lemo-opuscar": { "alat": ["git", "node", "ffmpeg7", "python", "lemo-library"], "catatan": "library dan paket diunduh oleh setup.sh (sekitar 350 MB - 1 GB); di Windows butuh Git Bash" },
+    "ffmpeg-skill": { "alat": ["ffmpeg", "python"] },
+    "docling": { "alat": ["docling"] },
+    "graphify": { "alat": ["graphify"] },
+    "blender-*": { "alat": ["blender", "uv", "blender-mcp"], "catatan": "94 skill Blender; addon BlenderMCP diaktifkan sendiri di Blender (port 9876)" }
+  },
+  "khusus_zuno": ["penulis-hook", "perakit-agen", "rilis-engineering", "antrian-posting", "01-idea-to-scope-lock"],
+  "tidak_ikut_jasa": {
+    "design-taste-frontend": "Paket berisi 413 foto contoh dengan lisensi campuran (Unsplash License, CC BY-SA, CC BY). Pasang sendiri dari sumbernya.",
+    "ui-styling": "File lisensi Apache di folder ini belum diisi (Copyright [yyyy]) dan font canvas-fonts berasal dari sumber lain. Pasang sendiri dari sumbernya."
+  }
+}

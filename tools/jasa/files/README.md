@@ -15,6 +15,14 @@ Setelah selesai, buka link web-mu. Klik **KUNCI AKSES**, masukkan `ZUNO_ACCESS_K
 
 Panduan lengkap (ganti penyedia AI, pindah perangkat, masalah umum): [PANDUAN.md](PANDUAN.md).
 
+## Atau jalankan di laptop sendiri (satu perintah)
+
+Untuk memakai web di `http://localhost:3000` **plus** Claude Code dengan semua skill (desain web, 3D/Blender, video dari kode, YouTube, marketing):
+- Windows: klik dua kali `pasang.bat`
+- macOS / Linux / VPS: `bash pasang.sh`
+
+Urutan pasang, kebutuhan tiap skill, dan skill tambahan yang disarankan: [PANDUAN-LOKAL.md](PANDUAN-LOKAL.md).
+
 ## Penting
 - API key hanya disimpan di server Vercel-mu, tidak pernah tampil di halaman.
 - Biaya AI ditagih penyedia AI langsung ke akunmu. Gemini punya kuota gratis dengan batas harian.

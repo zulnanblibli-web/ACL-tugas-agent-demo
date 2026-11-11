@@ -118,6 +118,16 @@ const args = process.argv.slice(2); const JASA = args.find(a=>!a.startsWith('--'
   cek('pemakaian pertama: dialog Pengaturan brand terbuka',await p2.evaluate(()=>{const d=document.getElementById('zbDlg');return !!(d&&d.open)}));
   await p2.fill('#zb_nama','Toko Uji');await p2.click('#zbSave');await p2.waitForTimeout(1500);
   cek('simpan brand lalu halaman memakai nama baru',await p2.evaluate(()=>window.ZB&&window.ZB.nama==='Toko Uji'&&!document.getElementById('zbDlg').open));
+  // paket pasang lokal (2026-11-11): skill ikut, yang lisensinya belum pasti tidak ikut tapi ada di panduan
+  { const ex=(f)=>fs.existsSync(path.join(root,f)); const rd=(f)=>ex(f)?fs.readFileSync(path.join(root,f),'utf8'):'';
+    const sk=ex('.claude/skills')?fs.readdirSync(path.join(root,'.claude/skills')):[];
+    cek('paket lokal: pemasang satu perintah (pasang.bat, pasang.sh, tools/pasang)',['pasang.bat','pasang.sh','tools/pasang/pasang.ps1','tools/pasang/pasang.sh','tools/pasang/cek-kesiapan.mjs','jalankan-lokal.bat'].every(ex)&&/server\.mjs/.test(rd('jalankan-lokal.bat'))&&!/dev-server/.test(rd('jalankan-lokal.bat')));
+    cek('paket lokal: skill pihak ketiga ikut dengan LICENSE ('+sk.length+' folder)',['impeccable','frontend-design','ui-ux-pro-max','hue','awwwards','jury','youtube','lemo-opuscar','blender-director','hallmark'].every(d=>sk.includes(d)&&fs.readdirSync(path.join(root,'.claude/skills',d)).some(f=>/^licen[sc]e/i.test(f))));
+    cek('paket lokal: taste-skill, ui-styling, dan skill khusus Zuno tidak ikut',!['design-taste-frontend','ui-styling','penulis-hook','perakit-agen','rilis-engineering','antrian-posting','01-idea-to-scope-lock'].some(d=>sk.includes(d)));
+    const pl=rd('PANDUAN-LOKAL.md');
+    cek('PANDUAN-LOKAL: urutan pasang + cara pasang sendiri taste-skill dan ui-styling',/## 3\. Urutan/.test(pl)&&/Leonxlnx\/taste-skill/.test(pl)&&/nextlevelbuilder\/ui-ux-pro-max-skill/.test(pl)&&/\.claude\/skills\/ui-styling/.test(pl)&&/Kenapa tidak ikut paket/.test(pl));
+    cek('paket lokal: CLAUDE.md white-label + tanpa nama penjual di file baru',ex('CLAUDE.md')&&!/zulnan/i.test(rd('CLAUDE.md')+pl+rd('.claude/skills/README.md')+rd('jalankan-lokal.bat')));
+    cek('paket lokal: tanpa __pycache__',!require('child_process').execSync('find "'+path.join(root,'.claude')+'" -name __pycache__').toString().trim()); }
   console.log('ERRORS',errs);
   if(errs.length)gagal.push('error di halaman');
   console.log(gagal.length?'HASIL: GAGAL ('+gagal.length+')':'HASIL: SEMUA LOLOS');

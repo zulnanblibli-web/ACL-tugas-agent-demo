@@ -54,6 +54,7 @@ frontend-design, impeccable, ui-ux-pro-max (+ design, banner-design, brand, desi
 - **Layanan berbayar tidak dipakai** tanpa izin Zulnan (DataForSEO, impeccable Pro, Hyper3D/Sketchfab, API gambar berbayar).
 - **Posting**: skill menghasilkan output lengkap, Zulnan memilih, yang dipilih masuk Antrian Posting.
 - **Deploy**: preview dulu sebagai `index.html` hasil yang bisa dibuka Zulnan; setelah Zulnan setuju, agen langsung deploy.
+- **Jalan lokal (keputusan Zulnan 2026-11-11, sementara)**: pasang semua kebutuhan dengan satu perintah `pasang.bat` (Windows) atau `bash pasang.sh` (macOS/Linux/VPS); cek kapan saja `node tools/pasang/cek-kesiapan.mjs`. Panduan: `docs/panduan-pasang-lokal.md`; rencana jembatan web ke Claude Code: `docs/rencana-lokal-claude-code.md`. Edisi jasa ikut membawa skill + pemasang + `PANDUAN-LOKAL.md`; skill yang lisensi isinya belum pasti (taste-skill, ui-styling) tidak ikut paket, cara pasang sendirinya ditulis di panduan jasa.
 
 ## Alat fondasi: docling dan graphify (opsional, tidak mengubah alur)
 - **docling** (skill `docling`): ubah PDF, DOCX, PPTX, XLSX, HTML, atau gambar jadi Markdown sebelum dibaca agen, supaya isi referensi/PRD dibaca utuh, bukan ditebak. Contoh: `docling file.pdf --to md --output <folder-kerja>`. PDF tanpa model: `--pipeline native --from pdf`.
