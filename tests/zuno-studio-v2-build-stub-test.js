@@ -1,5 +1,5 @@
 const { chromium } = require('playwright');
-// Tes alur Build App (Divisi Engineering) dengan Claude tiruan. Alur sejak 2026-11-06: otomatis ala superpowers
+// Tes alur Agent Builder (Divisi Engineering) dengan Claude tiruan. Alur sejak 2026-11-06: otomatis ala superpowers
 // (kerjakan -> tinjau Penguji -> perbaiki -> lanjut), tanpa gerbang persetujuan Zulnan; keputusan dicatat.
 // Argumen: --klien --buruk --potong --gagal --putus --putus-parah --desref --prd --besar --kosong
 // --besar: 20 fitur -> T.3 menulis bertahap per bagian; revisi kode besar lewat edit cari-ganti.
@@ -14,7 +14,7 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
     const APP=(kredit,contoh)=>BURUK?'<html><body><script>var pw="admin2026"; // TODO login\nundefinedFn();<\/script><h1>App</h1></body></html>':'<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="'+kredit+'"><title>Absensi</title></head><body><script>const IS_PREVIEW = true; const TAMPILKAN_CONTOH_LOGIN = '+contoh+';async function h(p){const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(p));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,"0")).join("")}<\/script><h1>Login</h1><div id="contoh">Contoh akses</div><nav>Dashboard · Absensi · Reset Akses</nav><footer>'+kredit+'</footer></body></html>';
     const gen=async(input)=>{
       await sleep(20);
-      const role=(input.match(/PERAN ANDA: (\S+)/)||[])[1]; window.__calls.push({role,rev:/REVISI/.test(input),prd:/PRD DARI ZULNAN[\s\S]*Fitur ketujuh dari PRD/.test(input)});
+      const role=(input.match(/PERAN ANDA: (\S+)/)||[])[1]; window.__calls.push({role,rev:/REVISI/.test(input),prd:/PRD DARI ZULNAN[\s\S]*Fitur ketujuh dari PRD/.test(input),oto:/Mesin otomatis: bila permintaan, PRD, atau catatan referensi menyebut mesin atau teknologi, ikuti itu/.test(input)&&/MESIN: otomatis: ikuti mesin\/teknologi yang disebut/.test(input)});
       if(role==='T.1') return {nama_aplikasi:'Absensi Siswa',masalah:'Guru rekap absensi manual di kertas',fitur:BESAR?['Login','Input absensi','Rekap bulanan','Ekspor Excel','Data siswa','Fitur keenam','Fitur ketujuh dari PRD'].concat(Array.from({length:13},(_,k)=>'Fitur tambahan '+(k+8))):['Login','Input absensi','Rekap bulanan','Ekspor Excel','Data siswa','Fitur keenam','Fitur ketujuh dari PRD'],nanti:['Notifikasi orang tua'],out_of_scope:['Multi-bahasa','Pembayaran','Aplikasi Android'],definisi_selesai:['Guru bisa input absensi','Rekap per bulan tampil'],mesin:'Apps Script + Google Sheets',alasan_mesin:'gratis dan data terlihat di Sheets',biaya:'gratis',role:[{nama:'Admin',hak:'semua'}],menu:['Dashboard','Absensi','Rekap','Reset Akses'],data:[{nama:'Siswa',kolom:['id','nama','kelas']}],ai:'tidak dipakai',kredit:'Creative @nexamind.ai',asumsi:['satu sekolah'],pertanyaan:/REVISI/.test(input)?[]:['Berapa kelas?']};
       if(role==='T.2') return {acuan_referensi:/ADA REFERENSI DESAIN/.test(input)?'Kartu putih membulat, sidebar gelap, aksen hijau dari referensi':'',halaman:[{nama:'Login',isi:['form','Contoh akses','kredit'],hp:'satu kolom',desktop:'tengah'}],gaya:{primer:'#1f3a5f',latar:'#ffffff',teks:'#15202b',aksen:'#f2a900',huruf:'Inter',nuansa:'bersih'},komponen:['tombol','kartu'],animasi:[{elemen:'tombol simpan',tujuan:'respons aksi',durasi_ms:250},{elemen:'logo',tujuan:'hiasan',durasi_ms:900}],posisi_kredit:'footer',catatan:[]};
       if(role==='T.3'&&/daftar edit cari-ganti/.test(input)){ window.__edit=(window.__edit||0)+1; window.__editLihatKode=/INDEX\.HTML SAAT INI:[\s\S]*<\/html>/.test(input); return {edit:[{cari:'<nav>Dashboard · Absensi</nav>',ganti:'<nav>Dashboard · Absensi · Reset Akses</nav>'},{cari:'potongan yang tidak ada',ganti:'x'}],catatan:'tambah menu Reset Akses'}; }
@@ -84,6 +84,7 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   assert(!(await p.$('#bres >> text=Setujui ruang lingkup'))&&!(await p.$('#bres >> text=Setujui tampilan'))&&!(await p.$('#bres >> text=Lanjut rilis')),'tanpa tombol gerbang persetujuan: alur jalan sendiri sampai paket rilis');
   assert(await p.$eval('#bres .res',(e,n)=>e.innerText.includes('Fitur ('+n+')')&&e.innerText.includes('Fitur ketujuh dari PRD')&&!/MVP/.test(e.innerText),BESAR?20:7),'semua '+(BESAR?20:7)+' fitur tetap (tanpa batas MVP)');
   if(PRD) assert(calls.filter(c=>c.role==='T.1')[0].prd,'PRD ikut ke Arsitek');
+  assert(calls.filter(c=>c.role==='T.1')[0].oto,'mesin Otomatis: Arsitek diminta mengikuti mesin/teknologi di permintaan, PRD, atau referensi');
   assert(calls.filter(c=>c.role==='T.1').length===2&&calls.filter(c=>c.role==='T.1')[1].rev,'tinjauan ruang lingkup menemukan kekurangan -> Arsitek memperbaiki sendiri (2 panggilan T.1)');
   assert(await p.evaluate(()=>window.__q1),'pertanyaan terbuka Arsitek diserahkan ke Penguji untuk diputuskan');
   assert(await p.$eval('#bres',e=>/Catatan keputusan[\s\S]*Jumlah kelas dibuat bebas[\s\S]*Navigasi bawah di HP/.test(e.innerText)),'catatan keputusan tampil (ruang lingkup + desain)');
@@ -109,7 +110,7 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   await p.click('#bres button:has-text("Unduh paket rilis (.zip)")'); await p.waitForFunction(()=>window.__zipTxt,null,{timeout:10000});
   { const z=await p.evaluate(()=>window.__zipTxt); assert(/tanpa gerbang persetujuan di tengah/.test(z)&&/Catatan keputusan/.test(z)&&!/gerbang 3/.test(z),'paket rilis: instruksi tanpa gerbang 3, panduan memuat catatan keputusan'); }
   { const z=await p.evaluate(()=>window.__zipTxt);
-    assert(/proyek\/absensi_siswa\/rilis\.mjs/.test(z)&&/Zuno rilis: membawa paket rilis Build App sampai link live/.test(z)&&/export async function rilis/.test(z),'paket rilis membawa rilis.mjs (skrip rilis laptop)');
+    assert(/proyek\/absensi_siswa\/rilis\.mjs/.test(z)&&/Zuno rilis: membawa paket rilis Agent Builder sampai link live/.test(z)&&/export async function rilis/.test(z),'paket rilis membawa rilis.mjs (skrip rilis laptop)');
     assert(/proyek\/absensi_siswa\/rilis\.json/.test(z)&&/"mesin": "Apps Script \+ Google Sheets"/.test(z)&&/"izinGoogleOtomatis": false/.test(z),'rilis.json: mesin pilihan + izin Google tidak otomatis secara bawaan');
     assert(/proyek\/absensi_siswa\/CLAUDE\.md/.test(z)&&/agent-desktop skills get desktop/.test(z)&&/tidak mengetik atau menyimpan password/.test(z),'CLAUDE.md operator: alur rilis + larangan agent-desktop');
     assert(/proyek\/absensi_siswa\/akun-awal\.json/.test(z)&&/proyek\/absensi_siswa\/jalankan-rilis\.bat/.test(z)&&/Claude Desktop \+ agent-desktop/.test(z),'akun-awal.json, jalankan-rilis.bat, instruksi Claude Desktop + agent-desktop'); }
@@ -128,9 +129,9 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   await p.click('#wsK'); console.log('kembali ke konten, kartu konten kosong:', await p.$$eval('.kc',e=>e.filter(x=>x.closest('#wsKonten')).length)===0);
   await p.screenshot({path:'/tmp/v2-build.png',fullPage:true});
   { const tr=await p.$$eval('#btracks .track',e=>e.map(x=>x.querySelector('.tname').textContent+'='+x.dataset.s)); const r=(await p.evaluate(()=>window.__calls)).map(c=>c.role);
-    assert(tr.some(t=>/^T\.5 Damar/.test(t)),'jalur T.5 Damar tampil di papan Build App'); if(process.argv.length<=2) assert(r.includes('T.5')&&tr.some(t=>/^T\.5 Damar.*=(done|warn)$/.test(t)),'T.5 Damar mengaudit kode setelah uji'); console.log('T.5 Damar: OK'); }
+    assert(tr.some(t=>/^T\.5 Damar/.test(t)),'jalur T.5 Damar tampil di papan Agent Builder'); if(process.argv.length<=2) assert(r.includes('T.5')&&tr.some(t=>/^T\.5 Damar.*=(done|warn)$/.test(t)),'T.5 Damar mengaudit kode setelah uji'); console.log('T.5 Damar: OK'); }
   { const r=await p.evaluate(async()=>{const h=window.ZunoHasil;if(!h)return null;const f=await h.berkas('build');return {rk:h.ringkas().build,f:f.map(x=>x.folder+'/'+x.nama+':'+x.data.size)}});
     console.log('kait hasil build:',JSON.stringify(r));
-    assert(r&&r.rk&&r.rk.id&&r.f.length>=2&&r.f.every(x=>/^Aplikasi - [^/]+\/[^/]+ - (paket-rilis\.zip|index\.html|ruang-lingkup\.json):[1-9]/.test(x))&&r.f.some(x=>/paket-rilis\.zip/.test(x)),'kait hasil (Workspace: simpan ke folder lokal): Build App jadi folder "Aplikasi - <nama>" berisi paket rilis, index.html, ruang lingkup'); }
+    assert(r&&r.rk&&r.rk.id&&r.f.length>=2&&r.f.every(x=>/^Aplikasi - [^/]+\/[^/]+ - (paket-rilis\.zip|index\.html|ruang-lingkup\.json):[1-9]/.test(x))&&r.f.some(x=>/paket-rilis\.zip/.test(x)),'kait hasil (Workspace: simpan ke folder lokal): Agent Builder jadi folder "Aplikasi - <nama>" berisi paket rilis, index.html, ruang lingkup'); }
   console.log('ERRORS',errs); assert(!errs.filter(e=>!(BURUK&&/undefinedFn/.test(e))).length,'tanpa error halaman (error dari aplikasi buruk di pratinjau sandbox diabaikan)'); await b.close();
 })().catch(e=>{console.error('FAIL',e);process.exit(1)});

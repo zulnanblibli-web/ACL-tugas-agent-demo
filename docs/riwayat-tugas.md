@@ -753,4 +753,11 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Bukti: `zuno-web-api-test` (cek baru: tanpa kunci dan kunci salah = terkunci, hanya 2 kolom), `zuno-web-dev-server-test` (cek baru lewat HTTP), `zuno-web-gemini-test`, `zuno-web-riset-test`, `nexaoffice-situs-test` (stub status meniru server asli + cek baru: status diminta dengan x-zuno-key), tes stub (nol galat halaman), `nexaoffice-chat-test`, `nexaoffice-tim-agen-test`, dan `zuno-jasa-test`: SEMUA LOLOS.
 - Commit: Zuno `14197d7` + catatan `23f24b6`, jasa `main` `0de868f`. Push (izin Zulnan "oke push dan deploy"): kedua repo; deploy Vercel `dpl_8gVKsp2K819sMpFgr8Afpkgj2sLC` READY; dicek live: `/api/status` tanpa kunci = `{"online":true,"terkunci":true}`.
 
-## 75. (entri berikutnya di sini)
+## 75. Build App jadi Agent Builder + mesin Otomatis mengikuti referensi (2026-11-11)
+- Permintaan Zulnan: (1) memastikan bila memberi referensi dan memilih mesin "Otomatis", mesin mengikuti referensi; (2) nama "Build App" diganti "Agent Builder".
+- Temuan (1): sebelumnya perintah T.1 untuk Otomatis hanya "pilih mesin paling sederhana yang cukup"; PRD memang referensi utama, tapi mesin yang disebut di PRD/permintaan tidak diperintahkan secara tegas, jadi bisa kalah oleh "paling sederhana". Gambar referensi desain hanya untuk tampilan.
+- Hasil (1): `prototypes/zuno-studio-v2.html`: pilihan jadi "Otomatis (ikut permintaan, PRD, dan referensi)"; perintah T.1 dan konteks MESIN: ikuti mesin/teknologi yang disebut di permintaan, PRD, atau catatan referensi (mesin yang sama dari daftar, atau yang paling dekat bila tidak ada), sebut petunjuknya di alasan mesin; tanpa petunjuk = paling sederhana. Mesin yang dipilih Zulnan tetap menang. Aturan di `docs/aturan-engineering.md` bagian 3 dan profil T.1.
+- Hasil (2): semua teks tampilan dan dokumen yang masih dipakai: "Build App" -> "Agent Builder" (tab Workspace, situs utama, HUD, prototipe, profil agen, skill `rilis-engineering`, `rilis.mjs`, panduan jasa, CLAUDE.md, memori, tes). Isi divisinya tetap: Divisi Engineering membangun web app. Entri riwayat lama tidak diubah.
+- Bukti: lihat baris berikut.
+
+## 76. (entri berikutnya di sini)

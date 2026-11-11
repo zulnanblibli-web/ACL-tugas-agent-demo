@@ -1,11 +1,11 @@
 ---
-description: Rilis proyek Divisi Engineering Zuno dari paket rilis Build App sampai live, lalu kirim link live + bukti uji + catatan keputusan ke Zulnan (tanpa gerbang; keputusan teknis diambil sendiri)
+description: Rilis proyek Divisi Engineering Zuno dari paket rilis Agent Builder sampai live, lalu kirim link live + bukti uji + catatan keputusan ke Zulnan (tanpa gerbang; keputusan teknis diambil sendiri)
 ---
 
-Jalankan di folder proyek hasil ekstrak paket `*_rilis.zip` dari tab Build App. Patuhi aturan di `.agents/rules/zuno-engineering.md`.
+Jalankan di folder proyek hasil ekstrak paket `*_rilis.zip` dari tab Agent Builder. Patuhi aturan di `.agents/rules/zuno-engineering.md`.
 
 ## 0. Baca paket
-1. Baca `INSTRUKSI-RILIS.md`, `PANDUAN.md`, `ruang-lingkup.json`, `desain.json`, dan `PRD.md` bila ada. Ruang lingkup dan desain sudah terkunci dan ditinjau Penguji di Build App. Catatan keputusan ada di `PANDUAN.md`.
+1. Baca `INSTRUKSI-RILIS.md`, `PANDUAN.md`, `ruang-lingkup.json`, `desain.json`, dan `PRD.md` bila ada. Ruang lingkup dan desain sudah terkunci dan ditinjau Penguji di Agent Builder. Catatan keputusan ada di `PANDUAN.md`.
 2. Bila ada folder `referensi-desain/`: itu acuan tampilan dari Zulnan (lihat `acuan_referensi` di `desain.json`). Ikuti arahnya, jangan menyalin logo, merek, atau teks milik orang lain.
 3. Tulis ringkasan 5 baris: nama proyek, mesin (`mesin` di ruang lingkup), jumlah fitur, apa yang harus Zulnan isi sendiri. Lanjut tanpa menunggu.
 

@@ -48,7 +48,7 @@ echo.
 echo [3/5] Membuat folder kerja C:\zuno-proyek ...
 if not exist "C:\zuno-proyek\unduhan" mkdir "C:\zuno-proyek\unduhan"
 if not exist "C:\zuno-proyek\proyek" mkdir "C:\zuno-proyek\proyek"
-> "C:\zuno-proyek\BACA-DULU.txt" echo Folder kerja rilis Zuno. unduhan\ = tempat paket *_rilis.zip dari Build App. proyek\ = hasil ekstrak + rilis. Folder ini dibagikan ke Claude lewat Remote Control. Jangan taruh file pribadi di sini.
+> "C:\zuno-proyek\BACA-DULU.txt" echo Folder kerja rilis Zuno. unduhan\ = tempat paket *_rilis.zip dari Agent Builder. proyek\ = hasil ekstrak + rilis. Folder ini dibagikan ke Claude lewat Remote Control. Jangan taruh file pribadi di sini.
 
 echo.
 echo [4/5] Menyambungkan agent-desktop ke Claude Desktop...
@@ -77,11 +77,11 @@ echo  Hampir selesai. Tiga langkah sekali saja di aplikasi:
 echo   1. Claude Desktop: Settings ^> Claude Code ^> Remote Control,
 echo      tambahkan folder C:\zuno-proyek lalu nyalakan.
 echo   2. Chrome: Setelan ^> Download ^> Lokasi = C:\zuno-proyek\unduhan
-echo      (paket rilis dari Build App langsung masuk ke sini).
+echo      (paket rilis dari Agent Builder langsung masuk ke sini).
 echo   3. Tutup Claude Desktop (Quit dari tray) lalu buka lagi.
 echo.
 echo  Cara pakai setelah itu:
-echo   Unduh paket rilis di tab Build App, lalu bilang ke Claude
+echo   Unduh paket rilis di tab Agent Builder, lalu bilang ke Claude
 echo   (di HP atau laptop): "rilis proyek nama-aplikasi".
 echo   Claude + agent-desktop membawanya sampai live dan mengirim link.
 echo  Laptop harus menyala, tidak terkunci, dan Claude Desktop terbuka.

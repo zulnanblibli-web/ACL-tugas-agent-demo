@@ -9,7 +9,7 @@ Dengan memasang atau memakai Zuno Studio, penerima lisensi setuju dengan ketentu
 1. Memasang dan memakai Zuno Studio untuk **satu brand atau satu usaha** milik penerima lisensi.
 2. Mengubah pengaturan brand, isi konten, dan tampilan untuk kebutuhan sendiri.
 3. Membuat salinan (fork) pribadi yang dipakai untuk memasang web ini dan menerima pembaruan.
-4. Memakai hasil kerja web ini secara komersial (konten, gambar, naskah, aplikasi buatan tab Build App). Hasil itu milik penerima lisensi.
+4. Memakai hasil kerja web ini secara komersial (konten, gambar, naskah, aplikasi buatan tab Agent Builder). Hasil itu milik penerima lisensi.
 
 ## Yang tidak boleh
 1. Menjual, menyewakan, membagikan, atau mengunggah ulang kode Zuno Studio, baik utuh maupun sebagian, kepada pihak lain.

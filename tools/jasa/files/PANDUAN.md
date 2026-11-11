@@ -28,7 +28,7 @@ Panduan ini untuk pemilik web Zuno Studio. Tidak perlu bisa coding.
    - **Gaya bahasa**: misalnya "santai pakai aku/kamu".
    - **Fakta brand**: hanya fakta nyata. Agen dilarang mengarang di luar ini.
    - **Slogan setelah hook video**: boleh kosong.
-   - **Kredit aplikasi**: dipakai di web app buatan tab Build App.
+   - **Kredit aplikasi**: dipakai di web app buatan tab Agent Builder.
 2. Klik **Simpan dan muat ulang**.
 3. Klik **PENGATURAN AI** di atas, biarkan pilihan **Server ini**, lalu isi **Kunci akses server** dengan `ZUNO_ACCESS_KEY` dan klik Simpan. Status berubah jadi ONLINE.
 
@@ -45,7 +45,7 @@ Panduan ini untuk pemilik web Zuno Studio. Tidak perlu bisa coding.
 6. Baca **Ringkasan Sebelum Terbit**. Lalu klik **Setujui**, atau tulis catatan revisi.
 7. Konten yang disetujui masuk **Antrian Posting** beserta caption dan hashtag. Posting otomatis belum aktif di versi ini: unggah sendiri ke platform.
 
-**Tab Build App**
+**Tab Agent Builder**
 1. Tulis permintaan aplikasi, atau unggah PRD (.md).
 2. Klik **Kirim ke Divisi Engineering**. Tim jalan sendiri: ruang lingkup, desain, kode, dan uji. Tiap tahap diperiksa Penguji lalu diperbaiki otomatis. Keputusan yang diambil tim tercatat di tabel **Catatan keputusan**.
 3. Unduh **paket rilis (.zip)**, atau `index.html`, file backend, dan `PANDUAN.md` proyek. Ikuti panduan proyek itu untuk memasangnya. Mau ada yang diubah? Tulis catatan lalu klik **Ubah dengan catatan**.

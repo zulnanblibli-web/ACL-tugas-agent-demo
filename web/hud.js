@@ -77,7 +77,7 @@
     if ($('hFlowPct')) $('hFlowPct').textContent = pct + '%';
     var note = $('hFlowNote');
     if (note) note.textContent = isBuild()
-      ? 'Alur Build App (Divisi Engineering): terpisah dari alur konten. Tiap gerbang menunggu persetujuan.'
+      ? 'Alur Agent Builder (Divisi Engineering): terpisah dari alur konten. Tiap gerbang menunggu persetujuan.'
       : 'Alur Konten (divisi kreatif): Lead bagi tugas, divisi kerja berurutan, Mutu memberi catatan, persetujuan akhir di pemilik.';
   }
 

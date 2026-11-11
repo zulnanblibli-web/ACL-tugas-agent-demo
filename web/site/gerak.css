@@ -67,7 +67,7 @@ main > article img { transition: translate 200ms var(--nx-ease); }
 .nx-gerak .ws-kantor > :nth-child(3) { animation-delay: 120ms; }
 .nx-gerak .ws-kantor > :nth-child(n+4) { animation-delay: 180ms; }
 .nx-gerak .ws-pilih { animation: nx-naik 420ms var(--nx-ease) 200ms backwards; }
-/* Ganti tampilan (Kerja / Chat ZUNO, Konten / Build App) dan panel yang baru terbuka */
+/* Ganti tampilan (Kerja / Chat ZUNO, Konten / Agent Builder) dan panel yang baru terbuka */
 .nx-gerak :is(.ws-kanan > .wrap, #chat, #wsKonten, #wsBuild):not([hidden]):not(.hidden) { animation: nx-naik 340ms var(--nx-ease) backwards; }
 .nx-gerak .wrap .panel:not(.hidden) { animation: nx-naik 360ms var(--nx-ease) backwards; }
 /* Pesan chat dan tulisan agen yang baru masuk */

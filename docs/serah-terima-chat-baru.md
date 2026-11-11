@@ -7,8 +7,8 @@ Baca file ini dulu di chat baru, lalu `docs/memori-zuno.md`, `progress.md`, dan 
 - Repo jasa: https://github.com/zulnanblibli-web/zuno-studio-app (private, branch `main`), commit `1d9f990` sudah di-push. Pembeli dapat update lewat Sync fork.
 - Artifact Zuno Studio v2: https://claude.ai/artifact/Hhp1jjUmZNmi2TFjr9qCBX, versi 5 (sudah berisi dua perbaikan di bawah).
 - Yang dikerjakan sesi terakhir:
-  1. Build App: kode T.3 yang terpotong saat koneksi putus sekarang dilanjutkan, tidak dari nol (entri 46).
-  2. Build App: upload referensi desain UI/UX (maks. 4 gambar) sebagai acuan T.2 Desainer, ikut di paket rilis `referensi-desain/` (entri 47).
+  1. Agent Builder: kode T.3 yang terpotong saat koneksi putus sekarang dilanjutkan, tidak dari nol (entri 46).
+  2. Agent Builder: upload referensi desain UI/UX (maks. 4 gambar) sebagai acuan T.2 Desainer, ikut di paket rilis `referensi-desain/` (entri 47).
 - Semua tes lolos, tetapi **semuanya dengan Claude tiruan (stub)**. Belum terbukti dengan Claude asli.
 
 ## Tugas yang belum selesai (urut prioritas)
@@ -33,6 +33,6 @@ P1 auto posting Metricool + Google Drive; P2-P4 butir [ISI] brief (handle, tayan
   1. `node web/build.mjs`
   2. `node tools/jasa/ekspor-jasa.mjs <repo-jasa>`
   3. `node tests/zuno-jasa-test.js <repo-jasa>` (harus "HASIL: SEMUA LOLOS")
-- Tes Build App: `node tests/zuno-studio-v2-build-stub-test.js [--gagal|--potong|--buruk|--klien|--prd|--putus|--putus-parah|--desref]`.
+- Tes Agent Builder: `node tests/zuno-studio-v2-build-stub-test.js [--gagal|--potong|--buruk|--klien|--prd|--putus|--putus-parah|--desref]`.
 - agent-desktop khusus Divisi Engineering di laptop Zulnan; larangan lengkap di `CLAUDE.md` dan `docs/tangan-komputer.md`.
 - Akhir sesi: perbarui `progress.md`, tambah entri `docs/riwayat-tugas.md`, perbarui `docs/memori-zuno.md` bila ada fakta baru.

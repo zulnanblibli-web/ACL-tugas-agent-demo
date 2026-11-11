@@ -129,7 +129,7 @@
     ['suara', 'Gaya bahasa', 'Mis. santai pakai aku/kamu, hangat, tidak bertele-tele', 'area'],
     ['fakta', 'Fakta brand (hanya ini yang boleh dipakai agen sebagai bukti)', 'Fakta nyata tentang brand atau pemilik, satu per baris. Jangan isi angka yang tidak bisa dibuktikan', 'area'],
     ['slogan', 'Slogan setelah hook video (boleh kosong)', 'Mis. "Halo, aku Rina. Aku bantu kamu mulai jualan online."', 'input'],
-    ['kredit', 'Kredit di aplikasi buatan tab Build App', 'Mis. "Dibuat oleh Studio Rina". Kosong = memakai nama brand', 'input']
+    ['kredit', 'Kredit di aplikasi buatan tab Agent Builder', 'Mis. "Dibuat oleh Studio Rina". Kosong = memakai nama brand', 'input']
   ];
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
   function ui() {

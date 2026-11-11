@@ -48,9 +48,9 @@ export function bangunRuangKerja(varian) {
   swap("not_granted:'Izin Claude belum diberikan.'", "not_granted:'Kunci akses " + (nexa ? 'Nexaoffice' : 'Zuno') + " salah atau belum diisi. Buka " + (nexa ? 'Pengaturan' : 'Pengaturan AI') + " di atas.',not_configured:'Server " + (nexa ? 'Nexaoffice' : 'Zuno') + " belum disetel (ZUNO_ACCESS_KEY di server).',user_key:'API key di Pengaturan AI ditolak penyedia. Periksa key dan modelnya, lalu simpan ulang.',byok_off:'Server ini tidak menerima API key dari halaman. Pakai mode Server di Pengaturan AI.',no_credit:'Saldo penyedia AI habis. Isi saldo di halaman Credits OpenRouter, lalu jalankan lagi.'");
   swap("info.textContent='Halaman ini baru bisa menjalankan agen saat dibuka di claude.ai dan diberi izin memakai Claude.'", "info.textContent='Server " + (nexa ? 'Nexaoffice' : 'Zuno') + " tidak bisa dihubungi. Muat ulang halaman.'");
   if (nexa) {
-    // Tab format: Konten / Build App.
+    // Tab format: Konten / Agent Builder.
     swap('id="wsK" aria-selected="true">Konten · divisi kreatif</button>', 'id="wsK" aria-selected="true">Konten</button>');
-    swap('id="wsB" aria-selected="false">Build App · Divisi Engineering</button>', 'id="wsB" aria-selected="false">Build App</button>');
+    swap('id="wsB" aria-selected="false">Agent Builder · Divisi Engineering</button>', 'id="wsB" aria-selected="false">Agent Builder</button>');
     swap('<label for="cmd" class="muted">Perintah atau bahan konten</label>', '<label for="cmd" class="muted">Perintah untuk tim</label>');
     // Panel Proses diganti tempat hasil kerja agen yang tampil live (ui.js). Daftar tahap tetap ada tapi tersembunyi:
     // dibaca ui.js untuk menggerakkan agen di kantor 3D.

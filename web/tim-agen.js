@@ -121,7 +121,7 @@
     try {
       var h = window.ZunoHasil && window.ZunoHasil.ringkas();
       if (h && h.konten) r.push('Konten di halaman ini, perintah "' + (h.konten.perintah || '(kosong)').slice(0, 160) + '": ' + h.konten.kartu.map(function (c) { return c.id + ' ' + c.format + ' "' + c.topik + '" tahap ' + (c.tahap || '-') + (c.disetujui ? ', disetujui Zulnan' : ''); }).join('; '));
-      if (h && h.build) r.push('Build App di halaman ini: ' + h.build.id + ' "' + (h.build.nama || '') + '" tahap ' + (h.build.tahap || '-') + (h.build.selesai ? ', selesai' : ''));
+      if (h && h.build) r.push('Agent Builder di halaman ini: ' + h.build.id + ' "' + (h.build.nama || '') + '" tahap ' + (h.build.tahap || '-') + (h.build.selesai ? ', selesai' : ''));
     } catch (e) {}
     agen.forEach(function (a) { (a.riwayat || []).slice(-5).forEach(function (t) { r.push(tgl(t.waktu) + ' ' + a.panggilan + ' (' + a.kode + ') mengerjakan "' + t.tugas.slice(0, 140) + '": ' + t.ringkas.slice(0, 200)); }); });
     return r;

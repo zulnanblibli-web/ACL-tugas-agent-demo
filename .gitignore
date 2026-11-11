@@ -5,7 +5,7 @@
 antrian-posting/*
 !antrian-posting/README.md
 
-# Proyek Engineering yang sedang dirilis di laptop (paket rilis Build App)
+# Proyek Engineering yang sedang dirilis di laptop (paket rilis Agent Builder)
 proyek/
 
 # Graf pengetahuan graphify (dibuat ulang lokal, tidak di-commit)

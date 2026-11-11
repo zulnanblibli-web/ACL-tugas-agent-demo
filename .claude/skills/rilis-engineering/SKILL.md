@@ -1,11 +1,11 @@
 ---
 name: rilis-engineering
-description: Use when Zulnan says "rilis proyek <nama>", "bikin sampai live", "deploy webapp", or a new *_rilis.zip from Build App is waiting in C:\zuno-proyek\unduhan. Brings the package live on Zulnan's laptop for the engine he chose (Apps Script + Sheets/Blogger, Firebase, Vercel + Supabase) using rilis.mjs, Claude Desktop (Remote Control) as the brain and agent-desktop as the hands, then reports the live link.
+description: Use when Zulnan says "rilis proyek <nama>", "bikin sampai live", "deploy webapp", or a new *_rilis.zip from Agent Builder is waiting in C:\zuno-proyek\unduhan. Brings the package live on Zulnan's laptop for the engine he chose (Apps Script + Sheets/Blogger, Firebase, Vercel + Supabase) using rilis.mjs, Claude Desktop (Remote Control) as the brain and agent-desktop as the hands, then reports the live link.
 ---
 
 # Rilis Engineering (laptop Zulnan, tanpa disentuh)
 
-Aturan induk: `docs/aturan-engineering.md`, `docs/tangan-komputer.md`, dan `CLAUDE.md` di folder paket. Permintaan Zulnan 2026-11-06: setelah zip dari Build App diunduh, Engineering sendiri yang mengoperasikan laptopnya sampai web app live sesuai mesin yang dia pilih. Otak: Claude Desktop (Remote Control). Tangan: agent-desktop.
+Aturan induk: `docs/aturan-engineering.md`, `docs/tangan-komputer.md`, dan `CLAUDE.md` di folder paket. Permintaan Zulnan 2026-11-06: setelah zip dari Agent Builder diunduh, Engineering sendiri yang mengoperasikan laptopnya sampai web app live sesuai mesin yang dia pilih. Otak: Claude Desktop (Remote Control). Tangan: agent-desktop.
 
 ## 0. Sambung ke laptop
 - **Dari sesi cloud atau HP**: panggil `list_computer_folders`. Pilih folder `zuno-proyek` milik laptop Zulnan yang `online`, lalu `request_computer_folder`. Bila folder tidak ada atau laptop offline: bilang ke Zulnan satu kalimat ("buka Claude Desktop di laptop, Remote Control folder C:\zuno-proyek belum tersambung") dan berhenti.

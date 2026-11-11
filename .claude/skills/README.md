@@ -19,7 +19,7 @@ Folder ini dibaca otomatis oleh Claude Code saat bekerja di repo ini, baik di cl
 | `writing-skills` | Perakit Agen (dasar metodenya) | Membuat dan menguji skill seperti TDD: skenario tekanan lewat subagent | obra/superpowers (22f0b46) |
 | `writing-plans` | T.1, T.3 | Rencana bertahap yang tiap langkahnya punya cara cek, sebelum menyentuh kode | obra/superpowers (22f0b46) |
 | `test-driven-development` | T.3, T.4 | Tes ditulis dan dilihat gagal dulu, baru kode (RED-GREEN-REFACTOR) | obra/superpowers (22f0b46) |
-| `subagent-driven-development` | T.3, T.4 (Claude Code) | Satu subagent pengerja per tugas + peninjau spesifikasi dan mutu + tinjauan akhir; dasar alur Build App sejak 2026-11-06 | obra/superpowers (22f0b46) |
+| `subagent-driven-development` | T.3, T.4 (Claude Code) | Satu subagent pengerja per tugas + peninjau spesifikasi dan mutu + tinjauan akhir; dasar alur Agent Builder sejak 2026-11-06 | obra/superpowers (22f0b46) |
 | `executing-plans` | T.3 | Menjalankan rencana sendiri bila tidak ada subagent | obra/superpowers (22f0b46) |
 | `requesting-code-review` | T.3, T.4 | Minta tinjauan kode sebelum lanjut | obra/superpowers (22f0b46) |
 | `using-git-worktrees` | T.3 | Ruang kerja terpisah untuk satu fitur | obra/superpowers (22f0b46) |

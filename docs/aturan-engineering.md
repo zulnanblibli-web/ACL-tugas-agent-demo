@@ -2,7 +2,7 @@
 
 Dibuat 2026-11-02 atas permintaan Zulnan. Divisi Engineering membangun apa yang Zulnan minta: web app untuk pemakaian pribadi, portofolio, atau klien jasa pembuatan web app. Divisi ini terpisah dari divisi kreatif (konten), tetapi tetap di bawah Lead (Orkestraror Agen dan Juru Kabar).
 
-**Status: standby.** Divisi ini tidak ikut alur konten harian; langsung aktif saat Zulnan mengirim permintaan build. Di Zuno Studio v2 ada ruang kerja sendiri (tab "Build App") dengan state, proses, dan hasil yang terpisah dari tab "Konten". Satu proses berjalan dalam satu waktu.
+**Status: standby.** Divisi ini tidak ikut alur konten harian; langsung aktif saat Zulnan mengirim permintaan build. Di Zuno Studio v2 ada ruang kerja sendiri (tab "Agent Builder") dengan state, proses, dan hasil yang terpisah dari tab "Konten". Satu proses berjalan dalam satu waktu.
 
 Agen: T.1 Arsitek & Analis Kebutuhan, T.2 Desainer UI/UX, T.3 Pengembang Aplikasi, T.4 Penguji & Rilis (profil di `agents/15-18`). Skill kerja yang sudah disesuaikan ada di `skills/engineering/`.
 
@@ -31,9 +31,9 @@ Permintaan Zulnan / klien (+ PRD .md, + referensi desain)
   -> Link live + bukti uji + catatan keputusan dikirim ke Zulnan
 ```
 
-- **Catatan keputusan** wajib: setiap hal yang diputuskan sendiri dicatat (tahap, keputusan, alasan dari brief, risiko bila salah). Tampil di Build App, ikut di `PANDUAN.md` paket rilis, dan di laporan rilis.
+- **Catatan keputusan** wajib: setiap hal yang diputuskan sendiri dicatat (tahap, keputusan, alasan dari brief, risiko bila salah). Tampil di Agent Builder, ikut di `PANDUAN.md` paket rilis, dan di laporan rilis.
 - **Kapan berhenti dan tanya Zulnan** (hanya ini): pembayaran atau upgrade paket; API key, password, login, OTP, atau rahasia lain; tindakan yang merusak atau menghapus data; akun deploy proyek klien yang belum jelas.
-- Zulnan tetap bisa memberi catatan tambahan kapan saja (tombol "Ubah dengan catatan" di Build App, atau bilang ke Claude Code); hanya bagian itu yang diubah.
+- Zulnan tetap bisa memberi catatan tambahan kapan saja (tombol "Ubah dengan catatan" di Agent Builder, atau bilang ke Claude Code); hanya bagian itu yang diubah.
 - Skill superpowers yang dipakai di Claude Code: `writing-plans` (rencana bertahap dengan cara cek), `test-driven-development` (tes dulu), `subagent-driven-development` (satu pengerja per tugas + peninjau spesifikasi dan mutu), `executing-plans`, `requesting-code-review`, `using-git-worktrees`, `finishing-a-development-branch`. Aturan Zuno tetap menang: push hanya bila Zulnan bilang sendiri. Jalur laptop: `docs/tangan-komputer.md`.
 - Laporan "selesai" wajib membawa bukti uji dari T.4 (screenshot, daftar cek lolos). Bila belum diuji, tulis "belum diuji".
 - Skill pendukung (Claude Code, `.claude/skills/`):
@@ -45,7 +45,7 @@ Permintaan Zulnan / klien (+ PRD .md, + referensi desain)
 - Status proyek: Ide, Ruang Lingkup Terkunci, Desain Terkunci, Dibangun, Diuji, Siap Dirilis, Rilis (live).
 - Error dan kendala disampaikan ke Zulnan lewat Juru Kabar dengan bahasa sederhana plus langkah yang bisa diambil.
 
-### Di Zuno Studio v2 (tab Build App)
+### Di Zuno Studio v2 (tab Agent Builder)
 - Isian: permintaan, jenis proyek (portofolio/pribadi/klien + nama dan kredit klien), mesin (otomatis atau dipilih), fitur AI, kotak Contoh akses.
 - Akun awal dibuat acak oleh halaman (bukan oleh AI) dan dicantumkan di panduan.
 - T.3 menulis `index.html` (mode preview) dan file backend (`Code.gs`, `firestore.rules`, atau `schema.sql`).
@@ -61,6 +61,10 @@ Permintaan Zulnan / klien (+ PRD .md, + referensi desain)
 | Apps Script (backend) + Blogger/Sites (frontend) | Sama seperti di atas, tampilan di Blogger | Hosting gratis, bisa domain sendiri |
 | Firebase (Firestore + Auth), satu file HTML (PWA) | Pengguna banyak, data realtime | Gratis sampai batas tertentu, lalu berbayar; setup lebih banyak |
 | Vercel + Supabase | Proyek besar atau butuh fungsi server | Pakai skill `gas-vercel-publisher` dan sejenisnya |
+
+Pilihan mesin di Agent Builder (Zulnan 2026-11-11):
+- **Dipilih Zulnan**: mesin itu yang dipakai, apa pun isi referensinya.
+- **Otomatis**: T.1 mengikuti mesin atau teknologi yang disebut di permintaan, PRD, atau catatan referensi desain (mesin yang sama dari daftar, atau yang paling dekat bila tidak ada di daftar), dan menyebut petunjuknya di alasan mesin. Gambar referensi desain hanya untuk tampilan, bukan mesin. Tanpa petunjuk: mesin paling sederhana yang cukup untuk semua fitur.
 
 Biaya apa pun (langganan, kredit, domain, kunci API berbayar) wajib izin Zulnan dulu.
 

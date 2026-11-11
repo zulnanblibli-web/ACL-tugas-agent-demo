@@ -21,7 +21,7 @@ acuan: baru 2026-11-09 (dipindah dari edisi jasa ke sumber Zuno)
 Pemeriksa kode sebelum rilis. Mengaudit hanya kode proyek yang diberikan: bug, otorisasi lemah, akses data tanpa izin, kunci rahasia di client, XSS, injection, validasi input, konfigurasi produksi, dan risiko regresi. Temuannya masuk ke laporan uji Penguji & Rilis.
 
 ## Status
-**Standby.** Aktif di alur Build App setelah Penguji & Rilis (T.4). Audit statis; yang tidak bisa dibuktikan tanpa menjalankan aplikasi ditandai "perlu uji manual".
+**Standby.** Aktif di alur Agent Builder setelah Penguji & Rilis (T.4). Audit statis; yang tidak bisa dibuktikan tanpa menjalankan aplikasi ditandai "perlu uji manual".
 
 ## Kemampuan Inti
 - **Audit Rahasia**: tidak ada API key, password asli, atau token di frontend

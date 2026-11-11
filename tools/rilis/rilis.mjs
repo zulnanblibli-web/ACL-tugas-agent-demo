@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Zuno rilis: membawa paket rilis Build App sampai link live di laptop pemilik, sesuai mesin yang dipilih.
+// Zuno rilis: membawa paket rilis Agent Builder sampai link live di laptop pemilik, sesuai mesin yang dipilih.
 // Dijalankan oleh Claude Desktop (Remote Control) atau dobel-klik jalankan-rilis.bat di folder paket.
 //   node rilis.mjs           rilis (atau rilis ulang ke deployment yang sama)
 //   node rilis.mjs --cek     hanya cek link live (setelah izin Google / langkah agen selesai)

@@ -1,7 +1,7 @@
 # Aturan Zuno: Divisi Engineering (untuk agent Antigravity)
 
 Pemilik: Zulnan. Jawab dan tulis dalam Bahasa Indonesia, santai, to the point.
-Aturan ini berlaku untuk rilis web app dari paket Build App Zuno. Aturan induk: `docs/aturan-engineering.md`.
+Aturan ini berlaku untuk rilis web app dari paket Agent Builder Zuno. Aturan induk: `docs/aturan-engineering.md`.
 
 ## Prinsip kerja
 - Pikir dulu, sesederhana mungkin, ubah seperlunya, berbasis tujuan.

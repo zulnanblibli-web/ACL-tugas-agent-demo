@@ -51,7 +51,7 @@ MARKETING [13 Kurator Instagram] paket posting -> Antrian Posting + leads/arsip
           + catatan performa setelah tayang (data nyata) -> pelajaran ke Riset
 ```
 
-Alur Engineering (standby; terpisah dari alur konten, di Zuno Studio v2 ada ruang kerja sendiri "Build App"):
+Alur Engineering (standby; terpisah dari alur konten, di Zuno Studio v2 ada ruang kerja sendiri "Agent Builder"):
 
 ```
 Permintaan build (+ PRD, + referensi desain)

@@ -1,7 +1,7 @@
 /* Nexaoffice Workspace (/studio.html): satu tempat kerja + Chat ZUNO (pelapor tim, simpan hasil ke folder lokal).
    Kiri: Kantor 3D. Agen yang tahapnya sedang JALAN pergi ke meja dan bekerja, agen lain santai. Ini status asli
    dari panel tahap (#tracks / #btracks, tersembunyi), bukan demo.
-   Kanan: perintah + pilihan format (form ruang kerja asli: #cmd/#run untuk Konten, #breq/#brun untuk Build App),
+   Kanan: perintah + pilihan format (form ruang kerja asli: #cmd/#run untuk Konten, #breq/#brun untuk Agent Builder),
    lalu "Hasil kerja agen": tulisan tiap agen tampil saat itu juga dari aliran jawaban AI (event 'nexa:ai' dari live.js),
    ikut menu Pengaturan AI (server, API key lokal, atau VPS). */
 (function () {
@@ -405,7 +405,7 @@
     var judul = String((info && info.perintah) || '').split('\n')[0].trim();
     if (!judul) judul = jenis === 'build' ? (info && info.nama) || 'Aplikasi' : 'Konten dari tren';
     if (judul.length > 60) judul = judul.slice(0, 60).replace(/\s+\S*$/, '');
-    return aman(tanggal(info && info.mulai) + ' ' + (jenis === 'build' ? 'Build App' : 'Konten') + ' - ' + judul);
+    return aman(tanggal(info && info.mulai) + ' ' + (jenis === 'build' ? 'Agent Builder' : 'Konten') + ' - ' + judul);
   }
   function daftarIsi(jenis, info, files) {
     var per = {}; files.forEach(function (f) { (per[f.folder] = per[f.folder] || []).push(f.nama); });
@@ -421,7 +421,7 @@
   async function simpanTugas(jenis, minta) {
     if (!window.ZunoHasil) return;
     var r = ringkas(), info = jenis === 'build' ? r.build : r.konten;
-    if (!info) { if (minta) lapor('Belum ada tugas ' + (jenis === 'build' ? 'Build App' : 'konten') + ' di halaman ini untuk disimpan.'); return; }
+    if (!info) { if (minta) lapor('Belum ada tugas ' + (jenis === 'build' ? 'Agent Builder' : 'konten') + ' di halaman ini untuk disimpan.'); return; }
     var files = await window.ZunoHasil.berkas(jenis);
     if (!files.length) { if (minta) lapor('Belum ada hasil yang jadi untuk disimpan. Aku simpan begitu ada naskah atau hasil.'); return; }
     var nama = namaTugas(jenis, info), indeks = daftarIsi(jenis, info, files);

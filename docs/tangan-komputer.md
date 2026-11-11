@@ -1,6 +1,6 @@
 # Tangan Komputer Zuno (khusus Divisi Engineering)
 
-> **Update 2026-11-06 (permintaan Zulnan):** setelah zip dari Build App diunduh, Engineering sendiri yang mengoperasikan laptop sampai web app live sesuai mesin yang dipilih, tanpa disentuh. **Otak: Claude Desktop** (Remote Control, bisa disuruh dari HP atau sesi cloud). **Tangan: agent-desktop** (versi terbaru, 1.2.0 per 2026-11-06, sudah punya mode MCP). Pekerjaan pasti dikerjakan skrip **`rilis.mjs`** yang ikut di setiap paket rilis. Antigravity (`docs/rilis-antigravity.md`) tinggal cadangan.
+> **Update 2026-11-06 (permintaan Zulnan):** setelah zip dari Agent Builder diunduh, Engineering sendiri yang mengoperasikan laptop sampai web app live sesuai mesin yang dipilih, tanpa disentuh. **Otak: Claude Desktop** (Remote Control, bisa disuruh dari HP atau sesi cloud). **Tangan: agent-desktop** (versi terbaru, 1.2.0 per 2026-11-06, sudah punya mode MCP). Pekerjaan pasti dikerjakan skrip **`rilis.mjs`** yang ikut di setiap paket rilis. Antigravity (`docs/rilis-antigravity.md`) tinggal cadangan.
 
 Keputusan Zulnan 2026-11-04:
 - agent-desktop dipakai **hanya untuk Divisi Engineering** di laptop Zulnan. Tugasnya membawa web app sampai benar-benar live; Zulnan tinggal cek hasilnya.
@@ -14,7 +14,7 @@ Keputusan Zulnan 2026-11-04:
 
 ## Alur
 ```
-Zuno Studio tab Build App (web), jalan sendiri tanpa menunggu Zulnan
+Zuno Studio tab Agent Builder (web), jalan sendiri tanpa menunggu Zulnan
   T.1 ruang lingkup + mesin -> T.2 tampilan -> T.3 kode -> T.4 uji (tiap tahap ditinjau, diperbaiki)
   -> "Unduh paket rilis (.zip)" -> tersimpan di C:\zuno-proyek\unduhan (lokasi download Chrome)
 Zulnan bilang ke Claude: "rilis proyek <nama>" (dari HP pun bisa)

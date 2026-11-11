@@ -6,7 +6,7 @@ Keputusan Zulnan 2026-11-05: rilis Divisi Engineering dijalankan di **Google Ant
 - Claude Code di laptop Zulnan tidak bisa start (`claude.exe is not compatible with the version of Windows you're running`, lihat bagian "Catatan teknis").
 - Antigravity sudah punya editor, terminal, dan browser dalam satu layar, jadi agent-desktop tidak diperlukan di jalur ini.
 
-Sejak 2026-11-06 alurnya tanpa gerbang persetujuan (alur superpowers, `docs/aturan-engineering.md`): Build App jalan sendiri sampai paket rilis, agent di sini memutuskan hal teknis sendiri berpatokan brief dan mencatat keputusannya. Tombol setuju Antigravity (Review-driven) tetap dipakai sebagai pengaman perintah berisiko.
+Sejak 2026-11-06 alurnya tanpa gerbang persetujuan (alur superpowers, `docs/aturan-engineering.md`): Agent Builder jalan sendiri sampai paket rilis, agent di sini memutuskan hal teknis sendiri berpatokan brief dan mencatat keputusannya. Tombol setuju Antigravity (Review-driven) tetap dipakai sebagai pengaman perintah berisiko.
 
 ## Pasang sekali
 1. Pasang Antigravity dari https://antigravity.google (Windows 64-bit, sebaiknya di drive C:). Login dengan akun Google.
@@ -22,7 +22,7 @@ Sejak 2026-11-06 alurnya tanpa gerbang persetujuan (alur superpowers, `docs/atur
 6. Di Antigravity buka Customizations > Rules, pastikan `zuno-engineering` aktif (Always On).
 
 ## Tiap rilis
-1. Di tab Build App: kirim permintaan, tunggu sampai muncul tombol **Unduh paket rilis (.zip)** (T.1 sampai T.4 jalan sendiri dengan tinjauan otomatis), lalu unduh.
+1. Di tab Agent Builder: kirim permintaan, tunggu sampai muncul tombol **Unduh paket rilis (.zip)** (T.1 sampai T.4 jalan sendiri dengan tinjauan otomatis), lalu unduh.
 2. Klik kanan zip > Extract All ke folder baru, misalnya `C:\zuno-proyek\<nama>\`.
 3. (Bila memilih "per proyek") salin folder `.agents` dari repo Zuno ke folder itu.
 4. Di Antigravity: File > Open Folder > pilih folder proyek. Commit atau salin cadangan dulu bila isinya penting.

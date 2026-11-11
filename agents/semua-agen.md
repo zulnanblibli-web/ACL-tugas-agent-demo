@@ -51,7 +51,7 @@ MARKETING [13 Kurator Instagram] paket posting -> Antrian Posting + leads/arsip
           + catatan performa setelah tayang (data nyata) -> pelajaran ke Riset
 ```
 
-Alur Engineering (standby; terpisah dari alur konten, di Zuno Studio v2 ada ruang kerja sendiri "Build App"):
+Alur Engineering (standby; terpisah dari alur konten, di Zuno Studio v2 ada ruang kerja sendiri "Agent Builder"):
 
 ```
 Permintaan build (+ PRD, + referensi desain)
@@ -1571,13 +1571,13 @@ Profil ini juga menjalankan tugas Kurator Instagram (profil lama di `agents/arsi
 Penerjemah permintaan Zulnan atau klien menjadi rencana yang bisa dicek. Memastikan semua pihak sepakat soal apa yang dibangun, apa yang sengaja tidak dibangun, dan kapan proyek dianggap selesai, sebelum desain atau kode dimulai. Ketua tim teknis yang melapor ke Lead.
 
 ## Status
-**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Build App" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
+**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Agent Builder" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
 
 ## Kemampuan Inti
 - **Kunci Ruang Lingkup**: masalah inti dalam satu kalimat, semua fitur yang diminta (tanpa batas jumlah), daftar "Nanti" (hanya yang Zulnan tunda), daftar Out of Scope, definisi selesai
 - **Baca PRD**: bila Zulnan mengunggah PRD (.md), PRD jadi referensi utama dan semua fiturnya masuk ruang lingkup. PRD atau referensi berbentuk PDF/DOCX diubah dulu ke Markdown dengan docling (opsional)
 - **Peta Kode Lama (opsional)**: bila proyek meneruskan kode yang sudah ada, `graphify update` + `graphify query` untuk melihat hubungan file sebelum mengunci ruang lingkup
-- **Pilih Mesin**: Apps Script + Sheets, Apps Script + Blogger, Firebase, atau Vercel + Supabase, dengan alasan dan biaya
+- **Pilih Mesin**: Apps Script + Sheets, Apps Script + Blogger, Firebase, atau Vercel + Supabase, dengan alasan dan biaya. Mesin dipilih Zulnan = dipakai; Otomatis = ikuti mesin/teknologi yang disebut di permintaan, PRD, atau catatan referensi (yang paling dekat bila tidak ada di daftar), tanpa petunjuk = paling sederhana
 - **PRD 1 Halaman**: role dan hak akses, menu utama, struktur data, kebutuhan AI (penyedia bisa diganti)
 - **Estimasi**: tahapan dan perkiraan kerja; harga [HARGA BELUM DITENTUKAN]
 - **Kredit dan Akses**: menentukan jenis proyek (pribadi/portofolio/klien), kredit Nexamind, dan setelan contoh login
@@ -1642,7 +1642,7 @@ Penerjemah permintaan Zulnan atau klien menjadi rencana yang bisa dicek. Memasti
 Perancang tampilan web app. Mengubah PRD menjadi tata letak tiap halaman dan gaya visual yang konsisten, responsif di HP dan desktop. Tidak menulis kode aplikasi; hasilnya diserahkan ke Pengembang Aplikasi setelah Zulnan menyetujui tampilan.
 
 ## Status
-**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Build App" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
+**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Agent Builder" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
 
 ## Kemampuan Inti
 - **Wireframe**: tata letak tiap halaman, alur antar menu, termasuk halaman login dengan kotak "Contoh akses" dan menu Reset Akses
@@ -1707,7 +1707,7 @@ Perancang tampilan web app. Mengubah PRD menjadi tata letak tiap halaman dan gay
 Pembangun aplikasi. Bekerja dari PRD T.1 dan desain T.2 yang sudah disetujui, memakai builder sesuai mesin. Mengikuti empat prinsip kerja Engineering: pikir dulu, sesederhana mungkin, ubah seperlunya, kerja berbasis tujuan.
 
 ## Status
-**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Build App" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
+**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Agent Builder" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
 
 ## Kemampuan Inti
 - **Peta Kode (opsional)**: pada proyek besar atau kode lama, `graphify explain "<fungsi>"` / `graphify path "A" "B"` untuk tahu siapa memanggil siapa sebelum mengubah; tetap "ubah seperlunya"
@@ -1778,7 +1778,7 @@ Pembangun aplikasi. Bekerja dari PRD T.1 dan desain T.2 yang sudah disetujui, me
 Penjaga mutu teknis. Bukan Divisi Mutu konten: yang diuji adalah apakah aplikasi berjalan. Memegang laporan uji, rilis, dan panduan serah terima. Laporan "selesai" ke Zulnan hanya keluar dari agen ini, dengan bukti.
 
 ## Status
-**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Build App" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
+**Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Agent Builder" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
 
 ## Kemampuan Inti
 - **Uji Definisi Selesai**: setiap butir dari T.1 dicek dan diberi status Lolos/Gagal beserta bukti
@@ -1846,7 +1846,7 @@ Penjaga mutu teknis. Bukan Divisi Mutu konten: yang diuji adalah apakah aplikasi
 Pemeriksa kode sebelum rilis. Mengaudit hanya kode proyek yang diberikan: bug, otorisasi lemah, akses data tanpa izin, kunci rahasia di client, XSS, injection, validasi input, konfigurasi produksi, dan risiko regresi. Temuannya masuk ke laporan uji Penguji & Rilis.
 
 ## Status
-**Standby.** Aktif di alur Build App setelah Penguji & Rilis (T.4). Audit statis; yang tidak bisa dibuktikan tanpa menjalankan aplikasi ditandai "perlu uji manual".
+**Standby.** Aktif di alur Agent Builder setelah Penguji & Rilis (T.4). Audit statis; yang tidak bisa dibuktikan tanpa menjalankan aplikasi ditandai "perlu uji manual".
 
 ## Kemampuan Inti
 - **Audit Rahasia**: tidak ada API key, password asli, atau token di frontend

@@ -120,7 +120,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     const balik = await p.waitForFunction(() => { try { const o = document.getElementById('kantorIframe').contentWindow.zunoOffice; return o && o.state.theme === 'langit'; } catch (e) { return false; } }, null, { timeout: 120000 }).then(() => true).catch(() => false);
     ok('Pilihan tema: dari The Grotto kembali ke Griya Langit', balik);
 
-    ok('tab Cara kerja: Build App bisa dibuka', await (async () => { await p.click('#tab-build'); return !(await p.$eval('#panel-build', (e) => e.hidden)) && (await p.$eval('#panel-konten', (e) => e.hidden)); })());
+    ok('tab Cara kerja: Agent Builder bisa dibuka', await (async () => { await p.click('#tab-build'); return !(await p.$eval('#panel-build', (e) => e.hidden)) && (await p.$eval('#panel-konten', (e) => e.hidden)); })());
     await p.$eval('#alurVideo', (v) => v.scrollIntoView({ block: 'center' }));
     await p.waitForFunction(() => !document.getElementById('alurVideo').paused, null, { timeout: 8000 }).catch(() => {});
     ok('video alur (WebM) jalan sendiri saat terlihat', await p.$eval('#alurVideo', (v) => !v.paused && /\.webm$/.test(v.currentSrc)) && (await p.textContent('#videoBtn')) === 'Jeda animasi');
@@ -139,7 +139,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
       const kiri = await p.$eval('#kantorIframe', (e) => e.getBoundingClientRect().right);
       const kanan = await p.$eval('#cmd', (e) => e.getBoundingClientRect().left);
       ok('Workspace: kantor 3D di kiri, perintah di kanan', kiri <= kanan);
-      ok('Workspace: pilihan format (Paket, Mode, Tipe, Gaya video) di kolom perintah', (await Promise.all(['#count', '#mode', '#tv', '#pre'].map((s) => p.isVisible(s)))).every(Boolean) && (await p.textContent('#wsK')).trim() === 'Konten' && (await p.textContent('#wsB')).trim() === 'Build App');
+      ok('Workspace: pilihan format (Paket, Mode, Tipe, Gaya video) di kolom perintah', (await Promise.all(['#count', '#mode', '#tv', '#pre'].map((s) => p.isVisible(s)))).every(Boolean) && (await p.textContent('#wsK')).trim() === 'Konten' && (await p.textContent('#wsB')).trim() === 'Agent Builder');
       ok('Workspace: "Cara kerja tim", bar Proses, dan kotak perintah lama tidak ada', !(await p.$('#hFlowBox')) && !(await p.isVisible('#hBar')) && !(await p.$('#uiKonsol')) && !(await p.isVisible('#tracks')));
       const yForm = await p.$eval('#run', (e) => e.getBoundingClientRect().bottom), yLive = await p.$eval('#procp', (e) => e.getBoundingClientRect().top);
       ok('Workspace: "Hasil kerja agen" tampil di bawah format sebelum jalan', (await p.isVisible('#procp')) && yLive > yForm && /Belum ada pekerjaan/.test(await p.textContent('#liveKonten')));
@@ -151,7 +151,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     ok('tanpa kunci: Jalankan mengarahkan ke tombol Pengaturan, tidak ada panggilan AI', /Buka Pengaturan di atas/.test(await p.textContent('#errbox')) && aiCalls.length === 0);
     await p.waitForFunction(() => document.getElementById('keyDlg').open, null, { timeout: 5000 }).catch(() => {});
 
-    // ---------- 5. kunci salah lalu benar: Build App jalan live, agen bekerja di kantor, tulisan agen tampil ----------
+    // ---------- 5. kunci salah lalu benar: Agent Builder jalan live, agen bekerja di kantor, tulisan agen tampil ----------
     if (!(await p.$eval('#keyDlg', (d) => d.open))) await p.click('#hKey');
     await p.fill('#keyIn', 'salah'); await p.click('#keySave');
     await p.waitForFunction(() => !document.getElementById('run').disabled, null, { timeout: 10000 }).catch(() => {});
@@ -170,7 +170,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     const nB = aiCalls.length;
     await p.click('#brun');
     await p.waitForFunction(() => window.NexaUI && Object.keys(window.NexaUI.keadaan).some((k) => /^T\./.test(k) && window.NexaUI.keadaan[k]), null, { timeout: 15000 }).catch(() => {});
-    ok('Build App jalan dari kotak perintah yang sama (agen Engineering memanggil AI dengan kunci)', aiCalls.slice(nB).some((c) => c.key === KUNCI && /PERAN ANDA: T\./.test(c.input)));
+    ok('Agent Builder jalan dari kotak perintah yang sama (agen Engineering memanggil AI dengan kunci)', aiCalls.slice(nB).some((c) => c.key === KUNCI && /PERAN ANDA: T\./.test(c.input)));
     const [kerjaT, teksAktif] = await p.evaluate(() => [Object.keys(window.NexaUI.keadaan).filter((k) => window.NexaUI.keadaan[k]), document.getElementById('uiAktif').textContent]);
     ok('kantor 3D ikut status asli: agen Engineering yang jalan pergi bekerja (' + kerjaT.join(',') + ')', kantorUI && kerjaT.some((k) => /^T\./.test(k)) && (await p.evaluate(() => document.getElementById('kantorIframe').contentWindow.zunoOffice.demo.running)));
     ok('kantor 3D: daftar "Sedang bekerja" tampil (' + teksAktif + ')', /Sedang bekerja|Tim bekerja/.test(teksAktif));

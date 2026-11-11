@@ -1,5 +1,5 @@
 // Menyalin tools/rilis/rilis.mjs ke prototypes/zuno-studio-v2.html (blok <script type="text/plain" id="zuno-rilis-mjs">),
-// supaya paket rilis dari Build App (artifact maupun Zuno Web) selalu membawa skrip rilis yang sama.
+// supaya paket rilis dari Agent Builder (artifact maupun Zuno Web) selalu membawa skrip rilis yang sama.
 // Jalankan setelah rilis.mjs berubah: node tools/rilis/sisip.mjs, lalu node web/build.mjs.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
