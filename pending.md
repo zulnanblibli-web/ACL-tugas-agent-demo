@@ -17,6 +17,8 @@ Daftar tugas yang ditahan Zulnan. Aturan (Zulnan 2026-11-04):
 | P8 | Footage karakter video tipe A/B (butuh generator) dan render di VPS | 2026-11-03 | |
 | P10 | Isi untuk edisi jasa: [ISI kontak penjual], [ISI masa dukungan] di LISENSI, harga jasa | 2026-11-04 | `docs/jasa-zuno.md` |
 | P9 | Kontras tombol Zuno Web (hasil cek hallmark 2.14:1, standar 4.5:1) | 2026-11-04 | Keputusan tampilan di Zulnan |
+| P12 | Sandbox Claude Code (`/sandbox`) sebagai pengaman tambahan untuk `/api/kerja` (Fase 2, `docs/rencana-lokal-claude-code.md`): perintah agen hanya boleh menulis di `kerja/<tugas>/` dan internet hanya ke host yang diizinkan | 2026-11-11 | Ditahan Zulnan: fokus laptop dulu. Tunggu hasil tes `pasang.bat` (Fase 0); cek dulu apakah sandbox jalan di Windows biasa atau hanya WSL2 |
+| P13 | Docker opsional: `Dockerfile` + `docker-compose.yml` untuk Zuno dan repo jasa, jalur alternatif VPS dan pembeli yang sudah pakai Docker (bukan pengganti `pasang.bat`/`pasang.sh`; Blender dan agent-desktop tetap di luar container) | 2026-11-11 | Ditahan Zulnan: fokus laptop dulu. Catat di panduan jasa: Docker Desktop di Windows butuh WSL2 dan lisensinya gratis hanya untuk perorangan/usaha kecil |
 
 ## Selesai / dibatalkan
 - **P11 selesai 2026-11-09** (Zulnan: "amanin repo jasa terus push ke main"): kantor 3D di-merge ke `main` jasa (sampai `1f06a8f`), ekspor jasa diamankan (`tools/jasa/tambahan-jasa.mjs`, `assets/agents` + `assets/themes` dipertahankan, `package.json` digabung), sinkron `7396e18`. Catatan asli: Kantor 3D di repo jasa (branch `feat/kantor-3d-voxel`, 7 commit 2026-11-09 dari sesi agent lain, sampai `3717c8f`): putuskan diamankan dari ekspor, dipindah jad...
