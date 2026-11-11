@@ -758,6 +758,7 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Temuan (1): sebelumnya perintah T.1 untuk Otomatis hanya "pilih mesin paling sederhana yang cukup"; PRD memang referensi utama, tapi mesin yang disebut di PRD/permintaan tidak diperintahkan secara tegas, jadi bisa kalah oleh "paling sederhana". Gambar referensi desain hanya untuk tampilan.
 - Hasil (1): `prototypes/zuno-studio-v2.html`: pilihan jadi "Otomatis (ikut permintaan, PRD, dan referensi)"; perintah T.1 dan konteks MESIN: ikuti mesin/teknologi yang disebut di permintaan, PRD, atau catatan referensi (mesin yang sama dari daftar, atau yang paling dekat bila tidak ada), sebut petunjuknya di alasan mesin; tanpa petunjuk = paling sederhana. Mesin yang dipilih Zulnan tetap menang. Aturan di `docs/aturan-engineering.md` bagian 3 dan profil T.1.
 - Hasil (2): semua teks tampilan dan dokumen yang masih dipakai: "Build App" -> "Agent Builder" (tab Workspace, situs utama, HUD, prototipe, profil agen, skill `rilis-engineering`, `rilis.mjs`, panduan jasa, CLAUDE.md, memori, tes). Isi divisinya tetap: Divisi Engineering membangun web app. Entri riwayat lama tidak diubah.
-- Bukti: lihat baris berikut.
+- Bukti: `zuno-studio-v2-build-stub-test` (default dan `--prd`, cek baru: perintah T.1 mesin Otomatis), `zuno-web-stub-test`, `nexaoffice-chat-test`, `nexaoffice-tim-agen-test`, `nexaoffice-situs-test`, `zuno-jasa-test`: SEMUA LOLOS, nol galat halaman.
+- Commit: Zuno `030ce6f`, jasa `main` `7fa6fc9`. Belum di-push (menunggu kata Zulnan).
 
 ## 76. (entri berikutnya di sini)
