@@ -784,4 +784,15 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Bukti: `zuno-studio-v2-build-stub-test` 14 mode lolos (exit 0, 0 GAGAL; cek baru anti-slop), `nexaoffice-tim-agen-test`, `nexaoffice-situs-test`, `nexaoffice-chat-test`, `zuno-web-stub-test`, `zuno-jasa-test` (HASIL: SEMUA LOLOS); `ui-ux-pro-max` search.py jalan (kueri bahasa Inggris); `sloplint.mjs` tetap jalan.
 - Commit: Zuno `cb7ac64` + catatan `10d047c`, jasa `main` `4228ba5`. Push (izin Zulnan "oke push dan deploy"): kedua repo; deploy Vercel `dpl_D5SLWQbgv9MxqB8J8pynnPKMqUQB` READY (alias zuno-studio-dusky.vercel.app); dicek live: `/studio.html` 200 memuat STANDAR ANTI-SLOP + 2 cek otomatis baru, `/` 200.
 
-## 78. (entri berikutnya di sini)
+## 78. Pemasang lokal satu perintah + panduan + rencana jalan lokal (2026-11-11)
+- Permintaan Zulnan: Zuno (dan nanti pembeli jasa) jalan di lokal dengan Claude Code + semua skill (cara C), VPS menyusul. Susun rencana, buat paket pasang satu perintah yang langsung jalan (atau panduan bila tidak bisa). Skill yang lisensinya bermasalah jangan langsung ikut paket jasa, tapi tulis sebagai saran + cara pasang sendiri; semua yang perlu setup ditulis lengkap dengan urutannya.
+- Hasil:
+  - `pasang.bat` (Windows, winget + installer resmi Claude Code) dan `pasang.sh` (macOS/Linux/WSL/VPS), isi di `tools/pasang/`: 7 langkah (alat dasar, Node 22, uv + Claude Code, paket web + `.env.local`, browser, paket opsional video/YouTube/Blender/alat dokumen, cek kesiapan). Pilihan inti/semua/coba; aman diulang; tidak meminta key.
+  - `tools/pasang/cek-kesiapan.mjs` + `kebutuhan-skill.json`: alat, pengaturan web (tanpa isi key), status siap/kurang per skill, saran skill pasang sendiri.
+  - `docs/panduan-pasang-lokal.md`, `docs/rencana-lokal-claude-code.md` (Fase 0 cek Claude Code di laptop Zulnan, Fase 2-3 jembatan `/api/kerja` + Agent SDK dengan kunci akses dan folder kerja, Fase 4 jasa, Fase 5 VPS; ketentuan akun Claude dari dokumentasi resmi).
+  - Jasa: ekspor membawa `.claude/skills` (135 folder, tanpa `__pycache__`), subagent impeccable, pemasang, `jalankan-lokal.bat` versi jasa, `CLAUDE.md` white-label, `PANDUAN-LOKAL.md` (bagian 6: taste-skill dan ui-styling tidak ikut paket karena lisensi isi belum pasti, cara pasang sendiri Windows/macOS/Linux + catatan lisensi), `.claude/skills/README.md` jasa, LISENSI.md bagian komponen pihak ketiga, README pilihan jalan lokal. Skill khusus Zuno tidak ikut.
+- Bukti: `bash pasang.sh --inti` jalan sungguhan di Linux (Ubuntu 24.04) sampai cek kesiapan; `--coba` di repo Zuno dan repo jasa (deteksi folder benar); cek kesiapan: 47 siap di Zuno, 40 siap di jasa (kurang: Blender, lemo-opuscar butuh ffmpeg 7 + library); simulasi pasang sendiri taste-skill + ui-styling dari sumbernya -> SIAP; `zuno-jasa-test` HASIL: SEMUA LOLOS (6 cek baru paket lokal).
+- Belum teruji: `pasang.bat`/`pasang.ps1` di Windows sungguhan (mengunduh PowerShell untuk cek sintaks ditolak pengaman; perlu dicoba di laptop Zulnan, Fase 0).
+- Commit: Zuno `fbdc345`, jasa `main` `0bcd240`. Belum di-push (menunggu kata Zulnan).
+
+## 79. (entri berikutnya di sini)
