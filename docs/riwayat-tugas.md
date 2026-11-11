@@ -793,6 +793,6 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - Jasa: ekspor membawa `.claude/skills` (135 folder, tanpa `__pycache__`), subagent impeccable, pemasang, `jalankan-lokal.bat` versi jasa, `CLAUDE.md` white-label, `PANDUAN-LOKAL.md` (bagian 6: taste-skill dan ui-styling tidak ikut paket karena lisensi isi belum pasti, cara pasang sendiri Windows/macOS/Linux + catatan lisensi), `.claude/skills/README.md` jasa, LISENSI.md bagian komponen pihak ketiga, README pilihan jalan lokal. Skill khusus Zuno tidak ikut.
 - Bukti: `bash pasang.sh --inti` jalan sungguhan di Linux (Ubuntu 24.04) sampai cek kesiapan; `--coba` di repo Zuno dan repo jasa (deteksi folder benar); cek kesiapan: 47 siap di Zuno, 40 siap di jasa (kurang: Blender, lemo-opuscar butuh ffmpeg 7 + library); simulasi pasang sendiri taste-skill + ui-styling dari sumbernya -> SIAP; `zuno-jasa-test` HASIL: SEMUA LOLOS (6 cek baru paket lokal).
 - Belum teruji: `pasang.bat`/`pasang.ps1` di Windows sungguhan (mengunduh PowerShell untuk cek sintaks ditolak pengaman; perlu dicoba di laptop Zulnan, Fase 0).
-- Commit: Zuno `fbdc345`, jasa `main` `0bcd240`. Belum di-push (menunggu kata Zulnan).
+- Commit: Zuno `fbdc345` + catatan `29547be`, jasa `main` `0bcd240`. Push (izin Zulnan "oke push dan deploy"): kedua repo; deploy Vercel `dpl_6bw6BP2u9VdUvyJ2k2yx62M1wq4M` READY (alias zuno-studio-dusky.vercel.app; web tidak berubah di entri ini, isi baru ada di repo).
 
 ## 79. (entri berikutnya di sini)
