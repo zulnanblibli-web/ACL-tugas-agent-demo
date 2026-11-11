@@ -782,6 +782,6 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Agent Builder: `STANDAR ANTI-SLOP` di BASE_ENG, T.2/T.3 wajib mematuhinya, T.4 selalu memberi butir "Standar anti-slop"; cek otomatis baru "Anti-slop: tanpa transition: all" dan "Anti-slop: :focus-visible di kontrol".
 - Tidak terpasang: hook impeccable (`.claude/settings.json` ditolak pengaman Claude Code karena mengubah pengaturan sendiri; Zulnan bisa memasangnya sendiri), `.mcp.json` blender (khusus Windows, dipasang di laptop).
 - Bukti: `zuno-studio-v2-build-stub-test` 14 mode lolos (exit 0, 0 GAGAL; cek baru anti-slop), `nexaoffice-tim-agen-test`, `nexaoffice-situs-test`, `nexaoffice-chat-test`, `zuno-web-stub-test`, `zuno-jasa-test` (HASIL: SEMUA LOLOS); `ui-ux-pro-max` search.py jalan (kueri bahasa Inggris); `sloplint.mjs` tetap jalan.
-- Commit: Zuno `cb7ac64`, jasa `main` `4228ba5`. Belum di-push (menunggu kata Zulnan).
+- Commit: Zuno `cb7ac64` + catatan `10d047c`, jasa `main` `4228ba5`. Push (izin Zulnan "oke push dan deploy"): kedua repo; deploy Vercel `dpl_D5SLWQbgv9MxqB8J8pynnPKMqUQB` READY (alias zuno-studio-dusky.vercel.app); dicek live: `/studio.html` 200 memuat STANDAR ANTI-SLOP + 2 cek otomatis baru, `/` 200.
 
 ## 78. (entri berikutnya di sini)
