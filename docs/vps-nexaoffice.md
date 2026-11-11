@@ -20,7 +20,7 @@ Catatan keamanan mode API key lokal:
 - Pemilik server bisa mematikan mode ini dengan env `NEXA_KUNCI_PENGGUNA=off`.
 - Endpoint `openai-compatible` dari mode lokal harus `https://` dan bukan alamat jaringan lokal (kecuali server dijalankan sendiri lewat `dev-server.mjs`, di mana `NEXA_IZINKAN_LOKAL=1` bawaan, supaya Ollama/LM Studio di mesin itu bisa dipakai).
 
-Tombol **Tes sambungan** mengecek `/api/status` lalu meminta jawaban satu kata ke AI (memakai sedikit token).
+Tombol **Tes sambungan** mengecek `/api/status` (dengan kunci akses; tanpa kunci server hanya menjawab `terkunci`) lalu meminta jawaban satu kata ke AI (memakai sedikit token).
 
 ## Pasang di VPS
 

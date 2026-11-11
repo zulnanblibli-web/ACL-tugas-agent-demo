@@ -38,7 +38,7 @@ out.push(['tahap ringan pakai flash', L.at(-1).model === 'gemini-8.5-flash']);
 out.push(['peran model + gambar inline', last.json.contents[1].role === 'model' && !!last.json.contents[0].parts[0].inline_data]);
 mode = 'potong'; L = await call({ input: 'x' }); out.push(['MAX_TOKENS -> max_tokens', L.at(-1).stop === 'max_tokens']);
 mode = 'tolak'; L = await call({ input: 'x' }); out.push(['SAFETY -> refusal', L.at(-1).stop === 'refusal']);
-const st = await (await GET()).json();
+const st = await (await GET(new Request('http://x/api/status', { headers: { 'x-zuno-key': 'rahasia-uji-123' } }))).json();
 out.push(['status: model otomatis', st.model === 'gemini-8.5-pro (otomatis)' && st.ai_key_set && !JSON.stringify(st).includes('tiruan')]);
 fake.close();
 let f = 0; for (const [n, ok] of out) { console.log((ok ? 'LOLOS ' : 'GAGAL ') + n); if (!ok) f++; }

@@ -47,8 +47,10 @@ mode = 'potong'; r = await call({ input: 'panjang' });
 out.push(['max_tokens dilaporkan', r.lines.at(-1).stop === 'max_tokens']);
 mode = '401'; r = await call({ input: 'x' });
 out.push(['key server salah -> event error', r.lines.at(-1).t === 'error' && r.lines.at(-1).code === 'server_key']);
-const st = await (await GET()).json();
+const st = await (await GET(new Request('http://x/api/status', { headers: { 'x-zuno-key': 'rahasia-uji-123' } }))).json();
 out.push(['status tanpa bocor kunci', st.ai_key_set === true && st.access_set === true && !JSON.stringify(st).includes('tiruan')]);
+for (const [n, h] of [['tanpa kunci', {}], ['kunci salah', { 'x-zuno-key': 'salah' }]]) { const t = await (await GET(new Request('http://x/api/status', { headers: h }))).json(); out.push(['status ' + n + ': terkunci, tanpa penyedia/model/setelan', t.online === true && t.terkunci === true && Object.keys(t).length === 2]); }
+{ const t = await (await GET()).json(); out.push(['status tanpa request: terkunci', t.terkunci === true && !t.provider]); }
 fake.close();
 let fail = 0; for (const [n, ok] of out) { console.log((ok ? 'LOLOS ' : 'GAGAL ') + n); if (!ok) fail++; }
 console.log(fail ? fail + ' gagal' : 'semua lolos'); process.exit(fail ? 1 : 0);

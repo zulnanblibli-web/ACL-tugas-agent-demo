@@ -14,7 +14,7 @@ Sejak 2026-11-09 Zuno Web jadi **Nexaoffice**: `/` = situs utama (hero = Kantor 
 | `src/hero.html`, `src/tail.html`, `src/hud.css`, `src/hud.js` | Tampilan HUD: judul ZUNO, inti, panel status, diagram "Cara kerja" yang ikut proses asli |
 | `src/live.js` | Jembatan: `window.claude.use('sample')` diarahkan ke `/api/ai` (streaming) |
 | `api/ai.js` | Server AI. Penyedia bisa diganti lewat `AI_PROVIDER` |
-| `api/status.js` | Status untuk panel HUD (tanpa membocorkan kunci) |
+| `api/status.js` | Status untuk panel HUD (tanpa membocorkan kunci). Khusus pemegang kunci akses (`x-zuno-key`); pengunjung lain hanya mendapat `{ online, terkunci }` |
 | `dev-server.mjs` | Server lokal untuk uji di komputer sendiri (lihat bagian "Jalankan di komputer sendiri") |
 | `.env.local.example` | Contoh pengaturan lokal; salin jadi `.env.local` |
 | `build.mjs` | Membangun ulang `index.html` setelah `zuno-studio-v2.html` berubah: `node web/build.mjs` |

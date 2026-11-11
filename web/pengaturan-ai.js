@@ -50,13 +50,16 @@
     simpan(s);
     out.textContent = 'Mengetes sambungan…';
     try {
-      var r = await fetch(window.NexaAI.base() + '/api/status', { cache: 'no-store' });
+      var kunci = window.ZunoKey ? window.ZunoKey.get() : '';
+      if (!kunci) throw { message: 'Isi kunci akses server.' };
+      // Status server hanya terbuka untuk pemegang kunci akses.
+      var r = await fetch(window.NexaAI.base() + '/api/status', { cache: 'no-store', headers: { 'x-zuno-key': kunci } });
       if (!r.ok) throw { message: 'Server membalas HTTP ' + r.status };
       var j = await r.json();
+      if (j.terkunci) throw { message: 'Kunci akses salah, atau server belum punya ZUNO_ACCESS_KEY.', code: 'not_granted' };
       if (!j.access_set) throw { message: 'Server belum punya ZUNO_ACCESS_KEY.' };
       if (s.mode === 'lokal' && j.kunci_pengguna === false) throw { message: 'Server ini menolak API key dari halaman (NEXA_KUNCI_PENGGUNA=off).' };
       if (s.mode !== 'lokal' && !j.ai_key_set) throw { message: 'Server belum punya API key AI. Isi di env server atau pakai mode API key lokal.' };
-      if (!window.ZunoKey || !window.ZunoKey.get()) throw { message: 'Isi kunci akses server.' };
       var sample = await window.claude.use('sample');
       var h = await sample('Balas satu kata saja: SIAP', { modelTier: 'quick', effort: 'low' });
       out.textContent = 'Tersambung. Jawaban AI: ' + String(h.text || '').trim().slice(0, 40);

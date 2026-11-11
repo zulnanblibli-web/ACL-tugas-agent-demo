@@ -44,7 +44,8 @@ try {
   r = await fetch(U + '/assets/foto-zulnan.webp'); ok('foto cover webp 200', r.status === 200 && r.headers.get('content-type') === 'image/webp' && (await r.arrayBuffer()).byteLength > 10000);
   r = await fetch(U + '/assets/karakter/zuno-tim-orkestrasi.webp'); ok('gambar karakter 200', r.status === 200);
   r = await fetch(U + '/hud.css'); ok('css 200', r.status === 200 && /text\/css/.test(r.headers.get('content-type')));
-  r = await fetch(U + '/api/status'); const s = await r.json(); ok('status online, penyedia openrouter, key terisi, tanpa membocorkan kunci', s.online === true && s.provider === 'openrouter' && s.ai_key_set === true && s.access_set === true && !JSON.stringify(s).includes('kunci-tiruan') && !JSON.stringify(s).includes('rahasia-lokal'));
+  r = await fetch(U + '/api/status'); const s0 = await r.json(); ok('status tanpa kunci akses: terkunci, tanpa penyedia/model/setelan', s0.online === true && s0.terkunci === true && Object.keys(s0).length === 2);
+  r = await fetch(U + '/api/status', { headers: { 'x-zuno-key': 'rahasia-lokal-1234567' } }); const s = await r.json(); ok('status online, penyedia openrouter, key terisi, tanpa membocorkan kunci', s.online === true && s.provider === 'openrouter' && s.ai_key_set === true && s.access_set === true && !JSON.stringify(s).includes('kunci-tiruan') && !JSON.stringify(s).includes('rahasia-lokal'));
   r = await fetch(U + '/api/ai', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ input: 'x' }) }); ok('tanpa kunci akses: 401', r.status === 401);
   r = await fetch(U + '/api/ai', { method: 'POST', headers: { 'content-type': 'application/json', 'x-zuno-key': 'salah' }, body: JSON.stringify({ input: 'x' }) }); ok('kunci salah: 401', r.status === 401);
   r = await fetch(U + '/api/ai', { method: 'POST', headers: { 'content-type': 'application/json', 'x-zuno-key': 'rahasia-lokal-1234567' }, body: JSON.stringify({ input: 'tes' }) });

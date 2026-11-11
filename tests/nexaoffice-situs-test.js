@@ -45,7 +45,14 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
       return route.fulfill({ status: 200, contentType: 'application/x-ndjson', body: lines.map((l) => JSON.stringify(l)).join('\n') + '\n' });
     });
     const statusCalls = [];
-    await ctx.route('**/api/status', (route) => { statusCalls.push(route.request().url()); return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ online: true, provider: 'claude', model: 'tiruan', ai_key_set: true, access_set: true, kunci_pengguna: true, server: 'vercel', riset: { aktif: false } }) }); });
+    // Seperti server asli: tanpa kunci akses (x-zuno-key) status hanya { online, terkunci }.
+    const statusKunci = [];
+    await ctx.route('**/api/status', (route) => {
+      statusCalls.push(route.request().url());
+      const k = route.request().headers()['x-zuno-key'] || ''; statusKunci.push(k);
+      const isi = k ? { online: true, provider: 'claude', model: 'tiruan', ai_key_set: true, access_set: true, kunci_pengguna: true, server: 'vercel', riset: { aktif: false } } : { online: true, terkunci: true };
+      return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'x-zuno-key' }, body: JSON.stringify(isi) });
+    });
     await ctx.route('**/api/riset**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ hasil: [] }) }));
 
     await p.goto(U + '/');
@@ -211,6 +218,7 @@ const ok = (nama, syarat) => { console.log((syarat ? 'OK    ' : 'GAGAL ') + nama
     const s0 = statusCalls.length;
     await p3.click('#keySave');
     await p3.waitForTimeout(800);
+    ok('status server diminta dengan kunci akses (x-zuno-key) setelah kunci diisi', statusKunci.slice(s0).length > 0 && statusKunci.slice(s0).every((k) => k.length > 0));
     ok('mode VPS: status dibaca dari alamat VPS', statusCalls.slice(s0).some((u) => u.startsWith(VPS + '/api/status')) && /Server VPS/.test(await p3.textContent('#hKoneksi')));
     const n1 = aiCalls.length;
     await p3.evaluate(async () => { const s = await window.claude.use('sample'); await s('Balas satu kata saja: SIAP', { modelTier: 'quick' }).catch(() => null); });

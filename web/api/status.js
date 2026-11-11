@@ -1,7 +1,18 @@
 // Zuno / Nexaoffice: status server untuk panel status dan menu Pengaturan AI. Tidak membocorkan kunci apa pun.
+// Khusus pemegang kunci akses (header x-zuno-key = env ZUNO_ACCESS_KEY). Tanpa kunci yang benar hanya dijawab
+// { online: true, terkunci: true }: penyedia, model, dan setelan server tidak terlihat oleh pengunjung lain.
+import { timingSafeEqual } from 'node:crypto';
 import { pickGemini } from './ai.js';
 import { setelan } from './riset.js';
-export async function GET() {
+function keyOk(given) {
+  const want = process.env.ZUNO_ACCESS_KEY || '';
+  if (!want || !given) return false;
+  const a = Buffer.from(String(given)), b = Buffer.from(want);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+export async function GET(request) {
+  const given = request && request.headers ? request.headers.get('x-zuno-key') : '';
+  if (!keyOk(given)) return Response.json({ online: true, terkunci: true }, { headers: { 'cache-control': 'no-store' } });
   const provider = (process.env.AI_PROVIDER || 'claude').toLowerCase();
   const keyEnv = { claude: 'ANTHROPIC_API_KEY', openai: 'OPENAI_API_KEY', gemini: 'GEMINI_API_KEY', openrouter: 'OPENROUTER_API_KEY', 'openai-compatible': 'AI_BASE_URL' }[provider];
   let model = process.env.AI_MODEL || ({ claude: 'claude-opus-5-5', openrouter: 'openrouter/auto' }[provider] || 'belum diisi');

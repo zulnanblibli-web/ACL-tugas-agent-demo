@@ -97,7 +97,20 @@
     var lokal = ai.mode === 'lokal' && !!ai.kunci;
     var NM = { claude: 'Claude', gemini: 'Gemini', openai: 'OpenAI', openrouter: 'OpenRouter', 'openai-compatible': '9router / lokal' };
     var info = $('capinfo');
-    fetch(base + '/api/status', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (j) {
+    // /api/status hanya menjawab lengkap untuk pemegang kunci akses (header x-zuno-key).
+    var kunci = window.ZunoKey ? window.ZunoKey.get() : '';
+    fetch(base + '/api/status', { cache: 'no-store', headers: kunci ? { 'x-zuno-key': kunci } : {} }).then(function (r) { return r.json(); }).then(function (j) {
+      if (j.terkunci) {
+        $('hStat').textContent = 'KUNCI AKSES'; $('hStat').className = 'val warn';
+        $('hModel').textContent = '-';
+        if ($('hBrain')) $('hBrain').textContent = '-';
+        if ($('hKoneksi')) $('hKoneksi').textContent = ai.mode === 'vps' ? 'Server VPS' : 'Server';
+        if (info) {
+          info.className = 'banner warn'; info.classList.remove('hidden');
+          info.textContent = 'Server belum lengkap: ' + (kunci ? 'kunci akses salah, atau ZUNO_ACCESS_KEY belum diisi di server.' : 'isi kunci akses server di Pengaturan.');
+        }
+        return;
+      }
       var tolak = lokal && j.kunci_pengguna === false;
       var ok = (j.ai_key_set || lokal) && j.access_set && !tolak;
       $('hStat').textContent = ok ? 'ONLINE' : 'BELUM DISETEL';

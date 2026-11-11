@@ -45,7 +45,7 @@ r = await call('AI agent');
 out.push(['RISET_AKTIF=off -> 403 riset_off', r.status === 403 && r.j.code === 'riset_off']);
 for (const k of ['RISET_SUMBER', 'RISET_NEGARA', 'RISET_BAHASA', 'RISET_KATA_KUNCI', 'RISET_HARI_BERITA', 'RISET_AKTIF']) delete process.env[k];
 const { GET: STATUS } = await import('../web/api/status.js');
-const st = await (await STATUS()).json();
+const st = await (await STATUS(new Request('http://x/api/status', { headers: { 'x-zuno-key': 'rahasia-uji-123' } }))).json();
 out.push(['/api/status melaporkan setelan riset (tanpa rahasia)', st.riset && st.riset.aktif === true && st.riset.negara === 'ID']);
 let ok = true;
 for (const [n, v] of out) { console.log((v ? 'LOLOS ' : 'GAGAL ') + n); if (!v) ok = false; }
