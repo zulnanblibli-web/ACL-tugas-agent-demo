@@ -25,6 +25,7 @@ Pilih jalur sesuai `mesin`. Login CLI dilakukan Zulnan sendiri. Bila belum login
 | Mesin | Link uji (cek dulu) | Production (setelah semua cek lolos) |
 |---|---|---|
 | Vercel + Supabase | `vercel deploy` (URL preview) | `vercel deploy --prod` |
+| Statis (Vercel) | `vercel deploy` (URL preview) | `vercel deploy --prod` |
 | Apps Script + Sheets/Blogger | `clasp push` lalu `clasp deploy` (URL web app `/exec`) | Deployment yang sama ditandai final di `PANDUAN.md` |
 | Firebase | `firebase hosting:channel:deploy cek-<nama>` | `firebase deploy --only hosting` |
 

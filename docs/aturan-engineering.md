@@ -1,6 +1,6 @@
 # Aturan Kerja Divisi Engineering
 
-Dibuat 2026-11-02 atas permintaan Zulnan. Divisi Engineering membangun apa yang Zulnan minta: web app untuk pemakaian pribadi, portofolio, atau klien jasa pembuatan web app. Divisi ini terpisah dari divisi kreatif (konten), tetapi tetap di bawah Lead (Orkestraror Agen dan Juru Kabar).
+Dibuat 2026-11-02 atas permintaan Zulnan. Divisi Engineering membangun apa yang Zulnan minta: web app untuk pemakaian pribadi, portofolio, atau klien jasa pembuatan web app. Sejak 2026-11-11 (Zulnan) cakupannya **semua bentuk development yang jalan di browser**: web app, website/landing page, game, 3D & interaktif, dan lainnya (lihat bagian "Jenis build"). Divisi ini terpisah dari divisi kreatif (konten), tetapi tetap di bawah Lead (Orkestraror Agen dan Juru Kabar).
 
 **Status: standby.** Divisi ini tidak ikut alur konten harian; langsung aktif saat Zulnan mengirim permintaan build. Di Zuno Studio v2 ada ruang kerja sendiri (tab "Agent Builder") dengan state, proses, dan hasil yang terpisah dari tab "Konten". Satu proses berjalan dalam satu waktu.
 
@@ -61,6 +61,22 @@ Permintaan Zulnan / klien (+ PRD .md, + referensi desain)
 | Apps Script (backend) + Blogger/Sites (frontend) | Sama seperti di atas, tampilan di Blogger | Hosting gratis, bisa domain sendiri |
 | Firebase (Firestore + Auth), satu file HTML (PWA) | Pengguna banyak, data realtime | Gratis sampai batas tertentu, lalu berbayar; setup lebih banyak |
 | Vercel + Supabase | Proyek besar atau butuh fungsi server | Pakai skill `gas-vercel-publisher` dan sejenisnya |
+
+Mesin **Statis (Vercel)** (2026-11-11): untuk website, game, 3D, dan build lain tanpa server. `index.html` dideploy apa adanya ke Vercel oleh `rilis.mjs`, tanpa database.
+
+### Jenis build (Zulnan 2026-11-11)
+| Jenis | Standar khusus | Cek otomatis tambahan |
+|---|---|---|
+| Web app (login + data) | akun acak, kotak Contoh akses, Reset Akses, hash SHA-256 + salt, data di backend | IS_PREVIEW, Contoh akses, Reset Akses, hash |
+| Website / landing page | semantik (`<main>`, satu `<h1>`), meta description, formulir tervalidasi, kredit di footer | `<main>` + `<h1>`, prefers-reduced-motion |
+| Game (browser) | loop requestAnimationFrame + delta waktu, keyboard dan sentuh, layar mulai, jeda, game over + main lagi, skor | requestAnimationFrame, keyboard + sentuh, jeda, prefers-reduced-motion |
+| 3D & interaktif | Three.js lewat importmap (versi tertulis) atau WebGL, resize, kontrol mouse + sentuh, pesan bila WebGL tidak ada | Three.js/WebGL, resize, pesan WebGL, prefers-reduced-motion |
+| Lainnya | tetap satu `index.html` yang jalan di browser; aplikasi native (APK, iOS, desktop) belum bisa dibuat, dibuat versi browser-nya | standar umum |
+
+Standar umum semua jenis: kredit, responsif, tanpa `// TODO`, tanpa API key di frontend, jalan di pratinjau tanpa galat. Login hanya untuk web app atau bila diminta.
+
+### T.5 Damar: audit lalu perbaiki (Zulnan 2026-11-11)
+Damar tidak hanya melapor. Untuk temuan kritis, tinggi, dan sedang yang bisa ditutup di kode, Damar memberi edit cari-ganti kecil; edit diterapkan hanya bila potongannya persis dan unik. Penjaga: file harus tetap utuh dan pratinjau yang tadinya jalan tidak boleh jadi galat; bila rusak, semua edit putaran itu dibatalkan. Setelah memperbaiki, Damar memeriksa ulang kode baru (maks. 2 putaran), lalu cek otomatis diulang. Celah yang masih ada masuk laporan uji dan diperbaiki Pengembang di putaran perbaikan; hasilnya tercatat di `PANDUAN.md` bagian "Audit keamanan". Audit tetap statis, bukan uji penetrasi.
 
 Pilihan mesin di Agent Builder (Zulnan 2026-11-11):
 - **Dipilih Zulnan**: mesin itu yang dipakai, apa pun isi referensinya.

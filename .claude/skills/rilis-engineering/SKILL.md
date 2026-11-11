@@ -31,6 +31,7 @@ Yang dikerjakan rilis.mjs per mesin:
 - **Apps Script + Google Sheets**: Spreadsheet + Apps Script baru (`clasp create-script --type sheets`), kirim `Code.gs` + `Index.html` + manifest web app, deploy, link `/exec`, cek link berisi aplikasi ini. Rilis ulang memakai deployment yang sama.
 - **Apps Script + Blogger**: sama, plus `blogger-widget.html` (GAS_URL terisi) yang ditempel agen ke Blogger.
 - **Firebase**: proyek, web app, `firebaseConfig`, Firestore, deploy hosting + rules; agen mengaktifkan Email/Password di console; akun Admin dibuat skrip lewat API (`--akun-firebase`).
+- **Statis (Vercel)** (website, game, 3D, build tanpa server): `index.html` langsung `vercel deploy --prod`, tanpa database dan tanpa `akun-awal.json`; uji live = coba kontrol utamanya (mulai main, putar kamera, buka tiap bagian).
 - **Vercel + Supabase**: agen menyiapkan proyek Supabase di dashboard (paket Free) + menjalankan `schema.sql` + menulis `supabase.json`; skrip menyuntik URL + anon key lalu `vercel deploy --prod`.
 
 ## 3. agent-desktop (tangan)

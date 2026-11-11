@@ -761,4 +761,16 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Bukti: `zuno-studio-v2-build-stub-test` (default dan `--prd`, cek baru: perintah T.1 mesin Otomatis), `zuno-web-stub-test`, `nexaoffice-chat-test`, `nexaoffice-tim-agen-test`, `nexaoffice-situs-test`, `zuno-jasa-test`: SEMUA LOLOS, nol galat halaman.
 - Commit: Zuno `030ce6f`, jasa `main` `7fa6fc9`. Belum di-push (menunggu kata Zulnan).
 
-## 76. (entri berikutnya di sini)
+## 76. Agent Builder untuk semua bentuk build + Damar menambal celah keamanan (2026-11-11)
+- Permintaan Zulnan: Divisi Engineering tidak hanya web app, tapi semua bentuk development (game, 3D, website, dll.) lewat Agent Builder; Damar memeriksa hasil build, mencari celah keamanan, dan memperbaikinya.
+- Hasil (bentuk build), sumber `prototypes/zuno-studio-v2.html` (Workspace dan edisi jasa ikut lewat build/ekspor):
+  - Pilihan baru **Jenis build**: Otomatis (dari permintaan, PRD, referensi), Web app (login + data), Website / landing page, Game (browser), 3D & interaktif, Lainnya (jalan di browser). T.1 mengembalikan `bentuk`; pilihan Zulnan selalu menang.
+  - Mesin baru **Statis (Vercel)** untuk build tanpa server (bawaan untuk bentuk selain web app bila tidak ada petunjuk). `tools/rilis/rilis.mjs`: cabang Statis = `vercel deploy --prod` tanpa Supabase.
+  - Standar dipisah: STANDAR UMUM (kredit, responsif, tanpa TODO, tanpa API key di frontend) + STANDAR BENTUK INI per jenis (web app: akun acak, Contoh akses, Reset Akses, hash; website: semantik + meta; game: loop requestAnimationFrame, keyboard + sentuh, jeda, game over; 3D: Three.js importmap/WebGL, resize, kontrol sentuh, pesan WebGL). Login hanya untuk web app atau bila diminta.
+  - T.2 mendesain layar/bagian sesuai jenis; T.3 menulis index.html sesuai jenis (bertahap juga punya rencana bagian per jenis), tanpa backend untuk Statis; cek otomatis per jenis; PANDUAN dan paket rilis menyesuaikan (tanpa `akun-awal.json` dan Akun awal untuk selain web app; langkah Statis; CLAUDE.md paket: uji kontrol utama). Kotak "Contoh akses" disembunyikan bila jenis build bukan web app.
+  - Aplikasi native (APK, iOS, desktop) belum bisa dibuat di sini; jenis Lainnya membuat versi browser-nya dan menulisnya di asumsi.
+- Hasil (Damar): `BEng.amankan`: audit memberi edit cari-ganti kecil untuk celah kritis/tinggi/sedang, diterapkan hanya bila potongannya persis dan unik; penjaga: file harus tetap utuh dan pratinjau yang tadinya jalan tidak boleh jadi galat (bila rusak, semua edit putaran itu dibatalkan); lalu Damar memeriksa ulang kode baru (maks. 2 putaran perbaikan) dan cek otomatis diulang. Sisa celah masuk laporan uji (diperbaiki Pengembang di putaran perbaikan). PANDUAN mendapat bagian "Audit keamanan (T.5 Damar)": diperbaiki, masih tercatat, dibatalkan.
+- Dokumen: CLAUDE.md, `docs/aturan-engineering.md` (tabel Jenis build + Damar), `docs/tangan-komputer.md`, skill `rilis-engineering` + workflow, profil T.1, T.2, T.3, T.5 + README + semua-agen, situs utama (panel Agent Builder), panduan jasa, memori.
+- Bukti: lihat baris berikut.
+
+## 77. (entri berikutnya di sini)

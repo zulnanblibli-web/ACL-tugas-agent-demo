@@ -4,30 +4,36 @@ const { chromium } = require('playwright');
 // Argumen: --klien --buruk --potong --gagal --putus --putus-parah --desref --prd --besar --kosong
 // --besar: 20 fitur -> T.3 menulis bertahap per bagian; revisi kode besar lewat edit cari-ganti.
 // --kosong: satu file pulang empty_completion -> pindah ke mode bertahap; bagian fitur yang kosong dipecah dua.
-const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.includes('--buruk'); const POTONG = process.argv.includes('--potong'); const GAGAL = process.argv.includes('--gagal'); const PUTUS = process.argv.includes('--putus'); const PARAH = process.argv.includes('--putus-parah'); const DESREF = process.argv.includes('--desref'); const BESAR = process.argv.includes('--besar'); const KOSONG = process.argv.includes('--kosong');
+// --game: Jenis build Game, mesin Statis (Vercel): tanpa login/Reset Akses, tanpa backend, cek otomatis khusus game.
+// --damar: T.5 Damar menutup celah lewat edit kecil lalu memeriksa ulang. --damar-rusak: edit yang merusak file dibatalkan.
+const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.includes('--buruk'); const POTONG = process.argv.includes('--potong'); const GAGAL = process.argv.includes('--gagal'); const PUTUS = process.argv.includes('--putus'); const PARAH = process.argv.includes('--putus-parah'); const DESREF = process.argv.includes('--desref'); const BESAR = process.argv.includes('--besar'); const KOSONG = process.argv.includes('--kosong'); const GAME = process.argv.includes('--game'); const DAMAR = process.argv.includes('--damar'); const DRUSAK = process.argv.includes('--damar-rusak'); const NM = GAME ? 'tebak_kata' : 'absensi_siswa';
 (async()=>{
   const b = await chromium.launch(); const p = await b.newPage({viewport:{width:1100,height:900}});
   const errs=[]; p.on('pageerror',e=>errs.push('PAGEERR '+e.message)); p.on('console',m=>{if(m.type()==='error')errs.push('CONSOLE '+m.text())});
-  await p.addInitScript(([BURUK,POTONG,GAGAL,PUTUS,PARAH,DESREF,BESAR,KOSONG])=>{
+  await p.addInitScript(([BURUK,POTONG,GAGAL,PUTUS,PARAH,DESREF,BESAR,KOSONG,GAME,DAMAR,DRUSAK])=>{
     window.__calls=[];
     const sleep=ms=>new Promise(r=>setTimeout(r,ms));
     const APP=(kredit,contoh)=>BURUK?'<html><body><script>var pw="admin2026"; // TODO login\nundefinedFn();<\/script><h1>App</h1></body></html>':'<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="'+kredit+'"><title>Absensi</title></head><body><script>const IS_PREVIEW = true; const TAMPILKAN_CONTOH_LOGIN = '+contoh+';async function h(p){const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(p));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,"0")).join("")}<\/script><h1>Login</h1><div id="contoh">Contoh akses</div><nav>Dashboard · Absensi · Reset Akses</nav><footer>'+kredit+'</footer></body></html>';
+    const GAMEAPP=(kredit)=>'<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="'+kredit+'"><title>Tebak Kata</title><style>@media (prefers-reduced-motion: reduce){*{animation:none}}</style></head><body><canvas id="main"></canvas><button id="jeda">Jeda</button><p>'+kredit+'</p><script>let jeda=false,t0=0;function loop(t){t0=t;if(!jeda){}requestAnimationFrame(loop)}requestAnimationFrame(loop);addEventListener("keydown",e=>{if(e.key==="p")jeda=!jeda});addEventListener("pointerdown",()=>{});document.getElementById("jeda").onclick=()=>{jeda=!jeda};<\/script></body></html>';
     const gen=async(input)=>{
       await sleep(20);
-      const role=(input.match(/PERAN ANDA: (\S+)/)||[])[1]; window.__calls.push({role,rev:/REVISI/.test(input),prd:/PRD DARI ZULNAN[\s\S]*Fitur ketujuh dari PRD/.test(input),oto:/Mesin otomatis: bila permintaan, PRD, atau catatan referensi menyebut mesin atau teknologi, ikuti itu/.test(input)&&/MESIN: otomatis: ikuti mesin\/teknologi yang disebut/.test(input)});
+      const role=(input.match(/PERAN ANDA: (\S+)/)||[])[1]; window.__calls.push({role,rev:/REVISI/.test(input),prd:/PRD DARI ZULNAN[\s\S]*Fitur ketujuh dari PRD/.test(input),oto:/Mesin otomatis: bila permintaan, PRD, atau catatan referensi menyebut mesin atau teknologi, ikuti itu/.test(input)&&/MESIN: otomatis: ikuti mesin\/teknologi yang disebut/.test(input),bentuk:/Bentuk build ditetapkan Zulnan: Game \(browser\)/.test(input),ulang:/PEMERIKSAAN ULANG/.test(input)});
+      if(role==='T.1'&&GAME){ const f=['Tebak kata acak','Skor','Jeda','Main lagi','Kontrol sentuh','Fitur keenam','Fitur ketujuh dari PRD']; return {nama_aplikasi:'Tebak Kata',bentuk:'game',masalah:'Belajar kosakata sambil main',fitur:f,nanti:[],out_of_scope:['Mode online'],definisi_selesai:['Game bisa dimainkan','Bisa dijeda'],mesin:'Statis (Vercel)',alasan_mesin:'tanpa server',biaya:'gratis',role:[],menu:[],data:[],ai:'tidak dipakai',kredit:'Creative @nexamind.ai',asumsi:[],pertanyaan:/REVISI/.test(input)?[]:['Berapa kelas?']}; }
       if(role==='T.1') return {nama_aplikasi:'Absensi Siswa',masalah:'Guru rekap absensi manual di kertas',fitur:BESAR?['Login','Input absensi','Rekap bulanan','Ekspor Excel','Data siswa','Fitur keenam','Fitur ketujuh dari PRD'].concat(Array.from({length:13},(_,k)=>'Fitur tambahan '+(k+8))):['Login','Input absensi','Rekap bulanan','Ekspor Excel','Data siswa','Fitur keenam','Fitur ketujuh dari PRD'],nanti:['Notifikasi orang tua'],out_of_scope:['Multi-bahasa','Pembayaran','Aplikasi Android'],definisi_selesai:['Guru bisa input absensi','Rekap per bulan tampil'],mesin:'Apps Script + Google Sheets',alasan_mesin:'gratis dan data terlihat di Sheets',biaya:'gratis',role:[{nama:'Admin',hak:'semua'}],menu:['Dashboard','Absensi','Rekap','Reset Akses'],data:[{nama:'Siswa',kolom:['id','nama','kelas']}],ai:'tidak dipakai',kredit:'Creative @nexamind.ai',asumsi:['satu sekolah'],pertanyaan:/REVISI/.test(input)?[]:['Berapa kelas?']};
       if(role==='T.2') return {acuan_referensi:/ADA REFERENSI DESAIN/.test(input)?'Kartu putih membulat, sidebar gelap, aksen hijau dari referensi':'',halaman:[{nama:'Login',isi:['form','Contoh akses','kredit'],hp:'satu kolom',desktop:'tengah'}],gaya:{primer:'#1f3a5f',latar:'#ffffff',teks:'#15202b',aksen:'#f2a900',huruf:'Inter',nuansa:'bersih'},komponen:['tombol','kartu'],animasi:[{elemen:'tombol simpan',tujuan:'respons aksi',durasi_ms:250},{elemen:'logo',tujuan:'hiasan',durasi_ms:900}],posisi_kredit:'footer',catatan:[]};
       if(role==='T.3'&&/daftar edit cari-ganti/.test(input)){ window.__edit=(window.__edit||0)+1; window.__editLihatKode=/INDEX\.HTML SAAT INI:[\s\S]*<\/html>/.test(input); return {edit:[{cari:'<nav>Dashboard · Absensi</nav>',ganti:'<nav>Dashboard · Absensi · Reset Akses</nav>'},{cari:'potongan yang tidak ada',ganti:'x'}],catatan:'tambah menu Reset Akses'}; }
       if(role==='T.4'&&/Tinjau RUANG LINGKUP/.test(input)){ window.__tinjau1=(window.__tinjau1||0)+1; window.__q1=/PERTANYAAN TERBUKA ARSITEK[\s\S]*Berapa kelas/.test(input)||window.__q1; return window.__tinjau1===1?{sesuai:false,kurang:['Fitur ekspor PDF dari permintaan belum ada'],keputusan:[{apa:'Jumlah kelas dibuat bebas (Admin menambah kelas sendiri)',alasan:'permintaan tidak menyebut jumlah kelas',risiko_bila_salah:'menu kelas sedikit lebih banyak'}]}:{sesuai:true,kurang:[],keputusan:[]}; }
       if(role==='T.4'&&/Tinjau DESAIN/.test(input)) return {sesuai:true,kurang:[],keputusan:[{apa:'Navigasi bawah di HP',alasan:'standar responsif',risiko_bila_salah:'-'}]};
+      if(role==='T.5'&&(DAMAR||DRUSAK)) return /PEMERIKSAAN ULANG/.test(input)?{temuan:[],ringkasan:'Celah XSS sudah tertutup'}:{temuan:[{judul:'XSS di judul',tingkat:'tinggi',lokasi:'index.html',bukti:'judul dirender tanpa escape',perbaikan:'escape teks',edit:[DRUSAK?{file:'index.html',cari:'</body></html>',ganti:'</body>'}:{file:'index.html',cari:'<h1>Login</h1>',ganti:'<h1>Login</h1><!--aman-damar-->'},{file:'index.html',cari:'potongan yang tidak ada',ganti:'x'}]}],ringkasan:'Satu celah tinggi'};
       if(role==='T.5') return {temuan:[{judul:'Kunci API di client',tingkat:'rendah',lokasi:'index.html',bukti:'tidak ditemukan kunci, hanya cek',perbaikan:'tetap simpan di server'}],ringkasan:'Tidak ada temuan kritis'};
       if(role==='T.4') return {butir:[{butir:'Guru bisa input absensi',status:'terlihat di kode',catatan:'form absensi'},{butir:'Rekap per bulan tampil',status:'perlu uji manual',catatan:'butuh data asli'}],risiko:['kuota Apps Script'],ringkas:'Kode lengkap, dua butir perlu dicoba di Sheets asli.'};
       return {};
     };
     const txt=async(input)=>{ await sleep(20); const role=(input.match(/PERAN ANDA: (\S+)/)||[])[1]; window.__calls.push({role,file:/index\.html lengkap/.test(input)?'html':'backend',rev:/REVISI/.test(input)});
       const kredit=(input.match(/Kredit (?:wajib|klien): "([^"]+)"/)||[])[1]||'?'; const contoh=(input.match(/TAMPILKAN_CONTOH_LOGIN: (\w+)/)||[])[1];
+      if(/index\.html lengkap/.test(input)) window.__t3game=/STANDAR BENTUK INI: Game lengkap/.test(input)&&/untuk bentuk Game \(browser\)/.test(input)&&!/TAMPILKAN_CONTOH_LOGIN|Reset Akses/.test(input);
       window.__akun=(input.match(/AKUN AWAL \(acak, dibuat sistem\): ([^\n]+)/)||[])[1];
-      return /index\.html lengkap/.test(input)?'```html\n'+APP(kredit,contoh)+'\n```':'function doGet(){}\nfunction setupDatabase(){ /* Utilities.computeDigest SHA_256 */ }'; };
+      return /index\.html lengkap/.test(input)?'```html\n'+(GAME?GAMEAPP(kredit):APP(kredit,contoh))+'\n```':'function doGet(){}\nfunction setupDatabase(){ /* Utilities.computeDigest SHA_256 */ }'; };
     window.__opts=[];
     const sample=async(i,o)=>{
       const first=Array.isArray(i)?i[0].content:i; window.__opts.push({effort:o&&o.effort,lanjut:Array.isArray(i),gambar:o&&o.images?o.images.length:0,peran:((Array.isArray(i)?i[0].content:i).match(/PERAN ANDA: (\S+)/)||[])[1],acuan:/ADA REFERENSI DESAIN UI\/UX/.test(Array.isArray(i)?i[0].content:i),ref:/REFERENSI DESAIN UI\/UX DARI ZULNAN/.test(Array.isArray(i)?i[0].content:i)});
@@ -57,13 +63,14 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
     sample.json=async(i)=>gen(i);
     if(DESREF) sample.limits=async()=>({images:true});
     window.claude={use:async n=>n==='sample'?sample:n==='downloads'?{save:async(o)=>{window.__saved=(window.__saved||[]).concat([o.filename+':'+(o.data&&o.data.size)]);if(/_rilis\.zip$/.test(o.filename)&&o.data)window.__zipTxt=await o.data.text()}}:null};
-  },[BURUK,POTONG,GAGAL,PUTUS,PARAH,DESREF,BESAR,KOSONG]);
+  },[BURUK,POTONG,GAGAL,PUTUS,PARAH,DESREF,BESAR,KOSONG,GAME,DAMAR,DRUSAK]);
   await p.goto('file://'+process.cwd()+'/prototypes/zuno-studio-v2.html'); await p.waitForTimeout(300);
   console.log('konten terlihat awal:', await p.isVisible('#wsKonten'), '| build tersembunyi:', !(await p.isVisible('#wsBuild')));
   await p.click('#wsB'); console.log('setelah klik Build: konten tersembunyi', !(await p.isVisible('#wsKonten')), '| build terlihat', await p.isVisible('#wsBuild'));
   const PRD = process.argv.includes('--prd');
   if(PRD){ await p.setInputFiles('#bprd',{name:'prd-absensi.md',mimeType:'text/markdown',buffer:Buffer.from('# PRD Absensi\n## Fitur\n- Login\n- Fitur ketujuh dari PRD\n')}); await p.waitForSelector('#bprdinfo >> text=PRD dimuat'); console.log('PRD dimuat:', await p.$eval('#bprdinfo',e=>e.innerText)); }
-  else await p.fill('#breq','aplikasi absensi siswa untuk guru');
+  else await p.fill('#breq',GAME?'game tebak kata untuk belajar kosakata':'aplikasi absensi siswa untuk guru');
+  if(GAME){ await p.selectOption('#bbentuk','game'); if(await p.isVisible('#bcontoh')){console.error('GAGAL: kotak Contoh akses masih tampil untuk Game');process.exitCode=1}else console.log('LOLOS: kotak Contoh akses disembunyikan untuk jenis build Game'); }
   if(DESREF){ const zl=require('zlib'); const crc=b=>{let c,t=[];for(let n=0;n<256;n++){c=n;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;t[n]=c>>>0}c=0xffffffff;for(const x of b)c=t[(c^x)&255]^(c>>>8);return (c^0xffffffff)>>>0};
     const chunk=(ty,d)=>{const l=Buffer.alloc(4);l.writeUInt32BE(d.length);const td=Buffer.concat([Buffer.from(ty),d]);const c=Buffer.alloc(4);c.writeUInt32BE(crc(td));return Buffer.concat([l,td,c])};
     const W=8,raw=Buffer.alloc((W*3+1)*W);for(let y=0;y<W;y++)for(let x=0;x<W;x++){const o=y*(W*3+1)+1+x*3;raw[o]=20;raw[o+1]=140;raw[o+2]=90}
@@ -93,7 +100,7 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   assert(await p.$eval('#bres',e=>!e.innerText.includes('logo (hiasan')),'animasi tanpa tujuan dibuang');
   const rows=await p.$$eval('#bres table.uji:first-of-type tr',r=>r.slice(1).map(x=>x.children[0].innerText+'='+x.children[1].innerText));
   if(BURUK){ const n=calls.filter(c=>c.role==='T.3'&&c.file==='html').length; assert(n===3&&calls.filter(c=>c.role==='T.3'&&c.file==='html'&&c.rev).length===2,'kode buruk: 2 putaran perbaikan otomatis lalu berhenti ('+n+' panggilan html)'); assert(await p.$eval('#bres',e=>/temuan dicatat/.test(e.innerText)&&/Tetap lanjut ke paket rilis/.test(e.innerText)),'sisa temuan dicatat sebagai keputusan + risiko'); }
-  else if(!BESAR) assert(calls.filter(c=>c.role==='T.3'&&c.rev).length===0,'kode bersih: tidak ada putaran perbaikan');
+  else if(!BESAR&&!DRUSAK) assert(calls.filter(c=>c.role==='T.3'&&c.rev).length===0,'kode bersih: tidak ada putaran perbaikan');
   if(BESAR||KOSONG){ const bag=await p.evaluate(()=>window.__bagian||[]); console.log('bagian ditulis:', bag.join(', '));
     assert(calls.filter(c=>c.role==='T.3'&&c.file==='html').length===0,'index.html tidak diminta sebagai satu file utuh lagi'+(KOSONG?' setelah jawaban kosong':''));
     assert(bag[0]==='html:Kepala'&&bag.includes('html:Markup+konteks')&&bag.includes('html:Inti JS+konteks')&&bag[bag.filter(x=>x.startsWith('html:')).length-1]==='html:Penutup+konteks','bagian html berurutan: Kepala, Markup, Inti JS, Fitur, Penutup; tiap bagian membawa kode sebelumnya');
@@ -110,10 +117,26 @@ const KLIEN = process.argv.includes('--klien'); const BURUK = process.argv.inclu
   await p.click('#bres button:has-text("Unduh paket rilis (.zip)")'); await p.waitForFunction(()=>window.__zipTxt,null,{timeout:10000});
   { const z=await p.evaluate(()=>window.__zipTxt); assert(/tanpa gerbang persetujuan di tengah/.test(z)&&/Catatan keputusan/.test(z)&&!/gerbang 3/.test(z),'paket rilis: instruksi tanpa gerbang 3, panduan memuat catatan keputusan'); }
   { const z=await p.evaluate(()=>window.__zipTxt);
-    assert(/proyek\/absensi_siswa\/rilis\.mjs/.test(z)&&/Zuno rilis: membawa paket rilis Agent Builder sampai link live/.test(z)&&/export async function rilis/.test(z),'paket rilis membawa rilis.mjs (skrip rilis laptop)');
-    assert(/proyek\/absensi_siswa\/rilis\.json/.test(z)&&/"mesin": "Apps Script \+ Google Sheets"/.test(z)&&/"izinGoogleOtomatis": false/.test(z),'rilis.json: mesin pilihan + izin Google tidak otomatis secara bawaan');
-    assert(/proyek\/absensi_siswa\/CLAUDE\.md/.test(z)&&/agent-desktop skills get desktop/.test(z)&&/tidak mengetik atau menyimpan password/.test(z),'CLAUDE.md operator: alur rilis + larangan agent-desktop');
-    assert(/proyek\/absensi_siswa\/akun-awal\.json/.test(z)&&/proyek\/absensi_siswa\/jalankan-rilis\.bat/.test(z)&&/Claude Desktop \+ agent-desktop/.test(z),'akun-awal.json, jalankan-rilis.bat, instruksi Claude Desktop + agent-desktop'); }
+    assert(new RegExp('proyek/'+NM+'/rilis\\.mjs').test(z)&&/Zuno rilis: membawa paket rilis Agent Builder sampai link live/.test(z)&&/export async function rilis/.test(z),'paket rilis membawa rilis.mjs (skrip rilis laptop)');
+    assert(new RegExp('proyek/'+NM+'/rilis\\.json').test(z)&&(GAME?/"mesin": "Statis \(Vercel\)"/.test(z)&&/"bentuk": "game"/.test(z):/"mesin": "Apps Script \+ Google Sheets"/.test(z))&&/"izinGoogleOtomatis": false/.test(z),'rilis.json: mesin pilihan + izin Google tidak otomatis secara bawaan');
+    assert(new RegExp('proyek/'+NM+'/CLAUDE\\.md').test(z)&&/agent-desktop skills get desktop/.test(z)&&/tidak mengetik atau menyimpan password/.test(z),'CLAUDE.md operator: alur rilis + larangan agent-desktop');
+    assert((GAME?!new RegExp('proyek/'+NM+'/akun-awal\\.json').test(z):new RegExp('proyek/'+NM+'/akun-awal\\.json').test(z))&&new RegExp('proyek/'+NM+'/jalankan-rilis\\.bat').test(z)&&/Claude Desktop \+ agent-desktop/.test(z),(GAME?'game: tanpa akun-awal.json':'akun-awal.json')+', jalankan-rilis.bat, instruksi Claude Desktop + agent-desktop'); }
+  if(GAME){ const z=await p.evaluate(()=>window.__zipTxt);
+    assert(calls.filter(c=>c.role==='T.1')[0].bentuk,'Jenis build Game dari formulir sampai ke Arsitek');
+    assert(await p.evaluate(()=>window.__t3game),'Pengembang menerima standar game, tanpa login/Reset Akses');
+    assert(!calls.some(c=>c.role==='T.3'&&c.file==='backend'),'mesin Statis: tanpa file backend');
+    assert(['Loop animasi (requestAnimationFrame)=Lolos','Kontrol keyboard dan sentuh=Lolos','Bisa dijeda=Lolos','Hormati prefers-reduced-motion=Lolos','Jalan di browser tanpa error (mode preview)=Lolos'].every(x=>rows.includes(x))&&!rows.some(r=>/Reset Akses|IS_PREVIEW|CONTOH_LOGIN|di-hash/.test(r)),'cek otomatis khusus game, tanpa cek login web app');
+    assert(await p.$eval('#bres',e=>/Bentuk: Game \(browser\)/.test(e.innerText)&&/Mesin: Statis \(Vercel\)/.test(e.innerText)&&!/Unduh Code\.gs/.test(e.innerText)),'hasil menampilkan bentuk Game + mesin Statis, tanpa unduhan backend');
+    assert(/coba kontrol utamanya/.test(z)&&/Statis \(Vercel\): deploy index\.html ke Vercel/.test(z)&&!/## Akun awal/.test(z)&&/Game \(browser\) lengkap, langsung jalan/.test(z),'paket rilis game: instruksi Statis, tanpa akun awal'); }
+  if(DAMAR&&!DRUSAK){ const z=await p.evaluate(()=>window.__zipTxt); const t5=calls.filter(c=>c.role==='T.5');
+    assert(t5.length===2&&!t5[0].ulang&&t5[1].ulang,'Damar: audit, perbaiki, lalu periksa ulang (2 panggilan)');
+    assert(/<h1>Login<\/h1><!--aman-damar-->/.test(z)&&/<\/html>/.test(z),'edit Damar masuk ke index.html di paket rilis, file tetap utuh');
+    assert(/## Audit keamanan \(T\.5 Damar\)/.test(z)&&/Diperbaiki Damar: XSS di judul \(tinggi\)/.test(z)&&/Masih tercatat: tidak ada/.test(z),'PANDUAN: celah yang diperbaiki Damar tercatat');
+    assert(await p.$eval('#btracks',e=>[...e.querySelectorAll('.track')].some(x=>/^T\.5 Damar/.test(x.querySelector('.tname').textContent)&&x.dataset.s==='done'&&/1 celah diperbaiki/.test(x.innerText))),'papan: T.5 Damar selesai, 1 celah diperbaiki'); }
+  if(DRUSAK){ const z=await p.evaluate(()=>window.__zipTxt);
+    assert(/<\/footer><\/body><\/html>/.test(z)&&!/aman-damar/.test(z),'edit Damar yang merusak file dibatalkan (index.html tetap utuh)');
+    assert(/Perbaikan dibatalkan karena merusak pratinjau: XSS di judul/.test(z)&&/Masih tercatat: XSS di judul \(tinggi\)/.test(z),'PANDUAN: perbaikan batal + celah masih tercatat');
+    assert(await p.$eval('#btracks',e=>[...e.querySelectorAll('.track')].some(x=>/^T\.5 Damar/.test(x.querySelector('.tname').textContent)&&x.dataset.s==='warn')),'papan: T.5 Damar diberi tanda (celah tersisa)'); }
   assert(/Siap dirilis/.test(await p.$eval('#bcard .st',e=>e.innerText)),'status akhir Siap dirilis');
   console.log('status:', await p.$eval('#bcard .st',e=>e.innerText));
   console.log('tracks:', await p.$$eval('#btracks .track',e=>e.map(x=>x.querySelector('.tname').textContent+'='+x.dataset.s).join(', ')));

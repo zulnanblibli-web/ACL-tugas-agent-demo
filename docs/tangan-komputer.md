@@ -29,6 +29,7 @@ Laptop (Claude Desktop + agent-desktop, skill rilis-engineering)
 | Apps Script + Blogger | sama + `blogger-widget.html` | tempel widget ke Blogger, uji | sama |
 | Firebase | proyek, web app, firebaseConfig, Firestore, deploy hosting + rules, akun Admin lewat API | aktifkan Email/Password di console, uji | `firebase login` |
 | Vercel + Supabase | suntik URL + anon key, `vercel deploy --prod`, cek | buat proyek Supabase (Free), jalankan schema.sql, salin URL + anon key, uji | `vercel login`, login Supabase di Chrome |
+| Statis (Vercel) | `vercel deploy --prod` (index.html apa adanya), cek | uji kontrol utama di Chrome | `vercel login` |
 
 ## Pasang (sekali saja)
 1. `git pull`, atau unduh ZIP repo terbaru lalu Extract All.

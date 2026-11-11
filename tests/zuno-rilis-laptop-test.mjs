@@ -100,6 +100,9 @@ ok('Supabase belum disiapkan -> langkah agen (dashboard + schema.sql + supabase.
 writeFileSync(join(d, 'supabase.json'), JSON.stringify({ url: 'https://abc.supabase.co', anonKey: 'eyJanon' }));
 H = await rilis(d, O(t));
 ok('Vercel + Supabase: URL + anon key disuntik, deploy --prod, link dari keluaran vercel', H.status === 'live' && H.url === 'https://zuno-absensi-siswa-ab7.vercel.app' && /SUPABASE_URL = "https:\/\/abc\.supabase\.co"/.test(t.cfg.vHtml) && /SUPABASE_ANON_KEY = "eyJanon"/.test(t.cfg.vHtml));
+// Statis (Vercel): game/website/3D tanpa server, tanpa Supabase
+{ const ds = paket('Statis (Vercel)'); const ts = tiruan({}); const HS = await rilis(ds, O(ts));
+  ok('Statis (Vercel): langsung deploy --prod tanpa supabase.json, link dari keluaran vercel', HS.status === 'live' && HS.url === 'https://zuno-absensi-siswa-ab7.vercel.app' && !existsSync(join(ds, 'supabase.json')) && ts.calls.some((c) => c.cmd === 'vercel' && c.args[0] === 'deploy' && c.args.includes('--prod')) && /SUPABASE_URL = ""/.test(ts.cfg.vHtml)); }
 // laporan
 tulisLaporan(d, H);
 ok('Laporan: hasil-rilis.json + LAPORAN-RILIS.md ditulis', existsSync(join(d, 'hasil-rilis.json')) && /Status: \*\*live\*\*/.test(readFileSync(join(d, 'LAPORAN-RILIS.md'), 'utf8')));

@@ -171,20 +171,22 @@ export async function rilis(dir, o = {}) {
       return sel(H.perlu.length ? 'perlu_agen' : 'live');
     }
 
-    if (man.mesin === 'Vercel + Supabase') {
+    // Statis (Vercel): website, game, 3D, dan build lain tanpa server; satu file index.html dideploy apa adanya, tanpa database.
+    const statis = man.mesin === 'Statis (Vercel)';
+    if (man.mesin === 'Vercel + Supabase' || statis) {
       const web = join(dir, 'web');
       if (!hanyaCek) {
         if (!butuhCli('vercel')) return sel('perlu_agen');
         if (exec('vercel', ['whoami'], { cwd: dir }).code !== 0) { perlu('pemilik', 'Login Vercel sekali', 'Jalankan `vercel login` di Command Prompt.'); return sel('perlu_pemilik'); }
         const sbFile = join(dir, 'supabase.json');
-        const sb = existsSync(sbFile) ? JSON.parse(readFileSync(sbFile, 'utf8')) : null;
-        if (!sb || !sb.url || !sb.anonKey) {
+        const sb = statis ? null : existsSync(sbFile) ? JSON.parse(readFileSync(sbFile, 'utf8')) : null;
+        if (!statis && (!sb || !sb.url || !sb.anonKey)) {
           perlu('agen', 'Siapkan Supabase', 'Lewat agent-desktop di https://supabase.com/dashboard (sudah login): New project (paket Free; bila diminta bayar, berhenti dan tanya pemilik), password database dibuat acak oleh dashboard (jangan diketik ulang). SQL Editor: tempel isi schema.sql, Run. Settings > API: salin Project URL dan anon public key ke supabase.json di folder ini: {"url":"...","anonKey":"..."}. Lalu jalankan rilis.mjs lagi.');
           return sel('perlu_agen');
         }
         mkdirSync(web, { recursive: true });
         let h = siapkanHtml(baca('index.html'));
-        h = h.replace(/((?:const|let|var)\s+SUPABASE_URL\s*=\s*)(['"`])[^'"`]*\2/, (m, a, q) => a + q + sb.url + q).replace(/((?:const|let|var)\s+SUPABASE_ANON_KEY\s*=\s*)(['"`])[^'"`]*\2/, (m, a, q) => a + q + sb.anonKey + q);
+        if (!statis) h = h.replace(/((?:const|let|var)\s+SUPABASE_URL\s*=\s*)(['"`])[^'"`]*\2/, (m, a, q) => a + q + sb.url + q).replace(/((?:const|let|var)\s+SUPABASE_ANON_KEY\s*=\s*)(['"`])[^'"`]*\2/, (m, a, q) => a + q + sb.anonKey + q);
         writeFileSync(join(web, 'index.html'), h);
         const nama = ('zuno-' + man.slug + '-' + String(man.kode || '').toLowerCase()).replace(/[^a-z0-9-]/g, '-').slice(0, 90);
         if (!st.vercelLink) { const l = exec('vercel', ['link', '--yes', '--project', nama], { cwd: web }); if (l.code !== 0) throw new Error('vercel link gagal: ' + (l.out + l.err).trim().slice(0, 300)); st.vercelLink = nama; simpanSt(); }

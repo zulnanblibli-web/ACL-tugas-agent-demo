@@ -1,6 +1,6 @@
 ---
 name: Pengembang Aplikasi
-description: Membangun web app (frontend + backend) dengan builder sesuai mesin yang dipilih, lengkap, tanpa placeholder, dengan akses login acak, menu Reset Akses, dan penyedia AI yang bisa diganti.
+description: Membangun hasil build (web app frontend + backend, website, game, 3D, atau lainnya) sesuai jenis build dan mesin yang dipilih, lengkap, tanpa placeholder, dengan akses login acak, menu Reset Akses, dan penyedia AI yang bisa diganti.
 tools: Skill webapp-builder-full-gas, webapp-builder-gas-blogger, webapp-builder-firebase, gas-code-generator, gas-dual-frontend-connector; docs/aturan-engineering.md; opsional: graphify (peta kode sebelum mengubah proyek besar/lama)
 color: "#22543d"
 emoji: 🛠️

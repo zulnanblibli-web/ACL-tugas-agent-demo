@@ -4,7 +4,7 @@ Struktur dirampingkan 2026-11-02 atas permintaan Zulnan: dari 23 profil menjadi 
 
 Tujuan tetap: Zulnan bisa ngonten pakai AI agent, dari ide sampai paket siap tayang, dengan keputusan akhir di tangan Zulnan.
 
-Anggap ini satu kantor: **Lead** memimpin dua sayap, yaitu **sayap kreatif** (6 divisi konten) dan **Divisi Engineering** (build web app untuk pribadi, portofolio, atau klien jasa). Aturan Engineering: `docs/aturan-engineering.md`.
+Anggap ini satu kantor: **Lead** memimpin dua sayap, yaitu **sayap kreatif** (6 divisi konten) dan **Divisi Engineering** (Agent Builder: web app, website, game, 3D, dan build lain yang jalan di browser, untuk pribadi, portofolio, atau klien jasa). Aturan Engineering: `docs/aturan-engineering.md`.
 
 ## Lead dan divisi
 
@@ -17,7 +17,7 @@ Anggap ini satu kantor: **Lead** memimpin dua sayap, yaitu **sayap kreatif** (6 
 | **4. Editing** | Rencana edit video, VO, subtitle, rencana Remotion, prompt Google Flow, file jadi | Pelatih Editing Video Pendek (E.1 Edo), Editor Remotion (E.2 Bima), Editor Google Flow (E.3 Fira) | + Narator & Subtitle; render PNG oleh mesin render Zuno Web |
 | **5. Mutu** (tambahan) | Catatan Mutu, tanpa veto | Penjaga Merek (Q.1), Pengumpul Bukti (Q.2) | + Pemeriksa Realitas, + Pemeriksa Kepatuhan Hukum |
 | **6. Marketing** | Paket posting, leads dan arsip, catatan performa | Kurator Instagram (M.1 Maya) | + Operasional Studio, + catatan performa (dulu Pelapor Analitik). Iklan: belum ada agen sampai Fase 4 |
-| **7. Engineering** | Build web app: ruang lingkup, desain, kode, uji, audit, rilis | Arsitek & Analis Kebutuhan (T.1 Arga), Desainer UI/UX (T.2 Rani), Pengembang Aplikasi (T.3 Fajar), Penguji & Rilis (T.4 Tio), Auditor Bug & Security (T.5 Damar) | profil baru (tidak ada padanan di 23 profil lama) |
+| **7. Engineering** | Agent Builder (web app, website, game, 3D, lainnya): ruang lingkup, desain, kode, uji, audit + perbaikan keamanan, rilis | Arsitek & Analis Kebutuhan (T.1 Arga), Desainer UI/UX (T.2 Rani), Pengembang Aplikasi (T.3 Fajar), Penguji & Rilis (T.4 Tio), Auditor Bug & Security (T.5 Damar) | profil baru (tidak ada padanan di 23 profil lama) |
 | **8. HRD** (2026-11-10) | Membuat dan melatih agen baru saat tugas bertambah | Perekrut & Pelatih Agen (H.1 Hana) | profil baru; pemilik skill `perakit-agen` |
 
 Divisi Mutu tetap ada sebagai divisi kecil karena pemeriksaan fakta, klaim, dan kepatuhan tetap perlu. Sifatnya penasihat: tidak menolak, tidak menahan, tidak ada revisi otomatis.
@@ -102,11 +102,11 @@ Tugas paralel: antar kartu; Editor Remotion dengan Editor Google Flow; Penjaga M
 | 11 | [Penjaga Merek](11-penjaga-merek.md) | Q.1 | Tara | Mutu | aktif harian | Catatan suara, merek, fakta, klaim, sumber |
 | 12 | [Pengumpul Bukti](12-pengumpul-bukti.md) | Q.2 | Nita | Mutu | aktif harian | Catatan format file, platform, privasi, izin |
 | 13 | [Kurator Instagram](13-kurator-instagram.md) | M.1 | Maya | Marketing | setelah Disetujui | Paket posting per platform, leads, arsip, catatan performa |
-| 14 | [Arsitek & Analis Kebutuhan](14-arsitek-analis-kebutuhan.md) | T.1 | Arga | Engineering | standby (aktif saat ada build) | Kunci ruang lingkup, pilih mesin, PRD, kredit dan akses |
+| 14 | [Arsitek & Analis Kebutuhan](14-arsitek-analis-kebutuhan.md) | T.1 | Arga | Engineering | standby (aktif saat ada build) | Kunci ruang lingkup, jenis build, pilih mesin, PRD, kredit dan akses |
 | 15 | [Desainer UI/UX](15-desainer-ui-ux.md) | T.2 | Rani | Engineering | standby (aktif saat ada build) | Wireframe, gaya visual, cek animasi |
-| 16 | [Pengembang Aplikasi](16-pengembang-aplikasi.md) | T.3 | Fajar | Engineering | standby (aktif saat ada build) | Bangun web app lengkap, akses acak + Reset Akses, AI fleksibel |
+| 16 | [Pengembang Aplikasi](16-pengembang-aplikasi.md) | T.3 | Fajar | Engineering | standby (aktif saat ada build) | Bangun hasil lengkap (web app, website, game, 3D); web app: akses acak + Reset Akses; AI fleksibel |
 | 17 | [Penguji & Rilis](17-penguji-rilis.md) | T.4 | Tio | Engineering | standby (aktif saat ada build) | Uji dengan bukti, perbaiki bug, rilis, panduan serah terima |
-| 18 | [Auditor Bug & Security](18-auditor-security.md) | T.5 | Damar | Engineering | standby (aktif saat ada build) | Audit statis bug dan keamanan, temuan dengan lokasi dan perbaikan |
+| 18 | [Auditor Bug & Security](18-auditor-security.md) | T.5 | Damar | Engineering | standby (aktif saat ada build) | Audit bug dan keamanan, lalu memperbaiki celahnya sendiri dan memeriksa ulang |
 | 19 | [Perekrut & Pelatih Agen](19-pelatih-agen-hrd.md) | H.1 | Hana | HRD | standby (aktif saat agen ditambah atau dilatih ulang) | Formulir agen baru berstruktur sama, kode divisi, Paket Pelatihan dari aturan tim + memori + riwayat pekerjaan, cek tumpang tindih |
 
 Versi gabungan semua profil: `agents/semua-agen.md`.

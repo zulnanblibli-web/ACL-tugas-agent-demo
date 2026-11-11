@@ -78,6 +78,7 @@ Baca `docs/gaya-video.md`. Ringkas:
 - Belum diuji: semua alat render video. Status video tetap "Prompt siap generate" sampai ada file.
 
 ## Tugas berikutnya
+000037. **Agent Builder untuk semua bentuk build + Damar menambal celah (2026-11-11, entri 76).** Jenis build: web app, website, game, 3D, lainnya (Otomatis atau dipilih); mesin baru Statis (Vercel); standar login hanya untuk web app. Damar mengaudit, menambal celah kritis/tinggi/sedang lewat edit kecil yang dijaga, lalu memeriksa ulang. Belum di-push (menunggu kata Zulnan). Berikutnya: Zulnan coba satu build game atau 3D di Workspace.
 000036. **Build App jadi Agent Builder + mesin Otomatis mengikuti referensi (2026-11-11, entri 75).** Mesin Otomatis kini tegas mengikuti mesin/teknologi yang disebut di permintaan, PRD, atau catatan referensi; mesin pilihan Zulnan tetap menang. Belum di-push (menunggu kata Zulnan).
 000035. **Status server khusus pemegang kunci akses (2026-11-11, entri 74).** `/api/status` tidak lagi menampilkan penyedia, model, dan setelan ke pengunjung tanpa kunci akses; HUD dan Tes sambungan mengirim kunci. Sudah di-push (Zuno + jasa) dan di-deploy.
 000034. **Halaman utama tanpa daftar 18 agen + gerak di tiap halaman (2026-11-10, entri 73).** Bagian 18 agen dihapus dari halaman utama (agen cukup di Workspace, kantor 3D, galeri karakter). Gerak masuk halus di halaman utama, Workspace, dan galeri karakter, tiap halaman masuk dengan pudar halus. Sudah di-push dan live (Zuno `d60f04b`).
