@@ -86,6 +86,13 @@ Biaya apa pun (langganan, kredit, domain, kunci API berbayar) wajib izin Zulnan 
 
 ## 4. Standar setiap proyek
 
+### 4-0. Standar anti-slop dan skill desain (Zulnan 2026-11-11)
+- Hasil tidak boleh terlihat "buatan AI". Ringkasan dari skill hallmark, frontend-design, dan impeccable (juga ada di prompt Agent Builder web, `STANDAR ANTI-SLOP`):
+  - Dilarang: gradasi ungu-ke-biru, kartu di dalam kartu, emoji sebagai ikon, eyebrow (label kecil huruf kapital berjarak), satu kata miring di judul tegak, deretan "A · B · C", panah menempel di teks tautan, angka/testimoni/logo/studi kasus karangan, hero angka besar + statistik sebagai bawaan.
+  - Wajib: warna dan font lewat token `:root` dengan satu arah visual yang jelas sesuai brief/referensi; `transition` per properti (bukan `all`), animasi hanya transform/opacity + fallback `prefers-reduced-motion`; `:focus-visible` di semua kontrol; kontras teks minimal 4.5:1; panjang baris 65-75ch; satu gaya tombol utama per layar; bagian yang belum ada isinya ditandai [ISI].
+  - Cek otomatis Agent Builder: "Anti-slop: tanpa transition: all" dan "Anti-slop: :focus-visible di kontrol" (bila ada kontrol); gagal = masuk putaran perbaikan T.3. T.4 selalu memberi butir tinjauan "Standar anti-slop".
+- Di Claude Code (cloud/laptop), skill GitHub pilihan Zulnan dipakai per tahap: T.2 `hallmark` (bawaan halaman baru), `frontend-design`, `impeccable`, `hue`, `awwwards`, `design-taste-frontend` (bila disebut); T.3 `ui-ux-pro-max`, `ui-styling`, skill Blender (aset 3D/game, ekspor GLTF); T.4 `impeccable` critique/audit/polish, `jury`. **Sebelum mendesain, pilihan referensi/arah/skill ditampilkan ke Zulnan dan Zulnan yang memilih.** Deploy: preview `index.html` dulu, lalu deploy setelah Zulnan setuju. Daftar lengkap: `.claude/skills/README.md`.
+
 ### 4a. Kredit Nexamind
 - Proyek **pribadi dan portofolio**: wajib mencantumkan **"Creative @nexamind.ai"** di footer aplikasi, di halaman login, di `<meta name="author">`, dan di panduan penggunaan.
 - Proyek **klien**: kredit mengikuti permintaan klien (T.1 menanyakannya saat mengunci ruang lingkup). Bila klien tidak menyebut, tanyakan; jangan pasang atau hapus sepihak.

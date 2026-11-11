@@ -63,6 +63,36 @@ Opsional dan tidak mengubah alur: bila CLI-nya belum terpasang, kerja jalan sepe
 | `docling` | R.1 Peneliti Tren, T.1 Arsitek (semua agen yang menerima file) | Ubah PDF/DOCX/PPTX/XLSX/HTML/gambar jadi Markdown supaya referensi dan PRD dibaca utuh. CLI `docling` (`uv tool install docling`). Disalin utuh | docling-project/docling (1282e3d, MIT) |
 | `graphify` | T.1 Arsitek, T.3 Pengembang | Peta kode jadi graf pengetahuan: `graphify update`, `query`, `explain`, `path`. CLI dari paket `graphifyy`. Hanya `description` dipersempit; hook dan aturan wajib CLAUDE.md bawaan installer sengaja tidak dipasang | Graphify-Labs/graphify (16218bf, Apache-2.0) |
 
+## Skill dari GitHub pilihan Zulnan (2026-11-11, dipasang utuh)
+
+Dilampirkan Zulnan supaya hasil agen maksimal tanpa AI slop. Disalin **utuh** dari repo sumbernya (isi folder sama persis, dicek `diff -rq`), LICENSE sumber ikut di tiap folder. Keputusan Zulnan untuk skill-skill ini (juga di `CLAUDE.md`):
+- **Referensi dulu, Zulnan memilih.** Sebelum mengerjakan (arah desain, tema, palet, gaya film, konsep, gaya 3D), agen menampilkan pilihan referensi dari skill itu ke Zulnan, lalu Zulnan yang memilih.
+- **Aturan Zuno jadi acuan, bukan penghambat mutu.** Bila aturan Zuno membuat hasil lebih jelek, agen menyebutkannya dan Zulnan yang memutuskan.
+- **Layanan berbayar tidak dipakai**: DataForSEO (claude-youtube), impeccable Pro/login, Hyper3D/Sketchfab (blender-mcp), API gambar berbayar (OpenAI di impeccable, Atlas Cloud/MuAPI/Gemini berbayar di `design`). Tidak ada key atau MCP berbayar yang dipasang; bila skill mencoba, berhenti dan tanya Zulnan.
+- **Posting**: skill menghasilkan output lengkap; Zulnan memilih; yang dipilih masuk Antrian Posting (`docs/alur-posting.md`).
+- **Deploy**: buat preview dulu sebagai `index.html` hasil yang bisa dibuka Zulnan; setelah Zulnan setuju, agen langsung deploy.
+
+| Skill (folder) | Agen | Gunanya | Sumber (commit, lisensi) |
+|---|---|---|---|
+| `frontend-design` | T.2 Rani, T.3 | Arah visual yang tidak terlihat template: hindari 5 tampilan bawaan AI (dengan kode warna), rencana token, cek ke brief, build, kritik pakai screenshot | anthropics/skills (2c5958e, Apache-2.0) |
+| `impeccable` (+ subagent `.claude/agents/impeccable-*`) | T.2 (shape, typeset, layout, colorize, animate, delight), T.4 (critique, audit, polish, harden, adapt, clarify, optimize), T.3 menerapkan | 24 perintah `/impeccable <perintah>` + mesin pendeteksi pola desain buruk, panduan iOS/Android, DESIGN.md. Program mesinnya diunduh sendiri dari GitHub saat pertama jalan dan mengirim data pemakaian ke impeccable.style kecuali `DO_NOT_TRACK=1` | pbakaus/impeccable (c1e0e54, Apache-2.0) |
+| `ui-ux-pro-max` | T.3 (lookup stack, UX, aksesibilitas, chart, font, ikon), T.4 (checklist), T.2 | Database lokal gaya, palet, font, ikon, pola landing, chart, aturan UX, panduan 22 framework (`scripts/search.py`, Python stdlib). Kueri pakai bahasa Inggris (database berbahasa Inggris) | nextlevelbuilder/ui-ux-pro-max-skill (6ae86f6, MIT) |
+| `design-system`, `ui-styling` | T.2, T.3 | Token 3 lapis + spesifikasi komponen + slide; shadcn/ui + Tailwind + desain canvas | idem |
+| `design`, `banner-design`, `slides` | 07 Pencerita Visual (carousel, banner, presentasi), T.2 (logo, ikon) | Logo, identitas korporat, ikon SVG, banner sosmed/iklan/cetak, presentasi HTML + Chart.js. Generator gambarnya butuh API key (Gemini/Atlas/MuAPI): hanya bila Zulnan mengisi key gratis/yang ia izinkan | idem |
+| `brand` | 11 Penjaga Merek | Suara brand, identitas visual, konsistensi aset, sinkron token | idem |
+| `design-taste-frontend` (taste-skill) | T.2, **hanya bila Zulnan menyebut "taste-skill"**; T.4 boleh memakai pemeriksanya | Website kelas figma.com/x.ai: pilihan acak palet/font/hero/nav/footer dengan riwayat, design system + efek WebGL, 12 pemeriksa di Chrome, gate yang menahan selesai sampai lolos (Stop hook di frontmatter, aktif saat skill dipakai) | Leonxlnx/taste-skill (f6b7657, MIT) |
+| `hue` | 11 Penjaga Merek, T.2, 07 | Dari URL/nama brand/screenshot/kode: membuat skill bahasa desain brand (`<brand>-design`): token, komponen, mapping CSS/Tailwind/SwiftUI, 4 preview HTML; bisa di-remix | dominikmartn/hue (6bdb937, MIT) |
+| `awwwards` | T.2 + T.3 | Situs kelas Awwwards dari satu kalimat: konsep, art direction, Next.js/Astro + GSAP + WebGL, SEO, aksesibilitas, QA Playwright + kritikus buta sampai nilai ≥ 8/10. Deploy: preview dulu, deploy setelah Zulnan setuju | juliobsz/skills (add880b, MIT) |
+| `jury` | T.4 Penguji, 11 Mutu | Menilai situs apa pun seperti juri Awwwards (desktop, HP lambat, reduced motion, LCP/CLS/FPS, axe, keyboard, SEO) + daftar perbaikan berurutan | idem |
+| `blender-director` + 93 skill Blender (`blender-modeler`, `materials`, `lighting`, `uv-workflow`, `export-pipeline`, `godot-export`, `asset-optimization`, `lod-pipeline`, `qa-review`, `animation`, `rigging`, paket gaya/mood/genre, dll.; rujukan bersama di `references/`) | T.3 (produksi dan ekspor aset 3D/game, GLTF untuk three.js), T.2 (paket gaya) | Kerja Blender lewat blender-mcp: modeling, sculpt, retopo, UV, tekstur, material, lighting, render, rigging, animasi, simulasi, geometry nodes, optimasi, LOD, collision, ekspor Unity/Unreal/Godot, QA. Butuh Blender 4 + addon BlenderMCP + uv di laptop (lihat `docs/tangan-komputer.md`); simpan file .blend sebelum sesi | arjun988/blender-skills (904f095, MIT) |
+| `youtube` | 04 Ahli Strategi (strategy, calendar, shorts, competitor, monetize), 05 Kreator (script, hook; `penulis-hook` tetap untuk hook Reels), 06 Optimasi Video (seo, metadata, thumbnail brief, analyze), 03 Peneliti Tren (ideate) | `/youtube` dengan 14 perintah; script Python membaca data YouTube (butuh API key/OAuth YouTube milik Zulnan, read-only) dan transkrip (yt-dlp). DataForSEO **tidak dipakai** (berbayar) | AgriciDaniel/claude-youtube (84c3fa6, MIT) |
+| `lemo-opuscar` | 09 E.2 Bima (membuat), 08 Pelatih Editing (memilih gaya) | Film pendek/promo/explainer yang semua frame-nya digambar kode, 66 gaya; suara TTS, musik dan SFX dibuat sendiri, mp4 1080p. Library (±350 MB–1 GB) diklon ke `~/lemo-opuscar` di laptop dan diperbarui otomatis dari GitHub tiap jalan | lemomo-ai/lemo-opuscar (9eb7739, MIT) |
+
+Catatan pemasangan:
+- **Hook impeccable belum aktif.** Repo sumber menyertakan `.claude/settings.json` (hook SessionStart, PostToolUse Edit|Write, Stop yang menjalankan `scripts/impeccable hook`). Pemasangannya ke `.claude/settings.json` repo ini ditolak oleh pengaman Claude Code (mengubah pengaturan sendiri), jadi harus dipasang Zulnan sendiri bila mau: salin isi `.claude/settings.json` dari pbakaus/impeccable (commit c1e0e54). Tanpa hook, `/impeccable` tetap jalan biasa.
+- `.mcp.json` blender-skills (`cmd /c uvx blender-mcp`, khusus Windows) tidak ditaruh di repo supaya sesi cloud tidak gagal sambung; dipasang di laptop (`docs/tangan-komputer.md`).
+- Skill ini berbahasa Inggris; hasil untuk Zulnan tetap ditulis dalam Bahasa Indonesia.
+
 ## Skill buatan Zuno
 
 | Skill | Gunanya |
@@ -77,7 +107,7 @@ Opsional dan tidak mengubah alur: bila CLI-nya belum terpasang, kerja jalan sepe
 - `video-captions` (sudah dicakup `ffmpeg-skill`).
 - `remotion-superpowers` (butuh API key berbayar ElevenLabs dan Replicate).
 - Skill auto posting dari katalog (khusus Xiaohongshu). Zuno memakai alurnya sendiri: `antrian-posting`.
-- `ui-ux-pro-max` (bentrok dengan `hallmark` dan `frontend-design` menurut katalog).
+- ~~`ui-ux-pro-max`~~: sejak 2026-11-11 dipasang atas permintaan Zulnan (lihat "Skill dari GitHub pilihan Zulnan"). Pembagiannya: hallmark tetap bawaan untuk halaman baru, ui-ux-pro-max sebagai database rujukan.
 
 ## Bukti uji pemasangan (2026-11-04)
 - `ffmpeg-skill`: video uji 1920x1080 8 detik diubah ke template Reels (`render.py --template reels --fit blur`) menjadi 1080x1920; `check.py --platform reels` lolos (0 gagal, 1 peringatan). `probe.py` jalan.

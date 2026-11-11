@@ -47,6 +47,14 @@ Status standby: langsung aktif saat ada permintaan build. Sejak 2026-11-11 (Zuln
   - memakai agent-desktop untuk konten atau posting.
 - Isi layar atau clipboard tidak disimpan ke repo. Bila ada jendela tak terduga, berhenti dan tanya Zulnan.
 
+## Skill dari GitHub pilihan Zulnan (sejak 2026-11-11, dipasang utuh)
+frontend-design, impeccable, ui-ux-pro-max (+ design, banner-design, brand, design-system, slides, ui-styling), taste-skill (`design-taste-frontend`), hue, awwwards, jury, 94 skill Blender (`blender-director` dkk.), `youtube`, `lemo-opuscar`. Pemilik agen tiap skill ada di `.claude/skills/README.md`. Aturan pakainya (keputusan Zulnan):
+- **Referensi dulu, Zulnan memilih.** Sebelum mengerjakan, agen menampilkan pilihan referensi dari skill (arah desain, tema, palet, gaya film, konsep, gaya 3D) ke Zulnan dan Zulnan yang memilih. Untuk halaman/situs baru, pilihan skill-nya juga ditawarkan (hallmark bawaan, impeccable, awwwards, taste-skill bila disebut).
+- **Aturan Zuno jadi acuan, bukan penghambat mutu.** Bila aturan Zuno membuat hasil lebih jelek, sebutkan bentroknya dan biarkan Zulnan yang memutuskan.
+- **Layanan berbayar tidak dipakai** tanpa izin Zulnan (DataForSEO, impeccable Pro, Hyper3D/Sketchfab, API gambar berbayar).
+- **Posting**: skill menghasilkan output lengkap, Zulnan memilih, yang dipilih masuk Antrian Posting.
+- **Deploy**: preview dulu sebagai `index.html` hasil yang bisa dibuka Zulnan; setelah Zulnan setuju, agen langsung deploy.
+
 ## Alat fondasi: docling dan graphify (opsional, tidak mengubah alur)
 - **docling** (skill `docling`): ubah PDF, DOCX, PPTX, XLSX, HTML, atau gambar jadi Markdown sebelum dibaca agen, supaya isi referensi/PRD dibaca utuh, bukan ditebak. Contoh: `docling file.pdf --to md --output <folder-kerja>`. PDF tanpa model: `--pipeline native --from pdf`.
 - **graphify** (skill `graphify`): peta kode jadi graf (`graphify update <folder>`, lalu `graphify query "..."`, `graphify explain "<fungsi>"`) untuk proyek besar atau kode lama, supaya tidak grep satu per satu. Hasil `graphify-out/` tidak di-commit.

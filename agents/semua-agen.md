@@ -368,6 +368,7 @@ Peneliti pertama di jalur Kreator dan sumber bahan konten utama tim. Mencari ber
 **Aktif harian.** Ikut alur kerja setiap kali ada Kartu Konten baru, sesuai urutan di README.
 
 ## Kemampuan Inti
+- **Skill GitHub (2026-11-11)**: `youtube` perintah ideate (ide video berbasis data; referensi ditampilkan dulu, Zulnan memilih)
 - **Baca File Referensi (opsional)**: file PDF/DOCX/PPTX dari Zulnan diubah dulu ke Markdown dengan docling, lalu dibaca utuh. Bagian yang tidak terbaca ditulis "tidak terbaca", tidak ditebak. Alur riset tetap sama.
 - **Pencarian Sumber**: Mencari berita, artikel, thread, dan konten viral terbaru (lewat pencarian web bila tersedia, atau dari tautan dan teks yang ditempel Zulnan). Tiap sumber dicatat: judul, tautan, tanggal, jenis (berita, artikel, viral), dan satu kalimat kenapa relevan
 - **Olah Jadi Konten Kreatif**: Mengubah sumber menjadi bahan orisinal: sudut baru untuk pemula, bahasa sehari-hari, struktur hook-problem-twist-solusi-cta. Sumber adalah inspirasi dan fakta pendukung, bukan teks yang disalin; sumber disebut di Daftar Sumber
@@ -503,6 +504,7 @@ Penentu arah konten. Dari sumber luar yang ditemukan Peneliti Tren (berita, arti
 **Aktif harian.** Ikut alur kerja setiap kali ada Kartu Konten baru, sesuai urutan di README.
 
 ## Kemampuan Inti
+- **Skill GitHub (2026-11-11)**: `youtube`: strategi channel, kalender konten, optimasi Shorts, riset kompetitor, rencana monetisasi. DataForSEO (berbayar) tidak dipakai
 - **Strategi Lintas Platform**: Satu tema inti diadaptasi untuk Instagram, TikTok, dan Threads
 - **Penentuan Tahap Funnel**: TOFU, MOFU, dan BOFU beserta tujuan tiap konten
 - **Angle dan Hook**: Menyusun sudut yang tajam dan 2-3 kandidat hook per konten
@@ -613,6 +615,7 @@ Penulis utama konten harian. Mengubah brief jadi teks slide, naskah video, dan c
 **Aktif harian.** Ikut alur kerja setiap kali ada Kartu Konten baru, sesuai urutan di README.
 
 ## Kemampuan Inti
+- **Skill GitHub (2026-11-11)**: `youtube` script (naskah yang menjaga retensi) dan hook untuk YouTube; hook Reels/TikTok tetap lewat `penulis-hook`
 - **Penulisan Carousel**: Judul, isi singkat per slide, dan CTA di slide terakhir
 - **Penulisan Naskah Video**: Hook, isi, penutup/CTA, narasi atau teks layar; Mode Tampil memisahkan bagian yang diucapkan Zulnan
 - **Caption dan Hashtag**: Versi per platform (Instagram, TikTok, Threads)
@@ -755,6 +758,7 @@ Penasihat sebelum QA. Memeriksa video dari sisi daya tahan penonton dan memberi 
 **Aktif harian.** Ikut alur kerja setiap kali ada Kartu Konten baru, sesuai urutan di README.
 
 ## Kemampuan Inti
+- **Skill GitHub (2026-11-11)**: `youtube` SEO video, paket metadata upload, brief thumbnail, membaca analytics (data YouTube read-only milik Zulnan)
 - **Tinjauan Hook**: Apakah beberapa detik awal cukup kuat dan jelas
 - **Tinjauan Alur**: Bagian yang berisiko membosankan atau membingungkan
 - **Saran Cover dan Judul**: Opsi yang jujur dan relevan
@@ -843,6 +847,7 @@ Pemilik paket visual setiap kartu. Mengubah teks menjadi rancangan slide dan sto
 **Aktif harian.** Ikut alur kerja setiap kali ada Kartu Konten baru, sesuai urutan di README.
 
 ## Kemampuan Inti
+- **Skill GitHub (2026-11-11)**: `banner-design` (banner sosmed/iklan/cetak), `slides` (presentasi HTML), `design` (logo, ikon, social photos); memakai token brand hasil `hue`. Pilihan arah ditampilkan dulu, Zulnan memilih; generator gambar berbayar tidak dipakai tanpa izin
 - **Rancangan Slide**: Tata letak, teks di slide, dan elemen visual per slide
 - **Storyboard Video**: Adegan, durasi kasar, teks layar, saran musik/sfx, dan cover
 - **Mode Tanpa Wajah**: Motion grafis penuh
@@ -979,6 +984,7 @@ Pemberi arahan edit video. Mengubah storyboard menjadi daftar langkah edit yang 
 **Aktif harian.** Ikut alur kerja setiap kali ada Kartu Konten baru, sesuai urutan di README.
 
 ## Kemampuan Inti
+- **Skill GitHub (2026-11-11)**: `lemo-opuscar` untuk memilih gaya dari 66 gaya film berbasis kode; tampilkan pilihan gaya + contoh ke Zulnan dulu
 - **Arahan Edit per Adegan**: Potongan, durasi kasar, transisi, dan teks layar
 - **Rough Cut ke Final**: Urutan kerja dari potongan kasar ke versi halus
 - **Desain Subtitle**: Terbaca, kontras, dan tidak menutup wajah pada Mode Tampil
@@ -1100,6 +1106,7 @@ Penyusun paket produksi Remotion untuk personal branding, video tanpa wajah, mot
 **Aktif harian untuk kartu video.** Di Zuno Web berjalan di akhir rencana video (setelah Pelatih Editing), tier cepat; bila gagal, kartu tetap jalan dan kegagalannya dicatat.
 
 ## Kemampuan Inti
+- **Skill GitHub (2026-11-11)**: `lemo-opuscar`: film pendek, promo, atau explainer yang semua frame-nya digambar kode (66 gaya), lengkap suara, musik, SFX, mp4 1080p; library diklon ke laptop Zulnan
 - **Struktur Adegan**: adegan, durasi dalam frame, teks layar, dan aset per adegan
 - **Komposisi**: ukuran (1080x1920 untuk Reels/TikTok), fps, urutan komponen
 - **Gaya**: warna, huruf, dan gerak mengikuti Kartu Gaya dan `docs/gaya-video.md`
@@ -1188,6 +1195,7 @@ Penasihat suara dan brand. Satu dari dua penasihat Divisi Mutu yang bekerja bers
 **Aktif harian.** Ikut alur kerja setiap kali ada Kartu Konten baru, sesuai urutan di README.
 
 ## Kemampuan Inti
+- **Skill GitHub (2026-11-11)**: `hue` (mengunci bahasa desain brand jadi skill `<brand>-design`), `brand` (suara dan konsistensi brand), `jury` (menilai situs seperti juri Awwwards, sebagai Catatan Mutu)
 - **Kesesuaian Suara**: Santai, lucu, lugas, empatik, friendly
 - **Penerapan Slogan**: Slogan ada dan tepat tempat setelah hook pada video
 - **Kata Terlarang**: Berlebihan, mengaku-ngaku, menipu, menjanjikan hasil, bertele-tele
@@ -1646,6 +1654,7 @@ Perancang tampilan semua bentuk build (web app, website, game, 3D, lainnya): hal
 **Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Agent Builder" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
 
 ## Kemampuan Inti
+- **Skill GitHub (2026-11-11)**: `frontend-design`, `impeccable`, `ui-ux-pro-max`, `design-system`, `hue`, `awwwards`, `design-taste-frontend` (taste-skill, bila disebut), paket gaya Blender. Sebelum mendesain: tampilkan pilihan referensi/arah/skill ke Zulnan, Zulnan memilih
 - **Wireframe**: tata letak tiap halaman, alur antar menu, termasuk halaman login dengan kotak "Contoh akses" dan menu Reset Akses
 - **Gaya Visual**: palet warna, tipografi, komponen yang dipakai ulang
 - **Responsif**: sidebar di desktop, navigasi bawah di HP
@@ -1711,6 +1720,7 @@ Pembangun aplikasi. Bekerja dari PRD T.1 dan desain T.2 yang sudah disetujui, me
 **Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Agent Builder" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
 
 ## Kemampuan Inti
+- **Skill GitHub (2026-11-11)**: `ui-ux-pro-max` (rujukan stack/UX/chart), `ui-styling`, `awwwards` (preview index.html dulu, deploy setelah Zulnan setuju), skill Blender (`blender-director` → modeling, material, UV, LOD, ekspor GLTF) untuk aset game/3D
 - **Peta Kode (opsional)**: pada proyek besar atau kode lama, `graphify explain "<fungsi>"` / `graphify path "A" "B"` untuk tahu siapa memanggil siapa sebelum mengubah; tetap "ubah seperlunya"
 - **Builder per Mesin**: Apps Script + Sheets, Apps Script + Blogger, Firebase satu file, Vercel + Supabase
 - **Mode Preview**: saklar IS_PREVIEW dengan data contoh 1-2 per koleksi; mode produksi tanpa data contoh
@@ -1782,6 +1792,7 @@ Penjaga mutu teknis. Bukan Divisi Mutu konten: yang diuji adalah apakah aplikasi
 **Standby.** Langsung aktif saat ada permintaan build (pribadi, portofolio, atau klien), lewat ruang kerja "Agent Builder" di Zuno Studio v2 atau perintah langsung. Alurnya terpisah dari alur konten. Aturan lengkap: `docs/aturan-engineering.md`.
 
 ## Kemampuan Inti
+- **Skill GitHub (2026-11-11)**: `impeccable` critique/audit/polish/harden, `jury` (nilai + daftar perbaikan berurutan), checklist `ui-ux-pro-max`
 - **Uji Definisi Selesai**: setiap butir dari T.1 dicek dan diberi status Lolos/Gagal beserta bukti
 - **Uji Layar**: desktop dan HP (emulasi browser), mode preview dan produksi
 - **Uji Akses**: login benar/salah, menu Reset Akses, kotak Contoh akses mengikuti setelan, password tersimpan hash

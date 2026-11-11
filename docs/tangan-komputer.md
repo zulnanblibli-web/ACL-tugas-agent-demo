@@ -60,6 +60,14 @@ Laptop (Claude Desktop + agent-desktop, skill rilis-engineering)
 - Sebelum aksi besar, tulis satu baris apa yang akan dilakukan. Setelahnya, cek ulang dengan snapshot baru.
 - Bila ada jendela tak terduga (peringatan keamanan, pembayaran, izin), berhenti dan tanya Zulnan.
 
+## Blender untuk aset 3D/game (opsional, skill Blender sejak 2026-11-11)
+Skill `blender-director` dkk. (arjun988/blender-skills) bekerja lewat server MCP **blender-mcp**. Dipasang Zulnan sendiri di laptop bila build 3D/game butuh aset Blender:
+1. Blender 4.x, lalu addon BlenderMCP (`addon.py` dari ahujasid/blender-mcp) diaktifkan; port 9876.
+2. `uv` terpasang. Tambah server MCP di Claude Desktop/Claude Code laptop: `uvx --python 3.11 blender-mcp` dengan env `BLENDER_HOST=localhost`, `BLENDER_PORT=9876`, `DISABLE_TELEMETRY=true` (contoh asli: `.mcp.json` di repo sumber).
+3. Simpan file `.blend` sebelum sesi: alat `execute_blender_code` menjalankan Python apa saja di Blender.
+4. Sketchfab dan Hyper3D (berbayar/butuh key) tidak dipakai tanpa izin Zulnan.
+Hasil untuk web diekspor GLTF/GLB (`export-pipeline`) lalu dipakai Pengembang di three.js.
+
 ## Mencabut
 - Izin tanpa tanya: hapus `.claude/settings.local.json`.
 - Sambungan Claude Desktop: hapus `agent-desktop` dari `mcpServers` di `%APPDATA%\\Claude\\claude_desktop_config.json` (cadangan: `.cadangan-zuno`).
