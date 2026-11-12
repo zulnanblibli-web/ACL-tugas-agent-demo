@@ -852,4 +852,20 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Bukti: `tests/zuno-akun-test.js` 19 LOLOS; stub v2 (biasa, `--tipe=A`, `--web`) tanpa GAGAL; build stub lolos; tim-agen, chat, situs, pengaturan AI, dev-server, web stub lolos; `zuno-jasa-test` SEMUA LOLOS; label jasa jadi "Personal (Pemilik)" lewat brand.js.
 - Tertunda: Zulnan pilih nama akun/pulau/karakter/gaya Seri Pulau; API key Claude (PR Zulnan); berikutnya L3.
 
-## 85. (entri berikutnya di sini)
+## 85. Koreksi Zulnan: empat akun + sistem permintaan Akun Pulau (2026-11-12)
+- Permintaan: Zulnan meluruskan:
+  - akun Zulnan = karakter A/B/C;
+  - akun Pulau = karakter dibuat Zulnan, gua cari cara supaya akun jalan terus saat permintaan banyak (alur cerita, pemilihan komentar, edit footage);
+  - akun Stickman terpisah (niche nanti);
+  - akun Bedah fakta + bedah teknik umum memakai gaya lemo-opuscar.
+  - Semua template jalan, berhasil, lalu jadi produk Nexaoffice.
+- Hasil:
+  - `docs/seri-pulau.md` ditulis ulang: tulang punggung cerita + `state-pulau.json` + pohon kemajuan; alur permintaan 8 langkah dengan skor; format episode E1-E6; produksi rakitan dari pustaka aset + shot template.
+  - `docs/akun-dan-template.md` baru: 4 akun, isi satu template, 16 gaya opuscar F1-F8/T1-T8, lisensi opuscar.
+  - Strategi, memori, dan daftar perbaikan dikoreksi; usulan gabung item 2+3+4 dibatalkan.
+- Bukti: library opuscar dibaca dari GitHub (101 gaya, LICENSE); lembar poster F/T dikirim ke Zulnan.
+- Tertunda:
+  - Zulnan: bentuk karakter Pulau, platform pertama, pilih gaya Bedah, niche Stickman, nama akun.
+  - Keputusan lisensi opuscar di paket jasa sebelum dijual.
+
+## 86. (entri berikutnya di sini)

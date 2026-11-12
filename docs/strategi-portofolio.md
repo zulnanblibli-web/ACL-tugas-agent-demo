@@ -237,10 +237,13 @@ Urutan saran gua beda dari urutan lu:
   - (c) campur keduanya: Claude hanya untuk build web.
 - **Ini keputusan lu sebelum L8.**
 
-**Revisi urutan setelah Zulnan memilih K-C Pulau dan referensi stickman (2026-11-12):**
-- Item 2 (stickman) dan item 3 (dunia dari komentar) digabung jadi satu jalur: **Seri Pulau bergaya stickman 2D**.
-- Fakta bertahan hidup di tiap episode mengambil peran item 4 (Bedah).
-- Satu jalur produksi, satu akun niche, tiga item terbukti sekaligus. Bedah sebagai akun terpisah ditunda sampai Seri Pulau lolos titik keputusan D2 (bagian 5).
+**Koreksi Zulnan (2026-11-12): empat akun terpisah, bukan digabung.** Detail: `docs/akun-dan-template.md`.
+1. **Akun Zulnan:** karakter tipe A/B/C.
+2. **Akun Pulau:** karakter buatan Zulnan; gua membangun sistem permintaan + produksi (`docs/seri-pulau.md`).
+3. **Akun Stickman:** niche dipikirkan Zulnan.
+4. **Akun Bedah fakta + bedah teknik umum:** gaya visual dari lemo-opuscar.
+
+Tujuan akhir: tiap template akun berjalan, terbukti, lalu jadi produk di Nexaoffice. Usulan gua sebelumnya (menggabung item 2+3+4 jadi Seri Pulau stickman) **dibatalkan**.
 
 ---
 
@@ -293,9 +296,9 @@ Asumsi kapasitas: 6 jam/hari x 5 hari = **30 jam/minggu** [Asumsi]. "Tanpa key" 
 | Fase | Minggu | Isi (urut prioritas) | Tanpa key? | Selesai bila | Titik keputusan |
 |---|---|---|---|---|---|
 | 0. Fondasi lokal | 1 | L2 menu Akun (**selesai 2026-11-12**); L3 simpan permanen; L4 antrean; L5 Preview + Setujui/Revisi/Tolak; L6 antrian per akun; L11 rapikan klaim situs | Ya | Tes otomatis lolos untuk tiap butir | - |
-| 0b. Bible Seri Pulau | 1 | Zulnan pilih nama akun, pulau, karakter, gaya (`seri-pulau.md`); outline Musim 1 (30 hari); pustaka pose stickman di Remotion; buat akun niche (handle) | Ya (outline bisa dibantu AI setelah key ada) | Bible 1 halaman + 10 pose jadi | - |
+| 0b. Template akun | 1 | Zulnan: karakter Pulau, niche Stickman, pilih gaya Bedah (F/T). Gua: Papan Permintaan + data dunia + perencana mingguan Akun Pulau; 1 video contoh Bedah (opuscar, tanpa API key bila naskah dari Zulnan) | Sebagian | Papan Permintaan lolos tes; 1 video Bedah .mp4 | - |
 | 1. Uji nyata | 2 | L1 laptop; API key (PR Zulnan); L7: 1 carousel, 1 video, 1 landing page; catat waktu/biaya/revisi | Tidak | 3 hasil + log | **D1:** biaya per paket muat budget? Mutu layak? Tidak -> ganti model/penyedia atau perbaiki prompt sebelum produksi |
-| 2. Render + episode awal | 3-4 | L8/L9 (bila pakai Claude Code) atau render Remotion manual di laptop; Seri Pulau episode 1-7 siap di Preview; 1 demo web | Sebagian | 7 episode lolos `check.py` | Jalur render dipilih (Claude atau manual) |
+| 2. Render + episode awal | 3-4 | L8/L9 (bila pakai Claude Code) atau render Remotion manual di laptop; 7 video per akun yang sudah siap (Bedah dulu, Pulau setelah karakter jadi) siap di Preview; 1 demo web | Sebagian | 7 episode lolos `check.py` | Jalur render dipilih (Claude atau manual) |
 | 3. Terbit rutin | 5-8 | Posting manual 4-5x/minggu (sampai P1); catat metrik G2 tiap minggu; 2 demo web lagi; mulai 10 tugas G1 | Tidak | 30 posting atau minggu ke-8 | **D2 (minggu 8):** G2 lolos -> lanjut Musim 2. Gagal -> pivot format (cerita tanpa komentar, atau kembali ke Bedah), bukan menambah volume |
 | 4. Portofolio publik | 9-10 | Halaman portofolio: seri + angka asli + 3 demo + studi kasus; ganti "Contoh hasil" di situs dengan hasil asli | Tidak | Halaman live dengan bukti | - |
 | 5. Kit beta | 11-12 | Rilis bertag; 3 penguji luar; perbaiki dari masalah mereka; isi P10 (kontak, dukungan, harga) | Tidak | G3 lolos | **D3:** G3 lolos -> jual terbatas. Gagal -> perbaiki pemasangan dulu, jangan jual |

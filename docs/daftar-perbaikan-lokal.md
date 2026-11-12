@@ -29,7 +29,7 @@ Dibuat 2026-11-12 untuk Zulnan. Dikerjakan **satu per satu, urut dari atas**. Ta
 | L7 | **Uji nyata pertama dengan API key** (lu yang isi key di `.env.local`/Pengaturan AI): 1 carousel, 1 paket video, 1 landing page | Sampai sini belum ada bukti tools works | Tiga hasil jadi; dicatat waktu, biaya, dan berapa revisi | **Ya** | ⬜ Zulnan + gua |
 | L8 | **Jembatan ke Claude Code (`/api/kerja`, Fase 2)** | Supaya skill lengkap (render video, desain web, Blender) jalan dari tombol di web | Tes keamanan di `rencana-lokal-claude-code.md` lolos; satu tugas stub menghasilkan folder kerja | Ya (akun Claude) | ⬜ |
 | L9 | **Render video jadi .mp4 otomatis** (Remotion/HyperFrames lewat L8), hasil masuk Preview | Sekarang video baru rencana. Portofolio butuh file jadi | Satu perintah video menghasilkan .mp4 yang lolos `check.py` dan tampil di Preview | Ya | ⬜ |
-| L10 | **Template niche pertama** (urutan saran: Bedah -> Stick man -> dunia-komentar (konsep K-A..K-D); lihat `strategi-portofolio.md`) | Bahan portofolio | Template + 3 contoh video lolos Preview | Ya | ⬜ |
+| L10 | **Template per akun** (urutan: Bedah -> Pulau -> Zulnan A/B/C -> Stickman; lihat `akun-dan-template.md`) | Bahan portofolio | Template + 3 contoh video lolos Preview | Ya | ⬜ |
 | L11 | **Rapikan klaim di situs:** "18 agen" vs 19 profil (Hana belum punya meja); FAQ "Agen bisa posting sendiri? Bisa" padahal jalur kirim belum aktif; bagian "Contoh hasil" belum berisi hasil asli | Klaim harus sesuai bukti | Tiap klaim di halaman bisa ditunjukkan buktinya | Tidak | ⬜ |
 | L12 | **Kirim posting (P1):** Metricool + Google Drive | Langkah terakhir, setelah antrian lokal terbukti | Satu konten yang disetujui terjadwal dan ada tautan postingnya | Akun Metricool (sisi lu) | ⬜ pending P1 |
 

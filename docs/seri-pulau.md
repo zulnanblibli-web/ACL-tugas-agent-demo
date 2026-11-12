@@ -1,69 +1,121 @@
-# Seri Pulau (konsep K-C, dipilih Zulnan 2026-11-12)
+# Akun Pulau: mesin supaya seri jalan terus walau permintaan banyak
 
-Akun **niche**, bukan akun personal: tanpa nama, wajah, karakter, slogan, atau fakta Zulnan. Di Workspace pilih akun niche-nya di menu **Akun tujuan**.
+Ditulis ulang 2026-11-12 setelah koreksi Zulnan.
 
-**Ide Zulnan:** terdampar di pulau -> cara bertahan hidup -> kehidupan di pulau -> sampai jadi kota/negara di ending. Seri panjang.
+**Yang benar:**
+- Karakter dan dunia pulau **dibuat Zulnan sendiri** (sedang dibuat).
+- Tugas gua: **sistem** supaya akun ini jalan terus saat komentar/permintaan banyak, tanpa Zulnan pusing memilih permintaan. Dari sisi alur cerita, pemilihan permintaan, sampai edit footage.
+- Alur besar dari Zulnan: terdampar -> bertahan hidup -> kehidupan di pulau -> kota/negara (ending).
+- Akun niche: tanpa identitas Zulnan (menu **Akun tujuan** di Workspace).
 
-## Yang belum diputuskan (Zulnan pilih, gua tidak menebak)
+Daftar semua akun dan template: `docs/akun-dan-template.md`.
 
-| Hal | Pilihan | Saran gua |
+## Prinsip: komentar mengisi cerita, bukan menyetir cerita
+Kalau tiap episode harus menunggu Zulnan membaca ratusan komentar lalu memutuskan, seri pasti macet. Jadi ada tiga lapis:
+
+1. **Tulang punggung cerita (tetap, ditulis sekali per musim):** daftar tonggak per musim. Contoh Musim 1: air -> api -> tempat berteduh -> alat -> makanan -> badai pertama -> sinyal minta tolong. Tonggak jalan **dengan atau tanpa komentar**.
+2. **Permintaan penonton (mengisi slot di antara tonggak):** dipilih otomatis oleh aturan di bawah.
+3. **Zulnan (cuma 2 keputusan):** setujui **rencana mingguan** (sekali klik), lalu setujui **tiap video final** (aturan: Disetujui hanya dari Zulnan).
+
+## Data dunia (satu file, jadi ingatan seri)
+`state-pulau.json`, dijaga agen **Penjaga Kontinuitas**:
+- hari ke-N, musim, penduduk, bangunan, sumber daya, cuaca/kondisi pulau;
+- karakter (punya Zulnan) dan hubungan antarkarakter;
+- **pohon kemajuan:** apa yang sudah bisa dibangun dan syaratnya. Contoh: "kapal" butuh alat logam + kayu kering + Musim 3;
+- janji cerita yang belum dibayar (misteri, benda yang belum dipakai);
+- daftar permintaan yang sudah dipakai, berikut kredit peminta (disamarkan).
+
+Pohon kemajuan ini kuncinya. Permintaan yang belum mungkin **tidak ditolak, tapi dikunci**: "dicatat, terbuka di Musim Kota". Permintaan mustahil berubah jadi janji konten masa depan.
+
+## Alur permintaan (otomatis, tiap minggu)
+
+| Langkah | Apa yang terjadi | Siapa |
 |---|---|---|
-| Nama akun / handle | [ISI] | - |
-| Nama pulau | [ISI] | - |
-| Karakter utama | (1) stickman polos + satu aksesori ikonik, (2) karakter kotak/voxel, (3) karakter bulat chibi. Nama karakter [ISI] | (1) stickman, lihat alasan di "Gaya visual" |
-| Gaya visual | (a) stickman 2D (Remotion + SVG), (b) voxel 3D (pakai ulang mesin Kantor 3D three.js), (c) low-poly 3D (Blender) | (a) |
-| Suara | Teks di layar saja / suara AI (TTS) / suara rekaman orang lain (bukan Zulnan, karena akun niche) | Teks + TTS yang lisensinya boleh komersial [Cek sendiri] |
-| Durasi | Shorts 30-60 detik per hari, plus rangkuman musim lebih panjang | Shorts dulu |
+| 1. Tarik | Komentar video minggu ini dikumpulkan. Sementara ditempel/ekspor manual; otomatis setelah P1 (Metricool/API platform) | Zulnan tempel, nanti otomatis |
+| 2. Saring | Buang spam, promosi, SARA, politik praktis, kekerasan berlebihan, cabul, data pribadi. Tiap yang dibuang dicatat alasannya | Analis Komentar |
+| 3. Kelompokkan | Permintaan yang mirip digabung ("rumah pohon" = "rumah di atas pohon"). **Dukungan** = jumlah komentar sejenis + like | Analis Komentar |
+| 4. Golongkan | Bangunan / makanan & sumber daya / kejadian & bencana / karakter & hewan / aturan & sosial / absurd-lucu / isu aktual | Analis Komentar |
+| 5. Cek dunia | Pakai pohon kemajuan + aturan dunia: **Bisa sekarang** / **Terkunci (musim X)** / **Tidak cocok** (alasan) | Penjaga Kontinuitas |
+| 6. Beri skor | Dukungan 40% + dampak ke tonggak cerita 25% + variasi golongan (jangan sama 2x berturut) 15% + biaya produksi rendah 10% + kesegaran 10%. **Bobot ini usulan awal [Asumsi]**, disetel dari data | Otomatis |
+| 7. Susun minggu | Isi 7 slot (lihat format di bawah) dari skor tertinggi + tonggak cerita | Nara (Strategi) |
+| 8. Setujui | Zulnan lihat 1 halaman rencana mingguan: setuju / tukar / coret | Zulnan |
 
-## Alur besar (5 musim)
+Volume tidak mengubah cara kerja:
+- 10 komentar atau 10.000 komentar lewat jalur yang sama.
+- Kalau sangat banyak, yang diambil hanya N komentar teratas (urutan "teratas" dari platform) plus pengelompokan. Duplikat justru menambah dukungan, bukan menambah kerja.
 
-| Musim | Isi | Hal yang bisa dipilih penonton | Penghitung di layar |
-|---|---|---|---|
-| 1. Terdampar | Hari-hari pertama: air, api, tempat berteduh, makanan, sinyal minta tolong. **Tiap episode satu fakta bertahan hidup yang benar dan bersumber** | Cari air atau makanan dulu? Bangun di pantai atau di bukit? | Hari ke-N, Penduduk: 1 |
-| 2. Penghuni pertama | Orang lain datang (kapal karam, perahu nelayan). **Follower jadi penghuni**, datang per angkatan | Siapa boleh tinggal, pembagian kerja, aturan pertama | Penduduk: N |
-| 3. Kampung | Rumah, kebun, sumur, barter, musyawarah | Voting "Musyawarah Pulau" (dari komentar) | Bangunan: N |
-| 4. Kota | Pelabuhan, pasar, listrik angin/air, masalah kota (sampah, rebutan lahan) | Proyek kota berikutnya, isu aktual versi pulau | Ekonomi/sumber daya |
-| 5. Negara | Bendera, aturan dasar, pemilu, hubungan dengan pulau lain (bisa kolaborasi akun lain) | Nama negara, bendera, pemimpin | Ending seri |
+## Format episode tetap (supaya banyak permintaan tertangani tanpa produksi berat)
 
-Kenapa fakta bertahan hidup di Musim 1 penting:
-- Itu nilai tambah asli tiap episode. Akun tidak dianggap "konten massal berulang" oleh aturan YouTube 2025.
-- Ini menggabungkan item 4 (Bedah) ke dalam seri ini. Satu jalur produksi menghasilkan dua manfaat.
-- Fakta wajib dicek Tara (Q.1). Jangan sampai mengajarkan cara bertahan hidup yang salah atau berbahaya.
+| Kode | Format | Isi | Butuh komentar? | Berat produksi |
+|---|---|---|---|---|
+| E1 | **Bangun** | 1 permintaan besar dikerjakan, time-lapse | Ya | Sedang |
+| E2 | **Kotak Saran** | Montase 4-6 permintaan kecil, masing-masing 3-5 detik | Ya | Ringan (aset kecil) |
+| E3 | **Musyawarah** | 2-3 permintaan populer yang bentrok -> penonton pilih, hasilnya episode berikut | Ya | Ringan |
+| E4 | **Kejadian** | Tonggak cerita / bencana / kejutan | **Tidak** (penyelamat saat sepi) | Sedang |
+| E5 | **Surat untuk Pulau** | Karakter menjawab permintaan absurd/terkunci dengan lucu ("kapal pesiar? paku aja belum punya") + teaser kapan terbuka | Ya, tapi yang ditolak | Ringan |
+| E6 | **Rekap** | Keadaan pulau minggu ini: penduduk, bangunan, peta | Tidak | Sangat ringan (pakai ulang shot) |
 
-## Mekanik penonton (pola umum, bukan tiruan akun lain)
-- **Komentar = keputusan.** Komentar teratas atau hasil voting menentukan episode besok. Komentar asli boleh tampil di layar dengan nama disamarkan/anonim.
-- **Follower = penghuni.** Ditampilkan sebagai kerumunan yang bertambah, diberi angkatan ("Kapal ke-1").
-- **Voting = episode sendiri.**
-- **Pendukung** (nanti, kalau sudah ada penonton): nama di "kredit penghuni" akhir video.
-  - [Fakta] Rico Animations menawarkan membership dengan nama anggota tampil di kredit video panjang.
-  - Donasi lewat platform semacam Trakteer seperti contoh referensi; dipakai belakangan, bukan di awal.
-- **Cold start** (0 komentar di awal): episode tidak boleh bergantung penuh pada komentar. Selalu ada rencana cadangan, misalnya "pulau memilih sendiri" atau pilihan dari karakter. Jangan pakai komentar karangan.
+**Contoh minggu** [Asumsi, disetel dari data]: 2x E1, 1x E2, 1x E3, 1x E4, 1x E5, 1x E6. Tujuh video, kira-kira 10-20 permintaan terjawab, dan hanya 2 video yang berat.
 
-## Gaya visual: kenapa stickman 2D dulu
-- **Paling murah:** digambar kode (SVG di Remotion), tanpa generator berbayar, render di laptop.
-- **Paling cepat per episode:** pustaka pose (jalan, lari, kaget, angkat kayu, memancing) sekali dibuat, dipakai ulang.
-- **Beda dari referensi kota 3D**, jadi tidak terlihat meniru.
-- Bisa naik ke voxel 3D di musim kota/negara kalau seri jalan. Nanti dinilai lagi.
+**Saat masih sepi (cold start):**
+- E4 dan E6 jalan tanpa komentar.
+- E3 bisa memberi pilihan dari tim sendiri.
+- **Tidak pernah memakai komentar karangan.**
 
-## Pelajaran dari 2 kanal stickman referensi
-[Fakta, dari halaman kanal YouTube 2026-11-12. Angka publik saat dibuka; videonya tidak gua tonton.]
+## Produksi dan edit footage: dirakit, bukan diedit dari nol
 
-| Kanal | Ukuran | Isi 20 Shorts terbaru | Yang bisa dipelajari |
-|---|---|---|---|
-| Backbench Animations (Kenya, sejak 2015) | 823 rb subscriber, 383 juta tayangan | Komedi pasangan dan meme animasi ("couple comedy", "animation meme"); tayangan per Short 36 rb sampai 6,7 juta; beberapa judul mencantumkan "sc: @..." (suara dari kreator lain) | Humor relatable dan pendek menang. **Jangan meniru cara pakai audio orang lain**: risiko hak cipta dan aturan "unoriginal" Meta/YouTube. Suara kita harus asli |
-| Rico Animations (Uganda, sejak 2021) | 13 juta subscriber, 7,89 miliar tayangan, 224 video | Shorts "(4k memes)" situasi sehari-hari; 270 rb - 1,1 juta tayangan per Short; seri panjang "Life of a dookie" | **Karakter tetap + seri panjang + membership dengan nama di kredit.** Ini paling dekat dengan ide pulau |
+**Pustaka aset (sekali buat, dipakai ulang):**
+- karakter Zulnan dengan set pose/ekspresi standar (jalan, angkat, kaget, senang, capek, berpikir, menunjuk);
+- bangunan modular per era;
+- properti;
+- latar pulau dalam beberapa keadaan (siang, malam, hujan, badai, musim);
+- elemen UI tetap: penghitung hari, penghitung penduduk, kartu komentar.
 
-Kesimpulan:
-- Dua kanal ini besar karena **humor dan karakter**, bukan karena "topik viral dari AI".
-- Seri pulau harus lucu dan punya karakter yang disukai. Fakta bertahan hidup itu bumbunya, bukan ceramah.
+**Shot template:** tiap episode disusun dari 5-8 potongan baku.
+1. Pembuka "Hari ke-N" + gambaran pulau sesuai `state-pulau.json`.
+2. Kartu komentar (nama peminta disamarkan).
+3. Reaksi karakter.
+4. Aksi / time-lapse membangun.
+5. Catatan singkat (opsional).
+6. Penghitung berubah.
+7. Penutup: pertanyaan untuk penonton.
 
-## Jalur produksi di Nexaoffice (akun niche)
-1. Raka (R.1): bahan fakta bertahan hidup + bacaan komentar/voting episode lalu.
-2. Nara (R.2): sudut episode, hook, pilihan untuk penonton.
-3. Dika (P.1): naskah 30-60 detik (hook, kejadian, fakta, pilihan untuk penonton). Vino (P.2): uji retensi.
-4. Sari (D.1): Kartu Gaya tetap seri (palet, karakter, pustaka pose).
-5. Bima (E.2): rencana Remotion -> render .mp4 (setelah L8/L9 di `daftar-perbaikan-lokal.md`; sebelum itu render manual di laptop).
-6. Tara/Nita (Mutu): fakta benar dan aman, tanpa identitas Zulnan, aturan platform.
-7. Zulnan setuju -> Antrian Posting akun pulau.
+Dengan begitu kerja Bima (E.2) dan Edo (E.1) jadi **menyusun dan mengisi**, bukan mengedit dari nol. Kartu Gaya seri dikunci (palet, font, posisi UI, suara), jadi tiap episode konsisten.
 
-Yang perlu ditambah untuk seri ini: **Penjaga Kontinuitas Seri** (catatan dunia: hari, penduduk, bangunan, keputusan penonton) dan **Pengelola Komunitas** (rangkum komentar/voting). Lihat bagian 6 `strategi-portofolio.md`.
+**Produksi per minggu (batch):**
+- Satu sesi menghasilkan 7 episode dari rencana yang disetujui.
+- Semuanya masuk Preview.
+- Zulnan setujui satu per satu, lalu masuk Antrian Posting akun Pulau.
+
+**Mesin render tergantung bentuk karakter buatan Zulnan.** Gua tidak menebak, ini yang perlu lu jawab:
+
+| Bentuk karakter | Mesin | Catatan |
+|---|---|---|
+| Gambar 2D berlapis (PNG/SVG per bagian tubuh) | Remotion (kode, lokal) | Paling murah dan konsisten |
+| Model 3D (GLB/Blender) | three.js atau Blender (skill Blender ada) | Konsisten, render lebih berat |
+| Dibuat generator video AI | Google Flow / lainnya (Fira E.3) | Paling hidup, tapi berbayar dan wajah/bentuk bisa berubah-ubah antar episode |
+
+## Agen yang dipakai
+- **Baru:** Analis Komentar & Komunitas (langkah 1-4), Penjaga Kontinuitas (langkah 5 + `state-pulau.json`).
+- **Sudah ada:**
+  - Nara (rencana mingguan);
+  - Dika + Vino (naskah dan retensi);
+  - Sari (Kartu Gaya seri);
+  - Bima + Edo (rakit shot dan render);
+  - Tara (cek aturan dunia dan keamanan konten);
+  - Maya (paket posting).
+- Penambahan agen lewat Hana (menu Tambah agen).
+
+## Yang dibangun di Nexaoffice untuk ini (jadi produk "template seri komunitas")
+1. **Papan Permintaan:** tempel komentar, lalu keluar tabel kelompok + dukungan + status (bisa / terkunci / tidak cocok) + skor.
+2. **Data dunia:** editor `state-pulau.json` + pohon kemajuan.
+3. **Perencana mingguan:** 7 slot + tombol Setujui.
+4. **Shot template** di Remotion (atau mesin lain sesuai karakter).
+5. **Kredit peminta otomatis** (disamarkan).
+
+Semua tidak terikat "pulau". Bila diganti dunianya (kos, warung, kapal), template yang sama jalan. Itu yang membuatnya bisa dijual.
+
+## Pertanyaan untuk Zulnan
+1. Karakter lu nanti bentuknya apa: 2D berlapis, 3D, atau dari generator video AI?
+2. Platform pertama: TikTok, Instagram, atau YouTube Shorts? (Menentukan cara tarik komentar.)
+3. Nama akun dan nama pulau: [ISI].
