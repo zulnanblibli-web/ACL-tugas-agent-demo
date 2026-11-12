@@ -115,7 +115,8 @@ if ($Gagal.Count -gt 0) { Write-Host ' Ada langkah yang gagal/terlewat:' -Foregr
 Write-Host ' Berikutnya:'
 Write-Host "  1. Isi key di $EnvF (kalau belum)."
 Write-Host '  2. Login Claude Code sekali: buka terminal baru di folder ini, ketik  claude  lalu ikuti /login (atau isi ANTHROPIC_API_KEY).'
-Write-Host "  3. Nyalakan web: $Server, lalu buka http://localhost:3000"
+Write-Host "  3. Nyalakan web: $Server. Browser terbuka sendiri ke alamat yang benar (biasanya http://localhost:3000)."
+Write-Host "     Tampilan masih lama? Tutup dulu jendela server Zuno/Nexaoffice lama yang masih terbuka, lalu jalankan lagi."
 Write-Host '  4. Kerja dengan skill: ketik  claude  di folder ini; skill di .claude\skills terbaca otomatis.'
 Write-Host '  Catatan: bila perintah baru belum dikenali, tutup jendela ini dan buka terminal baru (PATH diperbarui).'
 Write-Host '============================================================'

@@ -824,4 +824,14 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Bukti: ekspor dari sumber baru menghasilkan berkas Kantor 3D identik dengan isi jasa sebelumnya (diff jasa hanya urutan `package.json` + nama paket); `npm run build:themes` di `kantor-3d/` menghasilkan `office.bundle.js` dan `studio.bundle.js` identik byte-per-byte; `test:office` (11 PASS), `test:themes` (9 PASS), `test:nexa` (8 PASS), `test:simulation`, `test:nexa-animation`, `test:nexa-kendali` lolos dari `kantor-3d/`; `web/build.mjs` tidak mengubah `web/`; `zuno-jasa-test` SEMUA LOLOS; `nexaoffice-situs-test` SEMUA LOLOS; `zuno-web-dev-server-test` semua lolos.
 - Tertunda: butir kuning J3-J5 (`preview/`, `downloads/`, `artifacts/` di jasa) dan `.github/` tetap di jasa, tidak disentuh ekspor.
 
-## 82. (entri berikutnya di sini)
+## 82. Lokal masih tampilan lama: server lama di port 3000 dikenali (2026-11-12)
+- Laporan Zulnan (screenshot): `pasang.bat` berhasil semua, tapi `localhost` masih menampilkan tampilan lama. Screenshot = Nexaoffice versi 9-10 November (gelap biru elektrik, huruf Antonio; commit 83eda7d sampai 692d371). Versi di GitHub sudah The Grotto, dan `pasang.bat` baru ada sejak 11 November, jadi berkas hasil clone baru pasti terbaru.
+- Penyebab (diulang di sesi): server Nexaoffice dari folder lama masih jalan di port 3000; server baru otomatis pindah ke 3001, sedangkan pesan akhir `pasang.bat` menyuruh membuka `http://localhost:3000`.
+- Perbaikan:
+  - `web/dev-server.mjs` (juga `server.mjs` jasa): `/api/versi` ({app, versi} = sidik isi halaman); saat port sibuk, server mengecek apakah pemakainya server Nexaoffice/Zuno lain dan menampilkan peringatan PERHATIAN (tampilan lama di port itu, alamat yang benar, cara menutup server lama); baris "Versi halaman" di layar awal.
+  - `tools/pasang/pasang.ps1` dan `pasang.sh`: pesan akhir tidak lagi menyuruh membuka `localhost:3000`; browser terbuka sendiri ke alamat yang benar + petunjuk bila tampilan masih lama.
+  - `tests/zuno-web-dev-server-test.mjs`: cek `/api/versi`.
+- Bukti: simulasi server versi 692d371 di port 3000 lalu server baru -> pindah ke 3001 + peringatan muncul; `zuno-web-dev-server-test` semua lolos; `zuno-jasa-test` SEMUA LOLOS; `server.mjs` jasa menjawab `/api/versi`.
+- Tertunda (Zulnan): tutup jendela server lama (atau restart laptop), lalu klik `jalankan-lokal.bat` di folder clone baru.
+
+## 83. (entri berikutnya di sini)

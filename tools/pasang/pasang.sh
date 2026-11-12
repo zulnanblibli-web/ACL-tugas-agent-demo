@@ -100,6 +100,7 @@ if [ ${#GAGAL[@]} -gt 0 ]; then echo " Ada langkah yang gagal/terlewat:"; for g 
 echo " Berikutnya:"
 echo "  1. Isi key di $WEB/.env.local (kalau belum)."
 echo "  2. Login Claude Code sekali: ketik  claude  di folder ini, lalu ikuti /login (atau isi ANTHROPIC_API_KEY)."
-echo "  3. Nyalakan web:  $SERVER   lalu buka http://localhost:3000"
+echo "  3. Nyalakan web:  $SERVER   (alamatnya tertulis di layar, biasanya http://localhost:3000)"
+echo "     Tampilan masih lama? Matikan dulu server Zuno/Nexaoffice lama yang masih jalan, lalu jalankan lagi."
 echo "  4. Kerja dengan skill: buka  claude  di folder ini; skill di .claude/skills terbaca otomatis."
 echo "============================================================"

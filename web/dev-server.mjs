@@ -1,6 +1,6 @@
 // Nexaoffice / Zuno: server Node tanpa Vercel, untuk laptop sendiri ATAU server VPS.
 // Menyajikan halaman dan memakai handler yang sama dengan Vercel (api/ai.js, api/status.js, api/riset.js, api/gambar.js).
-// Laptop:  npm install && node dev-server.mjs   lalu buka http://localhost:3000
+// Laptop:  npm install && node dev-server.mjs --buka   (browser terbuka ke alamat yang benar; bawaan port 3000)
 // VPS   :  lihat docs/vps-nexaoffice.md (skrip tools/vps/pasang-vps.sh memasang ini sebagai layanan systemd + Caddy).
 // Pengaturan dibaca dari .env.local di folder ini (salin dari .env.local.example). API key hanya ada di file itu.
 //   HOST              alamat dengar (bawaan 127.0.0.1; di VPS tetap 127.0.0.1 di belakang Caddy)
@@ -11,6 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { exec } from 'node:child_process';
+import { createHash } from 'node:crypto';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const BUKA = process.argv.includes('--buka'); // buka browser otomatis setelah server siap
@@ -64,6 +65,13 @@ try {
   process.exit(1);
 }
 
+// Versi halaman = sidik isi halaman yang disajikan folder ini. Dipakai /api/versi dan untuk mengenali server Nexaoffice
+// lama (folder lain) yang masih jalan di port yang sama, supaya tidak tertukar tampilan lama dan baru.
+const VERSI = (() => {
+  const h = createHash('sha1');
+  for (const f of ['index.html', 'studio.html']) { try { h.update(fs.readFileSync(path.join(here, f))); } catch {} }
+  return h.digest('hex').slice(0, 10);
+})();
 let PORT = Number(process.env.PORT || 3000);
 if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) PORT = 3000;
 const MIME = {
@@ -121,6 +129,7 @@ const server = http.createServer(async (req, res) => {
       if (url.pathname === '/api/status' && req.method === 'GET') return await sendWeb(res, await GET(await toWebRequest(req)), cors);
       if (url.pathname === '/api/riset' && req.method === 'GET') return await sendWeb(res, await RISET(await toWebRequest(req)), cors);
       if (url.pathname === '/api/gambar' && req.method === 'GET') return await sendWeb(res, await GAMBAR(await toWebRequest(req)), cors);
+      if (url.pathname === '/api/versi' && req.method === 'GET') { res.writeHead(200, { 'content-type': 'application/json', 'cache-control': 'no-store' }); return res.end(JSON.stringify({ app: 'nexaoffice', versi: VERSI })); }
     }
     if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }
     const rel = url.pathname === '/' ? 'index.html' : decodeURIComponent(url.pathname).replace(/^\/+/, '');
@@ -141,11 +150,24 @@ function bukaBrowser(url) {
 }
 
 // Port sibuk (EADDRINUSE): coba port berikutnya, maksimal 10 kali.
+// Bila yang memakai port itu server Nexaoffice/Zuno dari folder lain (biasanya versi lama yang jendelanya belum ditutup),
+// beri peringatan jelas: membuka alamat port itu akan menampilkan tampilan LAMA.
 let percobaan = 0;
-server.on('error', (e) => {
+const PORT_AWAL = PORT;
+let serverLain = null; // { port, versi } server Nexaoffice lain yang ditemukan
+async function cekServerLain(port) {
+  const tanya = async (jalur) => { try { const r = await fetch('http://127.0.0.1:' + port + jalur, { signal: AbortSignal.timeout(1500) }); return r; } catch { return null; } };
+  const v = await tanya('/api/versi');
+  if (v && v.ok) { try { const j = await v.json(); if (j && j.app === 'nexaoffice') return { port, versi: j.versi }; } catch {} }
+  const st = await tanya('/api/status');
+  if (st && (st.ok || st.status === 401)) { try { const j = await st.json(); if (j && 'online' in j) return { port, versi: null }; } catch {} }
+  return null;
+}
+server.on('error', async (e) => {
   if (e && e.code === 'EADDRINUSE' && percobaan < 9) {
     log('port ' + PORT + ' dipakai aplikasi lain, coba ' + (PORT + 1));
     console.log('  Port ' + PORT + ' sedang dipakai aplikasi lain, mencoba ' + (PORT + 1) + '...');
+    if (!serverLain) { const lain = await cekServerLain(PORT); if (lain && lain.versi !== VERSI) { serverLain = lain; log('server Nexaoffice lain di port ' + PORT + ' (versi ' + (lain.versi || 'lama tanpa info') + ', folder ini ' + VERSI + ')'); } }
     percobaan++; PORT++; return server.listen(PORT, HOST);
   }
   if (e && e.code === 'EADDRINUSE') gagal('Port ' + (PORT - 9) + '-' + PORT + ' semua dipakai', 'Tutup aplikasi lain atau isi PORT=4000 di web\\.env.local.', e);
@@ -164,7 +186,17 @@ server.on('listening', () => {
   console.log('  Berkas pengaturan : ' + (hasEnvFile ? 'web/.env.local terbaca' : 'TIDAK ADA. Salin web/.env.local.example menjadi web/.env.local lalu isi'));
   console.log('  Penyedia AI       : ' + provider + (keyEnv && process.env[keyEnv] ? ' (key terisi)' : ' (key BELUM terisi: ' + (keyEnv || '?') + ')'));
   console.log('  Kunci akses       : ' + (process.env.ZUNO_ACCESS_KEY ? 'terisi (masukkan lewat tombol KUNCI AKSES di halaman)' : 'BELUM terisi (ZUNO_ACCESS_KEY, acak, minimal 16 karakter)'));
+  console.log('  Versi halaman     : ' + VERSI + '  (cek di ' + url + '/api/versi)');
   console.log('  Berhenti          : tekan Ctrl+C (jendela ini jangan ditutup selama dipakai)\n');
+  if (serverLain) {
+    console.log('  ==================================================================================');
+    console.log('  PERHATIAN: port ' + serverLain.port + ' masih dipakai server Nexaoffice LAIN (' + (serverLain.versi ? 'versi ' + serverLain.versi : 'versi lama') + ', dari folder lain).');
+    console.log('  Membuka http://localhost:' + serverLain.port + ' akan menampilkan TAMPILAN LAMA.');
+    console.log('  Pakai alamat ini: ' + url);
+    console.log('  Supaya rapi: tutup jendela server lama (jendela hitam "Zuno Web lokal" / "Nexaoffice lokal"),');
+    console.log('  atau restart laptop, lalu jalankan jalankan-lokal.bat lagi dari folder ini.');
+    console.log('  ==================================================================================\n');
+  } else if (PORT !== PORT_AWAL) console.log('  Catatan: port ' + PORT_AWAL + ' dipakai aplikasi lain, jadi alamatnya ' + url + '\n');
   log('jalan di ' + url + ' | env ' + (hasEnvFile ? 'ada' : 'tidak ada') + ' | penyedia ' + provider + ' | key ' + (keyEnv && process.env[keyEnv] ? 'terisi' : 'kosong') + ' | akses ' + (process.env.ZUNO_ACCESS_KEY ? 'terisi' : 'kosong'));
   if (BUKA) bukaBrowser(url);
 });

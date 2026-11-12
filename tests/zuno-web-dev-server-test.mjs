@@ -43,6 +43,7 @@ try {
   ok('ruang kerja /studio.html 200 dan memuat ZUNO + input gambar cover', r.status === 200 && /ZUNO/.test(t) && t.includes('id="coverfile"'));
   r = await fetch(U + '/assets/foto-zulnan.webp'); ok('foto cover webp 200', r.status === 200 && r.headers.get('content-type') === 'image/webp' && (await r.arrayBuffer()).byteLength > 10000);
   r = await fetch(U + '/assets/karakter/zuno-tim-orkestrasi.webp'); ok('gambar karakter 200', r.status === 200);
+  { const v = await fetch(U + '/api/versi'); const j = await v.json(); ok('/api/versi: app nexaoffice + sidik versi halaman', v.status === 200 && j.app === 'nexaoffice' && /^[0-9a-f]{10}$/.test(j.versi)); }
   r = await fetch(U + '/studio-nexa.css'); ok('css 200', r.status === 200 && /text\/css/.test(r.headers.get('content-type')));
   r = await fetch(U + '/api/status'); const s0 = await r.json(); ok('status tanpa kunci akses: terkunci, tanpa penyedia/model/setelan', s0.online === true && s0.terkunci === true && Object.keys(s0).length === 2);
   r = await fetch(U + '/api/status', { headers: { 'x-zuno-key': 'rahasia-lokal-1234567' } }); const s = await r.json(); ok('status online, penyedia openrouter, key terisi, tanpa membocorkan kunci', s.online === true && s.provider === 'openrouter' && s.ai_key_set === true && s.access_set === true && !JSON.stringify(s).includes('kunci-tiruan') && !JSON.stringify(s).includes('rahasia-lokal'));
