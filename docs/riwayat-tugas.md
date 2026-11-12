@@ -795,4 +795,11 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Belum teruji: `pasang.bat`/`pasang.ps1` di Windows sungguhan (mengunduh PowerShell untuk cek sintaks ditolak pengaman; perlu dicoba di laptop Zulnan, Fase 0).
 - Commit: Zuno `fbdc345` + catatan `29547be`, jasa `main` `0bcd240`. Push (izin Zulnan "oke push dan deploy"): kedua repo; deploy Vercel `dpl_6bw6BP2u9VdUvyJ2k2yx62M1wq4M` READY (alias zuno-studio-dusky.vercel.app; web tidak berubah di entri ini, isi baru ada di repo).
 
-## 79. (entri berikutnya di sini)
+## 79. Jasa ikut tampilan Nexaoffice (keputusan) + bersih berkas lama tahap 1 (2026-11-12)
+- Permintaan Zulnan: repo jasa tampil seperti situs Zuno Studio (Nexaoffice), jalan di lokal atau VPS, desain HUD lama tidak dipakai; daftar berkas lama di kedua repo yang kira-kira tidak dipakai, untuk dicek dulu. Sebelumnya: sandbox Claude Code (P12) dan Docker opsional (P13) dicatat sebagai pending (fokus laptop dulu).
+- Keputusan Zulnan: K1 pembeli langsung masuk Workspace, bagian jualan halaman depan (harga, Pesan kit, produk lain) tidak ikut; K2 nama tampil = nama brand pembeli di `brand.js`, bawaan "Nexaoffice"; K3 kredit "Creative @nexamind.ai" tetap kecil di footer.
+- Hasil: `docs/cek-berkas-lama.md` (nomor Z1-Z16 repo Zuno, J1-J7 repo jasa; status merah/kuning/oranye/hijau, gunanya, efek bila dihapus). Atas pilihan Zulnan ("hapus yang merah") dihapus: Z1 `prototypes/zuno-studio-v1.html` + tesnya, Z2 `prototypes/zuno-skema-preview.html`, Z3 `docs/desain-zulnan-motion.md`, Z4 `docs/prompt-orkestrasi-zuno.docx`, Z7 `.hallmark/`, Z8 `web/assets/site/kantor-studio.webp`; jasa J1 `docs/HANDOFF_`/`PROMPT_CLAUDE_GROTTO_VISUAL.md`, J2 `progress.md`. Z10 (zip skill engineering) batal dihapus: saat cek ulang ternyata masih dipakai untuk unggah ulang ke claude.ai (koreksi ditulis di daftar).
+- Bukti: `node web/build.mjs` jalan; `nexaoffice-situs-test` HASIL: SEMUA LOLOS (74 OK); `zuno-jasa-test` HASIL: SEMUA LOLOS; `zuno-studio-v2-stub-test` lolos (cek Z14).
+- Tertunda: tampilan Nexaoffice untuk jasa (ekspor pakai varian nexa + white-label, tulis ulang `PANDUAN.md`), lalu hapus Z15, Z16, J6; pilihan Zulnan untuk butir kuning (Z5, Z6, Z9, Z10, Z11, Z13, J3, J4, J5).
+
+## 80. (entri berikutnya di sini)
