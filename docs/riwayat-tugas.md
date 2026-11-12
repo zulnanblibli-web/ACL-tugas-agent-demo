@@ -867,5 +867,6 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Tertunda:
   - Zulnan: bentuk karakter Pulau, platform pertama, pilih gaya Bedah, niche Stickman, nama akun.
   - Keputusan lisensi opuscar di paket jasa sebelum dijual.
+- Tambahan (Zulnan: "akun stickman juga kalo lu ada refrensi alur cerita yang relate"): pola alur cerita relate dari judul Shorts Backbench/Rico + struktur 15-40 detik + contoh situasi Indonesia di `akun-dan-template.md`. Commit + push atas izin Zulnan ("sampe sini dulu commit dan push").
 
 ## 86. (entri berikutnya di sini)

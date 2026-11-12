@@ -8,10 +8,50 @@ Dikoreksi Zulnan 2026-11-12. **Tujuan akhir:** tiap akun punya template yang ber
 |---|---|---|---|---|---|
 | 1 | **Akun Zulnan (personal)** | 6 pilar konten Zulnan | Video tipe **A** (Zulnan + Zuno ngobrol), **B** (proses tim Zuno), **C** (Zulnan di frame); slogan; foto Zulnan; bank fakta | Sudah ada (`assets/karakter/`, `docs/referensi-video.md`) | Template ada di Workspace (pilih Akun tujuan: Personal). Video masih berupa paket render, belum .mp4 otomatis (L9) |
 | 2 | **Akun Pulau** | Seri terdampar -> bertahan hidup -> kehidupan -> kota/negara; penonton ikut menentukan lewat komentar | Karakter dan dunia buatan Zulnan | **Zulnan (sedang dibuat)** | Sistem permintaan dan produksi: `docs/seri-pulau.md`. Menunggu bentuk karakter |
-| 3 | **Akun Stickman** | Niche **[ISI, dipikirkan Zulnan]** | Stickman. Referensi: Backbench Animations, Rico Animations | Zulnan | Menunggu niche |
+| 3 | **Akun Stickman** | Niche **[ISI, dipikirkan Zulnan]**; referensi alur cerita di bawah | Stickman. Referensi: Backbench Animations, Rico Animations | Zulnan | Menunggu niche |
 | 4 | **Akun Bedah** | **Bedah fakta** dan **bedah teknik umum** | Gaya visual diambil dari template **lemo-opuscar** (lihat pilihan di bawah) | Kode (opuscar), tanpa karakter Zulnan | Menunggu Zulnan memilih gaya |
 
 Akun 2-4 adalah akun **niche**: di Workspace dibuat lewat **Tambah akun niche**, jadi identitas Zulnan otomatis tidak dipakai.
+
+## Akun Stickman: referensi alur cerita yang relate
+Niche tetap **diputuskan Zulnan**. Di bawah ini cuma pola alur cerita.
+
+**Pola dari judul Shorts 2 kanal referensi** [Fakta, dibaca dari halaman kanal 2026-11-12; videonya tidak ditonton]:
+
+| Pola | Contoh judul asli | Rumusnya |
+|---|---|---|
+| "Pas lu..." / "When you..." | Rico: "When you have no light switch at the bedside!", "When you are bathing and music goes off!" | Satu situasi kecil sehari-hari yang semua orang pernah alami |
+| Pernyataan vs kenyataan | Rico: "Three hours of sleep doesn't affect me at all!" | Tokoh bilang A, gambar menunjukkan kebalikannya |
+| X vs Y | Rico: "Black cats in Western countries Vs in Africa!" | Satu hal, dua tempat/budaya/generasi |
+| "...be like" (parodi) | Rico: "African documentaries be like!" | Meniru gaya sesuatu yang dikenal semua orang |
+| Komedi pasangan / hubungan | Backbench: "Good or bad boyfriend?", "She tricked him" | Dialog dua orang + jebakan + punchline; judul berupa pertanyaan supaya orang berkomentar |
+| Tokoh tetap + seri panjang | Rico: "Life of a dookie" | Satu tokoh, satu tujuan besar, episode bersambung |
+
+**Struktur satu video (15-40 detik)** [Asumsi, pola umum komedi pendek]:
+1. **Detik 0-2:** situasi langsung kelihatan + teks "Pas lu..." (tanpa pembukaan).
+2. **Eskalasi:** 2-3 langkah, tiap langkah makin parah.
+3. **Twist/punchline:** kebalikan dari yang diharapkan.
+4. **Tag (opsional):** satu lelucon tambahan atau ending yang nyambung ke awal (loop), plus pertanyaan di caption ("lu tim mana?").
+
+**Contoh terjemahan ke situasi Indonesia** [ide, bukan fakta; pilih/buang sesuka lu]:
+- **"Pas lu..."**
+  - anak kos tanggal tua buka kulkas;
+  - ojol sudah sampai tapi lu belum mandi;
+  - grup WA keluarga kirim hoaks jam 5 pagi;
+  - sinyal hilang pas lagi bayar.
+- **Pernyataan vs kenyataan:** "Besok gua mulai diet" / "Gua cuma scroll 5 menit".
+- **X vs Y:**
+  - kerja Senin vs Jumat;
+  - belanja pakai uang sendiri vs uang orang tua;
+  - mudik ekspektasi vs realita.
+- **"...be like":** sinetron be like; rapat online be like; tukang parkir be like.
+- **Hubungan:** emak vs anak; pacar "terserah"; teman yang pinjam uang.
+- **Tokoh tetap:** satu stickman dengan satu ciri (topi, tas, warna) dan satu tujuan panjang. Contoh: "kerja kantor sampai bisa resign" atau "nabung buat motor". Tiap episode satu kejadian kecil.
+
+Aturan untuk akun ini:
+- Suara/audio **buatan sendiri**, jangan memakai audio kreator lain (contoh "sc: @..." di Backbench), supaya aman dari hak cipta dan aturan konten tidak orisinal.
+- Humor tanpa merendahkan suku, agama, ras, atau fisik orang.
+- Kalau niche sudah dipilih, pola di atas disaring ke niche itu dan dikunci jadi struktur episode template Stickman.
 
 ## Isi satu "template akun" (biar bisa jadi produk)
 Tiap template baru dianggap jadi kalau punya semua ini:
