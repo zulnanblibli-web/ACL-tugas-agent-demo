@@ -842,4 +842,14 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Tertunda: bagian 4-6 + Weak points setelah Zulnan bilang "lanjut"; L1 (cek laptop) di Zulnan; keputusan biaya Claude vs budget sebelum L8.
 - Lanjutan: Zulnan kirim screenshot 6 post Netizen City + link YouTube stickman; dianalisis di `strategi-portofolio.md` (monetisasi Trakteer, voting Kongres, follower jadi kerumunan/angkatan, komentar asli di layar). Keputusan Zulnan: karakter dan alur dibuat sendiri, tidak harus kota; 4 konsep sendiri K-A..K-D menunggu pilihan Zulnan. Video YouTube (Control grow, tutorial "Claude Animation Skill", 9 Nov 2026, ~103 rb tayangan) hanya terbaca judul + deskripsi; isinya tidak bisa ditonton (YouTube minta login). `www.youtube.com` ditambahkan ke host environment cloud. API key Claude: PR Zulnan.
 
-## 84. (entri berikutnya di sini)
+## 84. Seri Pulau + strategi bagian 4-6 + menu Akun (L2) (2026-11-12)
+- Permintaan: Zulnan memilih K-C (pulau, sampai jadi kota/negara), kirim 2 kanal stickman referensi; "lanjut" bagian 4-6; "kerjain L2"; push.
+- Hasil:
+  - `docs/seri-pulau.md`: 5 musim, mekanik penonton, pilihan karakter/gaya untuk Zulnan, analisis Backbench Animations (823 rb sub) dan Rico Animations (13 jt sub) dari halaman kanal.
+  - `docs/strategi-portofolio.md`: bagian 4 (G1/G2/G3 go-no-go), 5 (roadmap 12 minggu, D1-D3), 6 (agen per divisi + urutan penambahan), Weak points; item 2+3+4 digabung jadi Seri Pulau stickman.
+  - L2 menu Akun di Workspace (`prototypes/zuno-studio-v2.html`, `web/src/ui.js`): Personal/niche, akun niche tanpa identitas Zulnan di prompt semua agen (dipaksa kode), tanpa slogan/foto/tipe A-B-C/Mode Tampil, label akun di kartu/paket/ZIP/antrian/folder lokal. PANDUAN jasa langkah 0.
+  - `tests/nexaoffice-tim-agen-test.js`: cek lama yang masih memanggil varian HUD `jasa` (sudah dihapus) diganti cek Workspace Nexaoffice.
+- Bukti: `tests/zuno-akun-test.js` 19 LOLOS; stub v2 (biasa, `--tipe=A`, `--web`) tanpa GAGAL; build stub lolos; tim-agen, chat, situs, pengaturan AI, dev-server, web stub lolos; `zuno-jasa-test` SEMUA LOLOS; label jasa jadi "Personal (Pemilik)" lewat brand.js.
+- Tertunda: Zulnan pilih nama akun/pulau/karakter/gaya Seri Pulau; API key Claude (PR Zulnan); berikutnya L3.
+
+## 85. (entri berikutnya di sini)

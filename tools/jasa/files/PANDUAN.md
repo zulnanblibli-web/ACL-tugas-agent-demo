@@ -59,6 +59,7 @@ Pengaturan brand bisa dibuka lagi kapan saja dari menu atas (**Pengaturan brand*
 ## 4. Cara pakai
 
 **Tab Konten**
+0. Pilih **Akun tujuan**. **Personal** = akunmu sendiri (karakter, slogan, foto, dan fakta tentangmu dipakai). Akun lain (niche, misalnya seri animasi) dibuat lewat **Tambah akun niche**: isi nama, niche, dan gayanya. Untuk akun niche, identitas pribadimu otomatis tidak dipakai, dan tipe video dengan karakter/wajahmu dimatikan. Nama akun tercatat di kartu, paket, folder hasil, dan Antrian Posting.
 1. Ketik perintahmu sendiri, misalnya "bikin konten tentang cara mulai jualan kue dari rumah". Kosong = tim mencari ide sendiri dari tren terbaru.
 2. Boleh tempel sumber bahan (link atau isi berita). Tanpa itu, Peneliti Tren **mencari bahan sendiri** di Google Trends, Google News, dan Hacker News (bisa disetel, lihat bagian 8).
 3. Pilih paket (carousel, video, atau dua-duanya), lalu klik **Jalankan**.

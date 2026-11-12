@@ -21,7 +21,7 @@ Dibuat 2026-11-12 untuk Zulnan. Dikerjakan **satu per satu, urut dari atas**. Ta
 | No | Perbaikan | Kenapa | Selesai kalau | Butuh API key? | Status |
 |---|---|---|---|---|---|
 | L1 | **Cek laptop (Fase 0):** `git pull`, jalankan `node tools/pasang/cek-kesiapan.mjs`, kirim hasilnya | Semua langkah lokal berikutnya bergantung ke Claude Code jalan di laptop lu | `claude --version`, `claude -p "halo"` jalan; cek kesiapan bilang Claude Code OK | Tidak (tapi butuh akun Claude, lihat catatan biaya) | ⬜ Zulnan |
-| L2 | **Menu Akun: Personal / Niche** (aturan baru Zulnan, detail di bawah) | Karakter lu cuma buat akun pribadi. Akun niche (stick man, opuscar, dll.) punya identitas sendiri | Tiap perintah punya akun tujuan; kartu, preview, folder, dan antrian berlabel akun; tes: akun niche tidak pernah memuat karakter/slogan/foto Zulnan | Tidak | ⬜ |
+| L2 | **Menu Akun: Personal / Niche** (aturan baru Zulnan, detail di bawah) | Karakter lu cuma buat akun pribadi. Akun niche (stick man, opuscar, dll.) punya identitas sendiri | Tiap perintah punya akun tujuan; kartu, preview, folder, dan antrian berlabel akun; tes: akun niche tidak pernah memuat karakter/slogan/foto Zulnan | Tidak | ✅ 2026-11-12 (`tests/zuno-akun-test.js`) |
 | L3 | **Simpan permanen di laptop (P7):** tugas, hasil, status (Draf, Ditinjau, Disetujui), dan antrian disimpan di disk (`kerja/` + file JSON) lewat server lokal | Preview sampai disetujui bisa makan hari. Refresh atau tutup browser tidak boleh menghapus apa pun | Tutup browser, matikan server, nyalakan lagi: semua tugas dan status masih ada | Tidak | ⬜ |
 | L4 | **Daftar tugas + antrean:** beberapa perintah bisa dimasukkan; dijalankan berurutan (1 jalan, sisanya menunggu), tiap tugas punya status dan bisa dibatalkan | "Bisa ngerjain beberapa task langsung." Berurutan dulu, paralel nanti (hemat kuota API dan RAM) | Masukkan 3 perintah, ketiganya selesai tanpa ditunggui; satu bisa dibatalkan | Ya, untuk isi hasilnya. Mekanisme antreannya bisa dites pakai stub | ⬜ |
 | L5 | **Panel Preview + tombol keputusan:** tiap tugas punya halaman preview (carousel PNG, video, web `index.html`), lalu tombol **Setujui**, **Revisi (dengan catatan)**, **Tolak** | Status Disetujui hanya dari lu. Revisi harus bisa dari situ, tanpa ngetik ulang perintah | Tes Playwright: tanpa klik Setujui, tidak ada yang masuk antrian | Tidak (tes pakai stub) | ⬜ |
@@ -49,7 +49,8 @@ Karakter Zulnan (avatar voxel Zulnan + Zuno, video tipe A/B) **cuma dipakai untu
 | Identitas | Creative @nexamind.ai, handle Zulnan | Nama, handle, palet, karakter niche sendiri (bukan tiruan akun referensi) |
 | Aturan dasar (tanpa mengarang, sumber disebut, persetujuan Zulnan, tanda konten AI) | Berlaku | Berlaku |
 
-Usulan cara kerja (diputuskan Zulnan saat L2 dikerjakan):
-- Pilihan **Akun** di atas kotak perintah. Isinya: Personal, plus akun niche yang dibuat dari menu Pengaturan > Akun (nama, handle [ISI], niche, template bawaan, larangan).
-- Bawaan: akun terakhir dipakai. Nama akun selalu tampil di kartu, Preview, nama folder (`tanggal Konten [akun] - judul`), dan Antrian Posting.
-- Kode yang memaksa: akun niche menghapus karakter, slogan, dan foto Zulnan dari konteks agen sebelum dikirim ke AI, jadi aturannya tidak bergantung pada AI yang "ingat".
+Yang sudah dibangun (L2, 2026-11-12):
+- Pilihan **Akun tujuan** di atas kotak perintah (tab Konten): Personal (Zulnan), plus akun niche dari tombol **Tambah akun niche** (nama, niche + audiens, gaya/karakter/larangan). Disimpan di browser; nama akun niche tidak boleh memakai "Zulnan"/"Personal". Handle akun belum ada kolomnya (menunggu P2).
+- Bawaan: akun terakhir dipakai. Nama akun tampil di kartu, paket konten (`| Akun |`), Kartu Gaya, paket render ZIP, ringkasan Chat ZUNO, folder lokal (`tanggal Konten [akun] - judul`, khusus niche), dan item Antrian Posting.
+- Akun niche: tipe video A/B/C dan Mode Tampil dimatikan; slogan tidak disisipkan; foto Zulnan tidak dipakai di cover.
+- Kode yang memaksa: untuk akun niche, BRIEF DASAR, pilar, suara, bank fakta, dan BOFU Zulnan dibuang dari prompt semua agen, diganti brief akun niche. Tes memastikan tidak ada yang bocor.

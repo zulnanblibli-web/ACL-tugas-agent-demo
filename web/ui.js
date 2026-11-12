@@ -405,11 +405,12 @@
     var judul = String((info && info.perintah) || '').split('\n')[0].trim();
     if (!judul) judul = jenis === 'build' ? (info && info.nama) || 'Aplikasi' : 'Konten dari tren';
     if (judul.length > 60) judul = judul.slice(0, 60).replace(/\s+\S*$/, '');
-    return aman(tanggal(info && info.mulai) + ' ' + (jenis === 'build' ? 'Agent Builder' : 'Konten') + ' - ' + judul);
+    var akun = jenis !== 'build' && info && info.akunJenis === 'niche' && info.akun ? ' [' + info.akun + ']' : '';
+    return aman(tanggal(info && info.mulai) + ' ' + (jenis === 'build' ? 'Agent Builder' : 'Konten') + akun + ' - ' + judul);
   }
   function daftarIsi(jenis, info, files) {
     var per = {}; files.forEach(function (f) { (per[f.folder] = per[f.folder] || []).push(f.nama); });
-    var L = ['# ' + namaTugas(jenis, info), '', 'Perintah: ' + ((info && info.perintah) || '(kosong, tim mencari ide sendiri)'), 'Disimpan: ' + new Date().toLocaleString('id-ID'), ''];
+    var L = ['# ' + namaTugas(jenis, info), '', (jenis === 'konten' && info.akun ? 'Akun: ' + info.akun + (info.akunJenis === 'niche' ? ' (niche)' : ' (personal)') + '\n' : '') + 'Perintah: ' + ((info && info.perintah) || '(kosong, tim mencari ide sendiri)'), 'Disimpan: ' + new Date().toLocaleString('id-ID'), ''];
     if (jenis === 'konten') (info.kartu || []).forEach(function (c) { L.push('- ' + c.id + ' ' + (c.format === 'video' ? 'Video' : 'Carousel') + ': ' + (c.topik || '-') + ' | ' + (c.tahap || '-') + (c.disetujui ? ' | Disetujui' : ' | belum disetujui') + (c.antrian ? ' | Antrian Posting: ' + c.antrian : '')); });
     else L.push('- ' + info.id + ': ' + (info.nama || '-') + ' | ' + (info.tahap || '-'));
     L.push('');

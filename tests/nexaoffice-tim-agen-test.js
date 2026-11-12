@@ -160,10 +160,10 @@ const PELATIHAN = { orientasi: 'Bayu bekerja di Divisi Riset bersama Raka dan Na
   } finally {
     await browser.close(); srv.close();
   }
-  // edisi jasa (tampilan HUD lama) tidak memuat menu ini
+  // sejak 2026-11-12 edisi jasa memakai Workspace Nexaoffice yang sama (varian HUD 'jasa' dihapus), jadi menu ini ikut
   const { bangunRuangKerja } = await import(path.join(__dirname, '..', 'web', 'bangun.mjs'));
-  const jasa = bangunRuangKerja('jasa');
-  ok('edisi jasa tidak memuat menu Tambah agen', !jasa.includes('agenDlg') && !jasa.includes('tim-agen.js'));
+  const ws = bangunRuangKerja('nexa');
+  ok('Workspace Nexaoffice (dipakai Zuno dan jasa) memuat menu Tambah agen', ws.includes('agenDlg') && ws.includes('tim-agen.js'));
   console.log(gagal ? 'HASIL: ' + gagal + ' GAGAL' : 'HASIL: SEMUA LOLOS');
   process.exit(gagal ? 1 : 0);
 })();

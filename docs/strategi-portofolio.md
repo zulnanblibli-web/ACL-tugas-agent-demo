@@ -1,6 +1,6 @@
 # Strategi portofolio Nexaoffice (bagian 1-3)
 
-Dibuat 2026-11-12. Bagian 4-6 dan Weak points menyusul setelah Zulnan bilang "lanjut".
+Dibuat 2026-11-12. Bagian 1-6 + Weak points. Konsep seri yang dipilih Zulnan (K-C Pulau): `docs/seri-pulau.md`.
 
 Tanda yang dipakai:
 - **[Fakta]** sudah gua cek sendiri (sumber disebut).
@@ -177,7 +177,7 @@ Penilaian gua:
 
 ---
 
-### Konsep sendiri untuk format "dunia yang dibangun penonton" (Zulnan pilih)
+### Konsep sendiri untuk format "dunia yang dibangun penonton" (Zulnan memilih **K-C Pulau**, 2026-11-12; detail di `seri-pulau.md`)
 Semua untuk **akun niche** (bukan akun personal; tanpa karakter/slogan Zulnan). Karakter dan dunia dibuat dari nol. Bisa dirender dari kode three.js/voxel yang sudah ada di Kantor 3D, jadi tanpa generator berbayar.
 
 | # | Konsep | Penonton jadi | Komentar jadi | Kenapa menarik | Risiko |
@@ -236,3 +236,173 @@ Urutan saran gua beda dari urutan lu:
   - (b) pakai jalur web yang sekarang dengan Gemini gratis/OpenRouter murah, dan render lewat Remotion lokal tanpa Claude Code;
   - (c) campur keduanya: Claude hanya untuk build web.
 - **Ini keputusan lu sebelum L8.**
+
+**Revisi urutan setelah Zulnan memilih K-C Pulau dan referensi stickman (2026-11-12):**
+- Item 2 (stickman) dan item 3 (dunia dari komentar) digabung jadi satu jalur: **Seri Pulau bergaya stickman 2D**.
+- Fakta bertahan hidup di tiap episode mengambil peran item 4 (Bedah).
+- Satu jalur produksi, satu akun niche, tiga item terbukti sekaligus. Bedah sebagai akun terpisah ditunda sampai Seri Pulau lolos titik keputusan D2 (bagian 5).
+
+---
+
+## 4. Validasi "works": rencana uji dan go/no-go
+
+Semua angka di bawah adalah **ambang awal usulan gua [Asumsi]**, bukan janji. Ambang yang ditandai [ISI] diputuskan Zulnan (P3: batas tayangan konten "menang").
+
+### G1. Tools works (sebelum mengklaim apa pun ke orang lain)
+Ukuran diambil dari log 10 tugas nyata (L7 + 1a).
+
+| Metrik | Cara ukur | Go | No-go -> tindakan |
+|---|---|---|---|
+| Tugas selesai tanpa buka kode | Hitung dari 10 tugas campuran (konten + build) | >= 8 dari 10 | < 8: perbaiki titik gagal terbanyak dulu, jangan tambah fitur |
+| Waktu perintah -> preview siap | Jam mulai dan jam preview di log | Median <= 30 menit konten, <= 2 jam build | Lebih lama: cek antrean/model, potong langkah |
+| Biaya API per paket konten | Tagihan penyedia / jumlah paket | Muat budget: Rp200rb/bulan untuk >= 30 paket, jadi <= ~Rp6.500 per paket | Lebih mahal: model lebih murah untuk tahap ringan, atau kurangi panggilan |
+| Revisi sampai layak setuju | Hitung klik Revisi | Rata-rata <= 2 | > 2: prompt/brief yang salah, bukan modelnya |
+| Pelanggaran aturan | Catatan Mutu + cek Zulnan: fakta karangan, identitas Zulnan bocor ke akun niche, tautan karangan | 0 | > 0: berhenti produksi, perbaiki kode/aturan |
+
+### G2. Konten works (per akun, setelah 30 posting atau 8 minggu, mana yang duluan)
+Bandingkan dengan **baseline 10 posting pertama**, bukan dengan akun besar.
+
+| Metrik | Kenapa | Go | Pivot |
+|---|---|---|---|
+| Rata-rata durasi tonton / % ditonton (YouTube Studio, Insights IG/TikTok) | Retensi = mutu naskah | Naik dari baseline di 2 dari 4 minggu terakhir | Datar/turun: ganti hook dan tempo, bukan volume |
+| Komentar per 1.000 tayangan | Ukuran utama Zulnan; mesin Seri Pulau | Naik dari baseline; ada komentar yang benar-benar dipakai jadi episode | Mendekati nol setelah 30 posting: mekanik komentar tidak jalan, ubah jadi seri cerita biasa |
+| Follower per minggu | Pertumbuhan | Tren naik 4 minggu | Datar 4 minggu: evaluasi konsep (titik keputusan D2) |
+| Konsistensi jadwal | Kebiasaan penonton | >= 80% jadwal tercapai | < 80%: produksi terlalu berat, sederhanakan |
+| Konten "menang" | P3 | Tayangan >= [ISI] | - |
+
+### G3. Kit layak dijual
+| Syarat | Go |
+|---|---|
+| G1 lolos | Wajib |
+| 3 penguji luar memasang sendiri hanya dari panduan | 3 dari 3 berhasil, <= 30 menit, maksimal 2 pertanyaan per orang |
+| Penguji menjalankan 3 tugas di minggu pertama tanpa bantuan | Minimal 2 dari 3 penguji |
+| Portofolio publik | Minimal 1 seri berjalan + 3 demo web + 1 studi kasus asli |
+
+### Aturan klaim (wajib)
+- "Bisa monetisasi" **tidak boleh ditulis** sampai satu akun benar-benar menerima uang dan ada buktinya (screenshot dashboard).
+  - [Cek sendiri] Syarat YPP setahu gua: 1.000 subscriber + 4.000 jam tayang publik dalam 12 bulan, atau 1.000 subscriber + 10 juta tayangan Shorts dalam 90 hari. Ada tingkat lebih rendah untuk fitur dukungan penggemar. Cek halaman resmi.
+- "Grow akun" hanya dengan data akun sendiri, ditulis apa adanya dan bertanggal.
+- Tidak ada testimoni sebelum ada pembeli/penguji asli yang mengizinkan.
+
+---
+
+## 5. Roadmap
+
+Asumsi kapasitas: 6 jam/hari x 5 hari = **30 jam/minggu** [Asumsi]. "Tanpa key" = bisa dikerjakan sebelum API key ada.
+
+| Fase | Minggu | Isi (urut prioritas) | Tanpa key? | Selesai bila | Titik keputusan |
+|---|---|---|---|---|---|
+| 0. Fondasi lokal | 1 | L2 menu Akun (**selesai 2026-11-12**); L3 simpan permanen; L4 antrean; L5 Preview + Setujui/Revisi/Tolak; L6 antrian per akun; L11 rapikan klaim situs | Ya | Tes otomatis lolos untuk tiap butir | - |
+| 0b. Bible Seri Pulau | 1 | Zulnan pilih nama akun, pulau, karakter, gaya (`seri-pulau.md`); outline Musim 1 (30 hari); pustaka pose stickman di Remotion; buat akun niche (handle) | Ya (outline bisa dibantu AI setelah key ada) | Bible 1 halaman + 10 pose jadi | - |
+| 1. Uji nyata | 2 | L1 laptop; API key (PR Zulnan); L7: 1 carousel, 1 video, 1 landing page; catat waktu/biaya/revisi | Tidak | 3 hasil + log | **D1:** biaya per paket muat budget? Mutu layak? Tidak -> ganti model/penyedia atau perbaiki prompt sebelum produksi |
+| 2. Render + episode awal | 3-4 | L8/L9 (bila pakai Claude Code) atau render Remotion manual di laptop; Seri Pulau episode 1-7 siap di Preview; 1 demo web | Sebagian | 7 episode lolos `check.py` | Jalur render dipilih (Claude atau manual) |
+| 3. Terbit rutin | 5-8 | Posting manual 4-5x/minggu (sampai P1); catat metrik G2 tiap minggu; 2 demo web lagi; mulai 10 tugas G1 | Tidak | 30 posting atau minggu ke-8 | **D2 (minggu 8):** G2 lolos -> lanjut Musim 2. Gagal -> pivot format (cerita tanpa komentar, atau kembali ke Bedah), bukan menambah volume |
+| 4. Portofolio publik | 9-10 | Halaman portofolio: seri + angka asli + 3 demo + studi kasus; ganti "Contoh hasil" di situs dengan hasil asli | Tidak | Halaman live dengan bukti | - |
+| 5. Kit beta | 11-12 | Rilis bertag; 3 penguji luar; perbaiki dari masalah mereka; isi P10 (kontak, dukungan, harga) | Tidak | G3 lolos | **D3:** G3 lolos -> jual terbatas. Gagal -> perbaiki pemasangan dulu, jangan jual |
+
+Yang sengaja **tidak** ada di roadmap ini:
+- iklan berbayar;
+- agen baru di luar daftar wajib awal;
+- VPS (P5), Docker (P13);
+- akun ketiga.
+
+Semua itu ditunda sampai D2.
+
+---
+
+## 6. Referensi struktur perusahaan kreatif berbasis AI
+
+Kolom "Sekarang" = agen Nexaoffice yang sudah mengisi peran itu. **Awal** = wajib dari awal; **Nanti** = ditambah kalau pemicunya terjadi.
+
+### Lead dan operasional
+| Agen | Fungsi | Input -> Output | Tools/API | Sub-agen | Pemicu ditambah | Status |
+|---|---|---|---|---|---|---|
+| Orkestrator (ZUNO L.0) | Bagi tugas, urutkan antrean | Perintah -> rencana kartu | LLM | Penjadwal antrean (L4) | - | Awal (ada) |
+| Pelapor (Lia L.1) | Ringkasan sebelum terbit, kabar tugas | Hasil + Catatan Mutu -> ringkasan ke Zulnan | LLM | - | - | Awal (ada) |
+| Operasional & keuangan | Catat biaya API per tugas, sisa budget, langganan | Log tugas, tagihan -> laporan mingguan | Spreadsheet/JSON lokal | Penjaga budget (peringatan sebelum lewat Rp200rb) | Biaya tidak terlacak, atau > 2 penyedia | Awal (baru, kecil) |
+| HRD (Hana H.1) | Buat dan latih agen baru | Formulir -> profil + paket pelatihan | LLM, `perakit-agen` | - | - | Awal (ada) |
+
+### Riset tren
+| Agen | Fungsi | Input -> Output | Tools/API | Sub-agen | Pemicu | Status |
+|---|---|---|---|---|---|---|
+| Peneliti Tren (Raka R.1) | Bahan bersumber | Kata kunci -> sumber + sudut | Google Trends/News, HN (gratis) | Pemeriksa sumber | - | Awal (ada) |
+| Strategi Medsos (Nara R.2) | Angle, hook, funnel | Bahan -> brief kartu | LLM | - | - | Awal (ada) |
+| Analis Komentar & Komunitas | Rangkum komentar/voting jadi keputusan episode | Komentar -> 3 pilihan + hasil voting | Ekspor komentar manual; nanti API Meta/YouTube/Metricool (P1) | Moderator (saring spam/SARA) | **Seri Pulau terbit** | Awal untuk Seri Pulau (baru) |
+| Peneliti Kompetitor | Pantau kanal sejenis | Daftar kanal -> pola format | Halaman publik YouTube | - | Setelah D2 | Nanti |
+
+### Scriptwriting
+| Agen | Fungsi | Input -> Output | Tools/API | Sub-agen | Pemicu | Status |
+|---|---|---|---|---|---|---|
+| Kreator Konten (Dika P.1) | Naskah Killer Script | Brief -> naskah | LLM | Penulis hook (`penulis-hook`) | - | Awal (ada) |
+| Optimasi Video (Vino P.2) | Uji retensi | Naskah -> catatan + tulis ulang | LLM | - | - | Awal (ada) |
+| Penjaga Kontinuitas Seri | Catatan dunia: hari ke-N, penduduk, bangunan, keputusan penonton | Episode + keputusan -> "bible" terbarui | File JSON/MD lokal (L3) | - | **Seri Pulau terbit** | Awal untuk Seri Pulau (baru) |
+| Penulis Humor | Lelucon/beat lucu | Naskah -> 2-3 opsi punchline | LLM | - | Retensi bagian tengah turun (G2) | Nanti |
+
+### Visual / motion
+| Agen | Fungsi | Input -> Output | Tools/API | Sub-agen | Pemicu | Status |
+|---|---|---|---|---|---|---|
+| Pencerita Visual (Sari D.1) | Kartu Gaya, carousel | Naskah -> gaya + label | LLM, kanvas | - | - | Awal (ada) |
+| Editor Remotion (Bima E.2) | Rencana dan render video | Naskah + gaya -> .mp4 | Remotion (lokal), ffmpeg | Animator pose stickman (pustaka pose) | - | Awal (ada; render otomatis = L9) |
+| Pelatih Editing (Edo E.1) | Efek, subtitle, VO | Video -> rencana edit | ffmpeg, `check.py` | Pengisi suara (TTS) | Butuh VO | Awal (ada) |
+| Editor Google Flow (Fira E.3) | Prompt klip AI | Adegan -> prompt | Google Flow (kredit) | - | Ada budget kredit video AI | Nanti (sudah ada, belum dipakai) |
+| Seniman 3D | Aset voxel/Blender | Brief -> model | three.js / Blender (skill) | - | Seri naik ke 3D (Musim 4-5) | Nanti |
+
+### Web / app dev
+| Agen | Fungsi | Input -> Output | Tools/API | Sub-agen | Pemicu | Status |
+|---|---|---|---|---|---|---|
+| Arga T.1, Rani T.2, Fajar T.3, Tio T.4 | Lingkup, desain, kode, uji | Brief/PRD -> build + bukti uji | LLM / Claude Code, Vercel gratis | Skill desain (hallmark, impeccable) | - | Awal (ada) |
+| Damar T.5 | Audit + tambal keamanan | Kode -> laporan + perbaikan | LLM, `vibe-security` | - | - | Awal (ada) |
+| Pengelola Klien | Brief, revisi, serah terima klien | Permintaan klien -> brief + jadwal | Email/WA manual (agen tidak mengirim pesan) | - | **Klien berbayar pertama** | Nanti |
+
+### QA
+| Agen | Fungsi | Input -> Output | Tools/API | Sub-agen | Pemicu | Status |
+|---|---|---|---|---|---|---|
+| Penjaga Merek (Tara Q.1) | Fakta, suara, identitas akun | Hasil -> Catatan Mutu | LLM | Pemeriksa fakta bertahan hidup (wajib untuk Seri Pulau) | - | Awal (ada) |
+| Pengumpul Bukti (Nita Q.2) | Format, izin, platform | File -> catatan | LLM, ffmpeg | - | - | Awal (ada) |
+| Pemeriksa Kebijakan Platform | Cek risiko YPP/Meta, label AI, hak cipta audio | Paket -> daftar risiko | Halaman kebijakan resmi | - | Akun mendekati syarat monetisasi | Nanti |
+
+### Distribusi sosmed
+| Agen | Fungsi | Input -> Output | Tools/API | Sub-agen | Pemicu | Status |
+|---|---|---|---|---|---|---|
+| Kurator (Maya M.1) | Paket posting per platform | Konten disetujui -> caption, jadwal | LLM | - | - | Awal (ada) |
+| Penjadwal & Pengunggah | Unggah dari Antrian | Antrian -> postingan terjadwal + tautan | Metricool + Drive (P1) | - | **P1 tersambung** | Nanti |
+| Pelapor Analitik | Isi tabel G2 tiap minggu | Data platform -> tabel + tren | Ekspor manual dulu; API nanti | - | **Posting ke-10** | Awal di fase 3 (dulu ada, digabung ke M.1) |
+
+### Monetisasi / sales
+| Agen | Fungsi | Input -> Output | Tools/API | Sub-agen | Pemicu | Status |
+|---|---|---|---|---|---|---|
+| Penyusun Penawaran | Halaman kit, paket jasa web | Portofolio -> halaman + penawaran | LLM, skill `copywriting`, `offer-*` | - | **G3 lolos** (kit) atau 3 demo web jadi (jasa) | Nanti |
+| Pengelola Dukungan Komunitas | Membership/donasi, kredit pendukung | Daftar pendukung -> kredit video | Platform donasi | - | Komentar/penonton stabil (G2 lolos) | Nanti |
+| Pencari Sponsor | Daftar brand cocok, draf proposal (Zulnan yang mengirim) | Data akun -> daftar + draf | LLM | - | Ada data audiens yang layak ditunjukkan | Nanti |
+| Iklan berbayar (dulu M.3) | Kampanye | Budget -> rencana | Meta Ads | - | Ada produk terbukti + budget iklan terpisah | Nanti (Fase 4 lama) |
+
+### Urutan penambahan agen
+1. **Sekarang (Seri Pulau):** Penjaga Kontinuitas Seri, Analis Komentar & Komunitas, plus sub-agen Pemeriksa fakta bertahan hidup di bawah Tara.
+2. **Sekarang (kecil):** Operasional & keuangan (penjaga budget).
+3. **Posting ke-10:** Pelapor Analitik.
+4. **P1 tersambung:** Penjadwal & Pengunggah.
+5. **Retensi tengah turun:** Penulis Humor.
+6. **Klien berbayar pertama:** Pengelola Klien.
+7. **G2 lolos:** Pengelola Dukungan Komunitas, lalu Pencari Sponsor.
+8. **G3 lolos:** Penyusun Penawaran kit.
+9. **Seri naik 3D / ada budget video AI:** Seniman 3D, aktifkan Fira.
+10. **Terakhir:** Iklan berbayar, Peneliti Kompetitor, Pemeriksa Kebijakan Platform.
+
+Aturannya: agen baru ditambah **hanya kalau pemicunya terjadi**, lewat Hana. Satu agen baru per minggu maksimal, supaya kelihatan efeknya.
+
+---
+
+## Weak points
+
+1. **Tools-nya belum pernah membuktikan hasil asli, dan semua rencana bergantung padanya.**
+   - Kalau L7 menunjukkan hasil agen butuh banyak revisi atau biayanya lewat budget, seluruh roadmap bergeser.
+   - Kelemahan rekomendasi gua sendiri: gua menaruh 1 minggu penuh untuk fondasi lokal (L3-L6) **sebelum** tahu mutu hasilnya. Kalau mutunya buruk, minggu itu terbuang.
+   - Alternatif yang lebih aman: kerjakan L7 begitu API key ada, walau L3-L6 belum selesai.
+2. **Mekanik komentar butuh penonton, dan penonton butuh mekanik komentar.**
+   - Seri Pulau bisa macet di awal (cold start). Netizen City bisa jalan karena humornya, dan humor itu yang paling susah dibuat AI.
+   - Kalau 30 posting pertama sepi komentar, konsepnya harus diubah. Itu sebabnya ada D2.
+   - Gua tidak punya data berapa lama akun sejenis butuh waktu sampai ramai. Angka referensi (823 rb, 13 juta subscriber) adalah kanal yang jalan bertahun-tahun, bukan patokan untuk 8 minggu.
+3. **Budget dan aturan platform bisa memotong jalan di tengah.**
+   - Rp150-200rb/bulan kemungkinan tidak cukup untuk Claude + produksi rutin.
+   - Produksi stickman yang terlalu seragam bisa kena aturan konten berulang YouTube/Meta, walau dibuat sendiri. Pembeda kita adalah fakta bersumber, keputusan penonton asli, dan humor; kalau ketiganya lemah, risikonya nyata.
+   - Ambang go/no-go di bagian 4 adalah usulan gua, bukan standar industri. Bisa terlalu longgar atau terlalu ketat; disetel ulang setelah data 10 posting pertama ada.
