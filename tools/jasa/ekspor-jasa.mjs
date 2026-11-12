@@ -62,11 +62,15 @@ for (const t of tambahanJasa) {
   if (t.syarat && !existsSync(join(out, t.syarat))) continue;
   page = swapIn('index.html (tambahan jasa: ' + t.nama + ')', page, t.cari, t.ganti);
 }
+// Nama produk edisi jasa: Nexaoffice (Zulnan 2026-11-12). Teks "Zuno Studio" di prompt, unduhan, dan paket ikut diganti;
+// brand.js lalu menggantinya lagi dengan nama brand pembeli bila sudah diisi. Nama agen ZUNO tidak diubah.
+page = page.split('Zuno Studio v2').join('Nexaoffice').split('Zuno Studio').join('Nexaoffice');
 for (const sisa of ['/studio.html', 'href="/#hasil"', 'href="/#biaya"', 'href="/#paket"', 'href="/#produk"', 'Pesan kit']) if (page.includes(sisa)) throw new Error('[index.html] masih ada tautan/teks halaman jualan: ' + sisa);
 writeFileSync(join(out, 'index.html'), page);
 
 // ---------- jembatan dan tampilan ----------
 let live = readFileSync(join(web, 'live.js'), 'utf8');
+live = live.split('Zuno Studio').join('Nexaoffice');
 live = swapIn('live.js', live, 'JSON.stringify({ input: input,', 'JSON.stringify({ input: window.ZB ? window.ZB.repPrompt(input) : input,');
 writeFileSync(join(out, 'live.js'), live);
 for (const f of ['hud.js', 'pengaturan-ai.js', 'studio-nexa.css', 'studio-nexa.js', 'ui.js', 'serah.js', 'tim-agen.js']) copyFileSync(join(web, f), join(out, f));
@@ -81,7 +85,8 @@ for (const f of ['tokens.css', 'gerak.css', 'gerak.js']) copyFileSync(join(web, 
 // (dibuat tools/kantor/ambil-kantor.mjs): office/ruang.html (Menara Senja, Griya Langit) dan office/grotto.html (The Grotto).
 // nexa.html di repo jasa tetap halaman The Grotto mandiri (dipakai tes Kantor 3D), jadi versi tertanamnya diberi nama lain.
 mkdirSync(join(out, 'office'), { recursive: true });
-for (const f of ['ruang.html', 'sematan.css', 'sematan.js', 'nexa-sematan.css', 'nexa-sematan.js']) copyFileSync(join(web, 'office', f), join(out, 'office', f));
+for (const f of ['sematan.css', 'sematan.js', 'nexa-sematan.css', 'nexa-sematan.js']) copyFileSync(join(web, 'office', f), join(out, 'office', f));
+writeFileSync(join(out, 'office', 'ruang.html'), readFileSync(join(web, 'office', 'ruang.html'), 'utf8').split('Zuno Studio').join('Nexaoffice'));
 writeFileSync(join(out, 'office', 'kendali.js'), swapIn('office/kendali.js', readFileSync(join(web, 'office', 'kendali.js'), 'utf8'), "'/nexa.html?'", "'/office/grotto.html?'"));
 writeFileSync(join(out, 'office', 'grotto.html'), swapIn('office/grotto.html', readFileSync(join(web, 'nexa.html'), 'utf8'), 'href="/studio.html"', 'href="/"'));
 
@@ -196,7 +201,7 @@ salinBersih(join(root, 'tools', 'pasang'), join(out, 'tools', 'pasang'));
 for (const f of ['pasang.bat', 'pasang.sh']) copyFileSync(join(root, f), join(out, f));
 // jalankan-lokal.bat: di repo jasa server.mjs ada di folder utama (bukan web\dev-server.mjs).
 let bat = readFileSync(join(root, 'jalankan-lokal.bat'), 'utf8');
-for (const [a, b] of [['Zuno Web lokal', 'Zuno Studio lokal'], ['"%~dp0web\\dev-server.mjs"', '"%~dp0server.mjs"'], ['cd /d "%~dp0web"', 'cd /d "%~dp0"'], ['node dev-server.mjs --buka', 'node server.mjs --buka']]) {
+for (const [a, b] of [['Zuno Web lokal', 'Nexaoffice lokal'], ['"%~dp0web\\dev-server.mjs"', '"%~dp0server.mjs"'], ['cd /d "%~dp0web"', 'cd /d "%~dp0"'], ['node dev-server.mjs --buka', 'node server.mjs --buka']]) {
   if (!bat.includes(a)) throw new Error('[jalankan-lokal.bat] penanda tidak ditemukan: ' + a);
   bat = bat.split(a).join(b);
 }
@@ -205,7 +210,7 @@ writeFileSync(join(out, 'jalankan-lokal.bat'), bat);
 
 let ver = 'tidak diketahui';
 try { ver = execSync('git rev-parse --short HEAD', { cwd: root }).toString().trim(); } catch (e) {}
-writeFileSync(join(out, 'VERSI.txt'), 'Zuno Studio edisi jasa\nDiekspor: ' + new Date().toISOString().slice(0, 10) + '\nSumber Zuno: ' + ver + '\n');
+writeFileSync(join(out, 'VERSI.txt'), 'Nexaoffice edisi jasa\nDiekspor: ' + new Date().toISOString().slice(0, 10) + '\nSumber Zuno: ' + ver + '\n');
 
 // ---------- cek akhir: tidak ada identitas Zulnan tersisa yang tidak terlindungi ----------
 const leaks = [];

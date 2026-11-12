@@ -3,7 +3,7 @@
    Kredit "Creative @nexamind.ai" di footer ruang kerja tetap (elemen [data-zb-asli]).
    Pengaturan disimpan di browser ini (localStorage) dan bisa diekspor/diimpor sebagai file .json.
    Semua prompt agen, teks halaman, dan file unduhan memakai profil ini, bukan identitas penjual.
-   Dimuat sebelum live.js dan logika Zuno Studio. */
+   Dimuat sebelum live.js dan logika Nexaoffice. */
 (function () {
   'use strict';
   var STORE = 'zuno-brand';

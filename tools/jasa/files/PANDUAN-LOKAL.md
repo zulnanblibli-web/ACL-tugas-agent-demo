@@ -1,6 +1,6 @@
 # Panduan pasang lokal (satu perintah)
 
-Panduan ini untuk menjalankan Zuno Studio di laptop sendiri (atau server VPS): web di `http://localhost:3000`, plus **Claude Code** yang memakai semua skill di folder `.claude/skills` lengkap dengan skripnya (pemeriksa desain di browser, render video, Blender, dan lainnya). Tidak perlu bisa coding.
+Panduan ini untuk menjalankan Nexaoffice di laptop sendiri (atau server VPS): web di `http://localhost:3000`, plus **Claude Code** yang memakai semua skill di folder `.claude/skills` lengkap dengan skripnya (pemeriksa desain di browser, render video, Blender, dan lainnya). Tidak perlu bisa coding.
 
 Pemasang untuk Linux/macOS sudah diuji. Pemasang Windows (`pasang.bat`) belum diuji di semua jenis laptop: bila ada langkah yang gagal, baca pesannya di layar dan lihat bagian 8.
 
@@ -129,7 +129,7 @@ Dua skill ini bagus dipakai, tapi **tidak ikut paket** karena lisensi sebagian i
 
 ## 7. Yang tidak bisa atau terbatas
 
-- **Skill hanya dipakai lewat Claude Code** (terminal atau Claude Desktop). Web Zuno Studio memanggil AI langsung dan tidak membaca folder skill.
+- **Skill hanya dipakai lewat Claude Code** (terminal atau Claude Desktop). Web Nexaoffice memanggil AI langsung dan tidak membaca folder skill.
 - **Blender** butuh layar dan Blender terbuka: tidak untuk VPS.
 - **Generator gambar AI** (`design`, mockup impeccable) memakai API yang bisa berbayar.
 - **Pemeriksa teks** di beberapa skill dibuat untuk bahasa Inggris.

@@ -1,4 +1,4 @@
-# Aturan kerja Claude Code di repo ini (Zuno Studio)
+# Aturan kerja Claude Code di repo ini (Nexaoffice)
 
 Pemilik repo ini adalah pemilik brand yang tercantum di Pengaturan brand web. Jawab dalam bahasa yang dipakai pemilik (bawaan: Bahasa Indonesia, santai, to the point).
 
