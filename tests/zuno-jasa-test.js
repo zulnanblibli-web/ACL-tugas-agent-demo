@@ -52,7 +52,7 @@ const args = process.argv.slice(2); const JASA = args.find(a=>!a.startsWith('--'
   await new Promise(r=>srv.listen(0,r));
   await p.goto('http://127.0.0.1:'+srv.address().port+'/');
   await p.waitForTimeout(500);
-  console.log('HUD: judul',await p.$eval('.hud-title',e=>e.textContent),'| status',await p.$eval('#hStat',e=>e.textContent),'| dialog kunci terbuka?',await p.$eval('#keyDlg',e=>e.open));
+  console.log('Workspace: judul',await p.$eval('h1',e=>e.textContent),'| status',await p.$eval('#hStat',e=>e.textContent),'| dialog kunci terbuka?',await p.$eval('#keyDlg',e=>e.open));
   console.log('alur awal:',await p.$$eval('#hFlow .node b',e=>e.map(x=>x.textContent).join(' > ')));
   await p.waitForTimeout(300);
   console.log('paket default:', await p.$eval('#count',e=>e.value));
@@ -97,7 +97,14 @@ const args = process.argv.slice(2); const JASA = args.find(a=>!a.startsWith('--'
   cek('prompt memakai slogan brand',semua.includes('Halo, aku Rina'));
   const teks=await p.evaluate(()=>document.body.innerText);
   cek('halaman tanpa nama Zulnan',!/zulnan/i.test(teks));
-  cek('halaman tanpa kredit nexamind',!/nexamind/i.test(teks));
+  cek('halaman tanpa kredit nexamind selain footer (K3)',!/nexamind/i.test(teks.replace(/Creative @nexamind\.ai\s*$/m,''))&&(await p.$eval('.nx-footer .credit',e=>e.textContent.trim()))==='Creative @nexamind.ai');
+  // Tampilan Nexaoffice (Zulnan 2026-11-12: K1-K3)
+  cek('K1: Workspace di "/" tanpa bagian jualan (harga, pesan kit, produk lain)',(await p.$$eval('#navLinks a',e=>e.map(x=>x.getAttribute('href')).join(' ')))==='/ /#chat /office/karakter.html'&&!/Pesan kit|Harga belum ditentukan|Produk lain/i.test(teks)&&!!(await p.$('#ruangKerja')));
+  cek('K2: nama brand menggantikan Nexaoffice (menu, footer, judul tab)',(await p.$$eval('.wordmark',e=>e.map(x=>x.textContent.trim())))+''==='Rina Kue,Rina Kue'&&!/Nexaoffice/.test(teks)&&/Rina Kue/.test(await p.title()));
+  cek('tampilan Nexaoffice: studio-nexa.css dimuat, HUD lama tidak ada',!!(await p.$('link[href="/studio-nexa.css"]'))&&!(await p.$('link[href="/hud.css"]'))&&!fs.existsSync(path.join(root,'hud.css'))&&!fs.existsSync(path.join(root,'motion.js')));
+  cek('Kantor 3D tertanam: iframe office/ruang.html termuat',await p.evaluate(()=>{const f=document.getElementById('kantorIframe');return !!(f&&/\/office\/ruang\.html/.test(f.src)&&f.contentDocument&&f.contentDocument.querySelector('script[src="/office/office.bundle.js"]'))}));
+  cek('Kantor 3D tertanam: tema The Grotto pakai office/grotto.html',/\/office\/grotto\.html\?/.test(fs.readFileSync(path.join(root,'office/kendali.js'),'utf8'))&&fs.existsSync(path.join(root,'office/grotto.html'))&&fs.existsSync(path.join(root,'nexa.html')));
+  cek('Tambah agen: profil 18 agen tanpa data pribadi penjual',(()=>{const t=fs.readFileSync(path.join(root,'assets/agen-profil.json'),'utf8');const j=JSON.parse(t);return j.agen.length>=18&&!/zulnan|nexamind|6 web aktif|Hai, kenalin/i.test(t)})());
   { const z=await p.evaluate(async()=>{const B={id:'PRJ-261106-AB7',jenis:'portofolio',klien:'',scope:{nama_aplikasi:'Absensi "Kelas" O\'Neil',mesin:'Apps Script + Google Sheets',kredit:'Creative @nexamind.ai'},code:{html:'<html></html>',beName:'Code.gs',backend:'function doGet(){}',panduan:'# Panduan untuk Zulnan'},design:{},akun:{adminU:'admin_ab12',adminP:'Rahasia123',demoU:'demo_cd34',demoP:'Demo12345'}};return await window.ZunoUji.rilisZip(B).text()});
     const blok=(n)=>{const i=z.indexOf('/'+n+'{');return i<0?'':z.slice(i+n.length+1)};
     const rj=blok('rilis.json'),aj=blok('akun-awal.json');
@@ -111,13 +118,14 @@ const args = process.argv.slice(2); const JASA = args.find(a=>!a.startsWith('--'
   cek('unduhan (.md dan isi zip) memakai brand: '+unduh,!/zulnan|nexamind/i.test(unduh)&&unduh.includes('Rina Kue')&&unduh.includes('Studio Rina'));
   const mdv=await p.evaluate(()=>{const e=document.querySelector('#resv .mdprev');return e?e.innerText:''});
   cek('paket video memuat slogan brand',mdv.includes('Halo, aku Rina'));
-  cek('tombol Pengaturan brand ada',await p.isVisible('#zbBtn'));
+  cek('tombol Pengaturan brand ada di menu',!!(await p.$('#navLinks #zbBtn')));
   // pemakaian pertama: dialog pengaturan terbuka sendiri
   const p2=await b.newPage();await p2.addInitScript(()=>{try{localStorage.setItem('zuno-akses','kunci-uji');if(!sessionStorage.getItem('sekali')){localStorage.removeItem('zuno-brand');sessionStorage.setItem('sekali','1')}}catch(e){}});
   await p2.goto('http://127.0.0.1:'+srv.address().port+'/#kosong');await p2.waitForTimeout(1500);
   cek('pemakaian pertama: dialog Pengaturan brand terbuka',await p2.evaluate(()=>{const d=document.getElementById('zbDlg');return !!(d&&d.open)}));
+  cek('K2: brand belum diisi -> nama bawaan Nexaoffice',(await p2.$eval('.wordmark',e=>e.textContent.trim()))==='Nexaoffice');
   await p2.fill('#zb_nama','Toko Uji');await p2.click('#zbSave');await p2.waitForTimeout(1500);
-  cek('simpan brand lalu halaman memakai nama baru',await p2.evaluate(()=>window.ZB&&window.ZB.nama==='Toko Uji'&&!document.getElementById('zbDlg').open));
+  cek('simpan brand lalu halaman memakai nama baru',await p2.evaluate(()=>window.ZB&&window.ZB.nama==='Toko Uji'&&!document.getElementById('zbDlg').open&&document.querySelector('.wordmark').textContent.trim()==='Toko Uji'));
   // paket pasang lokal (2026-11-11): skill ikut, yang lisensinya belum pasti tidak ikut tapi ada di panduan
   { const ex=(f)=>fs.existsSync(path.join(root,f)); const rd=(f)=>ex(f)?fs.readFileSync(path.join(root,f),'utf8'):'';
     const sk=ex('.claude/skills')?fs.readdirSync(path.join(root,'.claude/skills')):[];

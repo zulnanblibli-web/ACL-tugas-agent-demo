@@ -1,4 +1,6 @@
-/* Zuno Studio (edisi jasa): profil brand pemilik web.
+/* Nexaoffice (edisi jasa): profil brand pemilik web.
+   Nama brand menggantikan nama tampilan "Nexaoffice" (bawaan bila belum diisi).
+   Kredit "Creative @nexamind.ai" di footer ruang kerja tetap (elemen [data-zb-asli]).
    Pengaturan disimpan di browser ini (localStorage) dan bisa diekspor/diimpor sebagai file .json.
    Semua prompt agen, teks halaman, dan file unduhan memakai profil ini, bukan identitas penjual.
    Dimuat sebelum live.js dan logika Zuno Studio. */
@@ -49,6 +51,7 @@
   function rep(t) {
     if (typeof t !== 'string' || !t) return t;
     var nama = B.namaTampil, kredit = B.kreditTampil;
+    if (B.siap) t = t.replace(/Nexaoffice/g, function () { return String(B.nama).trim(); }).replace(/NEXAOFFICE/g, function () { return String(B.nama).trim().toUpperCase(); });
     return t
       .replace(/Creative @nexamind\.ai/gi, function () { return kredit; })
       .replace(/CREATIVE @NEXAMIND\.AI/g, function () { return kredit.toUpperCase(); })
@@ -100,19 +103,24 @@
   } catch (e) {}
 
   /* Teks halaman. */
+  var POLA = /Zulnan|ZULNAN|nexamind|Nexaoffice|NEXAOFFICE/i;
+  function asli(n) { var e = n.nodeType === 1 ? n : n.parentElement; return !!(e && e.closest && e.closest('[data-zb-asli]')); }
   function walk(root) {
+    if (asli(root)) return;
     var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), n;
-    while ((n = w.nextNode())) { if (/Zulnan|ZULNAN|nexamind/i.test(n.nodeValue)) n.nodeValue = rep(n.nodeValue); }
+    while ((n = w.nextNode())) { if (POLA.test(n.nodeValue) && !asli(n)) n.nodeValue = rep(n.nodeValue); }
     if (root.querySelectorAll) root.querySelectorAll('[placeholder],[title],[aria-label]').forEach(function (el) {
-      ['placeholder', 'title', 'aria-label'].forEach(function (a) { var v = el.getAttribute(a); if (v && /Zulnan|nexamind/i.test(v)) el.setAttribute(a, rep(v)); });
+      if (asli(el)) return;
+      ['placeholder', 'title', 'aria-label'].forEach(function (a) { var v = el.getAttribute(a); if (v && POLA.test(v)) el.setAttribute(a, rep(v)); });
     });
   }
   function startDom() {
+    document.title = rep(document.title);
     walk(document.body);
     new MutationObserver(function (ms) {
       ms.forEach(function (m) {
-        m.addedNodes.forEach(function (n) { if (n.nodeType === 1) walk(n); else if (n.nodeType === 3 && /Zulnan|ZULNAN|nexamind/i.test(n.nodeValue)) n.nodeValue = rep(n.nodeValue); });
-        if (m.type === 'characterData' && /Zulnan|ZULNAN|nexamind/i.test(m.target.nodeValue)) m.target.nodeValue = rep(m.target.nodeValue);
+        m.addedNodes.forEach(function (n) { if (n.nodeType === 1) walk(n); else if (n.nodeType === 3 && POLA.test(n.nodeValue) && !asli(n)) n.nodeValue = rep(n.nodeValue); });
+        if (m.type === 'characterData' && POLA.test(m.target.nodeValue) && !asli(m.target)) m.target.nodeValue = rep(m.target.nodeValue);
       });
     }).observe(document.body, { childList: true, subtree: true, characterData: true });
     ui();
@@ -134,28 +142,31 @@
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
   function ui() {
     var css = document.createElement('style');
-    css.textContent = '#zbBtn{position:fixed;left:14px;bottom:14px;z-index:60;font:700 12px/1 var(--hud,system-ui);letter-spacing:.08em;padding:11px 14px;border-radius:6px;border:1px solid var(--glow,#d6b67b);background:rgba(18,34,30,.94);color:var(--ink,#f1eadb);cursor:pointer}' +
-      '#zbDlg{max-width:640px;width:calc(100% - 32px);border:1px solid var(--line,#3c4435);border-radius:12px;background:var(--surface-2,#1f3229);color:var(--ink,#f1eadb);padding:18px}' +
-      '#zbDlg h2{font:400 22px Georgia,"Times New Roman",serif;color:#fbf0dc}#zbDlg::backdrop{background:rgba(7,17,13,.85)}#zbDlg label{display:block;font-weight:600;margin:12px 0 4px}#zbDlg small{display:block;color:var(--muted,#c0bba9);margin-bottom:4px}' +
-      '#zbDlg input,#zbDlg textarea{width:100%;box-sizing:border-box;font:inherit;color:inherit;background:var(--bg,#14241f);border:1px solid var(--line,#3c4435);border-radius:8px;padding:9px 11px}#zbDlg textarea{min-height:76px}' +
-      '#zbDlg .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}#zbDlg button{font:600 14px Arial,Helvetica,sans-serif;padding:9px 14px;border-radius:8px;border:1px solid var(--line,#3c4435);background:var(--surface,#132720);color:inherit;cursor:pointer}#zbDlg button.p{background:var(--accent,#d6b67b);border-color:var(--accent,#d6b67b);color:#14241f}' +
-      '@media(max-width:860px){#zbBtn{bottom:auto;top:12px;left:12px}}';
+    css.textContent = '#zbDlg{max-width:640px}#zbDlg label{display:block;margin:var(--space-sm,12px) 0 0}#zbDlg small{display:block;margin:2px 0 4px;color:var(--color-muted,#c0bba9)}' +
+      '#zbDlg input,#zbDlg textarea{width:100%;box-sizing:border-box;margin-top:0;font-family:var(--font-body,Arial,sans-serif);font-size:var(--text-md,1rem);border:1px solid var(--color-muted,#c0bba9);border-radius:var(--radius-control,8px);padding:9px 11px}#zbDlg textarea{min-height:76px;resize:vertical}' +
+      '#zbDlg .btns{display:flex;flex-wrap:wrap;gap:var(--space-xs,8px);margin-top:var(--space-md,16px)}' +
+      '.nav-links .zb-link{background:none;border:0;margin:0;line-height:inherit;vertical-align:baseline;padding:0;color:var(--color-ink-2,#ddd6c5);font:inherit;font-size:var(--text-sm,.875rem);cursor:pointer;white-space:nowrap;transition:color var(--dur-short,200ms) var(--ease-out,ease)}' +
+      '.nav-links .zb-link:hover{color:var(--color-ink,#f1eadb)}.nav-links .zb-link:focus-visible{outline:2px solid var(--color-focus,#e1c595);outline-offset:3px;transition:none}' +
+      '@media(max-width:72rem){.nav-links .zb-link{display:block;padding:var(--space-sm,12px) 0;font-size:var(--text-md,1rem)}}@media(prefers-reduced-motion:reduce){.nav-links .zb-link{transition:none}}';
     document.head.appendChild(css);
     var btn = document.createElement('button');
-    btn.id = 'zbBtn'; btn.type = 'button'; btn.textContent = 'PENGATURAN BRAND';
+    btn.id = 'zbBtn'; btn.type = 'button'; btn.className = 'zb-link'; btn.textContent = 'Pengaturan brand';
     var d = document.createElement('dialog');
-    d.id = 'zbDlg';
+    d.id = 'zbDlg'; d.className = 'hud-dlg ai-dlg';
     d.setAttribute('aria-labelledby', 'zbTitle');
-    var raw = B, h = '<h2 id="zbTitle" style="margin:0 0 6px">Pengaturan brand</h2><p style="margin:0;color:var(--muted,#c0bba9)">Isi sekali. Semua agen memakai data ini. Tersimpan di browser ini; pakai Ekspor/Impor untuk memindahkan ke perangkat lain.</p>';
+    var raw = B, h = '<h2 id="zbTitle">Pengaturan brand</h2><p class="muted">Isi sekali. Semua agen memakai data ini, dan nama brand tampil di menu. Tersimpan di browser ini; pakai Ekspor/Impor untuk memindahkan ke perangkat lain.</p>';
     FIELDS.forEach(function (f) {
       var v = raw[f[0]];
       if (f[0] === 'pilar') v = (raw.pilar || []).join('\n');
       h += '<label for="zb_' + f[0] + '">' + esc(f[1]) + '</label><small>' + esc(f[2]) + '</small>' +
         (f[3] === 'area' ? '<textarea id="zb_' + f[0] + '">' + esc(v) + '</textarea>' : '<input id="zb_' + f[0] + '" type="text" value="' + esc(v) + '">');
     });
-    h += '<div class="row"><button class="p" id="zbSave" type="button">Simpan dan muat ulang</button><button id="zbExp" type="button">Ekspor (.json)</button><button id="zbImp" type="button">Impor (.json)</button><button id="zbClose" type="button">Tutup</button></div><input type="file" id="zbFile" accept=".json,application/json" hidden>';
+    h += '<div class="btns"><button class="btn primary" id="zbSave" type="button">Simpan dan muat ulang</button><button class="btn" id="zbExp" type="button">Ekspor (.json)</button><button class="btn" id="zbImp" type="button">Impor (.json)</button><button class="btn" id="zbClose" type="button">Tutup</button></div><input type="file" id="zbFile" accept=".json,application/json" hidden>';
     d.innerHTML = h;
-    document.body.appendChild(btn); document.body.appendChild(d);
+    var menu = document.getElementById('navLinks'), li = document.createElement('li');
+    li.appendChild(btn);
+    if (menu) menu.appendChild(li); else document.body.appendChild(li);
+    document.body.appendChild(d);
     function collect() {
       var o = {};
       FIELDS.forEach(function (f) { var v = d.querySelector('#zb_' + f[0]).value; o[f[0]] = f[0] === 'pilar' ? v.split('\n').map(function (x) { return x.trim(); }).filter(Boolean) : v.trim(); });

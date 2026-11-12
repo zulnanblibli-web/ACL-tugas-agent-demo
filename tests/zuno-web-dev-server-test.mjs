@@ -43,7 +43,7 @@ try {
   ok('ruang kerja /studio.html 200 dan memuat ZUNO + input gambar cover', r.status === 200 && /ZUNO/.test(t) && t.includes('id="coverfile"'));
   r = await fetch(U + '/assets/foto-zulnan.webp'); ok('foto cover webp 200', r.status === 200 && r.headers.get('content-type') === 'image/webp' && (await r.arrayBuffer()).byteLength > 10000);
   r = await fetch(U + '/assets/karakter/zuno-tim-orkestrasi.webp'); ok('gambar karakter 200', r.status === 200);
-  r = await fetch(U + '/hud.css'); ok('css 200', r.status === 200 && /text\/css/.test(r.headers.get('content-type')));
+  r = await fetch(U + '/studio-nexa.css'); ok('css 200', r.status === 200 && /text\/css/.test(r.headers.get('content-type')));
   r = await fetch(U + '/api/status'); const s0 = await r.json(); ok('status tanpa kunci akses: terkunci, tanpa penyedia/model/setelan', s0.online === true && s0.terkunci === true && Object.keys(s0).length === 2);
   r = await fetch(U + '/api/status', { headers: { 'x-zuno-key': 'rahasia-lokal-1234567' } }); const s = await r.json(); ok('status online, penyedia openrouter, key terisi, tanpa membocorkan kunci', s.online === true && s.provider === 'openrouter' && s.ai_key_set === true && s.access_set === true && !JSON.stringify(s).includes('kunci-tiruan') && !JSON.stringify(s).includes('rahasia-lokal'));
   r = await fetch(U + '/api/ai', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ input: 'x' }) }); ok('tanpa kunci akses: 401', r.status === 401);
@@ -51,7 +51,7 @@ try {
   r = await fetch(U + '/api/ai', { method: 'POST', headers: { 'content-type': 'application/json', 'x-zuno-key': 'rahasia-lokal-1234567' }, body: JSON.stringify({ input: 'tes' }) });
   const L = (await r.text()).trim().split('\n').map((l) => JSON.parse(l));
   ok('streaming /api/ai lewat server lokal: teks utuh + done', r.status === 200 && L.filter((l) => l.t === 'delta').map((l) => l.text).join('') === '{"halo":"lokal"}' && L.at(-1).t === 'done');
-  for (const p of ['/.env.local', '/.env.local.example', '/api/ai.js', '/dev-server.mjs', '/bangun.mjs', '/package.json', '/vercel.json', '/src/hud.css', '/src/site/index.html', '/node_modules/x', '/%2e%2e/package.json', '/assets/../package.json', '/server-lokal.log']) { r = await fetch(U + p); ok('tidak disajikan: ' + p, r.status === 404); }
+  for (const p of ['/.env.local', '/.env.local.example', '/api/ai.js', '/dev-server.mjs', '/bangun.mjs', '/package.json', '/vercel.json', '/src/hud.js', '/src/site/index.html', '/node_modules/x', '/%2e%2e/package.json', '/assets/../package.json', '/server-lokal.log']) { r = await fetch(U + p); ok('tidak disajikan: ' + p, r.status === 404); }
   r = await fetch(U + '/', { method: 'DELETE' }); ok('metode DELETE ditolak (405)', r.status === 405);
 } finally { child.kill(); fake.close(); blocker.close(); try { fs.unlinkSync(LOGF); } catch {} }
 let bad = 0; for (const [n, c] of out) { console.log((c ? 'OK   ' : 'GAGAL') + ' ' + n); if (!c) bad++; }

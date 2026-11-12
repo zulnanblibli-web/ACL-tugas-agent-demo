@@ -30,10 +30,17 @@ function swapIn(name, text, find, repl) {
 }
 
 // ---------- halaman ----------
-// Ruang kerja edisi jasa dibangun langsung dengan tampilan HUD (white-label), bukan dari web/studio.html (tampilan Nexaoffice).
-let page = bangunRuangKerja('jasa');
+// Sejak 2026-11-12 (Zulnan K1-K3) edisi jasa memakai tampilan Nexaoffice yang sama dengan Workspace web Zulnan
+// (web/studio.html), tampilan HUD lama tidak dipakai lagi:
+//   K1 pembeli langsung masuk Workspace di "/"; bagian jualan halaman depan (harga, Pesan kit, produk lain) tidak ikut.
+//   K2 nama tampil = nama brand pembeli (brand.js), bawaannya "Nexaoffice".
+//   K3 kredit "Creative @nexamind.ai" tetap kecil di footer (data-zb-asli: tidak diganti brand.js).
+let page = bangunRuangKerja('nexa');
 const P = (f, r) => { page = swapIn('index.html', page, f, r); };
-P('<meta name="author" content="Creative @nexamind.ai">', '<meta name="author" content="Zuno Studio">');
+P('<meta name="author" content="Creative @nexamind.ai">', '<meta name="author" content="Nexaoffice">');
+P(/<ul class="nav-links" id="navLinks">[\s\S]*?<\/ul>/, '<ul class="nav-links" id="navLinks">\n        <li><a href="/" aria-current="page">Workspace</a></li>\n        <li><a href="/#chat" data-buka="chat">Chat</a></li>\n        <li><a href="/office/karakter.html">Karakter agen</a></li>\n      </ul>');
+P(/<ul class="footer-links">[\s\S]*?<\/ul>/, '<ul class="footer-links">\n      <li><a href="/">Workspace</a></li>\n      <li><a href="/office/karakter.html">Karakter agen</a></li>\n    </ul>');
+P('<p class="credit">Creative @nexamind.ai</p>', '<p class="credit" data-zb-asli>Creative @nexamind.ai</p>');
 P('<script src="/live.js"></script>', '<script src="/brand.js"></script>\n<script src="/live.js"></script>');
 P(/var SLOGAN='Hai, kenalin Gue Zulnan\.[^'\n]*';/, "var SLOGAN=ZB.slogan||'(tanpa slogan)';");
 P(/var SLOGAN_BEATS=\[[^\]\n]*\];/, 'var SLOGAN_BEATS=ZB.sloganBeats.map(function(b){return b.teks});');
@@ -55,18 +62,32 @@ for (const t of tambahanJasa) {
   if (t.syarat && !existsSync(join(out, t.syarat))) continue;
   page = swapIn('index.html (tambahan jasa: ' + t.nama + ')', page, t.cari, t.ganti);
 }
+for (const sisa of ['/studio.html', 'href="/#hasil"', 'href="/#biaya"', 'href="/#paket"', 'href="/#produk"', 'Pesan kit']) if (page.includes(sisa)) throw new Error('[index.html] masih ada tautan/teks halaman jualan: ' + sisa);
 writeFileSync(join(out, 'index.html'), page);
 
 // ---------- jembatan dan tampilan ----------
 let live = readFileSync(join(web, 'live.js'), 'utf8');
 live = swapIn('live.js', live, 'JSON.stringify({ input: input,', 'JSON.stringify({ input: window.ZB ? window.ZB.repPrompt(input) : input,');
 writeFileSync(join(out, 'live.js'), live);
-for (const f of ['hud.css', 'hud.js', 'motion.js', 'pengaturan-ai.js']) copyFileSync(join(web, f), join(out, f));
+for (const f of ['hud.js', 'pengaturan-ai.js', 'studio-nexa.css', 'studio-nexa.js', 'ui.js', 'serah.js', 'tim-agen.js']) copyFileSync(join(web, f), join(out, f));
 copyFileSync(join(here, 'files', 'brand.js'), join(out, 'brand.js'));
+// Tampilan HUD lama (sebelum 2026-11-12) dibuang dari repo jasa.
+for (const f of ['hud.css', 'motion.js']) rmSync(join(out, f), { force: true });
+mkdirSync(join(out, 'site'), { recursive: true });
+for (const f of ['tokens.css', 'gerak.css', 'gerak.js']) copyFileSync(join(web, 'site', f), join(out, 'site', f));
+
+// ---------- Kantor 3D tertanam di Workspace ----------
+// Sumber Kantor 3D tetap di repo jasa (kantor.html, office/, nexa.html, nexa/). Versi tertanamnya sama dengan di web Zulnan
+// (dibuat tools/kantor/ambil-kantor.mjs): office/ruang.html (Menara Senja, Griya Langit) dan office/grotto.html (The Grotto).
+// nexa.html di repo jasa tetap halaman The Grotto mandiri (dipakai tes Kantor 3D), jadi versi tertanamnya diberi nama lain.
+mkdirSync(join(out, 'office'), { recursive: true });
+for (const f of ['ruang.html', 'sematan.css', 'sematan.js', 'nexa-sematan.css', 'nexa-sematan.js']) copyFileSync(join(web, 'office', f), join(out, 'office', f));
+writeFileSync(join(out, 'office', 'kendali.js'), swapIn('office/kendali.js', readFileSync(join(web, 'office', 'kendali.js'), 'utf8'), "'/nexa.html?'", "'/office/grotto.html?'"));
+writeFileSync(join(out, 'office', 'grotto.html'), swapIn('office/grotto.html', readFileSync(join(web, 'nexa.html'), 'utf8'), 'href="/studio.html"', 'href="/"'));
 
 // ---------- server Node untuk laptop/VPS (menu Pengaturan AI > Server VPS) ----------
 // Isi sama dengan web/dev-server.mjs; di repo jasa namanya server.mjs dan berada di folder utama.
-let srv = readFileSync(join(web, 'dev-server.mjs'), 'utf8').split('web\\').join('').split('folder web').join('folder repo ini');
+let srv = readFileSync(join(web, 'dev-server.mjs'), 'utf8').split('web\\').join('').split('web/').join('').split('folder web').join('folder repo ini');
 writeFileSync(join(out, 'server.mjs'), srv);
 copyFileSync(join(web, '.env.local.example'), join(out, '.env.local.example'));
 mkdirSync(join(out, 'tools', 'vps'), { recursive: true });
@@ -102,6 +123,21 @@ function copyDir(a, b, top = false) {
 const KEEP_ASSETS = ['agents', 'themes', 'nexa'];
 if (existsSync(join(out, 'assets'))) for (const f of readdirSync(join(out, 'assets'))) if (!KEEP_ASSETS.includes(f)) rmSync(join(out, 'assets', f), { recursive: true, force: true });
 copyDir(join(web, 'assets'), join(out, 'assets'), true);
+// Huruf angka/kode Workspace (JetBrains Mono, SIL OFL).
+mkdirSync(join(out, 'assets', 'fonts'), { recursive: true });
+copyFileSync(join(web, 'assets', 'fonts', 'jetbrains-mono-latin-400-normal.woff2'), join(out, 'assets', 'fonts', 'jetbrains-mono-latin-400-normal.woff2'));
+// Profil 18 agen untuk menu Tambah agen (isian contoh + kode yang sudah dipakai), tanpa data pribadi Zulnan:
+// gaya bicara dan memori (berisi suara Zulnan) dikosongkan; nama Zulnan jadi "pemilik".
+{
+  const prof = JSON.parse(readFileSync(join(web, 'assets', 'agen-profil.json'), 'utf8'));
+  const PRIBADI = /Gue |gue |Hai, kenalin|6 web aktif|sales sekitar|FMCG|keriting|foto-zulnan/;
+  const bersih = (v) => typeof v === 'string' ? v.replace(/6 web aktif Zulnan/g, 'produk pemilik').replace(/"?Creative @nexamind\.ai"?/g, 'kredit pemilik').replace(/kredit Nexamind/g, 'kredit pemilik').replace(/ZULNAN/g, 'PEMILIK').replace(/Zulnan/g, 'pemilik')
+    : Array.isArray(v) ? v.map(bersih).filter((x) => !(typeof x === 'string' && PRIBADI.test(x))) : v;
+  prof.agen = prof.agen.map((a) => { const o = {}; for (const [k, v] of Object.entries(a)) o[k] = ['gaya', 'memori'].includes(k) ? (Array.isArray(v) ? [] : '') : bersih(v); return o; });
+  const teks = JSON.stringify(prof, null, 1);
+  if (/zulnan|nexamind/i.test(teks) || PRIBADI.test(teks)) throw new Error('assets/agen-profil.json jasa masih memuat data pribadi Zulnan');
+  writeFileSync(join(out, 'assets', 'agen-profil.json'), teks + '\n');
+}
 
 // ---------- paket, konfigurasi, dokumen ----------
 // package.json digabung: dependensi Zuno + dependensi/script/devDependencies milik repo jasa (Kantor 3D) tetap ada.
@@ -173,7 +209,7 @@ writeFileSync(join(out, 'VERSI.txt'), 'Zuno Studio edisi jasa\nDiekspor: ' + new
 
 // ---------- cek akhir: tidak ada identitas Zulnan tersisa yang tidak terlindungi ----------
 const leaks = [];
-for (const f of ['index.html', 'live.js', 'hud.js', 'hud.css', 'pengaturan-ai.js', 'server.mjs', 'api/ai.js', 'api/status.js', 'api/riset.js', 'api/gambar.js']) {
+for (const f of ['index.html', 'live.js', 'hud.js', 'studio-nexa.css', 'ui.js', 'tim-agen.js', 'serah.js', 'pengaturan-ai.js', 'office/grotto.html', 'office/ruang.html', 'assets/agen-profil.json', 'server.mjs', 'api/ai.js', 'api/status.js', 'api/riset.js', 'api/gambar.js']) {
   const t = readFileSync(join(out, f), 'utf8');
   for (const bad of ['sales sekitar 12 tahun', 'FMCG', '6 web aktif', 'rambut hitam keriting', 'foto-zulnan', 'zuno-zulnan-percakapan']) if (t.includes(bad)) leaks.push(f + ': ' + bad);
 }

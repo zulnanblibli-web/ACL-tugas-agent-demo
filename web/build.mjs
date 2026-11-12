@@ -2,7 +2,7 @@
 //   web/studio.html  ruang kerja (dari prototypes/zuno-studio-v2.html, sumber tunggal logika agen) dengan tampilan Nexaoffice
 //   web/index.html   halaman utama Nexaoffice (dari web/src/site/)
 // Jalankan ulang setiap kali zuno-studio-v2.html atau web/src/ berubah:  node web/build.mjs
-// Edisi jasa (tampilan HUD lama) dibangun oleh tools/jasa/ekspor-jasa.mjs lewat bangunRuangKerja('jasa').
+// Edisi jasa memakai studio.html + berkas yang sama, dijadikan white-label oleh tools/jasa/ekspor-jasa.mjs.
 import { writeFileSync, copyFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -11,10 +11,9 @@ import { tulisProfilWeb } from '../tools/agen/profil-web.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const studio = bangunRuangKerja('nexa');
-bangunRuangKerja('jasa'); // ikut dicek supaya penanda edisi jasa tidak rusak diam-diam
 writeFileSync(join(here, 'studio.html'), studio);
-// hud.* dan motion.js tetap disalin: dipakai edisi jasa (diambil ekspor dari web/) dan diagram cara kerja.
-for (const f of ['hud.css', 'hud.js', 'live.js', 'motion.js', 'serah.js', 'studio-nexa.css', 'studio-nexa.js', 'ui.js', 'pengaturan-ai.js', 'tim-agen.js']) copyFileSync(join(here, 'src', f), join(here, f));
+// hud.js: logika status dan kunci akses (tetap dipakai Workspace walau tampilan HUD lama sudah dihapus).
+for (const f of ['hud.js', 'live.js', 'serah.js', 'studio-nexa.css', 'studio-nexa.js', 'ui.js', 'pengaturan-ai.js', 'tim-agen.js']) copyFileSync(join(here, 'src', f), join(here, f));
 // Profil agents/ untuk menu Tambah agen (contoh isian + bahan pelatihan HRD).
 tulisProfilWeb(join(here, 'assets', 'agen-profil.json'));
 mkdirSync(join(here, 'site'), { recursive: true });

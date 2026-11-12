@@ -8,10 +8,10 @@ Sejak 2026-11-09 Zuno Web jadi **Nexaoffice**: `/` = situs utama (hero = Kantor 
 | `index.html` | Halaman utama **Nexaoffice** (salinan `src/site/index.html` oleh `build.mjs`): menu ala lembur.id, hero simulasi kerja agen (demo berlabel), Kantor 3D tertanam (iframe `office/ruang.html`, tema dan tampilan bisa diganti), cara kerja (video Remotion), tim, isi paket, biaya, FAQ |
 | `src/site/` | Sumber halaman utama: `index.html`, `site.css` (+ `tokens.css`, `base.css` dari Hallmark), `site.js` (menu, simulasi hero, kendali kantor 3D, tab, video). Disalin ke `site/` |
 | `studio.html` | Ruang kerja (hasil `build.mjs` dari `zuno-studio-v2.html`, jangan diedit langsung), tampilan Nexaoffice: `src/studio-hero.html` (menu, kantor 3D kiri, status, judul kolom kanan), `src/studio-tail.html`, `src/studio-nexa.css`, `src/studio-nexa.js`, `src/ui.js` (kantor 3D ikut panel tahap yang disembunyikan + panel Hasil kerja agen live dari event `nexa:ai` di `live.js`), `src/pengaturan-ai.html` + `src/pengaturan-ai.js` (menu Pengaturan AI: server / API key lokal / VPS, dipakai juga edisi jasa) |
-| `bangun.mjs` | `bangunRuangKerja('nexa')` untuk `studio.html`, `bangunRuangKerja('jasa')` untuk edisi jasa (tampilan HUD lama: `src/hero.html`, `src/tail.html`, `src/hud.css`, `motion.js`) |
+| `bangun.mjs` | `bangunRuangKerja('nexa')` untuk `studio.html`; edisi jasa memakai halaman yang sama, dijadikan white-label oleh `tools/jasa/ekspor-jasa.mjs` (tampilan HUD lama dihapus 2026-11-12) |
 | `src/serah.js` | Serah terima: `/studio.html?perintah=...&divisi=konten\|build&jalan=1` mengisi perintah lalu langsung menjalankan tim |
 | `office/ruang.html`, `office/`, `assets/agents/`, `assets/themes/` | Kantor 3D, disalin dari repo jasa: `node tools/kantor/ambil-kantor.mjs <repo-jasa>` (sumbernya di repo jasa). `ruang.html` = DOM kantor + `src/kantor/sematan.css/js` (versi tertanam); `src/kantor/kendali.js` mengendalikannya dari halaman induk |
-| `src/hero.html`, `src/tail.html`, `src/hud.css`, `src/hud.js` | Tampilan HUD: judul ZUNO, inti, panel status, diagram "Cara kerja" yang ikut proses asli |
+| `src/hud.js` | Logika status server, kunci akses, dan model (nama lama; dipakai Workspace Nexaoffice) |
 | `src/live.js` | Jembatan: `window.claude.use('sample')` diarahkan ke `/api/ai` (streaming) |
 | `api/ai.js` | Server AI. Penyedia bisa diganti lewat `AI_PROVIDER` |
 | `api/status.js` | Status untuk panel HUD (tanpa membocorkan kunci). Khusus pemegang kunci akses (`x-zuno-key`); pengunjung lain hanya mendapat `{ online, terkunci }` |
@@ -68,7 +68,7 @@ Buka alamat yang tertulis di layar (biasanya http://127.0.0.1:3000), klik Pengat
 ## Uji
 - `node tests/zuno-web-dev-server-test.mjs` (server lokal: halaman, aset, status, kunci akses, streaming, berkas yang tidak boleh disajikan; butuh `npm install` di folder `web`)
 - `cd web && npm install && node ../tests/zuno-web-api-test.mjs && node ../tests/zuno-web-gemini-test.mjs && node ../tests/zuno-web-openrouter-test.mjs` (server AI dengan Claude, Gemini, dan OpenRouter tiruan)
-- `node tests/zuno-web-stub-test.js` (halaman web + HUD dengan AI tiruan, butuh Playwright)
+- `node tests/zuno-web-stub-test.js` (Workspace dengan AI tiruan, butuh Playwright)
 
 ## Pengaturan AI dan VPS (2026-11-09)
 

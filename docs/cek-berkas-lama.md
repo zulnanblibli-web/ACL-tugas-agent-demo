@@ -1,6 +1,6 @@
 # Cek berkas lama + rencana tampilan repo jasa
 
-Dibuat 2026-11-12 untuk dicek Zulnan. **Belum ada yang dihapus.**
+Dibuat 2026-11-12 untuk dicek Zulnan. Status terbaru ada di kolom Status (✅ = sudah dikerjakan).
 
 **Cara pilih:** sebut nomornya di chat, contoh: "hapus Z1, Z3, J2". Yang nggak disebut tetap disimpan.
 
@@ -39,8 +39,8 @@ Repo jasa pindah ke tampilan Zuno Studio (Nexaoffice), jalan di laptop maupun VP
 | Z12 | `antrian-posting/` + skill `antrian-posting` | 🟢 | Antrian Posting versi laptop. **Masih dipakai** sampai auto posting dari web (P1) jalan. | Antrian posting laptop berhenti. Saran: tunggu P1. |
 | Z13 | `prototypes/arsip/zuno-carousel-opsi.html` | 🟡 | Contoh pilihan desain carousel. Masih disebut di `template-carousel.md` dan brief sebagai contoh. | Contoh visual carousel hilang. |
 | Z14 | `tests/zuno-studio-v2-stub-test.js` | 🟢 | Tes langsung ke prototipe v2. Masih jalan dan lolos; agak tumpang tindih dengan tes build stub. | Satu lapis tes hilang. Saran: simpan. |
-| Z15 | `web/hud.css`, `web/src/hud.css`, `web/motion.js`, `web/src/motion.js` | 🟠 | Gaya dan gerak HUD lama, cuma dipakai jasa. | Aman setelah jasa pindah tampilan. |
-| Z16 | `web/src/hero.html`, `flow.html`, `tail.html`, `web/assets/zuno-hero.webp`, cabang `jasa` di `web/bangun.mjs` | 🟠 | Hero robot, diagram "Cara kerja", footer HUD, gambar robot. Cuma dipakai jasa. | Aman setelah jasa pindah tampilan. |
+| Z15 | `web/hud.css`, `web/src/hud.css`, `web/motion.js`, `web/src/motion.js` | ✅ dihapus 2026-11-12 | Gaya dan gerak HUD lama, cuma dipakai jasa. | Aman setelah jasa pindah tampilan. |
+| Z16 | `web/src/hero.html`, `flow.html`, `tail.html`, `web/assets/zuno-hero.webp`, cabang `jasa` di `web/bangun.mjs` | ✅ dihapus 2026-11-12 | Hero robot, diagram "Cara kerja", footer HUD, gambar robot. Cuma dipakai jasa. | Aman setelah jasa pindah tampilan. |
 
 Lama tapi masih dipakai di repo Zuno (🟢, nggak usah dipilih):
 - `web/hud.js`: namanya HUD, tapi masih dipakai Workspace Nexaoffice dan Pengaturan AI.
@@ -58,8 +58,8 @@ Lama tapi masih dipakai di repo Zuno (🟢, nggak usah dipilih):
 | J3 | `downloads/` (video + zip, 18 MB) + `tools/package-preview.py`, `tools/package-nexa-preview.py` | 🟡 | Paket preview lama untuk dibagikan, plus alat pembuatnya. Bikin repo berat. | Perintah `npm run package:*` gua hapus juga. |
 | J4 | `preview/` (7,5 MB) + `tests/preview.test.cjs`, `tools/build-preview.mjs`, `tools/build-nexa-preview.mjs` | 🟡 | Hasil pratinjau Kantor 3D lama, tes, dan alat pembuatnya. | Perintah `npm run build:preview` dan `test:preview` gua hapus juga. Tes Kantor 3D lain tetap. |
 | J5 | `artifacts/office/` (36 berkas, 18 MB) | 🟡 | Screenshot dan log hasil tes Kantor 3D. Ditulis ulang tiap tes jalan. | Saran: **bukan dihapus**, tapi dikeluarkan dari git (`.gitignore`). Tes tetap bisa menulisnya di laptop. |
-| J6 | `hud.css`, `motion.js`, isi HUD di `index.html` | 🟠 | Tampilan HUD lama jasa. | Diganti otomatis waktu jasa pindah ke tampilan Nexaoffice. |
-| J7 | `PANDUAN.md` | 🟠 | Panduan lama (pasang di Vercel, tampilan HUD). | Bukan dihapus: **ditulis ulang** untuk tampilan baru, disatukan dengan `PANDUAN-LOKAL.md`. |
+| J6 | `hud.css`, `motion.js`, isi HUD di `index.html` | ✅ dihapus 2026-11-12 | Tampilan HUD lama jasa. | Diganti otomatis waktu jasa pindah ke tampilan Nexaoffice. |
+| J7 | `PANDUAN.md` | ✅ ditulis ulang 2026-11-12 | Panduan lama (pasang di Vercel, tampilan HUD). | Bukan dihapus: **ditulis ulang** untuk tampilan baru, disatukan dengan `PANDUAN-LOKAL.md`. |
 
 Lama tapi masih dipakai di repo jasa (🟢, nggak usah dipilih):
 - `office/`, `nexa/`, `kantor.html`, `nexa.html`, `assets/agents`, `assets/themes`, `assets/nexa`: **sumber Kantor 3D** (3 tema, 18 karakter). Web lu menyalin dari sini.
@@ -72,4 +72,4 @@ Lama tapi masih dipakai di repo jasa (🟢, nggak usah dipilih):
 - **Sudah dihapus 2026-11-12:** Z1, Z2, Z3, Z4, Z7, Z8, J1, J2. Z10 batal dihapus (ternyata masih dipakai, lihat barisnya).
 - **Aman, sebutannya ikut dibersihin:** Z5, Z6, Z9, J3, J4, J5 (keluar git). Z10 bila sudah tidak unggah skill ke claude.ai.
 - **Simpan dulu:** Z11 (arsip), Z12 (tunggu P1), Z13, Z14.
-- **Otomatis setelah jasa pindah tampilan dan tes lolos:** Z15, Z16, J6, J7.
+- **Selesai 2026-11-12 (jasa sudah pakai tampilan Nexaoffice):** Z15, Z16, J6 dihapus; J7 `PANDUAN.md` ditulis ulang.

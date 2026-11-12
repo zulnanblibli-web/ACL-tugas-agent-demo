@@ -802,4 +802,16 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Bukti: `node web/build.mjs` jalan; `nexaoffice-situs-test` HASIL: SEMUA LOLOS (74 OK); `zuno-jasa-test` HASIL: SEMUA LOLOS; `zuno-studio-v2-stub-test` lolos (cek Z14).
 - Tertunda: tampilan Nexaoffice untuk jasa (ekspor pakai varian nexa + white-label, tulis ulang `PANDUAN.md`), lalu hapus Z15, Z16, J6; pilihan Zulnan untuk butir kuning (Z5, Z6, Z9, Z10, Z11, Z13, J3, J4, J5).
 
-## 80. (entri berikutnya di sini)
+## 80. Repo jasa pakai tampilan Nexaoffice, HUD lama dihapus (2026-11-12)
+- Permintaan Zulnan: "oke push, lanjut tampilan jasanya" (keputusan K1-K3 di entri 79). Push entri 79: Zuno sampai `930ab21`, jasa `3ffe9fe`.
+- Hasil:
+  - Ekspor jasa (`tools/jasa/ekspor-jasa.mjs`) kini membangun `index.html` jasa dari `bangunRuangKerja('nexa')` (Workspace yang sama dengan `/studio.html`): menu jasa hanya Workspace, Chat, Karakter agen (+ Pengaturan brand); tautan halaman jualan ditolak ekspor; kredit footer diberi `data-zb-asli`.
+  - Ikut diekspor: `studio-nexa.css/js`, `ui.js`, `serah.js`, `tim-agen.js`, `site/` (tokens, gerak), huruf JetBrains Mono, `assets/agen-profil.json` versi bersih (gaya dan memori dikosongkan, Zulnan -> pemilik, kredit -> kredit pemilik; ekspor berhenti bila masih ada data pribadi), Kantor 3D tertanam `office/ruang.html` + `office/grotto.html` + `kendali.js` (The Grotto ke `office/grotto.html`, `nexa.html` jasa tetap sumber mandiri) + `sematan.*` + `nexa-sematan.*`. `hud.css` dan `motion.js` dibuang dari jasa.
+  - `brand.js`: nama brand menggantikan "Nexaoffice" (menu, footer, judul tab, teks) bila sudah diisi; elemen `[data-zb-asli]` tidak diganti; tombol **Pengaturan brand** pindah ke menu atas (di HP lewat Menu); dialog bergaya Nexaoffice.
+  - `server.mjs` jasa: pesan "Salin web/.env.local.example" jadi ".env.local.example" (awalan `web/` dibuang saat ekspor).
+  - Zuno: varian HUD `jasa` di `web/bangun.mjs` dihapus; dihapus `web/hud.css`, `web/motion.js`, `web/src/hud.css`, `web/src/motion.js`, `web/src/hero.html`, `flow.html`, `tail.html`, `web/assets/zuno-hero.webp` (Z15, Z16). `web/hud.js` tetap (dipakai Workspace). `web/studio.html` hasil build tidak berubah.
+  - Dokumen pembeli ditulis ulang: `PANDUAN.md` (laptop/Vercel/VPS, mengenal Workspace, Tambah agen, Pengaturan > Sambungan AI, masalah umum) dan `README.md`; `LISENSI.md` + JetBrains Mono (OFL) dan three.js (MIT). `docs/jasa-zuno.md`, `docs/memori-zuno.md`, `web/README.md`, `web/assets/README.md`, `docs/cek-berkas-lama.md` diperbarui.
+- Bukti: `zuno-jasa-test` HASIL: SEMUA LOLOS (cek baru: K1 menu tanpa halaman jualan, K2 nama brand menggantikan Nexaoffice + bawaan Nexaoffice bila kosong, K3 kredit hanya di footer, CSS Nexaoffice tanpa HUD, iframe kantor termuat, The Grotto ke `office/grotto.html`, profil agen tanpa data pribadi); `nexaoffice-situs-test` SEMUA LOLOS; `zuno-web-stub-test` 0 gagal; `zuno-web-dev-server-test` semua lolos. `server.mjs` jasa dijalankan sungguhan: 14 alamat (halaman, CSS, kantor, Grotto, huruf, profil, galeri, API) 200; screenshot desktop/HP/pemakaian pertama tanpa error halaman.
+- Catatan: label di dalam kantor 3D ("Nexa Studio") milik kantor 3D, tidak ikut diganti nama brand. `LISENSI.md` dan `CLAUDE.md` jasa masih menyebut produk "Zuno Studio" (keputusan nama di Zulnan).
+
+## 81. (entri berikutnya di sini)
