@@ -835,4 +835,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Hasil di laptop (Zulnan): setelah server lama ditutup, tampilan lokal sudah sama dengan website ("udah berubah tampilan nya").
 - Push (izin Zulnan "sekarang push"): Zuno `0b9efb4`, jasa `9ab77e5`.
 
-## 83. (entri berikutnya di sini)
+## 83. Daftar perbaikan lokal + strategi portofolio + aturan akun Personal/Niche (2026-11-12)
+- Permintaan: list yang harus diperbaiki supaya Nexaoffice jalan di laptop (beberapa tugas sekaligus, preview sampai disetujui, lalu masuk Antrian Posting), dikerjakan satu per satu; aturan baru karakter Zulnan hanya untuk akun pribadi + menu pilihan akun personal/bukan; analisis strategist bagian 1-6 (audit, riset referensi Netizen City/stick man/bedah, portofolio, validasi, roadmap, struktur agen), bagian 1-3 dulu. Lampiran: satu video Netizen City.
+- Hasil: `docs/daftar-perbaikan-lokal.md` (L1-L12 urut, aturan Personal vs Niche), `docs/strategi-portofolio.md` (bagian 1-3). Aturan akun dicatat di `CLAUDE.md`, `docs/brief-gaya-konten.md` (slogan hanya akun personal), `docs/memori-zuno.md`.
+- Bukti: situs live dibuka lewat Vercel (200); video Netizen City dianalisis dari frame (58,6 dtk, 1 frame/2 dtk); Instagram tidak bisa diakses (tidak dikarang, minta 5 post); kebijakan YouTube/Meta dari pencarian web (sumber di dokumen).
+- Tertunda: bagian 4-6 + Weak points setelah Zulnan bilang "lanjut"; L1 (cek laptop) di Zulnan; keputusan biaya Claude vs budget sebelum L8.
+
+## 84. (entri berikutnya di sini)

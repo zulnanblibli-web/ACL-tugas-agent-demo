@@ -40,7 +40,7 @@ Topik global boleh, asal tidak teknis dan mudah dipahami pemula. Hati-hati denga
 - Register **lu/gua**, santai tapi tetap informatif (keputusan Zulnan 2026-11-02).
 - Santai dan lucu, lugas di momen tertentu, empatik, friendly, tidak bertele-tele.
 - Bahasa sehari-hari, kalimat pendek, tanpa jargon teknis untuk pemula. Kata "Gue" dipakai di slogan.
-- **Slogan setelah hook pada setiap video:** "Hai, kenalin Gue Zulnan. Gue sales yang belajar AI sambil bikin, bukan cuma ngomongin."
+- **Slogan setelah hook pada setiap video akun personal Zulnan** (akun niche tanpa slogan, karakter, dan foto Zulnan; Zulnan 2026-11-12): "Hai, kenalin Gue Zulnan. Gue sales yang belajar AI sambil bikin, bukan cuma ngomongin."
 - Contoh tulisan Zulnan: **tidak diperlukan** (keputusan Zulnan 2026-11-02). Video motion memakai suara AI; konten yang memakai rekaman Zulnan otomatis memakai suaranya sendiri.
 - Sapaan: lu/gua.
 
