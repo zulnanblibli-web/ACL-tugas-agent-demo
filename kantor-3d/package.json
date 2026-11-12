@@ -1,0 +1,38 @@
+{
+  "name": "nexaoffice-kantor-3d",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
+    "three": "^0.170.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.2",
+    "playwright": "^1.62.1"
+  },
+  "scripts": {
+    "build:office": "node tools/export-agents.mjs && node tools/character-gallery.mjs && esbuild office/app.js --bundle --format=esm --minify --outfile=office/office.bundle.js",
+    "test:office": "node tests/office.test.cjs",
+    "serve:office": "python3 -m http.server 4173 --bind 127.0.0.1",
+    "build:preview": "npm run build:office && node tools/build-preview.mjs",
+    "test:preview": "node tests/preview.test.cjs",
+    "test:simulation": "node tests/simulation.test.mjs",
+    "test:activities": "node tests/activities.test.cjs",
+    "test:agent-lifecycle": "node tests/agent-lifecycle.test.cjs",
+    "test:themes": "node tests/themes.test.cjs",
+    "test:layar": "node tests/layar-owner.test.cjs",
+    "capture:themes": "node tools/capture-themes.cjs",
+    "package:preview": "npm run build:preview && python3 tools/package-preview.py",
+    "build:nexa": "esbuild nexa/app.js --bundle --format=esm --minify --outfile=nexa/studio.bundle.js",
+    "test:nexa": "node tests/nexa.test.cjs",
+    "build:themes": "esbuild office/app.js --bundle --format=esm --minify --outfile=office/office.bundle.js && npm run build:nexa",
+    "test:nexa-animation": "node tests/nexa-animation.test.mjs",
+    "build:nexa-preview": "npm run build:nexa && node tools/build-nexa-preview.mjs",
+    "package:nexa-preview": "npm run build:nexa-preview && python3 tools/package-nexa-preview.py",
+    "test:nexa-seating": "node tests/nexa-seating.test.cjs",
+    "test:nexa-kendali": "node tests/nexa-kendali.test.mjs"
+  }
+}

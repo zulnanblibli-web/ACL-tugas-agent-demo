@@ -1,0 +1,9 @@
+import {themes,themeHref} from './themes.js';
+export function createThemePicker({asset,onPick}){
+ const $=id=>document.getElementById(id),dialog=$('theme-dialog');
+ $('theme-options').insertAdjacentHTML('beforeend',themes.map(t=>`<label class="theme-card" data-theme-card="${t.id}"><input class="sr-only" type="radio" name="office-theme" value="${t.id}" ${t.id===themes[0].id?'checked':''}><div class="theme-image" style="--theme-swatch:${t.previewBackground||t.colors[0]}"><img src="${asset(`/assets/themes/${t.id}.png`)}" alt="Preview ${t.name}" width="400" height="260"><span class="theme-badge">Dipakai</span></div><div class="theme-card-copy"><span>${t.tag}</span><h3>${t.name}</h3><p>${t.description}</p><div class="theme-swatches" aria-hidden="true">${t.colors.map(c=>`<i style="background:${c}"></i>`).join('')}</div></div></label>`).join(''));
+ $('open-themes').onclick=()=>dialog.showModal();$('close-themes').onclick=()=>dialog.close();$('done-themes').onclick=()=>dialog.close();dialog.addEventListener('close',()=>$('open-themes').focus());
+ $('theme-options').onchange=e=>{if(e.target.name!=='office-theme')return;const theme=themes.find(t=>t.id===e.target.value);if(theme?.href){try{localStorage.setItem('nexa-office-theme',theme.id)}catch{}location.assign(themeHref(theme));return}if(!onPick(e.target.value))$('theme-status').textContent='WebGL tidak tersedia. Tema 3D belum dapat ditampilkan.';};
+ function storage(available){$('theme-persistence').textContent=available?'Pilihan tema disimpan di browser ini.':'Pilihan berlaku selama sesi ini; penyimpanan browser tidak tersedia.';}
+ return {storage,select(theme,available=true){$('theme-current').textContent=theme.name;document.querySelectorAll('input[name=office-theme]').forEach(input=>input.checked=input.value===theme.id);$('theme-status').textContent=`Tema ${theme.name} aktif.`;storage(available);}};
+}

@@ -47,7 +47,7 @@ Lama tapi masih dipakai di repo Zuno (🟢, nggak usah dipilih):
 - `web/assets/karakter/`, `assets/karakter/`: gambar karakter untuk prompt video tipe A/B.
 - `tools/video-nexaoffice/`: sumber video Remotion di situs. Folder `node_modules` 138 MB di dalamnya nggak ikut git.
 - `pasang-tangan-komputer.bat`, `tools/laptop/`, `tools/rilis/`: tangan komputer Divisi Engineering.
-- `tools/kantor/ambil-kantor.mjs`: menyalin Kantor 3D dari repo jasa ke web lu.
+- `tools/kantor/ambil-kantor.mjs`: menyalin Kantor 3D dari `kantor-3d/` ke web lu (otomatis tiap `node web/build.mjs`).
 
 ## Repo jasa (`zuno-studio-app`)
 

@@ -1,15 +1,17 @@
-// Menyalin Kantor 3D (hasil build) dari repo jasa ke Nexaoffice Web (web/), supaya tampil di /office/ruang.html (disematkan).
-// Sumber tetap di repo jasa (office/*.js, npm run build:office). Jalankan ulang setelah kantor diubah di sana:
-//   node tools/kantor/ambil-kantor.mjs /home/user/zuno-studio-app
+// Menyalin Kantor 3D (hasil build) dari kantor-3d/ ke Nexaoffice Web (web/), supaya tampil di /office/ruang.html (disematkan).
+// Sejak 2026-11-12 sumber Kantor 3D ada di repo ini (kantor-3d/), bukan lagi di repo jasa: kerja satu arah,
+// ubah di Zuno lalu ekspor ke jasa. web/build.mjs menjalankan skrip ini otomatis. Manual:
+//   (cd kantor-3d && npm run build:themes)   bila kode kantor diubah
+//   node tools/kantor/ambil-kantor.mjs [folder-sumber]   (bawaan: kantor-3d/)
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, readdirSync, existsSync, rmSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const web = join(here, '..', '..', 'web');
-const jasa = process.argv[2];
-if (!jasa || !existsSync(join(jasa, 'kantor.html'))) throw new Error('Pakai: node tools/kantor/ambil-kantor.mjs <folder repo jasa>');
-if (!existsSync(join(jasa, 'office', 'office.bundle.js'))) throw new Error('office/office.bundle.js belum ada: jalankan npm run build:office di repo jasa');
+const jasa = process.argv[2] || join(here, '..', '..', 'kantor-3d'); // nama variabel lama: folder sumber Kantor 3D
+if (!existsSync(join(jasa, 'kantor.html'))) throw new Error('Sumber Kantor 3D tidak ditemukan: ' + jasa + ' (harus berisi kantor.html)');
+if (!existsSync(join(jasa, 'office', 'office.bundle.js'))) throw new Error('office/office.bundle.js belum ada: jalankan npm run build:themes di kantor-3d/');
 
 function swap(teks, cari, ganti, nama) {
   const n = teks.split(cari).length - 1;

@@ -7,7 +7,7 @@ Pemilik: Zulnan (Bahasa Indonesia, santai, to the point). Jawab dan tulis dokume
 2. Kerjakan "Tugas berikutnya" di `progress.md` kecuali Zulnan menyebut lain.
 
 ## Edisi jasa (dijual)
-Zuno juga dijual sebagai salinan white-label di repo terpisah `zulnanblibli-web/zuno-studio-app` (`docs/jasa-zuno.md`). Setiap perubahan Zuno Web atau `prototypes/zuno-studio-v2.html`: jalankan `node web/build.mjs`, `node tools/jasa/ekspor-jasa.mjs <repo-jasa>`, `node tests/zuno-jasa-test.js <repo-jasa>`; perbaiki sampai lolos sebelum push repo jasa. Salinan jasa harus selalu bisa jalan.
+Zuno juga dijual sebagai salinan white-label di repo terpisah `zulnanblibli-web/zuno-studio-app` (`docs/jasa-zuno.md`). Setiap perubahan Zuno Web atau `prototypes/zuno-studio-v2.html`: jalankan `node web/build.mjs`, `node tools/jasa/ekspor-jasa.mjs <repo-jasa>`, `node tests/zuno-jasa-test.js <repo-jasa>`; perbaiki sampai lolos sebelum push repo jasa. Salinan jasa harus selalu bisa jalan. **Kerja satu arah (Zulnan 2026-11-12):** semua diubah di repo ini, termasuk Kantor 3D (sumbernya `kantor-3d/`, lihat `kantor-3d/README.md`); repo jasa tidak diedit langsung.
 
 ## Pending tugas
 Bila Zulnan bilang sesuatu "pending", catat di `pending.md`. Bila Zulnan bertanya "pending tugas", jawab dari `pending.md` (aturan di file itu).

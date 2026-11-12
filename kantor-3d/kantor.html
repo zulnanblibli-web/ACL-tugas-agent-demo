@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nexa Office — Nexa Studio</title><meta name="author" content="Zuno Studio"><link rel="icon" href="data:,"><link rel="stylesheet" href="/office/office.css"></head>
+<body>
+<header><a class="wordmark" href="/" aria-label="Kembali ke Zuno Studio">nexa<span>®</span></a><span class="header-line"></span><span class="header-label">OFFICE / STUDIO</span><nav><button id="open-themes" class="theme-launcher" aria-haspopup="dialog" aria-controls="theme-dialog">▦ Tema · <span id="theme-current">Nexa Office</span></button><span class="preview"><i></i> Preview visual</span><a href="/#ruangKerja">Buka Studio ↗</a></nav></header>
+<main>
+<aside class="sidebar">
+ <div class="eyebrow">RUANG TIM / 001</div><h1>Rumah bagi<br>ide besar.</h1><p class="intro">Dua divisi, satu tempat bertumbuh.<br>Nexa Office di luar. Nexa Studio di dalam.</p>
+ <div class="section-title">JELAJAHI KANTOR <span>12 RUANG</span></div><div id="rooms" class="rooms"></div>
+ <div class="team-head"><div class="section-title">KENALI TIM <span>18 AGEN</span></div><label class="search"><span>⌕</span><input id="search" type="search" placeholder="Cari nama atau peran…" aria-label="Cari agen"></label></div>
+ <div id="agents" class="agents"></div><a class="gallery-link" href="/office/karakter.html">Lihat seluruh karakter ↗</a><p id="empty" hidden>Tidak ada agen yang cocok.</p>
+ <footer>Creative @nexamind.ai <span>© Zuno Studio</span></footer>
+</aside>
+<section class="viewport" aria-label="Kantor 3D interaktif">
+ <div id="canvas-wrap"><div id="loading" role="status">Menyiapkan ruang bersama…</div></div>
+ <div class="scene-heading"><span class="eyebrow">NEXA OFFICE / NEXA STUDIO</span><h2 id="view-name">Kantor utama</h2><span id="view-description">Kayu hangat, cahaya alami, ide yang mengalir.</span></div>
+ <div class="view-switch" role="group" aria-label="Tampilan bangunan"><button id="view-exterior" aria-pressed="true">Nexa Office · Eksterior</button><button id="view-interior" aria-pressed="false">Masuk Nexa Studio ↗</button></div>
+ <div class="floor-switch" role="group" aria-label="Pilih lantai"><button data-floor="all">Semua</button><button data-floor="0" aria-pressed="true">01 <span>Kantor</span></button><button data-floor="1">02 <span>Mezzanine</span></button><button data-floor="2">03 <span>Teras</span></button></div>
+ <div class="demo-controls"><div><span id="demo-status">SIMULASI VISUAL</span><small>Aktivitas demo · bukan status pekerjaan AI</small></div><div class="demo-buttons"><button id="demo-toggle" aria-pressed="false">▶ Demo aktivitas</button><button id="demo-reset" aria-label="Reset demo">↺</button><label>Kecepatan <select id="demo-speed"><option value="1">1×</option><option value="2" selected>2×</option><option value="4">4×</option></select></label></div><label class="names-toggle"><input id="show-names" type="checkbox" checked> Nama & jabatan</label></div>
+ <div class="scene-caption"><span class="live-dot"></span><span>Ruang virtual · Status agen belum terhubung</span></div>
+ <div id="inspector" class="inspector" hidden><button id="close-agent" aria-label="Tutup detail agen">×</button><span class="eyebrow" id="agent-id"></span><h2 id="agent-name"></h2><p id="agent-job"></p><div class="agent-meta" id="agent-meta"></div><p class="design-note" id="agent-look"></p><div class="activity-actions"><button id="agent-work">Bekerja</button><button id="agent-free">Waktu luang</button><select id="agent-destination" aria-label="Tujuan kegiatan santai"><option value="coffee">Area kopi</option><option value="game">Konsol game</option><option value="pc">PC gaming</option><option value="pool">Kolam renang</option><option value="rest">Lounge</option><option value="library">Perpustakaan</option><option value="prayer">Mushola</option></select><button id="agent-visit">Kunjungi</button><label><input id="follow-agent" type="checkbox" checked> Ikuti agen</label></div><span class="preview">Simulasi visual · bukan tugas AI sebenarnya</span></div>
+ <div class="scene-tools"><button id="reset" title="Reset sudut pandang">↺ <span>Reset</span></button><button id="orbit" aria-pressed="false">◌ <span>Putar otomatis</span></button><label>Kualitas <select id="quality"><option value="high">Detail</option><option value="low">Ringan</option></select></label><span id="fps">— fps</span></div>
+ <div class="gesture-hint">SERET UNTUK MEMUTAR <span>·</span> SCROLL / CUBIT UNTUK ZOOM</div>
+ <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+</section></main>
+<dialog id="theme-dialog" aria-labelledby="theme-title">
+ <div class="theme-dialog-heading"><div><span class="eyebrow">NEXA / PILIH SUASANA</span><h2 id="theme-title">Satu tim. Banyak suasana.</h2><p>Ganti material, pencahayaan dan dekorasi kantor secara langsung.</p></div><button id="close-themes" aria-label="Tutup pilihan tema">×</button></div>
+ <fieldset id="theme-options" class="theme-grid"><legend class="sr-only">Pilih tema kantor</legend></fieldset>
+ <div class="theme-dialog-footer"><div><span id="theme-status" role="status" aria-live="polite">Tema Nexa Office aktif.</span><small id="theme-persistence">Pilihan tema disimpan di browser ini.</small></div><button id="done-themes">Lihat kantor ↗</button></div>
+</dialog>
+<script type="module" src="/office/office.bundle.js"></script></body></html>

@@ -1,0 +1,34 @@
+const {chromium}=require('playwright');const assert=require('node:assert/strict');const fs=require('node:fs/promises');
+(async()=>{
+ const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox','--enable-unsafe-swiftshader']});
+ try{
+ const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1,reducedMotion:'reduce'});const errors=[];const requests=[];
+ page.on('pageerror',e=>{errors.push(e.message);console.error('PAGE ERROR',e.message);});page.on('console',m=>{if(m.type()==='error'){errors.push(m.text());console.error('CONSOLE ERROR',m.text());}});page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url());});page.on('request',r=>requests.push(r.url()));
+ await page.goto('http://127.0.0.1:4173/kantor.html');await page.waitForFunction(()=>window.zunoOffice?.state.loaded===18);assert.equal(await page.locator('[data-agent]').count(),18);assert.equal(await page.evaluate(()=>zunoOffice.privacy().opaque&&zunoOffice.state.view==='exterior'),true);await page.waitForTimeout(450);await page.screenshot({path:'artifacts/office/nexa-exterior.png'});assert.equal(await page.locator('[data-room]').count(),12);
+ console.log('PASS: scene loads, 18 local GLBs and 12 rooms; no infinite loader');await page.selectOption('#quality','low');
+ for(const id of ['0','1','2','all']){await page.locator(`[data-floor="${id}"]`).click();await page.waitForFunction(id=>zunoOffice.state.floor===id,id);await page.waitForTimeout(400);assert.equal(await page.locator(`[data-floor="${id}"]`).getAttribute('aria-pressed'),'true');await page.screenshot({path:`artifacts/office/floor-${id}.png`});}
+ console.log('PASS: 3 floors + all; screenshots captured');
+ await page.selectOption('#quality','low');
+ const rooms=await page.evaluate(()=>zunoOffice.rooms);
+ for(const room of rooms){await page.locator(`[data-room="${room.id}"]`).click();await page.waitForFunction(r=>zunoOffice.state.room===r.id&&zunoOffice.state.floor===String(r.floor),room);assert.equal(await page.locator('#view-name').textContent(),room.name);if(['meeting','engineering','pool','lead','owner','coffee','game','prayer'].includes(room.id)){await page.waitForTimeout(400);await page.screenshot({path:`artifacts/office/${room.id}.png`});}}
+ console.log('PASS: all 12 rooms navigate to actual floor and show descriptions');
+ const agents=await page.evaluate(()=>zunoOffice.agents);
+ // Start each selection from another floor to catch the original wrong-floor regression.
+ for(const agent of agents){console.log('SELECT',agent.id,agent.name);await page.locator('[data-floor="2"]').click();await page.locator(`[data-agent="${agent.id}"]`).click();await page.waitForFunction(a=>zunoOffice.state.selected===a.id&&zunoOffice.state.floor===String(a.floor)&&zunoOffice.state.view==='interior',agent);await page.waitForTimeout(350);assert.equal(await page.locator('#agent-name').textContent(),agent.name);assert.equal(await page.evaluate(id=>zunoOffice.projectAgent(id).visible,agent.id),true,agent.name+' visible');assert.equal(await page.locator('#inspector').isVisible(),true);}
+ console.log('PASS: all 18 agent selections from terrace return to actual floor (including Lead on mezzanine), visible in camera');
+ await page.screenshot({path:'artifacts/office/agent-damar.png'});await page.locator('#close-agent').click();assert.equal(await page.locator('#inspector').isVisible(),false);
+ await page.fill('#search','fajar');assert.equal(await page.locator('[data-agent]').count(),1);await page.fill('#search','tidakada');assert.equal(await page.locator('#empty').isVisible(),true);await page.fill('#search','');assert.equal(await page.locator('[data-agent]').count(),18);
+ await page.locator('#reset').click();await page.locator('#orbit').click();assert.equal(await page.locator('#orbit').getAttribute('aria-pressed'),'true');await page.locator('#orbit').click();
+ // Real drag and wheel input must change projected position; reset remains usable.
+ const before=await page.evaluate(()=>zunoOffice.projectAgent('L.0'));await page.mouse.move(900,440);await page.mouse.down();await page.mouse.move(1050,480,{steps:8});await page.mouse.up();await page.mouse.wheel(0,-200);await page.waitForTimeout(400);const after=await page.evaluate(()=>zunoOffice.projectAgent('L.0'));assert.ok(Math.abs(before.x-after.x)>1||Math.abs(before.y-after.y)>1);
+ console.log('PASS: search, empty state, close, reset, orbit, drag and wheel');
+ await page.locator('#reset').click();await page.locator('#orbit').click();await page.waitForTimeout(2500);const perf=await page.evaluate(()=>({fps:zunoOffice.state.fps,quality:zunoOffice.state.quality,...zunoOffice.stats(),userAgent:navigator.userAgent}));await page.locator('#orbit').click();await fs.writeFile('artifacts/office/performance.json',JSON.stringify(perf,null,2));console.log('PERFORMANCE',perf);
+ assert.equal(requests.some(u=>u.includes('/api/ai')),false);assert.deepEqual(errors,[]);console.log('PASS: no console/page/network errors, no AI workflow calls');
+ await page.setViewportSize({width:390,height:844});await page.locator('[data-floor="1"]').click();await page.waitForTimeout(500);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await page.screenshot({path:'artifacts/office/mobile.png',fullPage:true});console.log('PASS: mobile layout, floor navigation, no horizontal overflow');
+ for(const a of agents){const b=await fs.readFile(`assets/agents/${a.id}.glb`);assert.equal(b.readUInt32LE(0),0x46546c67);const size=b.readUInt32LE(12);const gltf=JSON.parse(b.subarray(20,20+size).toString());assert.ok(gltf.meshes.length>0);assert.ok(gltf.animations?.length>0);}
+ console.log('PASS: all 18 GLBs contain mesh geometry and idle animation');
+ // Force unavailable graphics in a new page: useful fallback, no stuck loader.
+ const fallback=await browser.newPage();await fallback.addInitScript(()=>{HTMLCanvasElement.prototype.getContext=function(){return null;};});await fallback.goto('http://127.0.0.1:4173/kantor.html');await fallback.waitForSelector('#loading.error');assert.match(await fallback.locator('#loading').textContent(),/WebGL/);await fallback.locator('[data-agent="L.0"]').click();assert.equal(await fallback.locator('#agent-name').textContent(),'ZUNO');console.log('PASS: WebGL failure displays fallback and accessible agent profiles');
+ await page.locator('#view-exterior').click();assert.equal(await page.evaluate(()=>zunoOffice.privacy().shell),true);await page.locator('#view-interior').click();assert.equal(await page.evaluate(()=>zunoOffice.privacy().shell),false);console.log('PASS: opaque exterior, Nexa Studio cutaway toggle and owner office');console.log('ALL OFFICE CHECKS PASSED');
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exit(1)});

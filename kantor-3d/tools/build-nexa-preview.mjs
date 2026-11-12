@@ -1,0 +1,7 @@
+import {readFile,writeFile,mkdir,readdir} from 'node:fs/promises';
+import path from 'node:path';
+const output=process.env.NEXA_PREVIEW_OUTPUT||'/tmp/nexa-studio-360.html';const assets={};
+const mime={'.jpg':'image/jpeg','.png':'image/png','.webp':'image/webp','.hdr':'application/octet-stream'};
+async function collect(dir){for(const e of await readdir(dir,{withFileTypes:true})){const p=path.join(dir,e.name);if(e.isDirectory())await collect(p);else if(mime[path.extname(p)])assets['/'+p]=`data:${mime[path.extname(p)]};base64,${(await readFile(p)).toString('base64')}`}}
+await collect('assets/nexa');await collect('assets/themes');
+const css=await readFile('nexa/style.css','utf8'),js=(await readFile('nexa/studio.bundle.js','utf8')).replace(/<\/script/gi,'<\\/script');let html=await readFile('nexa.html','utf8');html=html.replace('href="/"','href="https://zuno-studio-dusky.vercel.app/"').replace('href="/#ruangKerja"','href="https://zuno-studio-dusky.vercel.app/#ruangKerja"');html=html.replace('<link rel="stylesheet" href="/nexa/style.css">',`<style>${css}</style>`).replace('<script type="module" src="/nexa/studio.bundle.js"></script>',()=>`<script>globalThis.NEXA_PREVIEW=true;globalThis.NEXA_ASSETS=${JSON.stringify(assets)};</script><script type="module">${js}</script>`);await mkdir(path.dirname(output),{recursive:true});await writeFile(output,html);console.log(`Standalone 360° preview: ${output} (${(Buffer.byteLength(html)/1024/1024).toFixed(2)} MB), ${Object.keys(assets).length} embedded assets`);

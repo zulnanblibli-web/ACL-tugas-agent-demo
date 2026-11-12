@@ -80,10 +80,25 @@ for (const f of ['hud.css', 'motion.js']) rmSync(join(out, f), { force: true });
 mkdirSync(join(out, 'site'), { recursive: true });
 for (const f of ['tokens.css', 'gerak.css', 'gerak.js']) copyFileSync(join(web, 'site', f), join(out, 'site', f));
 
+// ---------- Kantor 3D: sumbernya kantor-3d/ di repo Zuno (sejak 2026-11-12, kerja satu arah) ----------
+// Dulu sumber Kantor 3D ada di repo jasa dan disalin balik ke Zuno. Sekarang semuanya diubah di Zuno (kantor-3d/),
+// lalu ekspor ini menyalinnya utuh ke jasa: kode sumber + hasil build, aset, alat, dan tes Kantor 3D.
+// Repo jasa tidak perlu diedit langsung lagi (kecuali .github/ dan keluaran lama preview/, downloads/, artifacts/).
+const kantor = join(root, 'kantor-3d');
+const salinKantor = (a, b) => {
+  mkdirSync(b, { recursive: true });
+  for (const f of readdirSync(a)) { const s = join(a, f); if (statSync(s).isDirectory()) salinKantor(s, join(b, f)); else copyFileSync(s, join(b, f)); }
+};
+for (const d of ['office', 'nexa', 'tests']) { rmSync(join(out, d), { recursive: true, force: true }); salinKantor(join(kantor, d), join(out, d)); }
+for (const d of ['agents', 'themes', 'nexa']) { rmSync(join(out, 'assets', d), { recursive: true, force: true }); salinKantor(join(kantor, 'assets', d), join(out, 'assets', d)); }
+for (const f of ['kantor.html', 'nexa.html', 'AGENTS-18.md']) copyFileSync(join(kantor, f), join(out, f));
+mkdirSync(join(out, 'tools'), { recursive: true });
+for (const f of readdirSync(join(kantor, 'tools'))) copyFileSync(join(kantor, 'tools', f), join(out, 'tools', f));
+
 // ---------- Kantor 3D tertanam di Workspace ----------
-// Sumber Kantor 3D tetap di repo jasa (kantor.html, office/, nexa.html, nexa/). Versi tertanamnya sama dengan di web Zulnan
-// (dibuat tools/kantor/ambil-kantor.mjs): office/ruang.html (Menara Senja, Griya Langit) dan office/grotto.html (The Grotto).
-// nexa.html di repo jasa tetap halaman The Grotto mandiri (dipakai tes Kantor 3D), jadi versi tertanamnya diberi nama lain.
+// Versi tertanamnya sama dengan di web Zulnan (dibuat tools/kantor/ambil-kantor.mjs saat web/build.mjs):
+// office/ruang.html (Menara Senja, Griya Langit) dan office/grotto.html (The Grotto).
+// nexa.html tetap halaman The Grotto mandiri (dipakai tes Kantor 3D), jadi versi tertanamnya diberi nama lain.
 mkdirSync(join(out, 'office'), { recursive: true });
 for (const f of ['sematan.css', 'sematan.js', 'nexa-sematan.css', 'nexa-sematan.js']) copyFileSync(join(web, 'office', f), join(out, 'office', f));
 writeFileSync(join(out, 'office', 'ruang.html'), readFileSync(join(web, 'office', 'ruang.html'), 'utf8').split('Zuno Studio').join('Nexaoffice'));
@@ -113,7 +128,8 @@ for (const f of readdirSync(join(web, 'api'))) if (!['ai.js', 'status.js'].inclu
 
 // ---------- aset: tanpa foto dan avatar Zulnan ----------
 const SKIP_ASSET = /foto-zulnan|zulnan|README/i;
-// Aset khusus situs Nexaoffice dan salinan Kantor 3D (sumbernya repo jasa sendiri) tidak ikut ke jasa.
+// Aset khusus situs Nexaoffice tidak ikut ke jasa; salinan Kantor 3D di web/assets dilewati karena aset Kantor 3D
+// sudah disalin langsung dari kantor-3d/ di atas.
 const SKIP_TOP = new Set(['agents', 'themes', 'nexa', 'site', 'fonts', 'nexaoffice-alur.mp4', 'nexaoffice-alur.webm', 'nexaoffice-alur.webp', 'agen-profil.json']); // agen-profil.json: profil tim Zulnan untuk menu Tambah agen (hanya edisi Nexaoffice)
 function copyDir(a, b, top = false) {
   mkdirSync(b, { recursive: true });
@@ -124,7 +140,7 @@ function copyDir(a, b, top = false) {
     else if (!SKIP_ASSET.test(f)) copyFileSync(s, join(b, f));
   }
 }
-// Folder aset milik repo jasa sendiri (Kantor 3D: 18 GLB agen, preview tema; The Grotto: assets/nexa) tidak ikut dihapus.
+// Aset Kantor 3D (18 GLB agen, preview tema, The Grotto) baru saja disalin dari kantor-3d/: jangan dihapus di sini.
 const KEEP_ASSETS = ['agents', 'themes', 'nexa'];
 if (existsSync(join(out, 'assets'))) for (const f of readdirSync(join(out, 'assets'))) if (!KEEP_ASSETS.includes(f)) rmSync(join(out, 'assets', f), { recursive: true, force: true });
 copyDir(join(web, 'assets'), join(out, 'assets'), true);
@@ -145,28 +161,20 @@ copyFileSync(join(web, 'assets', 'fonts', 'jetbrains-mono-latin-400-normal.woff2
 }
 
 // ---------- paket, konfigurasi, dokumen ----------
-// package.json digabung: dependensi Zuno + dependensi/script/devDependencies milik repo jasa (Kantor 3D) tetap ada.
+// package.json = dependensi web Zuno + dependensi, devDependencies, dan script Kantor 3D (kantor-3d/package.json).
+// package-lock.json diambil dari kantor-3d/ (sudah memuat dependensi web juga).
 const pkg = JSON.parse(readFileSync(join(web, 'package.json'), 'utf8'));
-pkg.name = 'zuno-studio-jasa'; delete pkg.scripts;
-const outPkgFile = join(out, 'package.json');
-const old = existsSync(outPkgFile) ? JSON.parse(readFileSync(outPkgFile, 'utf8')) : {};
-const extraDeps = Object.keys(old.dependencies || {}).filter(d => !(d in (pkg.dependencies || {})));
-const jasaLokal = extraDeps.length || old.devDependencies || old.scripts;
-if (jasaLokal) {
-  pkg.dependencies = { ...(old.dependencies || {}), ...(pkg.dependencies || {}) };
-  if (old.devDependencies) pkg.devDependencies = old.devDependencies;
-  if (old.scripts) pkg.scripts = old.scripts;
-}
-writeFileSync(outPkgFile, JSON.stringify(pkg, null, 2) + '\n');
-if (jasaLokal) {
-  // package-lock repo jasa dipertahankan; pastikan dependensi Zuno sudah ada di dalamnya.
-  const lockFile = join(out, 'package-lock.json');
-  const lock = existsSync(lockFile) ? JSON.parse(readFileSync(lockFile, 'utf8')) : {};
-  const missing = Object.keys(pkg.dependencies || {}).filter(d => !(lock.packages && lock.packages['node_modules/' + d]));
-  if (missing.length) throw new Error('package-lock.json repo jasa belum memuat: ' + missing.join(', ') + '. Jalankan "npm install" di repo jasa lalu ekspor lagi.');
-} else if (existsSync(join(web, 'package-lock.json'))) {
-  const lock = JSON.parse(readFileSync(join(web, 'package-lock.json'), 'utf8'));
-  lock.name = pkg.name; if (lock.packages && lock.packages['']) lock.packages[''].name = pkg.name;
+const kpkg = JSON.parse(readFileSync(join(kantor, 'package.json'), 'utf8'));
+pkg.name = 'nexaoffice';
+pkg.dependencies = { ...(kpkg.dependencies || {}), ...(pkg.dependencies || {}) };
+if (kpkg.devDependencies) pkg.devDependencies = kpkg.devDependencies;
+pkg.scripts = kpkg.scripts || {};
+writeFileSync(join(out, 'package.json'), JSON.stringify(pkg, null, 2) + '\n');
+{
+  const lock = JSON.parse(readFileSync(join(kantor, 'package-lock.json'), 'utf8'));
+  const missing = Object.keys(pkg.dependencies).filter((d) => !(lock.packages && lock.packages['node_modules/' + d]));
+  if (missing.length) throw new Error('kantor-3d/package-lock.json belum memuat: ' + missing.join(', ') + '. Tambahkan ke kantor-3d/package.json, jalankan "npm install" di kantor-3d/, lalu ekspor lagi.');
+  lock.name = pkg.name; if (lock.packages && lock.packages['']) { lock.packages[''].name = pkg.name; lock.packages[''].dependencies = pkg.dependencies; }
   writeFileSync(join(out, 'package-lock.json'), JSON.stringify(lock, null, 2) + '\n');
 }
 // vercel.json tanpa redirect /kantor.html: repo jasa masih memakai halaman kantor.html sendiri.

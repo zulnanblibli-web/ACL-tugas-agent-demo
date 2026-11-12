@@ -814,4 +814,14 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Bukti: `zuno-jasa-test` HASIL: SEMUA LOLOS (cek baru: K1 menu tanpa halaman jualan, K2 nama brand menggantikan Nexaoffice + bawaan Nexaoffice bila kosong, K3 kredit hanya di footer, CSS Nexaoffice tanpa HUD, iframe kantor termuat, The Grotto ke `office/grotto.html`, profil agen tanpa data pribadi); `nexaoffice-situs-test` SEMUA LOLOS; `zuno-web-stub-test` 0 gagal; `zuno-web-dev-server-test` semua lolos. `server.mjs` jasa dijalankan sungguhan: 14 alamat (halaman, CSS, kantor, Grotto, huruf, profil, galeri, API) 200; screenshot desktop/HP/pemakaian pertama tanpa error halaman.
 - Catatan: label di dalam kantor 3D ("Nexa Studio") milik kantor 3D, tidak ikut diganti nama brand. Nama produk edisi jasa diganti jadi **Nexaoffice** (Zulnan: "nama produk diganti jadi Nexaoffice"): LISENSI, CLAUDE.md, PANDUAN-LOKAL, VERSI, `jalankan-lokal.bat`, aria-label kantor, dan teks "Zuno Studio" di prompt/unduhan/paket (ekspor mengganti, brand.js lalu memakai nama brand pembeli bila diisi); nama agen ZUNO tetap. Tes jasa + cek nama produk: SEMUA LOLOS. Push atas izin Zulnan ("oke push").
 
-## 81. (entri berikutnya di sini)
+## 81. Kerja satu arah: sumber Kantor 3D pindah ke Zuno (`kantor-3d/`) (2026-11-12)
+- Permintaan Zulnan: Hambatan 7 (dua repo, sinkron bolak-balik) dirapikan jadi "jalan di Zuno, ekspor ke jasa" supaya tidak banyak makan waktu kerja.
+- Hasil:
+  - `kantor-3d/` (baru, 115 berkas dari repo jasa): `kantor.html`, `nexa.html`, `AGENTS-18.md`, `office/`, `nexa/`, `assets/agents|themes|nexa`, alat + tes Kantor 3D, `package.json`/lock (nama `nexaoffice-kantor-3d`), `.gitignore`, `README.md`. Berkas tertanam hasil ekspor (`office/ruang.html`, `grotto.html`, `kendali.js`, `sematan.*`) tidak ikut.
+  - `tools/kantor/ambil-kantor.mjs` membaca `kantor-3d/` (bawaan); `web/build.mjs` menjalankannya otomatis.
+  - `tools/jasa/ekspor-jasa.mjs` menyalin `kantor-3d/` utuh ke jasa (office/, nexa/, tests/ dihapus lalu disalin; aset Kantor 3D; alat); `package.json` jasa = web + `kantor-3d/package.json` (nama `nexaoffice`), lock dari `kantor-3d/`.
+  - `CLAUDE.md`, `docs/jasa-zuno.md`, `docs/memori-zuno.md`, `web/README.md`, `docs/cek-berkas-lama.md` diperbarui.
+- Bukti: ekspor dari sumber baru menghasilkan berkas Kantor 3D identik dengan isi jasa sebelumnya (diff jasa hanya urutan `package.json` + nama paket); `npm run build:themes` di `kantor-3d/` menghasilkan `office.bundle.js` dan `studio.bundle.js` identik byte-per-byte; `test:office` (11 PASS), `test:themes` (9 PASS), `test:nexa` (8 PASS), `test:simulation`, `test:nexa-animation`, `test:nexa-kendali` lolos dari `kantor-3d/`; `web/build.mjs` tidak mengubah `web/`; `zuno-jasa-test` SEMUA LOLOS; `nexaoffice-situs-test` SEMUA LOLOS; `zuno-web-dev-server-test` semua lolos.
+- Tertunda: butir kuning J3-J5 (`preview/`, `downloads/`, `artifacts/` di jasa) dan `.github/` tetap di jasa, tidak disentuh ekspor.
+
+## 82. (entri berikutnya di sini)

@@ -4,12 +4,16 @@
 // Jalankan ulang setiap kali zuno-studio-v2.html atau web/src/ berubah:  node web/build.mjs
 // Edisi jasa memakai studio.html + berkas yang sama, dijadikan white-label oleh tools/jasa/ekspor-jasa.mjs.
 import { writeFileSync, copyFileSync, mkdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { bangunRuangKerja } from './bangun.mjs';
 import { tulisProfilWeb } from '../tools/agen/profil-web.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
+// Kantor 3D: sumbernya kantor-3d/ di repo ini (sejak 2026-11-12). Disalin ke web/ setiap build supaya tidak ketinggalan.
+// Kode kantor diubah? Jalankan dulu: (cd kantor-3d && npm run build:themes)
+execFileSync(process.execPath, [join(here, '..', 'tools', 'kantor', 'ambil-kantor.mjs')], { stdio: 'inherit' });
 const studio = bangunRuangKerja('nexa');
 writeFileSync(join(here, 'studio.html'), studio);
 // hud.js: logika status dan kunci akses (tetap dipakai Workspace walau tampilan HUD lama sudah dihapus).
