@@ -832,6 +832,7 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - `tools/pasang/pasang.ps1` dan `pasang.sh`: pesan akhir tidak lagi menyuruh membuka `localhost:3000`; browser terbuka sendiri ke alamat yang benar + petunjuk bila tampilan masih lama.
   - `tests/zuno-web-dev-server-test.mjs`: cek `/api/versi`.
 - Bukti: simulasi server versi 692d371 di port 3000 lalu server baru -> pindah ke 3001 + peringatan muncul; `zuno-web-dev-server-test` semua lolos; `zuno-jasa-test` SEMUA LOLOS; `server.mjs` jasa menjawab `/api/versi`.
-- Tertunda (Zulnan): tutup jendela server lama (atau restart laptop), lalu klik `jalankan-lokal.bat` di folder clone baru.
+- Hasil di laptop (Zulnan): setelah server lama ditutup, tampilan lokal sudah sama dengan website ("udah berubah tampilan nya").
+- Push (izin Zulnan "sekarang push"): Zuno `0b9efb4`, jasa `9ab77e5`.
 
 ## 83. (entri berikutnya di sini)
