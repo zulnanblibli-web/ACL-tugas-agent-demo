@@ -840,5 +840,6 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - Hasil: `docs/daftar-perbaikan-lokal.md` (L1-L12 urut, aturan Personal vs Niche), `docs/strategi-portofolio.md` (bagian 1-3). Aturan akun dicatat di `CLAUDE.md`, `docs/brief-gaya-konten.md` (slogan hanya akun personal), `docs/memori-zuno.md`.
 - Bukti: situs live dibuka lewat Vercel (200); video Netizen City dianalisis dari frame (58,6 dtk, 1 frame/2 dtk); Instagram tidak bisa diakses (tidak dikarang, minta 5 post); kebijakan YouTube/Meta dari pencarian web (sumber di dokumen).
 - Tertunda: bagian 4-6 + Weak points setelah Zulnan bilang "lanjut"; L1 (cek laptop) di Zulnan; keputusan biaya Claude vs budget sebelum L8.
+- Lanjutan: Zulnan kirim screenshot 6 post Netizen City + link YouTube stickman; dianalisis di `strategi-portofolio.md` (monetisasi Trakteer, voting Kongres, follower jadi kerumunan/angkatan, komentar asli di layar). Keputusan Zulnan: karakter dan alur dibuat sendiri, tidak harus kota; 4 konsep sendiri K-A..K-D menunggu pilihan Zulnan. Video YouTube (Control grow, tutorial "Claude Animation Skill", 9 Nov 2026, ~103 rb tayangan) hanya terbaca judul + deskripsi; isinya tidak bisa ditonton (YouTube minta login). `www.youtube.com` ditambahkan ke host environment cloud. API key Claude: PR Zulnan.
 
 ## 84. (entri berikutnya di sini)

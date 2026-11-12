@@ -92,6 +92,27 @@ Penilaian gua:
 - Kelemahannya **cold start**. Dengan 0 follower, "top komen" bisa kosong dan seri macet. Netizen City bisa menutupinya dengan humor ("itu juga saya yang ngitung"); seri lu belum tentu.
 - Biaya produksi tinggi: tiap episode butuh adegan 3D baru.
   - [Fakta] Lu sudah punya kantor 3D three.js + 18 karakter voxel. Itu bisa dipakai ulang untuk rekam adegan tanpa API key.
+**Tambahan dari screenshot 6 post (dikirim Zulnan 2026-11-12)** [Fakta, dari gambar; angka view/komen tidak kelihatan]:
+
+| Post | Yang terlihat | Pola yang bisa dipelajari |
+|---|---|---|
+| 1 | Maskot di ruangan, subtitle "bisa langsung ke Trakteer", banner peringatan "Netizen City tidak pernah minta transfer lewat DM" | **Monetisasi: donasi lewat Trakteer**, plus peringatan anti-penipuan karena akun ramai ditiru |
+| 2 | Maskot di jalan raya dengan patung hewan (mirip alpaka), ada koin emas | Bangunan/landmark aneh dari permintaan netizen; ikon koin = sistem ekonomi/anggaran |
+| 3 | "HASIL KONGRES WARGA": Gunung + Air Terjun vs Pantai, persentase 0%, kerumunan warga bawa papan | **Voting** jadi episode tersendiri (hasil dihitung dari komentar) |
+| 4 | Kerumunan besar warga bawa papan tulisan, spanduk "...sebagai penduduk, kami tidak setuju" | **Follower jadi kerumunan yang kelihatan**; komentar ditulis di papan demo, jadi humor + rasa ikut memiliki |
+| 5 | Gerbang "KAMPUNG ANGKATAN 1" | **Follower diberi kelompok/angkatan**: pengikut awal dihargai, jadi alasan follow cepat |
+| 6 | Kartu komentar "anonim: buat dapur MBG!", maskot berpikir dengan ikon piring | **Komentar asli ditampilkan sebagai pemicu episode**; isu berita aktual (MBG) masuk ke dunia fiksi |
+
+Kesimpulan pola:
+- Penonton tidak cuma menonton; dia **jadi penduduk yang kelihatan** dan **ikut memutuskan** (komentar, voting, demo).
+- Berita aktual masuk lewat permintaan penonton, bukan lewat ceramah.
+- Uangnya dari donasi komunitas (Trakteer), bukan cuma dari iklan platform.
+
+**Keputusan Zulnan (2026-11-12):**
+- Referensi ini cuma acuan rasa.
+- Karakter, dunia, dan alur cerita dibuat sendiri, dan **tidak harus kota**.
+- Pilihan konsep ada di bagian "Konsep sendiri" di bawah.
+
 - **Yang boleh diambil:** pola "dunia yang dibangun penonton per hari", penghitung kemajuan, CTA bertumpuk, time-lapse.
 - **Yang tidak boleh ditiru:** kota + wali kota + maskot kapsul bertopi, nama "Netizen City", kartu profil dan teks tagline mereka.
 - [Asumsi] Ide yang dekat dengan aset lu: "Day N: kantor AI yang agennya dipilih netizen". Komentar meminta agen atau fitur, Hana merekrut, Agent Builder membangun. Ini sekaligus bukti tools bekerja. Tapi mekaniknya mirip; **putuskan sendiri** apakah terlalu dekat.
@@ -109,7 +130,20 @@ Penilaian gua:
 | Tempo | Ganti pose/adegan cepat; humor dari jeda dan kontras |
 | Monetisasi | Iklan YouTube long-form, sponsor. [Asumsi] Pendapatan Shorts per view rendah; jangan diandalkan |
 
-- [Cek sendiri] Kirim 2-3 link kanal stick man yang lu maksud. Gua belum menganalisis video spesifik, cuma sumber tentang formatnya.
+**Video yang dikirim Zulnan** (https://www.youtube.com/watch?v=npbBhbYoEFc) [Fakta, dari halaman YouTube 2026-11-12]:
+- Judul: "Make Viral Stickman Animation Shorts with Claude AI & Get Monetized FAST!"
+- Kanal: Control grow (@controlgrowYT). Tayang perdana 9 Nov 2026, sekitar 103.685 tayangan.
+- Isi menurut deskripsi: alur "Claude Animation Skill" untuk mencari topik viral lalu membuat Shorts stickman. Skill-nya dibagikan lewat folder Google Drive dan Telegram.
+- **Videonya sendiri tidak bisa gua tonton atau transkrip.** YouTube minta login "konfirmasi bukan bot". Jadi isi langkah dan contoh kanal stickman di dalamnya belum gua lihat.
+
+Penilaian gua:
+- Ini **video tutorial "cara cepat dimonetisasi"**, bukan kanal stickman yang terbukti menghasilkan.
+  - Bukti uangnya ada di kanal tutorial itu: views dan Telegram mereka.
+  - Kanal stickman yang dibuat penonton mereka belum tentu menghasilkan.
+  - Klaim "monetized FAST" tidak ada buktinya di deskripsi.
+- Alur "topik viral -> video jadi" yang diproduksi massal adalah **profil persis yang diincar aturan YPP 2025** (konten berulang/massal). Kalau dipakai, harus ada nilai tambah sendiri: naskah, sudut pandang, humor, riset bersumber.
+- **Jangan pasang skill dari folder Drive/Telegram orang tak dikenal.** Skill bisa berisi skrip yang jalan di laptop lu (risiko keamanan). Kalau mau, gua bikin skill stickman sendiri di Zuno dari nol (Remotion + SVG), dicek Damar.
+- [Cek sendiri] Kalau di video itu disebut kanal stickman contoh, kirim nama atau screenshot-nya. Gua analisis kanalnya, bukan tutorialnya.
 
 ### 2c. "Bedah sesuatu" visual-motion (item 4)
 - [Asumsi, dari pengetahuan gua, belum gua cek ulang sesi ini] Contoh genre: Kurzgesagt, Vox explainers, Johnny Harris (peta + arsip + data).
@@ -143,6 +177,28 @@ Penilaian gua:
 
 ---
 
+### Konsep sendiri untuk format "dunia yang dibangun penonton" (Zulnan pilih)
+Semua untuk **akun niche** (bukan akun personal; tanpa karakter/slogan Zulnan). Karakter dan dunia dibuat dari nol. Bisa dirender dari kode three.js/voxel yang sudah ada di Kantor 3D, jadi tanpa generator berbayar.
+
+| # | Konsep | Penonton jadi | Komentar jadi | Kenapa menarik | Risiko |
+|---|---|---|---|---|---|
+| K-A | **Kos-kosan Netizen**: pemilik kos baru membuka kos kosong satu kamar | Penghuni kos (satu kamar per angkatan follower) | Aturan kos, renovasi, fasilitas, drama antar penghuni | Sangat Indonesia, banyak bahan humor, gampang masukin isu aktual (harga, kerja, pinjol) | Mekanik "ditentukan penonton" mirip referensi, tapi dunia dan karakternya beda |
+| K-B | **Warung yang menunya dari komentar**: warung kecil di pinggir jalan berkembang jadi pasar | Pelanggan tetap | Menu baru, renovasi, pegawai baru | Visual makanan + rasa lokal; nanti bisa kerja sama UMKM | Butuh banyak aset makanan 3D |
+| K-C | **Pulau kosong**: satu karakter terdampar, tiap hari bertahan hidup sesuai komentar | Awak/penghuni pulau | Bangun apa, pergi ke mana, keputusan bertahan hidup | Ada ketegangan dan cerita; voting "pilih jalan" cocok | Lebih jauh dari isu sehari-hari |
+| K-D | **Kantor AI yang agennya dipilih penonton** (pakai dunia Nexaoffice) | Karyawan kantor | Agen/fitur baru; Hana merekrut, Agent Builder membangun beneran | Sekaligus bukti Nexaoffice bekerja | Lebih cocok untuk akun produk; risiko jualan terselubung |
+
+Elemen yang dipakai di konsep mana pun:
+- penghitung kemajuan;
+- voting sebagai episode;
+- follower jadi kerumunan yang kelihatan dan diberi angkatan;
+- komentar asli tampil di layar (dengan izin/anonim);
+- donasi komunitas nanti, bukan di awal.
+
+Yang tidak dipakai:
+- kapsul bertopi;
+- kota dan wali kota;
+- nama, kartu profil, dan teks milik akun referensi.
+
 ## 3. Portofolio per item
 
 Urutan saran gua beda dari urutan lu:
@@ -159,7 +215,7 @@ Urutan saran gua beda dari urutan lu:
 | **4. Template Bedah** | Template Remotion (judul pertanyaan, diagram/peta, angka bersumber, kredit sumber di layar) + versi carousel. Selesai bila **10 video 30-60 dtk terbit** di satu akun niche, tiap fakta punya tautan sumber di caption | Raka, Nara, Dika, Vino, Sari, Bima, Tara (fakta), Nita (izin gambar), Maya | Template, 10 video, tabel metrik (retensi rata-rata, % tonton habis, komentar per 1.000 view) | Naskah: ya. Riset, gambar, render: tidak | Sedang |
 | **5. Web / web app / game / 3D** | 3 demo: 1 web app dengan login, 1 landing page, 1 game/3D interaktif kecil. Live di Vercel gratis. Selesai bila tiap demo punya link live, tes lolos, laporan audit Damar, dan studi kasus 1 halaman (brief -> PRD -> hasil -> uji). Lalu **1 klien asli** (boleh murah atau barter) untuk studi kasus sungguhan | Arga, Rani, Fajar, Tio, Damar | Link live, repo, laporan uji + audit, waktu dan biaya per build | Ya | Sedang per demo |
 | **2. Template Stick man** | Rig stick figure SVG (10-15 pose, ekspresi, properti) di Remotion + resep naskah. Selesai bila **10 video terbit** di akun niche lain dan kurva retensi tercatat | Raka, Nara, Dika, Vino, Sari, Bima, Edo (VO/subtitle), Tara, Maya | Template, 10 video, metrik | Naskah: ya. Render: tidak. VO: TTS gratis atau rekaman sendiri [Cek sendiri: TTS gratis yang lisensinya boleh komersial] | Sedang |
-| **3. Template Kota-komentar** (konsep sendiri, bukan kota+maskot mereka) | Dunia dan karakter sendiri + kit adegan 3D (pakai ulang kantor 3D/voxel) + alur Day-N: ambil komentar -> pilih -> bangun -> render. Selesai bila **7 episode** terbit berturut-turut dan tiap episode memakai komentar asli dari episode sebelumnya | Raka (baca komentar), Nara, Dika, Sari, Bima, Fajar (adegan 3D), Maya | Seri 7 hari + bukti komentar dipakai (screenshot) | Naskah: ya. Ambil komentar otomatis butuh API Meta/Metricool (P1), atau manual dulu | Besar |
+| **3. Template dunia-komentar** (konsep sendiri dari K-A sampai K-D, bukan kota+maskot mereka) | Dunia dan karakter sendiri + kit adegan 3D (pakai ulang kantor 3D/voxel) + alur Day-N: ambil komentar -> pilih -> bangun -> render. Selesai bila **7 episode** terbit berturut-turut dan tiap episode memakai komentar asli dari episode sebelumnya | Raka (baca komentar), Nara, Dika, Sari, Bima, Fajar (adegan 3D), Maya | Seri 7 hari + bukti komentar dipakai (screenshot) | Naskah: ya. Ambil komentar otomatis butuh API Meta/Metricool (P1), atau manual dulu | Besar |
 | **6. Daftar agen perusahaan kreatif** | Dokumen struktur + pemicu penambahan (bagian 6 nanti). Selesai bila tiap agen punya pemicu dan ukuran kerja | L.0 ZUNO, H.1 Hana | Bukan bukti untuk publik; ini peta internal | Tidak | Kecil |
 
 ### Khusus item 1b: supaya jalan di laptop pembeli
