@@ -1,0 +1,57 @@
+{
+  "akun": "@teknikdibedah",
+  "judul": "Kenapa gedung tinggi nggak roboh kena angin?",
+  "mesin_suara": "ditunda (P14)",
+  "baris": [
+    {
+      "id": "01",
+      "babak": "Zoom out",
+      "teks": "Pernah lihat gedung pencakar langit pas lagi hujan angin? Kebayang nggak, di atas sana anginnya jauh lebih kencang?"
+    },
+    {
+      "id": "02",
+      "babak": "Zoom in",
+      "teks": "Faktanya, gedung tinggi memang sengaja dibuat bisa goyang. Kalau terlalu kaku, malah gampang rusak."
+    },
+    {
+      "id": "03",
+      "babak": "Bedah 1",
+      "teks": "Kita bongkar. Kaca di luar itu cuma kulit. Dorongan anginnya dioper ke rangka baja."
+    },
+    {
+      "id": "04",
+      "babak": "Bedah 2",
+      "teks": "Rangkanya diikat ke inti beton di tengah, kayak tulang punggung. Di Taipei 101, ikatannya ada tiap delapan lantai."
+    },
+    {
+      "id": "05",
+      "babak": "Bedah 3 (kejutan utama)",
+      "teks": "Dan ini yang jarang orang tahu. Di puncaknya ada bola baja seberat enam ratus enam puluh ton, sengaja digantung."
+    },
+    {
+      "id": "06",
+      "babak": "Bedah 3 (cara kerja)",
+      "teks": "Pas gedung condong ke kanan, bola ini berayun ke kiri, melawan goyangannya. Goyangannya bisa berkurang sampai empat puluh persen."
+    },
+    {
+      "id": "07",
+      "babak": "Bedah 3 (bonus)",
+      "teks": "Waktu topan tahun dua ribu lima belas, bola ini sampai berayun satu meter. Saking terkenalnya, bola ini punya maskot sendiri."
+    },
+    {
+      "id": "08",
+      "babak": "Bedah 4",
+      "teks": "Sisa dorongannya dikunci ke tanah lewat ratusan tiang fondasi."
+    },
+    {
+      "id": "09",
+      "babak": "Jawaban",
+      "teks": "Jadi gedung tinggi bukan dibikin kaku. Dia lentur, diikat kuat, dan punya penyeimbang."
+    },
+    {
+      "id": "10",
+      "babak": "Penutup",
+      "teks": "Bangunan atau mesin apa yang bikin lu penasaran? Tulis dikomentar, nanti gua pilih, kita bongkar sesuai permintaan lu."
+    }
+  ]
+}

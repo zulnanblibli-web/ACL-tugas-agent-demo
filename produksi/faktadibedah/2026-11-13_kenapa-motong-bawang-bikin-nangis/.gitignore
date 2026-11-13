@@ -1,0 +1,6 @@
+suara/*.wav
+proyek/out/
+proyek/stills/
+proyek/events.json
+final/*.mp4
+final/*.wav

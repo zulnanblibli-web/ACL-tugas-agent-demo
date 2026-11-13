@@ -869,4 +869,98 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
   - Keputusan lisensi opuscar di paket jasa sebelum dijual.
 - Tambahan (Zulnan: "akun stickman juga kalo lu ada refrensi alur cerita yang relate"): pola alur cerita relate dari judul Shorts Backbench/Rico + struktur 15-40 detik + contoh situasi Indonesia di `akun-dan-template.md`. Commit + push atas izin Zulnan ("sampe sini dulu commit dan push").
 
-## 86. (entri berikutnya di sini)
+## 86. Lisensi skill + rencana mesin video sendiri (2026-11-12)
+- Permintaan:
+  - Zulnan tanya lisensi skill yang dipakai aman atau tidak;
+  - apakah opuscar/taste-skill/ui-styling bisa ikut pemasang 1 klik;
+  - rencana membuat versi opuscar sendiri ("hanya plan, jangan ada yang diubah"); commit lokal saja, tanpa push.
+- Hasil:
+  - Jawaban lisensi per skill: MIT/Apache aman; opuscar campur (kode MIT, dokumen CC BY-NC); taste-skill (foto lisensi campur) dan ui-styling tetap di luar paket.
+  - `.claude/skills/README.md`: catatan lisensi opuscar dibetulkan (`046ca30`).
+  - Rencana `docs/rencana-mesin-video-sendiri.md` (ruang bersih, T0-T7).
+  - Opsi pemasang 1 klik yang mengunduh dari GitHub dijelaskan, belum dikerjakan.
+- Tertunda: Zulnan pilih nama + gaya pertama (T0); keputusan "kerjain" untuk pemasang 1 klik; push menunggu izin Zulnan.
+
+## 87. T0 mesin video: nama akun + gaya pertama (2026-11-12)
+- Permintaan: mulai T0; Zulnan usul seri F "Bedah Fakta" dan T "Bedah Teknik", minta saran nama yang lebih unik; lalu memilih nama no. 2 (Meja Bedah) dan gaya F1 + T1, minta detail gaya untuk dicek, dikerjakan satu per satu.
+- Hasil:
+  - 6 usulan nama (Rontgen, Meja Bedah, Isi Perut, Urai, Berkas, Laboratorium Kenapa); dipilih **Meja Bedah**: seri Bedah Fakta + Bedah Mesin, judul episode "Pasien #NN".
+  - Cek YouTube: handle `@mejabedah` 404 (belum dipakai), pencarian "meja bedah" berisi video alat medis. TikTok/IG belum dicek.
+  - Kartu Gaya draf F1 (investigasi visual) dan T1 (teardown) ditulis dari nol (ruang bersih: hanya poster demo opuscar CC BY 4.0 yang dilihat, STYLE.md tidak dibuka), plus 5 pertanyaan untuk Zulnan.
+  - Contoh frame 9:16 (tata letak, isi dummy): F1 dari HTML/SVG, T1 dari three.js; disimpan sebagai JPG.
+- File: `docs/gaya-meja-bedah.md` (baru), `docs/gaya/meja-bedah-f1-contoh.jpg`, `docs/gaya/meja-bedah-t1-contoh.jpg` (baru), `docs/akun-dan-template.md`, `docs/rencana-mesin-video-sendiri.md`, `docs/memori-zuno.md`, `progress.md`.
+- Tertunda: Zulnan cek Kartu Gaya; T1 audit `core/`; T2 mesin minimal. Belum di-push (Zulnan: selesaikan di lokal dulu).
+
+## 88. Kartu Gaya Meja Bedah: keputusan Zulnan (2026-11-12)
+- Permintaan: Zulnan menjawab 5 pertanyaan Kartu Gaya: (1) seri F dan T dibedakan warnanya, lalu warna menyesuaikan topik/benda; (2) "Pasien #NN" boleh untuk bencana dengan korban, bedah penyakit, sebab-akibat penyakit, pasien rumah sakit dengan penyakitnya; (3) video contoh 30 detik; (4) suara AI; (5) video T1 dulu.
+- Hasil:
+  - Sistem warna: latar tetap per seri (F hitam arsip kebiruan, T grafit studio hangat); warna sinyal satu per episode, F dari tabel topik (6 warna), T berlawanan dengan warna badan benda (5 warna); semua kontras ke latar minimal 4.5:1 (dihitung).
+  - Contoh warna: `docs/gaya/meja-bedah-warna-f.jpg` (kecelakaan/penyakit/bencana), `docs/gaya/meja-bedah-warna-t.jpg` (benda abu/oranye/biru).
+  - Aturan khusus topik korban dan penyakit: tanpa foto jenazah/luka; sumber medis resmi; "Bukan nasihat medis"; tanpa pasien asli yang bisa dikenali (pasien rekaan bertanda "kasus ilustrasi" atau laporan kasus anonim).
+  - Alur 30 detik untuk F1 dan T1.
+- File: `docs/gaya-meja-bedah.md`, `docs/gaya/meja-bedah-warna-f.jpg`, `docs/gaya/meja-bedah-warna-t.jpg`, `docs/memori-zuno.md`, `progress.md`.
+- Tertunda: Zulnan cek sistem warna; T1 audit `core/`; T2 mesin minimal; T3 video contoh T1. Belum di-push.
+
+## 89. Mesin video sendiri + video contoh Bedah Mesin (2026-11-12)
+- Permintaan: Zulnan setuju sistem warna; format bawaan 9:16 (Reels + YouTube Shorts), bisa 16:9 untuk YouTube panjang bila diminta; "oke gas" untuk audit, mesin minimal, dan video contoh T1.
+- Hasil:
+  - Mesin `tools/mesin-video/render.mjs` ditulis sendiri: server lokal kecil -> Chromium (Playwright) memotret tiap frame -> ffmpeg H.264/AAC; pilihan `--format 9x16|16x9`, `--still`, `--mulai/--sampai`, `--suara`; menulis `.srt` dari narasi.
+  - Template `gaya/bedah-mesin/template.html` (three.js): benda utuh -> terurai -> label 01-05 -> zoom bagian kunci -> rakit lagi; data dari `episode.json` (bentuk 3D sederhana, warna, teks, narasi, waktu, sumber); tata letak menyesuaikan 9:16 dan 16:9.
+  - Episode `bedah-mesin-001-power-bank` (Pasien #01, 30 detik, bagian kunci papan sirkuit 3,7 V -> 5 V, ±74% teori) + `caption.md`. Fakta dari Wikipedia "Battery pack" (mengutip Diao dkk. IEEE Access 2020, Electronic Design 2013).
+  - Audit T1: kode opuscar tidak dipakai; bahan pihak ketiga three.js (MIT), Inter (OFL), JetBrains Mono, file lisensi ikut.
+  - Bukti: `check.py --platform shorts --content` = durasi, rasio, resolusi, fps, codec, warna, hitam, beku, kedip PASS; audio/loudness/silence FAIL karena trek masih senyap (suara AI belum, T5).
+- File: `tools/mesin-video/` (baru), `docs/rencana-mesin-video-sendiri.md`, `docs/gaya-meja-bedah.md`, `docs/memori-zuno.md`, `progress.md`. Video hasil di `tools/mesin-video/hasil/` (tidak di-commit).
+- Tertunda: Zulnan menilai video; suara AI bahasa Indonesia (Kokoro tidak punya bahasa Indonesia [Cek]; pilihan lain perlu cek lisensi atau izin bila berbayar); template F1; sambung ke Workspace (T6). Belum di-push.
+
+## 90. Pilihan suara AI bahasa Indonesia + aturan durasi/format (2026-11-12)
+- Permintaan: Zulnan menilai video contoh "udah lumayan bagus"; durasi nanti mengikuti naskah yang dia kasih, gaya video pakai template yang ada sesuai topik; 16:9 hanya bila diminta; minta dipilihkan suara AI dan tanya apakah bisa dipakai terus.
+- Hasil:
+  - Riset lisensi TTS bahasa Indonesia (dibaca dari Hugging Face + README resmi): utama Pocket TTS Indonesian (anak10thn; model, dataset LEMAS, dan dasar Kyutai semua CC BY 4.0; contoh suara Common Voice CC0); cadangan Supertonic 3 (OpenRAIL-M: gratis, perpetual, komersial boleh; larangan antara lain nasihat medis dan konten mesin tanpa keterangan). Ditolak: Piper id (lisensi dataset tidak jelas), Kokoro dan Chatterbox (tanpa bahasa Indonesia), MMS (non-komersial), edge-tts, ElevenLabs gratis.
+  - Environment "Zuno (riset konten)" ditambah huggingface.co + 3 host unduhan (disetujui Zulnan lewat prompt).
+  - Pemasangan paket `supertonic`/`pocket-tts` ditahan pengaman otomatis sesi (kode dari luar), jadi contoh suara belum dibuat.
+  - Kartu Gaya + README mesin: 9:16 selalu, 16:9 hanya bila diminta; durasi mengikuti naskah.
+- File: `docs/suara-ai.md` (baru), `docs/gaya-meja-bedah.md`, `tools/mesin-video/README.md`, `docs/memori-zuno.md`, `progress.md`.
+- Tertunda: izin Zulnan untuk memasang paket TTS (atau jalankan di laptop), lalu contoh suara dan pilih; template F1. Belum di-push.
+
+## 91. Template adegan->bedah + aturan baru dua akun bedah (2026-11-13)
+- Permintaan: (1) buat semua template seri F (penyakit, luka, penyakit umum) dan T (mesin/teknik) dengan footage hidup: adegan sesuai tempat -> masuk ke bagian yang sakit/mesin -> bedah; contoh dulu, jangan push. (2) Zulnan menilai hasilnya kurang hidup, kurang nyata, minta diskusi. (3) Aturan baru: cuma 2 niche, @faktadibedah (referensi TikTok @kitabedah.idn) dan @teknikdibedah (gaya bedah teknik lemo-opuscar).
+- Hasil:
+  - Dasar bersama `tools/mesin-video/gaya/_dasar/` (CSS + JS: label, subtitle, transisi pindai, panah, material).
+  - Template `gaya/bedah-fakta` (taman: orang lari jatuh -> lutut lecet -> potongan kulit 3 lapis -> 4 tahap sembuh, sumber Wikipedia "Wound healing" + "Abrasion") + episode `bedah-fakta-002-luka-lecet`, video 30 detik dirender.
+  - Template `gaya/bedah-mesin-adegan` (laut + kapal kargo -> hukum Archimedes -> tembus -> mesin/poros/baling-baling/kemudi -> dorong air, sumber Wikipedia "Buoyancy", "Marine propulsion", "Container ship") + episode `bedah-mesin-003-kapal` (still saja).
+  - Perbaikan mesin: server render kini mengirim `.css` dengan tipe yang benar (sebelumnya stylesheet ditolak browser).
+  - Zulnan menilai: kurang hidup/kurang nyata. Analisis: bangun dasar tanpa model/tekstur, cahaya datar, gerak rumus, kamera monoton, tanpa suara, render tanpa GPU.
+  - Referensi Kita Bedah dibaca (TikTok 161 rb follower, 216 video; YouTube 36,4 rb subscriber) + 12 thumbnail: render 3D nyata, tembus pandang, subtitle per kata dengan sorotan kuning, label chip, tag ILUSTRASI.
+  - Environment ditambah www.tiktok.com dan i.ytimg.com (disetujui lewat prompt).
+- File: `docs/dua-akun-bedah.md` (baru), `tools/mesin-video/gaya/_dasar/`, `gaya/bedah-fakta/`, `gaya/bedah-mesin-adegan/`, `episode/bedah-fakta-002-luka-lecet/`, `episode/bedah-mesin-003-kapal/`, `tools/mesin-video/render.mjs`, `docs/memori-zuno.md`, `progress.md`.
+- Tertunda: jawaban Zulnan (Pulau/Stickman, GPU laptop, budget AI); contoh @teknikdibedah dengan lemo-opuscar; jalur mutu @faktadibedah. Belum di-push.
+
+## 92. Jawaban Zulnan: dua akun bedah (2026-11-13)
+- Permintaan: Pulau + Stickman tetap ada (dikerjakan nanti); laptop Lenovo IdeaPad i3-1215U; budget AI = API key Claude; isi @faktadibedah = fakta harian + fakta umum yang orang belum tahu, @teknikdibedah = mesin apa pun + pembangunan.
+- Hasil: `docs/dua-akun-bedah.md` diperbarui (isi akun, jawaban, akibat: tanpa GPU terpisah jadi Blender bukan jalur utama; Claude tidak membuat gambar/video, jadi jalurnya render 3D dari kode + aset CC0 + opuscar). Memori dan progress diperbarui.
+- File: `docs/dua-akun-bedah.md`, `docs/memori-zuno.md`, `progress.md`.
+- Tertunda: izin "gas" untuk contoh per akun. Belum di-push.
+
+## 93. Contoh dua akun bedah, alur kerja produksi (2026-11-13)
+- Permintaan: gas contoh per akun; topik dipilih Zulnan (gedung tinggi vs angin; bawang bikin nangis); render di laptop; lalu catatan: kualitas gambar oke, alur monoton, ikuti referensi (zoom out -> zoom in -> pokok), pakai suara, alur kerja rapi per tanggal/judul + rencana posting (juga untuk Pulau/Stickman).
+- Hasil:
+  - Skill lemo-opuscar dipakai (library di scratchpad, paket core terpasang, HDRI Poly Haven CC0). Film @teknikdibedah gedung v1: TREATMENT, FACTS (Wikipedia Skyscraper, Curtain wall, Taipei 101, Tuned mass damper), adegan three.js + post.js (PBR, GTAO, DOF, bloom), musik dan foley sintetis, 43 detik; cek platform PASS (loudness -15,4 LUFS), warna diubah ke BT.709.
+  - Film @faktadibedah bawang v1 (FACTS dari Wikipedia Onion + Syn-Propanethial-S-oxide) sedang dirender.
+  - Render cloud lambat (CPU, tanpa GPU): 1 kali kena batas waktu, 1 kali macet (4 worker); akhirnya 720p 2 worker lalu diperbesar. Paket ZIP render-laptop dikirim; di laptop Zulnan render sampai tahap gabung audio (file .part terlihat), hasil akhir belum dikonfirmasi.
+  - Sistem produksi `produksi/` + `tools/produksi/baru.mjs`, `rekap.mjs`, README alur status. Proyek gedung dipindah ke folder episodenya (v1 di final/v1-alur-lama.mp4, tidak ikut git).
+  - Naskah v2 kedua akun (zoom out -> zoom in -> bedah -> jawaban -> penutup), fakta tambahan dicatat.
+  - Pemasangan paket suara AI (supertonic) ditahan pengaman otomatis sesi (kode dari luar).
+- File: `produksi/` (baru), `tools/produksi/` (baru), `konten/` (dipindah sebagian), `progress.md`, `docs/memori-zuno.md`.
+- Tertunda: Zulnan cek naskah v2; izin pasang paket suara (atau buat di laptop); adegan zoom out; render v2. Belum di-push.
+
+## 94. CTA dikoreksi, suara ditunda, push yang sudah fix saja (2026-11-13)
+- Permintaan: CTA "Tulis dikomentar, nanti gua pilih, kita bongkar/bedah sesuai permintaan lu"; suara AI di-keep (Zulnan cari jalannya); push hanya yang sudah fix, yang tidak dipakai jangan ikut.
+- Hasil:
+  - CTA dipasang di naskah, template `baru.mjs`, memori.
+  - Suara jadi pending P14; caption diberi [ISI] untuk baris suara.
+  - Riwayat lokal (15 commit) dipadatkan jadi satu commit bersih di atas origin. Yang dibuang dari push: `tools/mesin-video/`, `docs/gaya-meja-bedah.md`, `docs/gaya/`, `docs/rencana-mesin-video-sendiri.md`; referensinya di `akun-dan-template.md`, `memori-zuno.md`, `dua-akun-bedah.md` dirapikan.
+  - Salinan lengkap di branch lokal `arsip-lokal-2026-11-13` (tidak di-push).
+- File: `produksi/`, `tools/produksi/`, `docs/dua-akun-bedah.md`, `docs/suara-ai.md`, `docs/akun-dan-template.md`, `docs/memori-zuno.md`, `pending.md`, `progress.md`, `.claude/skills/README.md`.
+- Tertunda: adegan naskah v3 + render laptop; suara (P14).
+
+## 95. (entri berikutnya di sini)

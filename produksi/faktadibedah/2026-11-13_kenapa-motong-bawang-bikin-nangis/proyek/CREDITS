@@ -1,0 +1,12 @@
+Aset pihak ketiga di film ini dan lisensinya
+
+- Mesin render: Lemo-Opuscar core (render, post-processing three.js, alat audio sfx.py), MIT License, https://github.com/lemomo-ai/lemo-opuscar
+- three.js r170 (lewat Lemo-Opuscar), MIT License, https://threejs.org
+- HDRI/tekstur Poly Haven, CC0: lythwood_lounge_2k.hdr (https://polyhaven.com/a/lythwood_lounge) dan tekstur american_walnut_veneer (https://polyhaven.com/a/american_walnut_veneer)
+- Font Inter (OFL-1.1), https://github.com/rsms/inter; lisensi di fonts/LICENSE-Inter.txt
+- Font JetBrains Mono (OFL-1.1), https://github.com/JetBrains/JetBrainsMono; lisensi di fonts/LICENSE-JetBrainsMono.txt
+- Musik dan efek suara: disintesis dari kode (numpy), tanpa sampel pihak ketiga
+- Suara narator: belum ada (akan ditambahkan dengan suara AI; label konten AI di caption)
+- Fakta: lihat FACTS.md (Wikipedia, diakses 2026-11-13)
+
+Model 3D di film adalah ilustrasi yang dibuat dari kode, bukan objek atau bangunan tertentu.

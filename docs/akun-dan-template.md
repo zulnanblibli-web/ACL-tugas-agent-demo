@@ -9,7 +9,7 @@ Dikoreksi Zulnan 2026-11-12. **Tujuan akhir:** tiap akun punya template yang ber
 | 1 | **Akun Zulnan (personal)** | 6 pilar konten Zulnan | Video tipe **A** (Zulnan + Zuno ngobrol), **B** (proses tim Zuno), **C** (Zulnan di frame); slogan; foto Zulnan; bank fakta | Sudah ada (`assets/karakter/`, `docs/referensi-video.md`) | Template ada di Workspace (pilih Akun tujuan: Personal). Video masih berupa paket render, belum .mp4 otomatis (L9) |
 | 2 | **Akun Pulau** | Seri terdampar -> bertahan hidup -> kehidupan -> kota/negara; penonton ikut menentukan lewat komentar | Karakter dan dunia buatan Zulnan | **Zulnan (sedang dibuat)** | Sistem permintaan dan produksi: `docs/seri-pulau.md`. Menunggu bentuk karakter |
 | 3 | **Akun Stickman** | Niche **[ISI, dipikirkan Zulnan]**; referensi alur cerita di bawah | Stickman. Referensi: Backbench Animations, Rico Animations | Zulnan | Menunggu niche |
-| 4 | **Akun Bedah** | **Bedah fakta** dan **bedah teknik umum** | Gaya visual diambil dari template **lemo-opuscar** (lihat pilihan di bawah) | Kode (opuscar), tanpa karakter Zulnan | Menunggu Zulnan memilih gaya |
+| 4 | **Dua akun bedah** (aturan Zulnan 2026-11-13, menggantikan "Meja Bedah") | **@faktadibedah**: fakta harian + fakta umum; **@teknikdibedah**: mesin apa pun + pembangunan | 3D dari kode (skill lemo-opuscar), referensi pendekatan @kitabedah.idn | Kode, tanpa karakter Zulnan | Naskah v3 disetujui; lihat `docs/dua-akun-bedah.md` dan `produksi/` |
 
 Akun 2-4 adalah akun **niche**: di Workspace dibuat lewat **Tambah akun niche**, jadi identitas Zulnan otomatis tidak dipakai.
 
@@ -91,7 +91,9 @@ Gambar contoh (poster demo resmi opuscar) dikirim di chat. [Fakta] Daftar dari l
 | T7 | Security X-ray | "Isi di dalam" benda (tembus pandang) |
 | T8 | Isometric Infographic | Rantai proses/perjalanan barang dalam satu peta |
 
-Saran awal gua [Asumsi]: **F2 + F4** untuk fakta dan **T1 + T3** untuk teknik. Dua gaya per sub-jenis supaya tetap konsisten tapi tidak monoton. Keputusan di lu.
+Saran awal gua [Asumsi]: **F2 + F4** untuk fakta dan **T1 + T3** untuk teknik.
+
+**Keputusan Zulnan 2026-11-12** (sudah diganti 2026-11-13): F1 + T1 untuk "Meja Bedah". Sekarang dua akun terpisah, lihat `docs/dua-akun-bedah.md`.
 
 ### Lisensi opuscar (penting untuk "jadi produk")
 [Fakta, dari LICENSE library 2026-11-12]

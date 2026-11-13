@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><title>Kenapa gedung tinggi nggak roboh kena angin?</title><link rel="icon" href="data:,">
+<style>
+@font-face{font-family:Inter;src:url(fonts/Inter-Regular.otf);font-weight:400}
+@font-face{font-family:Inter;src:url(fonts/Inter-Medium.otf);font-weight:500}
+@font-face{font-family:Inter;src:url(fonts/Inter-SemiBold.otf);font-weight:600}
+@font-face{font-family:Inter;src:url(fonts/Inter-Bold.otf);font-weight:700}
+@font-face{font-family:JBM;src:url(fonts/JetBrainsMono-Regular.ttf)}
+:root{--ink:#f1efe9;--ink2:rgba(241,239,233,.62);--acc:#F5C542;--s:1}
+*{margin:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0d0e10;color:var(--ink);font-family:Inter,sans-serif}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+svg{position:absolute;inset:0}
+.t{position:absolute;opacity:0}
+#akun{left:calc(64px*var(--s));top:calc(64px*var(--s));font:calc(24px*var(--s)) JBM,monospace;color:var(--ink2);opacity:1}
+#tag{right:calc(64px*var(--s));top:calc(66px*var(--s));font:calc(20px*var(--s)) JBM,monospace;color:var(--ink2);text-align:right;line-height:1.5}
+#judul{left:calc(72px*var(--s));right:calc(72px*var(--s));top:calc(190px*var(--s))}
+#judul h1{font-size:calc(80px*var(--s));font-weight:700;line-height:1.05;letter-spacing:-.01em;text-shadow:0 4px 30px rgba(0,0,0,.6)}
+#judul h1 em{font-style:normal;color:var(--acc)}
+#sub{left:calc(80px*var(--s));right:calc(80px*var(--s));bottom:calc(230px*var(--s));text-align:center;font-size:calc(46px*var(--s));font-weight:500;line-height:1.25;text-shadow:0 2px 14px rgba(0,0,0,.9),0 0 4px rgba(0,0,0,.8)}
+.lbl{position:absolute;opacity:0;white-space:nowrap;padding:calc(10px*var(--s)) calc(16px*var(--s)) calc(12px*var(--s));background:rgba(13,14,16,.55);border-radius:calc(6px*var(--s))}
+.lbl b{font:calc(26px*var(--s)) JBM,monospace;color:var(--acc);margin-right:calc(12px*var(--s))}
+.lbl span{font-size:calc(38px*var(--s));font-weight:500}
+.lbl small{display:block;font:calc(22px*var(--s)) JBM,monospace;color:var(--ink2);margin:calc(6px*var(--s)) 0 0 calc(44px*var(--s))}
+.dim{position:absolute;opacity:0;font:calc(22px*var(--s)) JBM,monospace;color:var(--acc);background:rgba(13,14,16,.75);padding:calc(4px*var(--s)) calc(10px*var(--s));border-radius:calc(4px*var(--s));white-space:nowrap}
+#akhir{left:calc(72px*var(--s));right:calc(72px*var(--s));top:calc(200px*var(--s));text-align:left}
+#akhir h2{font-size:calc(72px*var(--s));font-weight:700;line-height:1.08}
+#akhir p{font:calc(30px*var(--s)) JBM,monospace;color:var(--acc);margin-top:calc(22px*var(--s))}
+</style></head>
+<body>
+<div id="akun" class="t">@teknikdibedah</div>
+<div id="tag" class="t">MODEL ILUSTRASI<br>goyangan diperbesar</div>
+<div id="judul" class="t"><h1>Kenapa gedung tinggi nggak roboh <em>kena angin?</em></h1></div>
+<div id="sub" class="t"></div>
+<div id="akhir" class="t"><h2>Gedung apa yang mau dibedah berikutnya?</h2><p>@teknikdibedah</p></div>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+import { makePost } from '/core/three/post.js';
+import { clamp, lerp, seg, ss, eio, eo, hash, track, env } from '/core/lib.js';
+
+const W = innerWidth, H = innerHeight, S = Math.min(W, H) / 1080, LAND = W > H;
+document.documentElement.style.setProperty('--s', S);
+const DUR = 43;
+const ACC = new THREE.Color('#F5C542');
+const $ = s => document.querySelector(s);
+
+// ---------- renderer, scene, light ----------
+const R = new THREE.WebGLRenderer({ antialias: false, preserveDrawingBuffer: true });
+R.setPixelRatio(1); R.setSize(W, H); R.outputColorSpace = THREE.SRGBColorSpace;
+R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.0;
+R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.prepend(R.domElement);
+const scene = new THREE.Scene();
+{ // seamless graphite sweep (screen space)
+  const c = document.createElement('canvas'); c.width = 512; c.height = 910; const g = c.getContext('2d');
+  const gr = g.createRadialGradient(256, 520, 40, 256, 520, 640); gr.addColorStop(0, '#3a3c41'); gr.addColorStop(.55, '#1d1f23'); gr.addColorStop(1, '#0b0c0e');
+  g.fillStyle = gr; g.fillRect(0, 0, 512, 910); const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; scene.background = tx;
+}
+const cam = new THREE.PerspectiveCamera(LAND ? 26 : 30, W / H, .05, 120);
+const key = new THREE.DirectionalLight(0xfff1dc, 2.6); key.position.set(6, 16, 9); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048); Object.assign(key.shadow.camera, { left: -8, right: 8, top: 16, bottom: -6, near: 1, far: 40 }); key.shadow.bias = -.0004; scene.add(key);
+const rim = new THREE.DirectionalLight(0x9fc0ff, 1.4); scene.add(rim);
+const top = new THREE.DirectionalLight(0xffffff, .5); top.position.set(0, 20, 0); scene.add(top);
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.ShadowMaterial({ opacity: .5 })); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+
+// ---------- the tower (illustrative model) ----------
+const N = 48, FH = .25, HS = 1.2, HT = N * FH; // floors, floor height, half size, height
+const tower = new THREE.Group(); scene.add(tower);
+const M = {
+  slab: new THREE.MeshPhysicalMaterial({ color: 0xb9b5ad, roughness: .8 }),
+  core: new THREE.MeshPhysicalMaterial({ color: 0x9c978f, roughness: .88 }),
+  steel: new THREE.MeshPhysicalMaterial({ color: 0x59606a, metalness: .75, roughness: .38 }),
+  truss: new THREE.MeshPhysicalMaterial({ color: 0x6d747e, metalness: .7, roughness: .35, emissive: ACC, emissiveIntensity: 0 }),
+  glass: new THREE.MeshPhysicalMaterial({ color: 0x9cc3d8, metalness: .15, roughness: .06, transparent: true, opacity: .55, clearcoat: 1, clearcoatRoughness: .05, envMapIntensity: 1.6 }),
+  gold: new THREE.MeshPhysicalMaterial({ color: 0xd2a94e, metalness: 1, roughness: .26, emissive: ACC, emissiveIntensity: 0 }),
+  cable: new THREE.MeshPhysicalMaterial({ color: 0x8a9099, metalness: .9, roughness: .3 }),
+  pile: new THREE.MeshPhysicalMaterial({ color: 0xa8a39a, roughness: .85, emissive: ACC, emissiveIntensity: 0 }),
+  soil: new THREE.MeshPhysicalMaterial({ color: 0x5a4634, roughness: 1, transparent: true, opacity: 0 }),
+};
+const box = (w, h, d, m, x, y, z, parent = tower) => { const o = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); o.position.set(x, y, z); o.castShadow = o.receiveShadow = true; parent.add(o); return o; };
+// floors (no slabs in the damper chamber, floors 42-47)
+const CH0 = 42;
+for (let f = 1; f <= N; f++) if (f < CH0 || f === N) box(2 * HS - .04, .05, 2 * HS - .04, M.slab, 0, f * FH, 0);
+box(2 * HS + .1, .09, 2 * HS + .1, M.slab, 0, HT + .05, 0); // roof
+const CORE_TOP = CH0 * FH - .05;
+const core = box(.8, CORE_TOP, .8, M.core, 0, CORE_TOP / 2, 0);
+const COLS = []; for (const a of [-1.14, -.38, .38, 1.14]) for (const b of [-1.14, 1.14]) { COLS.push([a, b]); if (Math.abs(a) < 1) COLS.push([b, a]); }
+for (const [x, z] of COLS) box(.11, HT, .11, M.steel, x, HT / 2, z);
+// outriggers every 8 floors: one-storey trusses from the core to the perimeter, four directions
+const OUT = [8, 16, 24, 32, 40], trusses = [];
+function beam(a, b, r, m, parent = tower) { const v = new THREE.Vector3().subVectors(b, a), L = v.length(); const o = new THREE.Mesh(new THREE.BoxGeometry(r, L, r), m); o.position.copy(a).add(b).multiplyScalar(.5); o.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), v.normalize()); o.castShadow = true; parent.add(o); return o; }
+for (const f of OUT) { const y0 = f * FH, y1 = (f + 1) * FH;
+  for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) for (const off of [-.3, .3]) {
+    const P = (s, y) => new THREE.Vector3(dx ? dx * s : off, y, dz ? dz * s : off);
+    trusses.push(beam(P(.4, y0), P(1.14, y0), .06, M.truss), beam(P(.4, y1), P(1.14, y1), .06, M.truss), beam(P(.4, y0), P(.77, y1), .045, M.truss), beam(P(.77, y1), P(1.14, y0), .045, M.truss));
+  } }
+// tuned mass damper: ball hung from the roof by four cables
+const BALL_Y = 10.95, BALL_R = .42;
+const ball = new THREE.Mesh(new THREE.SphereGeometry(BALL_R, 64, 40), M.gold); ball.castShadow = true; tower.add(ball);
+const ring = new THREE.Mesh(new THREE.TorusGeometry(BALL_R * 1.02, .025, 12, 64), M.steel); ring.rotation.x = Math.PI / 2; ball.add(ring);
+const cables = [[.55, .55], [-.55, .55], [.55, -.55], [-.55, -.55]].map(([x, z]) => { const c = new THREE.Mesh(new THREE.CylinderGeometry(.018, .018, 1, 8), M.cable); tower.add(c); return { c, a: new THREE.Vector3(x, HT, z) }; });
+const setCyl = (o, a, b) => { const v = new THREE.Vector3().subVectors(b, a), L = v.length(); o.position.copy(a).add(b).multiplyScalar(.5); o.scale.set(1, L, 1); o.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), v.normalize()); };
+// foundation: mat + piles (outside the tower group, it never sways) + soil cut
+const ground = new THREE.Group(); scene.add(ground);
+box(2.9, .3, 2.9, M.slab, 0, -.15, 0, ground);
+const piles = []; for (let i = 0; i < 5; i++) for (let j = 0; j < 5; j++) { const p = new THREE.Mesh(new THREE.CylinderGeometry(.06, .06, 3.2, 14), M.pile); p.position.set(-1.1 + i * .55, -1.9, -1.1 + j * .55); p.castShadow = true; ground.add(p); piles.push(p); }
+const soil = new THREE.Mesh(new THREE.BoxGeometry(4.2, 3.6, 4.2), M.soil); soil.position.y = -1.82; ground.add(soil);
+// glass curtain wall: 4 sides × 48 floors × 4 panels
+const PANEL = new THREE.BoxGeometry(.56, FH - .03, .025), NP = 4 * N * 4;
+const glass = new THREE.InstancedMesh(PANEL, M.glass, NP); glass.castShadow = false; tower.add(glass);
+const PAN = []; for (let s = 0; s < 4; s++) for (let f = 0; f < N; f++) for (let i = 0; i < 4; i++) PAN.push({ s, f, i, h: hash(s * 1000 + f * 10 + i) });
+const NRM = [[0, 0, 1], [1, 0, 0], [0, 0, -1], [-1, 0, 0]];
+const tmpM = new THREE.Matrix4(), tmpQ = new THREE.Quaternion(), tmpP = new THREE.Vector3(), tmpS = new THREE.Vector3(1, 1, 1), eul = new THREE.Euler();
+// arrows (force path) + wind streaks
+const arrMat = new THREE.MeshBasicMaterial({ color: ACC, transparent: true, depthTest: false });
+function arrow(len) { const g = new THREE.Group(); const sh = new THREE.Mesh(new THREE.CylinderGeometry(.035, .035, len * .72, 10), arrMat); sh.position.y = len * .36; g.add(sh); const hd = new THREE.Mesh(new THREE.ConeGeometry(.1, len * .28, 16), arrMat); hd.position.y = len * .86; g.add(hd); g.rotation.z = -Math.PI / 2; g.renderOrder = 10; return g; }
+const arrows = [3, 5.5, 8].map(y => { const a = arrow(1.1); a.position.set(-2.7, y, .2); tower.add(a); return a; });
+const windMat = new THREE.MeshBasicMaterial({ color: 0xdfeeff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+const streaks = []; for (let i = 0; i < 60; i++) { const m = new THREE.Mesh(new THREE.BoxGeometry(1.4 + hash(i) * 1.6, .012, .012), windMat); m.userData = { y: .6 + hash(i + 7) * 12, z: -3 + hash(i + 13) * 6, sp: 6 + hash(i + 3) * 5, ph: hash(i + 21) * 20 }; scene.add(m); streaks.push(m); }
+
+// ---------- environment ----------
+const pm = new THREE.PMREMGenerator(R);
+await new Promise(ok => new RGBELoader().load('/core/assets/polyhaven/photo_studio_loft_hall_2k.hdr', hdr => { scene.environment = pm.fromEquirectangular(hdr).texture; scene.environmentIntensity = .55; hdr.dispose(); ok(); }));
+await Promise.all(['500 20px Inter', '700 20px Inter', '20px JBM'].map(f => document.fonts.load(f)));
+const QS = new URLSearchParams(location.search), SSAA = +(QS.get('ssaa') || 1);
+const post = makePost(R, scene, cam, W, H, { ssaa: SSAA, ao: true, aoAmt: .7, aoRadius: .35 });
+post.dof.aper = 2.2; post.dof.maxCoc = 10; post.bloom.threshold = 2.2; post.bloom.strength = .25; post.vig.uniforms.amt.value = .38; post.vig.uniforms.warm.value = .25;
+
+// ---------- timeline ----------
+const T = { title: [.2, 5.2], open: [4.8, 8.4], s1: [9.0, 14.0], s2: [14.0, 20.0], hush1: [20.0, 20.5], gust: 20.5, s3: [20.5, 30.4], s4: [30.5, 35.6], hush2: [35.8, 36.2], close: [36.3, 38.0], end: [37.2, 43] };
+const SUBS = [
+  [5.2, 9.1, 'Kenapa nggak roboh? Kita bongkar.'],
+  [9.2, 13.9, 'Kaca menahan angin, lalu diteruskan ke rangka.'],
+  [14.3, 19.9, 'Outrigger mengikat inti beton ke kolom luar.'],
+  [20.7, 25.6, 'Di puncak, bandul baja berayun melawan goyangan.'],
+  [25.7, 30.4, 'Taipei 101: goyangan berkurang hingga 40%.'],
+  [30.8, 35.6, 'Sisa dorongan dikunci ke tanah lewat fondasi.'],
+];
+const LABELS = [
+  { no: '01', nama: 'Dinding kaca', ket: 'teruskan dorongan ke rangka', t: [9.3, 14.2], p: () => new THREE.Vector3(-1.9, 5.6, .9) },
+  { no: '02', nama: 'Inti beton', ket: 'tulang punggung di tengah', t: [14.4, 19.9], p: () => new THREE.Vector3(.4, 7.0, .4) },
+  { no: '03', nama: 'Rangka outrigger', ket: 'Taipei 101: tiap 8 lantai', t: [15.0, 19.9], p: () => new THREE.Vector3(.95, 6.15, .3) },
+  { no: '04', nama: 'Bandul peredam', ket: 'Taipei 101: 660 ton, ⌀5,5 m', t: [21.2, 30.3], p: () => ball.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(.3, .1, .3)) },
+  { no: '05', nama: 'Tiang fondasi', ket: 'Taipei 101: 380 tiang, 80 m', t: [30.8, 35.6], p: () => new THREE.Vector3(.55, -1.4, 1.1) },
+];
+const NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg'); svg.setAttribute('width', W); svg.setAttribute('height', H); document.body.appendChild(svg);
+for (const L of LABELS) {
+  L.el = document.createElement('div'); L.el.className = 'lbl'; L.el.innerHTML = '<b></b><span></span><small></small>';
+  L.el.querySelector('b').textContent = L.no; L.el.querySelector('span').textContent = L.nama; L.el.querySelector('small').textContent = L.ket; document.body.appendChild(L.el);
+  L.ln = document.createElementNS(NS, 'path'); L.ln.setAttribute('stroke', '#f1efe9'); L.ln.setAttribute('stroke-width', 2 * S); L.ln.setAttribute('fill', 'none'); svg.appendChild(L.ln);
+  L.dot = document.createElementNS(NS, 'circle'); L.dot.setAttribute('r', 6 * S); L.dot.setAttribute('fill', '#F5C542'); svg.appendChild(L.dot);
+}
+const dimL = document.createElementNS(NS, 'path'); dimL.setAttribute('stroke', '#F5C542'); dimL.setAttribute('stroke-width', 2.5 * S); dimL.setAttribute('fill', 'none'); svg.appendChild(dimL);
+const dimT = document.createElement('div'); dimT.className = 'dim'; dimT.textContent = '8 lantai'; document.body.appendChild(dimT);
+const DIM_T = [16.0, 19.9];
+
+const CAM = track([
+  [0, [4.0, 3.4, 33.5, 0, 8.4, 0]], [4.8, [12.5, 9.0, 21.5, 0, 6.8, 0]], [9.0, [-10.5, 8.0, 13.5, -.9, 6.4, 0]], [13.8, [-8.0, 7.2, 10.5, -.6, 6.2, 0]],
+  [14.6, [4.6, 7.6, 9.0, -.3, 6.0, 0]], [19.9, [5.4, 7.0, 8.0, -.2, 5.8, 0]], [20.5, [5.4, 7.0, 8.0, -.2, 5.8, 0]],
+  [21.6, [4.2, 12.6, 6.6, -.3, 10.5, 0]], [30.2, [3.8, 12.4, 6.2, -.3, 10.5, 0]],
+  [31.4, [5.6, 1.0, 10.5, -.2, -1.4, 0]], [35.8, [5.0, .8, 9.6, -.2, -1.5, 0]], [36.2, [5.0, .8, 9.6, -.2, -1.5, 0]],
+  [38.2, [6.0, 4.6, 33.0, 0, 8.4, 0]], [43, [3.4, 4.2, 35.0, 0, 8.4, 0]],
+]);
+const toScreen = v => { const p = v.clone().project(cam); return [(p.x + 1) / 2 * W, (1 - p.y) / 2 * H, p.z]; };
+
+function sway(t) { // tilt of the tower (exaggerated) and the damper's swing (relative, local x)
+  let th = 0, bx = 0;
+  const a = ss(seg(t, .6, 2.4)) * (1 - ss(seg(t, 4.6, 6.5)));
+  th += a * (.022 + .008 * Math.sin(t * 2.1));
+  if (t > T.gust) { const u = t - T.gust, w = 2.2, damp = Math.exp(-u * (u < 2.4 ? .05 : .32));
+    const g = ss(seg(u, 0, .6)) * damp * (1 - ss(seg(t, 34.5, 36.5)));
+    th += g * .045 * Math.sin(w * u);
+    bx = -g * .38 * Math.sin(w * u - .9) * ss(seg(u, .25, 1.2)); }
+  return { th, bx };
+}
+function explode(t) { // 0 closed → 1 apart
+  return eio(seg(t, T.open[0], T.open[1])) * (1 - eio(seg(t, T.close[0], T.close[1])));
+}
+
+function render(t) {
+  const { th, bx } = sway(t);
+  tower.rotation.z = -th;
+  ball.position.set(bx, BALL_Y + Math.abs(bx) * .12, 0);
+  ball.updateMatrixWorld();
+  const bt = new THREE.Vector3(bx, BALL_Y + BALL_R, 0);
+  for (const { c, a } of cables) setCyl(c, a, bt);
+  // glass panels: top first when opening, bottom first when closing
+  const op = seg(t, T.open[0], T.open[1]), cl = seg(t, T.close[0], T.close[1]);
+  PAN.forEach((p, k) => {
+    const hi = p.f / (N - 1);
+    const o = eio(clamp(op * 1.7 - (1 - hi) * .7 - p.h * .05)), c = eio(clamp(cl * 1.6 - hi * .6 - p.h * .04));
+    const e = o * (1 - c);
+    const [nx, , nz] = NRM[p.s], tx = (p.s % 2 === 0) ? 1 : 0;
+    const along = -.84 + p.i * .56, base = HS + .03;
+    const out = e * (1.0 + p.h * .35), lift = e * (.12 + .25 * hi);
+    const fl = (1 - (t > T.s2[0] && t < T.s4[1] ? 0 : 1)) * 0; // (layers hold still in macro)
+    tmpP.set(nx * (base + out) + (tx ? along : 0), (p.f + .5) * FH + lift, nz * (base + out) + (tx ? 0 : along));
+    eul.set(0, p.s * Math.PI / 2, e * (p.h - .5) * .12); tmpQ.setFromEuler(eul);
+    tmpM.compose(tmpP, tmpQ, tmpS); glass.setMatrixAt(k, tmpM);
+  });
+  glass.instanceMatrix.needsUpdate = true;
+  const inside = ss(seg(t, 13.6, 14.6)) * (1 - ss(seg(t, 35.8, 36.6)));
+  M.glass.opacity = .55 * (1 - .65 * inside);
+  M.truss.emissiveIntensity = .9 * env(t, 15.2, 19.9, .5, .5);
+  M.gold.emissiveIntensity = .08 * env(t, 21.2, 30.3, .6, .6);
+  M.pile.emissiveIntensity = .7 * env(t, 30.8, 35.6, .5, .5);
+  M.soil.opacity = .5 * env(t, 30.3, 36.0, .8, .6); M.soil.depthWrite = false;
+  arrows.forEach((a, i) => { const k = env(t, 9.4 + i * .35, 13.9, .4, .4); a.visible = k > .01; a.scale.setScalar(Math.max(.01, k)); a.position.x = -2.9 + .5 * ((t * .8 + i * .3) % 1) * k; });
+  const wv = Math.max(env(t, .2, 4.8, .6, .8), env(t, 20.3, 25.5, .4, 1.2) * 1.2);
+  windMat.opacity = .55 * wv;
+  streaks.forEach(m => { const u = m.userData, x = ((t * u.sp + u.ph) % 24) - 12; m.position.set(x, u.y, u.z); m.visible = wv > .01; });
+  // camera
+  const c = CAM(t); cam.position.set(c[0], c[1], c[2]); cam.lookAt(c[3], c[4], c[5]);
+  rim.position.copy(cam.position).multiplyScalar(-1).setY(8);
+  cam.updateMatrixWorld(); scene.updateMatrixWorld();
+  post.dof.focus = Math.hypot(c[0] - c[3], c[1] - c[4], c[2] - c[5]);
+  if (!window.__teksSaja) post.composer.render();
+  // overlays
+  const kolX = LAND ? W * .62 : W - 590 * S;
+  LABELS.forEach((L, i) => {
+    const a = env(t, L.t[0], L.t[1], .35, .35);
+    const [x, y] = toScreen(L.p());
+    const ly = clamp(y, 260 * S, H - 420 * S) + (i === 2 ? 120 * S : 0);
+    const grow = clamp(a * 1.6);
+    L.el.style.opacity = a; L.el.style.left = (kolX + 16 * S + (1 - a) * 10 * S) + 'px'; L.el.style.top = (ly - 40 * S) + 'px';
+    const ex = lerp(x, kolX, grow), ey = lerp(y, ly, grow);
+    L.ln.setAttribute('d', `M${x} ${y} L${ex} ${ey}`); L.ln.style.opacity = a; L.dot.setAttribute('cx', x); L.dot.setAttribute('cy', y); L.dot.style.opacity = a;
+  });
+  { const a = env(t, DIM_T[0], DIM_T[1], .4, .35), [x1, y1] = toScreen(new THREE.Vector3(-1.3, 4 * FH * 2 - .0, 1.3)), [x2, y2] = toScreen(new THREE.Vector3(-1.3, 6 * FH * 4 / 3 * 1.0, 1.3));
+    const p1 = toScreen(new THREE.Vector3(-1.32, 16 * FH, 1.32)), p2 = toScreen(new THREE.Vector3(-1.32, 24 * FH, 1.32));
+    const d = clamp(a * 1.4), mx = lerp(p1[0], p2[0], d), my = lerp(p1[1], p2[1], d);
+    dimL.setAttribute('d', `M${p1[0] - 14 * S} ${p1[1]} L${p1[0] + 14 * S} ${p1[1]} M${p1[0]} ${p1[1]} L${mx} ${my} ` + (d > .98 ? `M${p2[0] - 14 * S} ${p2[1]} L${p2[0] + 14 * S} ${p2[1]}` : ''));
+    dimL.style.opacity = a; dimT.style.opacity = a; dimT.style.left = (Math.min(p1[0], p2[0]) - 150 * S) + 'px'; dimT.style.top = ((p1[1] + p2[1]) / 2 - 16 * S) + 'px'; }
+  $('#judul').style.opacity = env(t, T.title[0], T.title[1], .3, .3);
+  $('#tag').style.opacity = .9 * (env(t, .6, 9, .5, .5) + env(t, 20.4, 30.4, .5, .5));
+  $('#akhir').style.opacity = env(t, T.end[0], 44, .4, .1);
+  const s = SUBS.find(q => t >= q[0] && t < q[1]), sub = $('#sub');
+  if (s) { if (sub.textContent !== s[2]) sub.textContent = s[2]; sub.style.opacity = env(t, s[0], s[1], .2, .2); } else sub.style.opacity = 0;
+}
+
+// ---------- contract for the library tools ----------
+const EV = [{ t: 0, type: 'wind', dur: 4.8 }, { t: .3, type: 'title' }, { t: 1.2, type: 'creak' }];
+for (let k = 0; k < 14; k++) EV.push({ t: T.open[0] + .15 + k * .22, type: 'lift', pan: (k % 2 ? .4 : -.4) });
+LABELS.forEach(L => EV.push({ t: L.t[0], type: 'tick' }));
+EV.push({ t: DIM_T[0], type: 'pen' }, { t: 14.0, type: 'dive' }, { t: T.hush1[0], type: 'hush', dur: .5 }, { t: T.gust, type: 'gust', dur: 5 }, { t: 21.0, type: 'swing' }, { t: 23.2, type: 'swing' }, { t: 25.4, type: 'swing' },
+  { t: 30.4, type: 'drop' }, { t: 31.0, type: 'thud' }, { t: T.hush2[0], type: 'hush', dur: .4 });
+for (let k = 0; k < 6; k++) EV.push({ t: T.close[0] + .2 + k * .26, type: 'land', pan: (k % 2 ? .3 : -.3) });
+EV.push({ t: 38.0, type: 'final' });
+window.DUR = DUR; window.EV = EV; window.render = render;
+window.TEXTS = t => { window.__teksSaja = true; render(t); window.__teksSaja = false; const out = [];
+  for (const el of [$('#judul'), $('#sub'), $('#akhir'), ...LABELS.map(L => L.el), dimT]) { if (+getComputedStyle(el).opacity < .99) continue; const r = el.getBoundingClientRect(); out.push({ id: el.id || el.textContent.slice(0, 12), text: el.textContent, x0: r.left, y0: r.top, x1: r.right, y1: r.bottom }); }
+  const tg = $('#tag'); if (+getComputedStyle(tg).opacity > .5) { const r = tg.getBoundingClientRect(); out.push({ id: 'tag', text: tg.textContent, x0: r.left, y0: r.top, x1: r.right, y1: r.bottom, pass: true }); }
+  return out; };
+render(0); window.READY = true;
+</script></body></html>

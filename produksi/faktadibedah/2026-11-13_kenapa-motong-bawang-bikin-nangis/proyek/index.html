@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><title>Kenapa motong bawang bikin nangis?</title><link rel="icon" href="data:,">
+<style>
+@font-face{font-family:Inter;src:url(fonts/Inter-Regular.otf);font-weight:400}
+@font-face{font-family:Inter;src:url(fonts/Inter-Medium.otf);font-weight:500}
+@font-face{font-family:Inter;src:url(fonts/Inter-SemiBold.otf);font-weight:600}
+@font-face{font-family:Inter;src:url(fonts/Inter-Bold.otf);font-weight:700}
+@font-face{font-family:JBM;src:url(fonts/JetBrainsMono-Regular.ttf)}
+:root{--ink:#f4f2ee;--ink2:rgba(244,242,238,.66);--acc:#2EC4B6;--s:1}
+*{margin:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0c1113;color:var(--ink);font-family:Inter,sans-serif}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+svg{position:absolute;inset:0}
+.t{position:absolute;opacity:0}
+#akun{left:calc(64px*var(--s));top:calc(64px*var(--s));font:calc(24px*var(--s)) JBM,monospace;color:var(--ink2);opacity:1;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+#tag{right:calc(64px*var(--s));top:calc(66px*var(--s));font:calc(20px*var(--s)) JBM,monospace;color:var(--ink2);text-shadow:0 1px 8px rgba(0,0,0,.6)}
+#judul{left:calc(72px*var(--s));right:calc(72px*var(--s));top:calc(190px*var(--s))}
+#judul h1{font-size:calc(84px*var(--s));font-weight:700;line-height:1.05;text-shadow:0 4px 30px rgba(0,0,0,.65)}
+#judul h1 em{font-style:normal;color:var(--acc)}
+#sub{left:calc(80px*var(--s));right:calc(80px*var(--s));bottom:calc(230px*var(--s));text-align:center;font-size:calc(48px*var(--s));font-weight:600;line-height:1.25;text-shadow:0 2px 14px rgba(0,0,0,.9),0 0 4px rgba(0,0,0,.85)}
+#sub i{font-style:normal;color:var(--acc)}
+.lbl{position:absolute;opacity:0;white-space:nowrap;padding:calc(10px*var(--s)) calc(16px*var(--s)) calc(12px*var(--s));background:rgba(10,16,18,.6);border-left:calc(4px*var(--s)) solid var(--acc);border-radius:calc(4px*var(--s))}
+.lbl b{font:calc(24px*var(--s)) JBM,monospace;color:var(--acc);margin-right:calc(12px*var(--s))}
+.lbl span{font-size:calc(38px*var(--s));font-weight:600}
+.lbl small{display:block;font:calc(22px*var(--s)) JBM,monospace;color:var(--ink2);margin:calc(6px*var(--s)) 0 0 calc(42px*var(--s))}
+.tip{left:calc(72px*var(--s));right:calc(72px*var(--s));padding:calc(22px*var(--s)) calc(28px*var(--s));background:rgba(10,16,18,.66);border-radius:calc(10px*var(--s))}
+.tip b{display:block;font:calc(24px*var(--s)) JBM,monospace;color:var(--acc)}
+.tip span{display:block;font-size:calc(44px*var(--s));font-weight:700;margin-top:calc(8px*var(--s))}
+#tip1{top:calc(240px*var(--s))}#tip2{top:calc(470px*var(--s))}
+#akhir{left:calc(72px*var(--s));right:calc(72px*var(--s));top:calc(220px*var(--s))}
+#akhir h2{font-size:calc(74px*var(--s));font-weight:700;line-height:1.08;text-shadow:0 4px 30px rgba(0,0,0,.6)}
+#akhir p{font:calc(30px*var(--s)) JBM,monospace;color:var(--acc);margin-top:calc(22px*var(--s))}
+#akhir small{display:block;font:calc(20px*var(--s)) JBM,monospace;color:var(--ink2);margin-top:calc(26px*var(--s))}
+#kilat{inset:0;background:#e8fbf8}
+</style></head>
+<body>
+<div id="akun" class="t">@faktadibedah</div>
+<div id="tag" class="t">ILUSTRASI 3D</div>
+<div id="judul" class="t"><h1>Kenapa motong bawang bikin <em>nangis?</em></h1></div>
+<div id="tip1" class="t tip"><b>TIPS 1</b><span>Potong di bawah air mengalir</span></div>
+<div id="tip2" class="t tip"><b>TIPS 2</b><span>Sisakan pangkal akarnya</span></div>
+<div id="sub" class="t"></div>
+<div id="akhir" class="t"><h2>Fakta apa yang mau dibedah berikutnya?</h2><p>@faktadibedah</p><small>Sumber: Wikipedia "Onion", "Syn-Propanethial-S-oxide"</small></div>
+<div id="kilat" class="t"></div>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { makePost } from '/core/three/post.js';
+import { clamp, lerp, seg, ss, eio, eo, hash, track, env, mulberry } from '/core/lib.js';
+
+const W = innerWidth, H = innerHeight, S = Math.min(W, H) / 1080, LAND = W > H;
+document.documentElement.style.setProperty('--s', S);
+const DUR = 45, ACC = new THREE.Color('#2EC4B6');
+const $ = s => document.querySelector(s);
+const QS = new URLSearchParams(location.search), SSAA = +(QS.get('ssaa') || 1);
+
+const R = new THREE.WebGLRenderer({ antialias: false, preserveDrawingBuffer: true });
+R.setPixelRatio(1); R.setSize(W, H); R.outputColorSpace = THREE.SRGBColorSpace;
+R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.05;
+R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.prepend(R.domElement);
+const scene = new THREE.Scene();
+const cam = new THREE.PerspectiveCamera(LAND ? 28 : 34, W / H, .01, 80);
+const pm = new THREE.PMREMGenerator(R);
+let envKitchen;
+await new Promise(ok => new RGBELoader().load('/core/assets/polyhaven/lythwood_lounge_2k.hdr', hdr => { envKitchen = pm.fromEquirectangular(hdr).texture; hdr.dispose(); ok(); }));
+const darkBg = (() => { const c = document.createElement('canvas'); c.width = 512; c.height = 910; const g = c.getContext('2d'); const gr = g.createRadialGradient(256, 470, 30, 256, 470, 640); gr.addColorStop(0, '#1c3a3c'); gr.addColorStop(.6, '#0e1c1f'); gr.addColorStop(1, '#070b0c'); g.fillStyle = gr; g.fillRect(0, 0, 512, 910); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+const key = new THREE.DirectionalLight(0xfff0d8, 2.4); key.position.set(3, 6, 4); key.castShadow = true; key.shadow.mapSize.set(2048, 2048); Object.assign(key.shadow.camera, { left: -3, right: 3, top: 3, bottom: -3, near: .5, far: 20 }); key.shadow.bias = -.0005; scene.add(key);
+const rim = new THREE.DirectionalLight(0xbfe6ff, 1.2); rim.position.set(-4, 3, -5); scene.add(rim);
+const tex = new THREE.TextureLoader();
+const wood = { map: tex.load('/core/assets/polyhaven/walnut_diff.jpg'), normalMap: tex.load('/core/assets/polyhaven/walnut_nor.jpg'), roughnessMap: tex.load('/core/assets/polyhaven/walnut_rough.jpg') };
+wood.map.colorSpace = THREE.SRGBColorSpace; for (const k in wood) { wood[k].wrapS = wood[k].wrapT = THREE.RepeatWrapping; wood[k].repeat.set(1.5, 1); }
+
+// ===================== SET 1: dapur =====================
+const dapur = new THREE.Group(); scene.add(dapur);
+const board = new THREE.Mesh(new THREE.BoxGeometry(3.2, .16, 2.0), new THREE.MeshPhysicalMaterial({ ...wood, roughness: .6, clearcoat: .2 })); board.position.y = -.08; board.receiveShadow = true; dapur.add(board);
+const counter = new THREE.Mesh(new THREE.BoxGeometry(14, .2, 8), new THREE.MeshPhysicalMaterial({ color: 0xd9d4cc, roughness: .5 })); counter.position.y = -.26; counter.receiveShadow = true; dapur.add(counter);
+// onion: lathe profile, layered shells; whole + two halves
+const PK = [[.02, -.36], [.22, -.33], [.4, -.24], [.5, -.08], [.5, .04], [.44, .16], [.3, .28], [.14, .36], [.06, .43], [.035, .5]];
+const PC = new THREE.SplineCurve(PK.map(([x, y]) => new THREE.Vector2(x, y)));
+function profile(r) { return PC.getPoints(40).map(v => new THREE.Vector2(Math.max(.008, v.x * r), v.y * (r * .9 + .1) + (1 - r) * .03)); }
+const LAY = [1, .86, .72, .58, .44, .3];
+const skinTex = (() => { const c = document.createElement('canvas'); c.width = 1024; c.height = 512; const g = c.getContext('2d'); g.fillStyle = '#a8662a'; g.fillRect(0, 0, 1024, 512);
+  for (let i = 0; i < 260; i++) { const x = hash(i) * 1024, w = 1 + hash(i + 1) * 5, l = 30 + hash(i + 2) * 40; g.fillStyle = `hsla(${26 + hash(i + 3) * 12},${55 + hash(i + 4) * 25}%,${l}%,${.25 + hash(i + 5) * .4})`; g.fillRect(x, 0, w, 512); }
+  for (let i = 0; i < 40; i++) { g.fillStyle = `rgba(250,220,170,${.08 + hash(i + 50) * .12})`; g.beginPath(); g.ellipse(hash(i + 60) * 1024, hash(i + 70) * 512, 20 + hash(i + 80) * 60, 6 + hash(i + 90) * 14, 0, 0, 6.28); g.fill(); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = THREE.RepeatWrapping; return t; })();
+const skin = new THREE.MeshPhysicalMaterial({ map: skinTex, roughness: .62, sheen: .8, sheenColor: new THREE.Color(0xffc890), sheenRoughness: .5, clearcoat: .08, side: THREE.DoubleSide });
+const flesh = i => new THREE.MeshPhysicalMaterial({ color: new THREE.Color().setHSL(.85, .18 - i * .02, .9 + i * .012), roughness: .32, clearcoat: .5, side: THREE.DoubleSide });
+const onion = new THREE.Group(); onion.position.y = .38; dapur.add(onion);
+const halves = [0, 1].map(h => { const g = new THREE.Group(); LAY.forEach((r, i) => { const m = new THREE.Mesh(new THREE.LatheGeometry(profile(r), 64, h * Math.PI, Math.PI), i === 0 ? skin : flesh(i)); m.castShadow = true; g.add(m); });
+  // cut face: rings of flesh between layers
+  LAY.forEach((r, i) => { const pts = profile(r), inner = LAY[i + 1] ? profile(LAY[i + 1]) : null; const sh = new THREE.Shape(); pts.forEach((p, k) => k ? sh.lineTo(p.x, p.y) : sh.moveTo(p.x, p.y)); for (let k = pts.length - 1; k >= 0; k--) sh.lineTo(-pts[k].x, pts[k].y);
+    if (inner) { const hole = new THREE.Path(); inner.forEach((p, k) => k ? hole.lineTo(p.x, p.y) : hole.moveTo(p.x, p.y)); for (let k = inner.length - 1; k >= 0; k--) hole.lineTo(-inner[k].x, inner[k].y); sh.holes.push(hole); }
+    const f = new THREE.Mesh(new THREE.ShapeGeometry(sh, 24), new THREE.MeshPhysicalMaterial({ color: new THREE.Color().setHSL(.9, .3 - i * .03, .9 - i * .05 + (i % 2) * .04), roughness: .25, clearcoat: .8, side: THREE.DoubleSide }));
+    f.rotation.y = Math.PI / 2; f.position.x = h ? -.0005 : .0005; g.add(f); });
+  onion.add(g); return g; });
+const root = new THREE.Mesh(new THREE.CylinderGeometry(.1, .07, .05, 18), new THREE.MeshPhysicalMaterial({ color: 0x8a6a45, roughness: .9, emissive: ACC, emissiveIntensity: 0 })); root.position.y = -.37; onion.add(root);
+// knife
+const knife = new THREE.Group(); dapur.add(knife);
+{ const s = new THREE.Shape(); s.moveTo(0, 0); s.lineTo(2.1, 0); s.quadraticCurveTo(2.0, .38, 1.2, .5); s.lineTo(0, .5); s.lineTo(0, 0);
+  const blade = new THREE.Mesh(new THREE.ExtrudeGeometry(s, { depth: .012, bevelEnabled: true, bevelThickness: .006, bevelSize: .006, bevelSegments: 2 }), new THREE.MeshPhysicalMaterial({ color: 0xdfe4ea, metalness: 1, roughness: .18 })); blade.position.set(-.1, 0, -.006); blade.castShadow = true; knife.add(blade);
+  const handle = new THREE.Mesh(new RoundedBoxGeometry(1.1, .26, .16, 4, .06), new THREE.MeshPhysicalMaterial({ color: 0x1e1e20, roughness: .45, clearcoat: .5 })); handle.position.set(-.65, .26, 0); handle.castShadow = true; knife.add(handle); }
+knife.rotation.y = Math.PI / 2;  // blade runs along z, cuts across x
+// mist + water (tips)
+const mistM = new THREE.MeshBasicMaterial({ color: 0xf6f0c8, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending });
+const mist = []; for (let i = 0; i < 70; i++) { const m = new THREE.Mesh(new THREE.SphereGeometry(.012 + hash(i) * .016, 8, 6), mistM); m.userData = { a: hash(i + 3) * 6.28, r: hash(i + 9) * .25, sp: .12 + hash(i + 5) * .2, ph: hash(i + 11) }; dapur.add(m); mist.push(m); }
+const stream = new THREE.Mesh(new THREE.CylinderGeometry(.07, .09, 2.4, 24, 1, true), new THREE.MeshPhysicalMaterial({ color: 0xcfefff, roughness: .02, transmission: .0, transparent: true, opacity: 0, clearcoat: 1 })); stream.position.set(.35, 1.4, 0); dapur.add(stream);
+const drops = []; for (let i = 0; i < 40; i++) { const m = new THREE.Mesh(new THREE.SphereGeometry(.02 + hash(i) * .02, 10, 8), new THREE.MeshPhysicalMaterial({ color: 0xdff6ff, roughness: .05, transparent: true, opacity: 0, clearcoat: 1 })); m.userData = { a: hash(i + 2) * 6.28, s: hash(i + 6), ph: hash(i + 8) }; dapur.add(m); drops.push(m); }
+
+// ===================== SET 2: sel =====================
+const sel = new THREE.Group(); scene.add(sel); sel.position.set(0, 50, 0);
+const CELL = new RoundedBoxGeometry(1.0, .56, .62, 4, .14);
+const cells = []; const cellMat = (k) => new THREE.MeshPhysicalMaterial({ color: new THREE.Color().setHSL(.2 + k * .01, .35, .86), roughness: .25, transparent: true, opacity: .45, clearcoat: .7, side: THREE.DoubleSide, depthWrite: false });
+for (let r = 0; r < 6; r++) for (let c = -4; c <= 4; c++) { const m = new THREE.Mesh(CELL, cellMat(r)); m.position.set(c * 1.04 + (r % 2) * .52, -r * .6, 0); m.userData = { r, c }; sel.add(m);
+  const nuc = new THREE.Mesh(new THREE.SphereGeometry(.09, 16, 12), new THREE.MeshPhysicalMaterial({ color: 0xc9b6d8, roughness: .4 })); nuc.position.set(.18 * (hash(r * 9 + c) - .5), 0, 0); m.add(nuc); cells.push(m); }
+const giantBlade = new THREE.Mesh(new THREE.BoxGeometry(12, .08, 2.2), new THREE.MeshPhysicalMaterial({ color: 0xdde3e8, metalness: 1, roughness: .15 })); sel.add(giantBlade);
+// molecules: enzymes (alliinase, LFS) and the chain sulfoxide → sulfenic acid → gas
+const rnd = mulberry(5);
+const mk = (n, rad, col) => { const g = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(rad, 2), new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: .35, clearcoat: .5, emissive: 0x000000 }), n); g.instanceMatrix.setUsage(THREE.DynamicDrawUsage); for (let i = 0; i < n; i++) g.setColorAt(i, new THREE.Color(col)); sel.add(g); return g; };
+const NA = 26, NM = 70, NL = 16;
+const enzA = mk(NA, .085, '#7BD389'), mol = mk(NM, .05, '#F2994A'), enzL = mk(NL, .09, '#A98BE0');
+const P = (n, spread) => Array.from({ length: n }, (_, i) => ({ x: (rnd() - .5) * 8.2, y: -.2 - rnd() * .7, z: (rnd() - .5) * .5, a: rnd() * 6.28, sp: .6 + rnd(), d: rnd() }));
+const pA = P(NA), pM = P(NM), pL = P(NL);
+const C_SULF = new THREE.Color('#F2994A'), C_ACID = new THREE.Color('#5FD3C6'), C_GAS = new THREE.Color('#F5E663');
+const dummy = new THREE.Object3D();
+
+// ===================== SET 3: mata =====================
+const mata = new THREE.Group(); scene.add(mata); mata.position.set(0, 100, 0);
+const sclera = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 48), new THREE.MeshPhysicalMaterial({ color: 0xf4efe8, roughness: .35, clearcoat: .6, sheen: .4, sheenColor: new THREE.Color(0xffd9d0) })); mata.add(sclera);
+const iris = new THREE.Mesh(new THREE.SphereGeometry(1.004, 64, 16, 0, Math.PI * 2, 0, .42), new THREE.MeshPhysicalMaterial({ color: 0x6b4a2e, roughness: .35, clearcoat: .8 })); iris.rotation.x = Math.PI / 2; mata.add(iris);
+const pupil = new THREE.Mesh(new THREE.SphereGeometry(1.008, 48, 8, 0, Math.PI * 2, 0, .17), new THREE.MeshBasicMaterial({ color: 0x050505 })); pupil.rotation.x = Math.PI / 2; mata.add(pupil);
+const cornea = new THREE.Mesh(new THREE.SphereGeometry(.5, 48, 24, 0, Math.PI * 2, 0, .95), new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: .02, transparent: true, opacity: .14, clearcoat: 1 })); cornea.rotation.x = Math.PI / 2; cornea.position.z = .66; mata.add(cornea);
+const vessels = []; for (let i = 0; i < 9; i++) { const a = i / 9 * 6.28 + .3; const pts = []; for (let k = 0; k < 8; k++) { const rr = .55 + k * .05, ang = a + Math.sin(k * 1.7 + i) * .12; pts.push(new THREE.Vector3(Math.cos(ang) * rr, Math.sin(ang) * rr, Math.sqrt(Math.max(0, 1 - rr * rr)) + .01)); }
+  const c = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 24, .006, 6), new THREE.MeshBasicMaterial({ color: ACC, transparent: true, opacity: 0 })); mata.add(c); vessels.push(c); }
+const gland = new THREE.Group(); gland.position.set(.85, .78, .25); mata.add(gland);
+for (let i = 0; i < 9; i++) { const s = new THREE.Mesh(new THREE.SphereGeometry(.1 + hash(i) * .05, 20, 16), new THREE.MeshPhysicalMaterial({ color: 0xe79aa0, roughness: .45, clearcoat: .4, emissive: ACC, emissiveIntensity: 0 })); s.position.set((hash(i + 1) - .5) * .32, (hash(i + 4) - .5) * .18, (hash(i + 7) - .5) * .2); gland.add(s); }
+const tears = []; for (let i = 0; i < 18; i++) { const m = new THREE.Mesh(new THREE.SphereGeometry(.045, 16, 12), new THREE.MeshPhysicalMaterial({ color: 0xbfe9ff, roughness: .02, transparent: true, opacity: 0, clearcoat: 1, ior: 1.33 })); m.userData = { ph: i / 18 }; mata.add(m); tears.push(m); }
+const gasEye = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(.05, 2), new THREE.MeshPhysicalMaterial({ color: C_GAS, roughness: .3, emissive: C_GAS, emissiveIntensity: .25 }), 50); mata.add(gasEye);
+const pG = Array.from({ length: 50 }, () => ({ x: -2.6 - rnd() * 2, y: -1.5 + rnd() * 2.2, z: .4 + rnd() * 1.4, sp: .5 + rnd() * .6, ph: rnd() }));
+
+// ---------- post, labels ----------
+await Promise.all(['500 20px Inter', '600 20px Inter', '700 20px Inter', '20px JBM'].map(f => document.fonts.load(f)));
+const post = makePost(R, scene, cam, W, H, { ssaa: SSAA, ao: true, aoAmt: .6, aoRadius: .2 });
+post.dof.aper = 3.2; post.dof.maxCoc = 14; post.bloom.threshold = 1.8; post.bloom.strength = .3; post.vig.uniforms.amt.value = .4; post.vig.uniforms.warm.value = .15;
+const SUBS = [
+  [4.8, 8.8, 'Begitu dipotong, sel bawang <i>pecah.</i>'],
+  [9.0, 13.6, 'Sel pecah melepas enzim <i>aliinase.</i>'],
+  [13.6, 18.4, 'Enzim itu mengubah sulfoksida jadi <i>asam sulfenat.</i>'],
+  [18.4, 23.0, 'Enzim kedua, LFS, mengubahnya jadi <i>gas.</i>'],
+  [23.2, 27.4, 'Gasnya melayang dan sampai ke <i>mata.</i>'],
+  [27.4, 31.8, 'Saraf terangsang, <i>air mata</i> keluar membilas.'],
+  [32.0, 36.0, 'Biar nggak perih, potong di bawah <i>air mengalir.</i>'],
+  [36.0, 40.0, 'Atau sisakan <i>pangkal akarnya.</i>'],
+];
+const LABELS = [
+  { no: '01', nama: 'Sel pecah', ket: 'isi sel tumpah keluar', t: [10.2, 14.6], p: () => sel.localToWorld(new THREE.Vector3(-1.5, 0, .3)) },
+  { no: '02', nama: 'Enzim aliinase', ket: 'pemicu reaksi pertama', t: [12.0, 16.6], p: () => { const q = pA[3]; return sel.localToWorld(new THREE.Vector3(q.x, q.y, q.z)); } },
+  { no: '03', nama: 'Enzim LFS', ket: 'pemicu reaksi kedua', t: [16.6, 21.2], p: () => { const q = pL[2]; return sel.localToWorld(new THREE.Vector3(q.x, q.y, q.z)); } },
+  { no: '04', nama: 'Gas pemicu tangis', ket: 'syn-propanethial-S-oxide', t: [18.6, 23.0], p: () => sel.localToWorld(new THREE.Vector3(.4, 1.0, .2)) },
+  { no: '05', nama: 'Saraf di mata', ket: 'terangsang oleh gas', t: [24.0, 28.6], p: () => mata.localToWorld(new THREE.Vector3(.35, .35, .95)) },
+  { no: '06', nama: 'Kelenjar air mata', ket: 'membilas zat iritan', t: [27.2, 31.7], p: () => gland.localToWorld(new THREE.Vector3(0, 0, .1)) },
+];
+const NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg'); svg.setAttribute('width', W); svg.setAttribute('height', H); document.body.appendChild(svg);
+for (const L of LABELS) { L.el = document.createElement('div'); L.el.className = 'lbl'; L.el.innerHTML = '<b></b><span></span><small></small>'; L.el.querySelector('b').textContent = L.no; L.el.querySelector('span').textContent = L.nama; L.el.querySelector('small').textContent = L.ket; document.body.appendChild(L.el);
+  L.ln = document.createElementNS(NS, 'path'); L.ln.setAttribute('stroke', '#f4f2ee'); L.ln.setAttribute('stroke-width', 2 * S); L.ln.setAttribute('fill', 'none'); svg.appendChild(L.ln);
+  L.dot = document.createElementNS(NS, 'circle'); L.dot.setAttribute('r', 6 * S); L.dot.setAttribute('fill', '#2EC4B6'); svg.appendChild(L.dot); }
+
+// ---------- camera (per set) ----------
+const CAM = track([
+  [0, [2.9, 1.5, 4.4, -.05, .4, 0]], [4.6, [1.9, 1.05, 3.0, 0, .35, 0]], [8.4, [.7, .62, 1.1, 0, .3, 0]], [8.8, [.62, .6, .95, 0, .3, 0]],
+  [8.81, [0, 51.2, 9.5, 0, 48.6, 0]], [12, [.8, 51.0, 8.6, 0, 48.7, 0]], [16.5, [-.6, 50.9, 8.2, -.2, 48.8, 0]], [21.5, [.2, 51.8, 8.4, 0, 49.6, 0]], [22.95, [0, 52.6, 8.0, 0, 50.6, 0]],
+  [22.96, [-4.6, 100.9, 6.4, -.6, 99.9, 0]], [27, [-2.6, 100.8, 5.4, .1, 100.0, 0]], [31.7, [1.9, 101.0, 4.8, .3, 100.25, 0]],
+  [31.71, [2.6, 1.3, 3.8, .15, .45, 0]], [35.8, [2.3, 1.1, 3.4, .15, .4, 0]], [36.4, [2.0, .32, 2.8, .1, .1, 0]], [40, [2.1, .38, 2.9, .1, .12, 0]], [45, [3.0, 1.4, 4.6, 0, .4, 0]],
+]);
+const toScreen = v => { const p = v.clone().project(cam); return [(p.x + 1) / 2 * W, (1 - p.y) / 2 * H]; };
+const CUTS = [2.0, 3.0, 4.0];
+
+function render(t) {
+  const set = t < 8.8 ? 0 : t < 22.96 ? 1 : t < 31.71 ? 2 : 0;
+  dapur.visible = set === 0; sel.visible = set === 1; mata.visible = set === 2;
+  if (set === 0) { scene.background = envKitchen; scene.backgroundBlurriness = .85; scene.backgroundIntensity = .22; scene.environment = envKitchen; scene.environmentIntensity = .8; }
+  else { scene.background = darkBg; scene.backgroundBlurriness = 0; scene.backgroundIntensity = 1; scene.environment = envKitchen; scene.environmentIntensity = .35; }
+  // --- kitchen: three chops, halves part, mist rises; tips: water + root
+  let ky = 1.25, kx = 0;
+  CUTS.forEach((c, i) => { const u = t - c; if (u > -.45 && u < .5) { const down = u < 0 ? ss(1 + u / .45) : 1 - ss(u / .5); ky = Math.min(ky, lerp(1.25, -.02, down)); } });
+  knife.position.set(.02 + (t > 4.4 ? ss(seg(t, 4.4, 5.2)) * 1.4 : 0), ky, .9); knife.visible = set === 0 && t < 6;
+  const part = ss(seg(t, 4.3, 5.4)) * (t < 31.7 ? 1 : 1);
+  halves[0].position.x = .14 * part; halves[1].position.x = -.14 * part; halves[0].rotation.z = -.5 * part; halves[1].rotation.z = .5 * part;
+  const mv = env(t, 4.6, 8.8, .8, .4); mistM.opacity = .55 * mv;
+  mist.forEach(m => { const u = m.userData, f = ((t * u.sp + u.ph) % 1); m.position.set(Math.cos(u.a) * u.r * (1 + f), .45 + f * 1.1, Math.sin(u.a) * u.r * (1 + f)); m.visible = mv > .01; });
+  const wv = env(t, 31.8, 40.2, .5, .5); stream.material.opacity = .55 * wv; stream.visible = wv > .01;
+  drops.forEach(d => { const u = d.userData, f = (t * 1.6 + u.ph) % 1; d.position.set(.35 + Math.cos(u.a) * .3 * f, .62 - f * .25 + Math.sin(f * 3) * .1, Math.sin(u.a) * .3 * f); d.material.opacity = .8 * wv * (1 - f); d.visible = wv > .01; });
+  root.material.emissiveIntensity = 1.4 * env(t, 36.0, 40.2, .4, .4);
+  // --- cells: giant blade, burst, reactions
+  if (set === 1) {
+    const cutY = lerp(1.6, -.35, eio(seg(t, 9.2, 10.2)));
+    giantBlade.position.set(0, cutY + (t > 10.4 ? ss(seg(t, 10.4, 11.4)) * 2.2 : 0), 0); giantBlade.visible = t < 11.6;
+    const burst = ss(seg(t, 10.0, 11.0));
+    cells.forEach(m => { const top = m.userData.r === 0; if (top) { m.scale.set(1 + burst * .25, 1 - burst * .5, 1 + burst * .2); m.material.opacity = .45 * (1 - burst * .85); m.position.y = -m.userData.r * .6 + burst * .1; } });
+    const spill = ss(seg(t, 10.2, 12.2));
+    const toGas = i => seg(t, 16.8 + (i % 20) * .1, 18.2 + (i % 20) * .1), toAcid = i => seg(t, 13.6 + (i % 25) * .09, 14.6 + (i % 25) * .09);
+    const place = (arr, inst, scaleF, colorF) => { arr.forEach((q, i) => { const w = t * q.sp + q.a;
+        const rise = colorF ? ss(toGas(i)) * ss(seg(t, 18.6 + (i % 10) * .05, 22.8)) : 0;
+        dummy.position.set(q.x + Math.sin(w) * .18, lerp(-.25, q.y + .5, spill) + Math.cos(w * 1.3) * .1 + rise * (2.2 + q.d * 1.6), q.z + Math.sin(w * .7) * .15);
+        const sc = scaleF(i) * (spill > .01 ? 1 : 0); dummy.scale.setScalar(Math.max(.001, sc)); dummy.updateMatrix(); inst.setMatrixAt(i, dummy.matrix);
+        if (colorF) inst.setColorAt(i, colorF(i)); });
+      inst.instanceMatrix.needsUpdate = true; if (inst.instanceColor) inst.instanceColor.needsUpdate = true; };
+    place(pA, enzA, () => 1 - ss(seg(t, 18.8, 20)) * .3);
+    place(pL, enzL, () => ss(seg(t, 15.8, 16.8)));
+    place(pM, mol, () => 1, i => C_SULF.clone().lerp(C_ACID, ss(toAcid(i))).lerp(C_GAS, ss(toGas(i))));
+    mol.material.emissive.copy(C_GAS); mol.material.emissiveIntensity = .25 * ss(seg(t, 17, 19));
+  }
+  // --- eye: gas drifts in, nerves flash, gland swells, tears roll
+  if (set === 2) {
+    pG.forEach((q, i) => { const f = clamp((t - 23 - q.ph * 1.5) * q.sp * .35); dummy.position.set(lerp(q.x, -.1 + (q.ph - .5) * .9, eo(f)), q.y + Math.sin(t * 2 + i) * .08 + f * .3, lerp(q.z, .95, eo(f))); dummy.scale.setScalar(f > .98 ? (1 - seg(t, 26 + q.ph, 27 + q.ph)) : 1); dummy.updateMatrix(); gasEye.setMatrixAt(i, dummy.matrix); });
+    gasEye.instanceMatrix.needsUpdate = true;
+    const nerve = env(t, 24.2, 29.5, .3, .6) * (.55 + .45 * Math.sin(t * 18));
+    vessels.forEach((v, i) => v.material.opacity = nerve * (.6 + .4 * hash(i)));
+    gland.children.forEach((s, i) => { s.material.emissiveIntensity = .6 * env(t, 27.0, 31.7, .5, .4) * (.6 + .4 * Math.sin(t * 6 + i)); s.scale.setScalar(1 + .12 * env(t, 27.0, 31.7, .6, .4)); });
+    tears.forEach((d, i) => { const f = ((t - 27.6) * .55 + d.userData.ph) % 1; const on = t > 27.6 + d.userData.ph * .6; const a = .35 + f * 1.9;
+      d.position.set(Math.cos(a) * .98 * (1 - f * .05) + .05, .75 - f * 1.55, Math.sin(Math.min(1.2, .3 + f)) * .35 + .62); d.material.opacity = on ? .85 * (1 - ss(seg(f, .8, 1))) : 0; d.visible = on; });
+    mata.rotation.y = -.35 + Math.sin(t * .3) * .05;
+  }
+  // camera
+  const c = CAM(t); cam.position.set(c[0], c[1], c[2]); cam.lookAt(c[3], c[4], c[5]);
+  key.target.position.set(c[3], c[4], c[5]); key.position.set(c[3] + 3, c[4] + 6, c[5] + 4); key.target.updateMatrixWorld();
+  cam.updateMatrixWorld(); scene.updateMatrixWorld();
+  post.dof.focus = Math.hypot(c[0] - c[3], c[1] - c[4], c[2] - c[5]);
+  post.dof.aper = set === 0 ? 3.4 : 1.6;
+  if (!window.__teksSaja) post.composer.render();
+  // overlays
+  const kolX = LAND ? W * .62 : W - 560 * S;
+  LABELS.forEach((L, i) => { const a = env(t, L.t[0], L.t[1], .35, .35);
+    const [x, y] = toScreen(L.p()); const ly = clamp(y, 300 * S, H - 520 * S) + (i % 2 ? 130 * S : 0), grow = clamp(a * 1.6);
+    L.el.style.opacity = a; L.el.style.left = (kolX + 16 * S + (1 - a) * 10 * S) + 'px'; L.el.style.top = (ly - 40 * S) + 'px';
+    L.ln.setAttribute('d', `M${x} ${y} L${lerp(x, kolX, grow)} ${lerp(y, ly, grow)}`); L.ln.style.opacity = a; L.dot.setAttribute('cx', x); L.dot.setAttribute('cy', y); L.dot.style.opacity = a; });
+  $('#judul').style.opacity = env(t, .2, 4.8, .3, .3);
+  $('#tag').style.opacity = .9 * (t > 8.6 && t < 31.9 ? 1 : 0);
+  $('#tip1').style.opacity = env(t, 32.0, 40.0, .4, .3); $('#tip2').style.opacity = env(t, 36.0, 40.0, .4, .3);
+  $('#akhir').style.opacity = env(t, 40.0, 46, .4, .1);
+  const fl = Math.max(1 - Math.abs(t - 8.8) / .18, 1 - Math.abs(t - 22.96) / .18, 1 - Math.abs(t - 31.71) / .18); $('#kilat').style.opacity = clamp(fl) * .85;
+  const s = SUBS.find(q => t >= q[0] && t < q[1]), sub = $('#sub');
+  if (s) { if (sub.innerHTML !== s[2]) sub.innerHTML = s[2]; sub.style.opacity = env(t, s[0], s[1], .2, .2); } else sub.style.opacity = 0;
+}
+
+const EV = [{ t: 0, type: 'room', dur: 8.8 }, { t: .2, type: 'title' }];
+CUTS.forEach(c => EV.push({ t: c, type: 'chop' }));
+EV.push({ t: 4.6, type: 'part' }, { t: 8.8, type: 'dive' }, { t: 9.9, type: 'slice' }, { t: 10.2, type: 'burst' });
+for (let k = 0; k < 10; k++) EV.push({ t: 13.7 + k * .11, type: 'blip', pan: (k % 2 ? .3 : -.3) });
+for (let k = 0; k < 10; k++) EV.push({ t: 16.9 + k * .13, type: 'blip2', pan: (k % 2 ? -.3 : .3) });
+EV.push({ t: 19.0, type: 'rise', dur: 3.8 }, { t: 22.96, type: 'dive' }, { t: 24.2, type: 'nerve', dur: 5 }, { t: 27.6, type: 'drip' }, { t: 28.4, type: 'drip' }, { t: 29.3, type: 'drip' }, { t: 30.2, type: 'drip' },
+  { t: 31.71, type: 'dive' }, { t: 31.8, type: 'water', dur: 8.4 }, { t: 36.0, type: 'tick' }, { t: 40.0, type: 'final' });
+LABELS.forEach(L => EV.push({ t: L.t[0], type: 'tick' }));
+window.DUR = DUR; window.EV = EV; window.render = render;
+window.TEXTS = t => { window.__teksSaja = true; render(t); window.__teksSaja = false; const out = [];
+  for (const el of [$('#judul'), $('#sub'), $('#tip1'), $('#tip2'), $('#akhir'), ...LABELS.map(L => L.el)]) { if (+getComputedStyle(el).opacity < .99) continue; const r = el.getBoundingClientRect(); out.push({ id: el.id || el.textContent.slice(0, 12), text: el.textContent, x0: r.left, y0: r.top, x1: r.right, y1: r.bottom }); }
+  return out; };
+render(0); window.READY = true;
+</script></body></html>

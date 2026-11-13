@@ -1,0 +1,57 @@
+{
+  "akun": "@faktadibedah",
+  "judul": "Kenapa motong bawang bikin nangis?",
+  "mesin_suara": "ditunda (P14)",
+  "baris": [
+    {
+      "id": "01",
+      "babak": "Zoom out",
+      "teks": "Lagi masak, baru motong satu bawang, mata langsung perih kayak abis nonton drama."
+    },
+    {
+      "id": "02",
+      "babak": "Zoom in",
+      "teks": "Anehnya, bawang yang masih utuh aman-aman aja. Baru dipotong, langsung nyerang."
+    },
+    {
+      "id": "03",
+      "babak": "Bedah 1",
+      "teks": "Kita bedah. Bawang itu tersusun dari banyak sekali sel. Pas pisau lewat, selnya pecah."
+    },
+    {
+      "id": "04",
+      "babak": "Bedah 2",
+      "teks": "Dari sel yang pecah keluar enzim. Enzim ini mengubah zat belerang di bawang jadi asam."
+    },
+    {
+      "id": "05",
+      "babak": "Bedah 3",
+      "teks": "Lalu enzim kedua mengubahnya jadi gas. Ini gas yang bikin lu nangis."
+    },
+    {
+      "id": "06",
+      "babak": "Bedah 4",
+      "teks": "Gasnya melayang, sampai ke mata, dan merangsang saraf di sana."
+    },
+    {
+      "id": "07",
+      "babak": "Bedah 5",
+      "teks": "Otomatis mata keluarin air mata buat membilas gas itu."
+    },
+    {
+      "id": "08",
+      "babak": "Jawaban (kejutan)",
+      "teks": "Jadi ini bukan kebetulan. Ini sistem pertahanan bawang."
+    },
+    {
+      "id": "09",
+      "babak": "Tips",
+      "teks": "Tipsnya: potong di bawah air mengalir. Dan biarkan pangkal akarnya utuh, karena bagian itu paling banyak zat belerangnya."
+    },
+    {
+      "id": "10",
+      "babak": "Penutup",
+      "teks": "Jadi nangis pas motong bawang itu bukan cengeng, mata lu lagi bersih-bersih. Fakta apa lagi yang mau dibedah? Tulis dikomentar, nanti gua pilih, kita bedah sesuai permintaan lu."
+    }
+  ]
+}

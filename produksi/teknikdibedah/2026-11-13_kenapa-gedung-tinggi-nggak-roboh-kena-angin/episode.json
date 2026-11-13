@@ -1,0 +1,39 @@
+{
+  "akun": "@teknikdibedah",
+  "judul": "Kenapa gedung tinggi nggak roboh kena angin?",
+  "tanggal": "2026-11-13",
+  "status": "naskah-disetujui",
+  "riwayat": [
+    {
+      "tanggal": "2026-11-13",
+      "status": "ide",
+      "catatan": "folder dibuat"
+    },
+    {
+      "tanggal": "2026-11-13",
+      "status": "naskah",
+      "catatan": "v1 dirender (alur lama, final/v1-alur-lama.mp4); v2 naskah zoom out -> zoom in -> bedah, menunggu Zulnan"
+    },
+    {
+      "tanggal": "2026-11-13",
+      "status": "naskah",
+      "catatan": "naskah v3: lebih relate, 3 fakta kejutan; render v1 di cloud dihentikan, render pindah ke laptop (tools/produksi/render.sh)"
+    },
+    {
+      "tanggal": "2026-11-13",
+      "status": "naskah-disetujui",
+      "catatan": "Zulnan: naskah v3 oke, CTA diubah; suara pilihan A dengan caption sesuai syarat"
+    }
+  ],
+  "rencana_posting": {
+    "platform": [
+      "TikTok",
+      "Instagram Reels",
+      "YouTube Shorts"
+    ],
+    "jadwal": "",
+    "link": {}
+  },
+  "durasi_detik": null,
+  "suara": null
+}
