@@ -1,7 +1,7 @@
 # Video alur Nexaoffice (Remotion)
 
 Animasi 12 detik di bagian "Cara kerja" situs Nexaoffice: perintah masuk, Lead membagi tugas, divisi bekerja, kamu menyetujui.
-Warna dan huruf sama dengan situs (`web/src/site/tokens.css`: Antonio, Onest, JetBrains Mono). Karakter dari `web/assets/agents/`.
+Warna sama dengan situs (palet The Grotto di `web/src/site/tokens.css`: hijau hutan gelap, teks gading, aksen emas). Huruf: Gelasio (ukurannya sama dengan Georgia di situs), Arimo (sama dengan Arial), JetBrains Mono. Karakter: potret tim The Grotto (`web/assets/nexa/team/`), latar putih dan label namanya dipotong, disimpan di `public/` (Zulnan 2026-11-14).
 
 ```bash
 cd tools/video-nexaoffice && npm install && node render.mjs

@@ -963,4 +963,14 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File: `produksi/`, `tools/produksi/`, `docs/dua-akun-bedah.md`, `docs/suara-ai.md`, `docs/akun-dan-template.md`, `docs/memori-zuno.md`, `pending.md`, `progress.md`, `.claude/skills/README.md`.
 - Tertunda: adegan naskah v3 + render laptop; suara (P14).
 
-## 95. (entri berikutnya di sini)
+## 95. Video alur situs senada latar + karakter The Grotto (2026-11-14)
+- Permintaan: kotak animasi "Perintah masuk -> Lead membagi -> Divisi bekerja -> Kamu menyetujui" dibuat senada dengan warna latar situs; karakternya diganti karakter tema The Grotto.
+- Hasil:
+  - `AlurNexa.jsx`: palet The Grotto dari `web/src/site/tokens.css` (latar #14241f, teks gading, aksen emas #d6b67b, garis emas tipis, cahaya lembut), huruf Gelasio + Arimo + JetBrains Mono (Antonio/Onest dilepas).
+  - Karakter Raka, Dika, Sari, Tara dari `web/assets/nexa/team/*.webp`: latar kartu putih dan label nama dipotong jadi PNG transparan di `tools/video-nexaoffice/public/`; PNG voxel lama dihapus dari folder itu (aset agen di `web/assets/agents/` tetap).
+  - `web/assets/nexaoffice-alur.mp4/.webm/.webp` dirender ulang (12 detik).
+  - Bukti: `node tests/nexaoffice-situs-test.js` SEMUA LOLOS; build web + ekspor jasa + `tests/zuno-jasa-test.js` SEMUA LOLOS (video ini tidak ikut jasa, repo jasa tidak berubah).
+- File: `tools/video-nexaoffice/` (src, public, package.json, README), `web/assets/nexaoffice-alur.*`, `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: Zulnan cek video; push menunggu izin Zulnan; adegan naskah v3 dua akun bedah.
+
+## 96. (entri berikutnya di sini)
