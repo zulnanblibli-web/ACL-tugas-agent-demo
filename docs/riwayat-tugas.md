@@ -973,4 +973,13 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File: `tools/video-nexaoffice/` (src, public, package.json, README), `web/assets/nexaoffice-alur.*`, `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: Zulnan cek video; push menunggu izin Zulnan; adegan naskah v3 dua akun bedah.
 
-## 96. (entri berikutnya di sini)
+## 96. Cara git pull di laptop + pendapat soal subagent (2026-11-13)
+- Permintaan: `git pull` dijalankan di folder apa; apakah agen di repo berfungsi (hasil `/list-agents` kosong); bisa/perlu tidak memasukkan agen dan subagent ke sesi chat.
+- Hasil:
+  - `git pull` dijalankan di folder repo ACL-tugas-agent-demo, di branch `claude/gifted-turing-csug5l` (atau clone branch itu bila laptop belum punya repo; render kemarin dari zip).
+  - `/list-agents` hanya menampilkan sesi Claude yang sedang jalan, bukan profil di `agents/` (19 profil + 4 agen impeccable di `.claude/agents/` ada).
+  - Saran: mendaftarkan 19 agen sebagai subagent belum perlu sekarang; Zulnan menahannya (P15).
+- File: `pending.md`, `progress.md`, `docs/riwayat-tugas.md`.
+- Tertunda: adegan naskah v3 + render laptop; suara (P14); subagent (P15).
+
+## 97. (entri berikutnya di sini)
