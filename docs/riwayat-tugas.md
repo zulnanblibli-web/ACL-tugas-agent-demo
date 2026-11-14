@@ -982,4 +982,10 @@ Catatan berurutan. Tambah entri baru di bawah; jangan hapus yang lama.
 - File: `pending.md`, `progress.md`, `docs/riwayat-tugas.md`.
 - Tertunda: adegan naskah v3 + render laptop; suara (P14); subagent (P15).
 
-## 97. (entri berikutnya di sini)
+## 97. Tombol jeda video alur pindah ke kiri bawah (2026-11-14)
+- Permintaan: tombol "Jeda animasi" di video alur dipindah ke pojok kiri bawah, tetap di dalam kotak video. Jangan push dulu.
+- Hasil: `.video-btn` di `web/src/site/site.css` dari kanan bawah ke kiri bawah (16 px dari tepi). Di layar <= 40rem tombol dikecilkan (8 px dari tepi, huruf kecil, tinggi tetap 44 px) supaya tidak menutup kotak persetujuan di video. Dicek di 1440, 768, 390 px: tombol di dalam kotak video. Tes situs + ekspor/tes jasa dijalankan (situs tidak ikut jasa).
+- File: `web/src/site/site.css`, `web/site/site.css`, `docs/riwayat-tugas.md`, `progress.md`.
+- Tertunda: push menunggu izin Zulnan.
+
+## 98. (entri berikutnya di sini)

@@ -80,7 +80,7 @@ main > section + section { border-top: 1px solid var(--color-rule); }
 .steps strong { display: block; color: var(--color-ink); }
 .alur-video { margin: 0; position: relative; }
 .alur-video video { width: 100%; border-radius: var(--radius-card); border: 1px solid var(--color-rule); background: var(--color-paper-2); }
-.video-btn { position: absolute; right: var(--space-md); bottom: var(--space-md); min-height: 44px; background: color-mix(in oklab, var(--color-paper) 80%, transparent); }
+.video-btn { position: absolute; left: var(--space-md); bottom: var(--space-md); min-height: 44px; background: color-mix(in oklab, var(--color-paper) 80%, transparent); }
 
 .note { margin-top: var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); }
 
@@ -134,6 +134,7 @@ td { color: var(--color-ink-2); }
   .isi div { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xs); }
 }
 @media (max-width: 40rem) {
+  .video-btn { left: var(--space-xs); bottom: var(--space-xs); min-height: 44px; padding: 0 var(--space-xs); font-size: var(--text-xs); }
   thead { display: none; }
   table, tbody, tr, th, td { display: block; }
   tr { border-bottom: 1px solid var(--color-rule); padding-block: var(--space-sm); }
